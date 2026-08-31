@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sécurisation des interconnexions — INF5244 | Révisions S9</title>
+<link rel="stylesheet" href="assets/core.css?v=10">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><span class="dot"></span> Sécurisation des interconnexions <small>· INF5244</small></div>
+  <div class="spacer"></div>
+  <input id="search" type="search" placeholder="Rechercher dans tous les chapitres…  (Ctrl+K)">
+  <a class="home" href="index.html">← Accueil</a>
+  <button class="btn ghost" onclick="toggleTheme()" title="Thème clair / sombre">◐</button>
+  <button class="btn ghost" onclick="window.print()" title="Imprimer / PDF">⎙</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar"><h4>Chapitres</h4><div id="toc"></div></nav>
+  <main class="content">
+
+<h1>Sécurisation des interconnexions</h1>
+<p class="lead">
+INF5244 — Majeure Cybersécurité S9. Coef. 1.5. Prérequis : Réseaux (INF4032) et Sécurisation des réseaux locaux (INF5243).
+Évaluation : travail de synthèse sur environnement virtualisé + <b>examen Moodle sans documents ni Internet</b>.
+Objectif : <b>étudier, concevoir et mettre en œuvre une passerelle d'interconnexion réseau sécurisée</b>.
+</p>
+
+<div class="card">
+  <h4>Les 4 blocs du programme</h4>
+  <ol>
+    <li><b>Filtrage et architectures internes</b> — nftables, pare-feu à états, NAT, architectures.</li>
+    <li><b>Système de journalisation</b> — définition, sources et formats, politique de journalisation, agrégation.</li>
+    <li><b>NetFlow</b> — métrologie et détection par les flux.</li>
+    <li><b>Filtrage applicatif</b> — proxy et WAF.</li>
+  </ol>
+  <p style="margin-bottom:0"><span class="badge acc">Fil rouge</span> Une passerelle sécurisée, ce n'est pas seulement « un pare-feu » : c'est <b>filtrer</b> (réseau puis applicatif), <b>tracer</b> (journaliser, agréger, détecter) et <b>cloisonner</b> (architecture).</p>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch1"><span class="num">1.</span> Rappels : interconnecter des réseaux</h2>
+
+<h3 id="ch1-routage">1.1 Routage, plans et protocoles</h3>
+<ul>
+<li><b>Plan de contrôle</b> (routing plane) : construction de la table de routage (protocoles, annonces). <b>Plan de données</b> (forwarding plane) : commutation effective des paquets (FIB/CEF). <b>Plan de gestion</b> : administration (SSH, SNMP). <b>Ces trois plans doivent être protégés séparément.</b></li>
+<li><b>Routage statique</b> : simple, déterministe, sans risque d'injection ; ingérable à grande échelle.</li>
+<li><b>IGP</b> : RIP (vecteur de distance, métrique = sauts, max 15), <b>OSPF</b> (état de liens, aire 0 dorsale, coût), IS-IS, EIGRP.</li>
+<li><b>EGP</b> : <b>BGP</b> (TCP 179), routage entre systèmes autonomes (AS), fondé sur la <b>confiance</b> entre pairs.</li>
+</ul>
+<div class="tw"><table>
+<thead><tr><th>Menace sur le routage</th><th>Effet</th><th>Contre-mesure</th></tr></thead>
+<tbody>
+<tr><td>Injection de routes (OSPF/RIP non authentifié)</td><td>Détournement de trafic, trou noir</td><td>Authentification des voisins (HMAC-SHA), interfaces passives, filtrage des annonces</td></tr>
+<tr><td>Détournement BGP (<i>hijack</i>), fuite de routes</td><td>Interception ou coupure à l'échelle d'Internet</td><td><b>RPKI/ROA</b>, filtres de préfixes, max-prefix, TTL security (GTSM), TCP-AO/MD5, MANRS</td></tr>
+<tr><td>Usurpation d'adresse source</td><td>Amplification, DDoS réfléchi</td><td><b>BCP 38 / uRPF</b> (filtrage d'entrée par l'opérateur), <code>rp_filter</code></td></tr>
+<tr><td>Attaque du plan de contrôle</td><td>Saturation CPU du routeur</td><td>CoPP (Control Plane Policing), limitation de débit, ACL d'infrastructure</td></tr>
+</tbody></table></div>
+
+<h3 id="ch1-tcp">1.2 TCP/IP côté filtrage</h3>
+<div class="grid c2">
+<div class="card"><h4>Ce qu'un pare-feu observe</h4>
+<ul>
+<li><b>IP</b> : adresses source/destination, protocole (1 ICMP, 6 TCP, 17 UDP, 47 GRE, 50 ESP, 51 AH), TTL, drapeaux de fragmentation.</li>
+<li><b>TCP</b> : ports, drapeaux <code>SYN ACK FIN RST PSH URG</code>, numéros de séquence, fenêtre, options (MSS, SACK, timestamps).</li>
+<li><b>UDP</b> : ports, longueur — aucun état intrinsèque : l'« état » UDP d'un pare-feu est une <b>pseudo-session</b> à minuterie.</li>
+<li><b>ICMP</b> : type/code ; les types 3 (unreachable) et 11 (time exceeded) doivent être laissés passer, sous peine de casser la PMTUD.</li>
+</ul></div>
+<div class="card"><h4>Établissement et états TCP</h4>
+<p>Poignée en 3 temps : <code>SYN → SYN/ACK → ACK</code>. Fermeture : <code>FIN/ACK</code> × 2 (ou <code>RST</code>).</p>
+<p>États utiles : LISTEN, SYN_SENT, SYN_RECV, ESTABLISHED, FIN_WAIT, TIME_WAIT, CLOSE_WAIT.</p>
+<p><b>SYN flood</b> : saturation de la file des demi-connexions → parade <code>net.ipv4.tcp_syncookies=1</code>, limitation de débit, <code>synproxy</code> de Netfilter.</p>
+<p><b>Fragmentation</b> : utilisée pour contourner les filtres (chevauchement, minuscules fragments) → réassemblage obligatoire côté pare-feu (<code>ct state invalid drop</code>).</p>
+</div>
+</div>
+
+<div class="exam"><div class="t">Ports à connaître de mémoire</div>
+20/21 FTP · 22 SSH · 23 Telnet · 25 SMTP · 53 DNS (UDP et TCP) · 67/68 DHCP · 69 TFTP · 80 HTTP · 88 Kerberos · 110 POP3 · 123 NTP · 135/139/445 SMB-RPC · 143 IMAP · 161/162 SNMP · 389/636 LDAP(S) · 443 HTTPS · 465/587 SMTPS/submission · 500/4500 IKE/NAT-T · 514 syslog (UDP) · 636 LDAPS · 993/995 IMAPS/POP3S · 1812/1813 RADIUS · 2049 NFS · 2083 RadSec · 3128 Squid · 3306 MySQL · 3389 RDP · 5432 PostgreSQL · 6514 syslog/TLS · 8080 proxy/HTTP alt · 9200 Elasticsearch.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch2"><span class="num">2.</span> Filtrage : concepts et familles de pare-feu</h2>
+
+<div class="tw"><table>
+<thead><tr><th>Type</th><th>Couches</th><th>Ce qu'il décide</th><th>Forces</th><th>Limites</th></tr></thead>
+<tbody>
+<tr><td><b>Filtrage sans état</b> (stateless / ACL)</td><td>3–4</td><td>Chaque paquet est jugé isolément</td><td>Très rapide, peu de mémoire, adapté au cœur de réseau</td><td>Règles de retour à écrire manuellement ; se laisse abuser par un paquet <code>ACK</code> forgé ; ne gère pas les protocoles à ports dynamiques</td></tr>
+<tr><td><b>Filtrage à états</b> (stateful)</td><td>3–4 (+7 par helpers)</td><td>Le paquet est rattaché à une <b>connexion</b> suivie</td><td>Règles concises, retour automatique, détection des paquets hors session (invalid)</td><td>Table d'états = ressource finie → cible de DoS ; ne voit pas le contenu</td></tr>
+<tr><td><b>Passerelle applicative</b> (proxy)</td><td>7</td><td>Termine la session et rejoue la requête</td><td>Compréhension du protocole, authentification, journalisation nominative, filtrage de contenu</td><td>Performance, un proxy par protocole, complexité</td></tr>
+<tr><td><b>NGFW</b></td><td>3–7</td><td>Application, utilisateur, contenu, réputation</td><td>Politique par application et par identité, IPS et antivirus intégrés</td><td>Coût, point de défaillance, déchiffrement TLS nécessaire</td></tr>
+<tr><td><b>UTM</b></td><td>3–7</td><td>Tout-en-un (FW, IPS, AV, proxy, VPN, filtrage URL)</td><td>Simplicité pour une PME</td><td>Goulot d'étranglement, concentration du risque</td></tr>
+</tbody></table></div>
+
+<div class="callout"><div class="t">Les 4 règles d'or d'une politique de filtrage</div>
+<ol style="margin-bottom:0">
+<li><b>Interdiction par défaut</b> (<code>policy drop</code>) puis liste blanche explicite des flux nécessaires.</li>
+<li><b>Spécificité</b> : chaque règle précise source, destination, protocole, port <b>et</b> sens ; jamais <code>any → any</code>.</li>
+<li><b>Ordre</b> : les règles sont évaluées séquentiellement — le plus spécifique d'abord, la règle de rejet en dernier.</li>
+<li><b>Traçabilité</b> : chaque règle est commentée (qui, pourquoi, jusqu'à quand) et les rejets sont journalisés ; revue périodique pour supprimer les règles obsolètes (<i>rule sprawl</i>).</li>
+</ol>
+</div>
+<p><b>DROP ou REJECT ?</b> <code>DROP</code> ne renvoie rien (le scanner attend le délai d'expiration, l'attaquant est ralenti, mais le diagnostic interne devient pénible) ; <code>REJECT</code> renvoie un ICMP <i>port unreachable</i> ou un <code>RST</code> TCP (comportement « propre », meilleure expérience utilisateur). Usage courant : <b>DROP côté Internet, REJECT côté interne</b>.</p>
+
+<!-- ===================================================================== -->
+<h2 id="ch3"><span class="num">3.</span> Netfilter et nftables</h2>
+
+<h3 id="ch3-netfilter">3.1 L'architecture Netfilter : les 5 points d'accroche</h3>
+<figure><div class="svgbox">
+<svg viewBox="0 0 900 300" role="img" aria-label="Cheminement d'un paquet dans Netfilter">
+ <g font-size="12">
+  <rect x="10" y="120" width="86" height="42" rx="7" class="sbox"/><text x="53" y="146" text-anchor="middle">Entrée NIC</text>
+  <rect x="120" y="120" width="110" height="42" rx="7" style="fill:var(--accent-soft);stroke:var(--d-blue)"/><text x="175" y="140" text-anchor="middle" style="fill:var(--d-blue)" font-size="11">PREROUTING</text><text x="175" y="155" text-anchor="middle" font-size="10" style="fill:var(--fg-soft)">raw, conntrack, dnat</text>
+  <path d="M96 141 H120" style="stroke:var(--fg-soft)" stroke-width="2"/>
+  <polygon points="255,141 300,116 345,141 300,166" style="fill:var(--warn-soft);stroke:var(--d-amber)"/><text x="300" y="145" text-anchor="middle" font-size="11" style="fill:var(--d-amber)">routage</text>
+  <path d="M230 141 H255" style="stroke:var(--fg-soft)" stroke-width="2"/>
+  <rect x="380" y="50" width="105" height="42" rx="7" style="fill:var(--ok-soft);stroke:var(--d-green)"/><text x="432" y="76" text-anchor="middle" style="fill:var(--d-green)" font-size="11">INPUT</text>
+  <rect x="380" y="190" width="105" height="42" rx="7" style="fill:var(--purple-soft);stroke:var(--d-purple)"/><text x="432" y="216" text-anchor="middle" style="fill:var(--d-purple)" font-size="11">FORWARD</text>
+  <path d="M320 122 L380 80" style="stroke:var(--fg-soft)" stroke-width="2"/>
+  <path d="M320 160 L380 205" style="stroke:var(--fg-soft)" stroke-width="2"/>
+  <rect x="380" y="0" width="105" height="34" rx="7" class="sbox"/><text x="432" y="22" text-anchor="middle" font-size="11">Processus local</text>
+  <path d="M432 50 V34" style="stroke:var(--fg-soft)" stroke-width="2"/>
+  <rect x="540" y="50" width="105" height="42" rx="7" style="fill:var(--ok-soft);stroke:var(--d-green)"/><text x="592" y="76" text-anchor="middle" style="fill:var(--d-green)" font-size="11">OUTPUT</text>
+  <path d="M485 22 H592 V50" style="stroke:var(--fg-soft)" stroke-width="2"/>
+  <rect x="700" y="120" width="115" height="42" rx="7" style="fill:var(--accent-soft);stroke:var(--d-blue)"/><text x="757" y="140" text-anchor="middle" style="fill:var(--d-blue)" font-size="11">POSTROUTING</text><text x="757" y="155" text-anchor="middle" font-size="10" style="fill:var(--fg-soft)">snat / masquerade</text>
+  <path d="M485 211 H700 V162" style="stroke:var(--fg-soft)" stroke-width="2"/>
+  <path d="M592 92 V141 H700" style="stroke:var(--fg-soft)" stroke-width="2"/>
+  <rect x="840" y="120" width="55" height="42" rx="7" class="sbox"/><text x="867" y="146" text-anchor="middle" font-size="11">Sortie</text>
+  <path d="M815 141 H840" style="stroke:var(--fg-soft)" stroke-width="2"/>
+  <text x="450" y="270" text-anchor="middle" font-size="11" style="fill:var(--fg-soft)">Un paquet destiné à la machine passe par INPUT ; un paquet routé passe par FORWARD ; un paquet émis localement par OUTPUT.</text>
+ </g>
+</svg></div><figcaption>Les cinq hooks Netfilter. Retenir : <b>DNAT en PREROUTING</b> (avant la décision de routage), <b>SNAT en POSTROUTING</b> (après).</figcaption></figure>
+
+<h3 id="ch3-conntrack">3.2 Le suivi de connexions (conntrack)</h3>
+<div class="tw"><table>
+<thead><tr><th>État</th><th>Signification</th><th>Usage typique</th></tr></thead>
+<tbody>
+<tr><td><b>NEW</b></td><td>Premier paquet d'une connexion inconnue</td><td>C'est ici qu'on applique la politique d'ouverture</td></tr>
+<tr><td><b>ESTABLISHED</b></td><td>Paquet appartenant à une connexion déjà suivie (dans les deux sens)</td><td>Accepté en tête de chaîne pour la performance</td></tr>
+<tr><td><b>RELATED</b></td><td>Nouvelle connexion <i>liée</i> à une existante (canal de données FTP, erreur ICMP associée)</td><td>Nécessite un <b>helper</b> (ct helper) pour les protocoles complexes</td></tr>
+<tr><td><b>INVALID</b></td><td>Paquet qui ne correspond à aucune connexion connue ou dont l'en-tête est incohérent</td><td>À <b>jeter</b> systématiquement en début de règles</td></tr>
+<tr><td><b>UNTRACKED</b></td><td>Paquet volontairement exclu du suivi (table <code>raw</code>, <code>notrack</code>)</td><td>Optimisation sur trafic massif (DNS anycast, DDoS)</td></tr>
+</tbody></table></div>
+<div class="callout warn"><div class="t">FTP : le cas d'école du helper</div>
+En FTP <b>actif</b>, le serveur ouvre lui-même la connexion de données depuis le port 20 vers un port dynamique du client → un pare-feu à états sans helper la bloque. En FTP <b>passif</b>, le client ouvre les deux connexions, mais vers un port serveur dynamique. Le module <code>ct helper ftp</code> lit la commande <code>PORT</code>/<code>PASV</code> dans le canal de commande pour autoriser dynamiquement le canal de données en état RELATED. <b>Risque</b> : les helpers analysent du contenu non authentifié — sous nftables ils doivent être <b>déclarés explicitement et restreints</b> à un flux précis (pas d'auto-assignation comme avec iptables).
+</div>
+<p><b>Réglages sensibles :</b> <code>nf_conntrack_max</code> (taille de la table — sa saturation est un déni de service), <code>nf_conntrack_tcp_timeout_established</code> (souvent 5 jours par défaut : à réduire), <code>tcp_loose</code> (accepter ou non une session déjà en cours).</p>
+
+<h3 id="ch3-ipt">3.3 iptables : ce qu'il faut savoir (héritage)</h3>
+<div class="tw"><table>
+<thead><tr><th>Table</th><th>Chaînes</th><th>Rôle</th></tr></thead>
+<tbody>
+<tr><td><b>filter</b> (défaut)</td><td>INPUT, FORWARD, OUTPUT</td><td>Accepter / jeter / rejeter</td></tr>
+<tr><td><b>nat</b></td><td>PREROUTING, INPUT, OUTPUT, POSTROUTING</td><td>DNAT, SNAT, MASQUERADE, REDIRECT</td></tr>
+<tr><td><b>mangle</b></td><td>les 5</td><td>Modification d'en-têtes (TOS, TTL, MARK)</td></tr>
+<tr><td><b>raw</b></td><td>PREROUTING, OUTPUT</td><td>Avant le conntrack : <code>NOTRACK</code></td></tr>
+<tr><td><b>security</b></td><td>INPUT, FORWARD, OUTPUT</td><td>Marquage SELinux</td></tr>
+</tbody></table></div>
+<p>Ordre de traversée en PREROUTING : <b>raw → conntrack → mangle → nat (DNAT)</b> → décision de routage → mangle → filter.</p>
+<p><b>Limites d'iptables</b> qui ont motivé nftables : quatre outils distincts (<code>iptables</code>, <code>ip6tables</code>, <code>arptables</code>, <code>ebtables</code>), duplication IPv4/IPv6, évaluation linéaire des règles, pas de vraie structure de données, rechargement non atomique, extension du noyau nécessaire pour chaque nouvelle correspondance.</p>
+
+<h3 id="ch3-nft">3.4 nftables : le modèle</h3>
+<p>Depuis Linux 3.13, <b>nftables</b> remplace iptables : une machine virtuelle dans le noyau, un seul outil <code>nft</code>, une syntaxe unifiée. Sur les distributions récentes, <code>iptables</code> est en réalité <code>iptables-nft</code> (une façade).</p>
+
+<div class="grid c2">
+<div class="card"><h4>Familles de tables</h4>
+<ul>
+<li><code>ip</code> — IPv4</li>
+<li><code>ip6</code> — IPv6</li>
+<li><b><code>inet</code></b> — IPv4 <b>et</b> IPv6 dans le même jeu de règles (à privilégier)</li>
+<li><code>arp</code> — trames ARP</li>
+<li><code>bridge</code> — trafic ponté (L2)</li>
+<li><code>netdev</code> — au plus près de la carte (hook <code>ingress</code>), idéal pour l'anti-DDoS</li>
+</ul></div>
+<div class="card"><h4>Types de chaînes de base</h4>
+<ul>
+<li><code>filter</code> — accepter/jeter</li>
+<li><code>nat</code> — traduction d'adresses (le 1<sup>er</sup> paquet de la connexion seulement)</li>
+<li><code>route</code> — reroutage après modification (équivalent de mangle OUTPUT)</li>
+</ul>
+<p><b>Priorités usuelles</b> : raw −300, mangle −150, dstnat −100, <b>filter 0</b>, security 50, srcnat 100. La plus <b>petite</b> valeur s'exécute en premier.</p></div>
+</div>
+
+<pre><code><span class="c">#!/usr/sbin/nft -f
+# /etc/nftables.conf — passerelle : WAN=eth0, LAN=eth1, DMZ=eth2</span>
+
+flush ruleset
+
+table inet filtre {
+    <span class="c"># --- Ensembles réutilisables (recherche en O(1), mise à jour à chaud) ---</span>
+    set reseaux_lan   { type ipv4_addr; flags interval; elements = { 192.168.10.0/24, 192.168.20.0/24 } }
+    set bannis        { type ipv4_addr; flags dynamic, timeout; timeout 1h; }
+    set services_pub  { type inet_service; elements = { 80, 443 } }
+
+    chain entree {
+        type filter hook input priority filter; policy drop;
+
+        ct state established,related accept
+        ct state invalid drop                       <span class="c"># paquets hors session / fragments incohérents</span>
+        iif lo accept
+
+        <span class="c"># ICMP indispensable (PMTUD, diagnostic) mais limité en débit</span>
+        ip protocol icmp icmp type { echo-request, destination-unreachable, time-exceeded } limit rate 10/second accept
+        ip6 nexthdr icmpv6 accept
+
+        <span class="c"># Administration : SSH depuis le réseau d'admin uniquement, anti-force brute</span>
+        iifname "eth1" ip saddr 192.168.99.0/24 tcp dport 22 \
+            ct state new limit rate 3/minute burst 5 packets accept
+        ip saddr @bannis drop
+
+        counter comment "compteur des paquets rejetes"
+        log prefix "NFT-INPUT-DROP " level info flags all
+    }
+
+    chain traversee {
+        type filter hook forward priority filter; policy drop;
+
+        ct state established,related accept
+        ct state invalid drop
+
+        <span class="c"># LAN -> Internet : uniquement via le proxy, plus DNS interne</span>
+        iifname "eth1" ip saddr 192.168.10.50 oifname "eth0" tcp dport { 80, 443 } accept
+        iifname "eth1" ip daddr 192.168.30.10 udp dport 53 accept
+
+        <span class="c"># Internet -> DMZ : services publiés (après DNAT)</span>
+        iifname "eth0" oifname "eth2" ip daddr 192.168.30.20 tcp dport @services_pub accept
+
+        <span class="c"># DMZ -> LAN : interdit (regle d'or de la DMZ)</span>
+        iifname "eth2" oifname "eth1" log prefix "NFT-DMZ-TO-LAN " drop
+
+        log prefix "NFT-FORWARD-DROP " level warn
+    }
+
+    chain sortie { type filter hook output priority filter; policy accept; }
+}
+
+table ip nat {
+    chain prerouting {
+        type nat hook prerouting priority dstnat;
+        <span class="c"># Publication du serveur web de la DMZ</span>
+        iifname "eth0" tcp dport { 80, 443 } dnat to 192.168.30.20
+    }
+    chain postrouting {
+        type nat hook postrouting priority srcnat;
+        <span class="c"># Partage de l'acces Internet (adresse WAN dynamique)</span>
+        oifname "eth0" ip saddr @reseaux_lan masquerade
+    }
+}
+</code></pre>
+
+<h3 id="ch3-nftsyntaxe">3.5 Syntaxe et commandes utiles</h3>
+<div class="tw"><table>
+<thead><tr><th>Besoin</th><th>Commande</th></tr></thead>
+<tbody>
+<tr><td>Afficher tout le jeu de règles</td><td><code>nft list ruleset</code></td></tr>
+<tr><td>Afficher avec les numéros de règles</td><td><code>nft -a list ruleset</code></td></tr>
+<tr><td>Charger un fichier (remplacement <b>atomique</b>)</td><td><code>nft -f /etc/nftables.conf</code></td></tr>
+<tr><td>Vérifier sans appliquer</td><td><code>nft -c -f /etc/nftables.conf</code></td></tr>
+<tr><td>Créer table et chaîne</td><td><code>nft add table inet f</code> puis <code>nft add chain inet f input '{ type filter hook input priority 0; policy drop; }'</code></td></tr>
+<tr><td>Ajouter / insérer une règle</td><td><code>nft add rule inet f input tcp dport 22 accept</code> · <code>nft insert rule …</code></td></tr>
+<tr><td>Supprimer une règle par handle</td><td><code>nft delete rule inet f input handle 7</code></td></tr>
+<tr><td>Vider une chaîne / tout</td><td><code>nft flush chain inet f input</code> · <code>nft flush ruleset</code></td></tr>
+<tr><td>Alimenter un ensemble à chaud</td><td><code>nft add element inet filtre bannis { 203.0.113.7 }</code></td></tr>
+<tr><td>Traduire une règle iptables</td><td><code>iptables-translate -A INPUT -p tcp --dport 22 -j ACCEPT</code></td></tr>
+<tr><td>Suivre les journaux</td><td><code>journalctl -kf | grep NFT-</code> ou <code>nft monitor</code></td></tr>
+</tbody></table></div>
+
+<div class="grid c2">
+<div class="card"><h4>Atouts distinctifs de nftables</h4>
+<ul>
+<li><b>Ensembles (sets)</b> et <b>maps</b> : recherche à temps constant au lieu d'un parcours linéaire de milliers de règles.</li>
+<li><b>Verdict maps</b> : <code>tcp dport vmap { 22 : accept, 80 : jump web, 25 : drop }</code> — une seule règle remplace des dizaines.</li>
+<li><b>Ensembles dynamiques à expiration</b> : <code>flags dynamic, timeout</code> → bannissement automatique sans démon externe.</li>
+<li><b>Une règle, plusieurs correspondances</b> et une seule table <code>inet</code> pour IPv4+IPv6.</li>
+<li><b>Rechargement atomique</b> : pas de fenêtre où le pare-feu est ouvert.</li>
+<li><b>Flowtable</b> : déchargement du suivi de flux pour un routage rapide.</li>
+<li><b>Compteurs, quotas, limitation de débit</b> intégrés.</li>
+</ul></div>
+<div class="card"><h4>Verdicts et actions</h4>
+<ul>
+<li><code>accept</code> — accepter et sortir de la chaîne</li>
+<li><code>drop</code> — jeter silencieusement</li>
+<li><code>reject with icmpx type admin-prohibited</code> — refuser en informant</li>
+<li><code>jump &lt;chaîne&gt;</code> / <code>goto</code> — chaîne utilisateur (goto ne revient pas)</li>
+<li><code>continue</code>, <code>return</code></li>
+<li><code>log prefix "…" level warn</code>, <code>counter</code>, <code>limit rate</code>, <code>queue</code> (vers l'espace utilisateur)</li>
+<li><code>dnat to</code>, <code>snat to</code>, <code>masquerade</code>, <code>redirect to :3128</code></li>
+</ul></div>
+</div>
+
+<div class="exam"><div class="t">Erreurs classiques en TP/examen</div>
+<ul>
+<li>Oublier <code>ct state established,related accept</code> → la connexion s'établit mais rien ne revient.</li>
+<li>Confondre <b>INPUT</b> (trafic <i>pour</i> la passerelle) et <b>FORWARD</b> (trafic <i>traversant</i>) : une règle de publication de service se met en FORWARD, pas en INPUT.</li>
+<li>Oublier <code>net.ipv4.ip_forward=1</code> : aucune règle FORWARD ne servira.</li>
+<li>Faire le DNAT en POSTROUTING (trop tard : la décision de routage est déjà prise).</li>
+<li>Filtrer sur l'adresse <b>publique</b> en FORWARD alors que le DNAT a déjà réécrit la destination en adresse privée.</li>
+<li>Se couper l'accès SSH en appliquant <code>policy drop</code> avant d'écrire la règle d'autorisation (d'où l'intérêt du chargement atomique par fichier).</li>
+</ul>
+</div>
+
+<h3 id="ch3-durcissement">3.6 Durcissement système de la passerelle</h3>
+<pre><code><span class="c"># /etc/sysctl.d/99-passerelle.conf</span>
+net.ipv4.ip_forward = 1
+net.ipv4.conf.all.rp_filter = 1            <span class="c"># anti-usurpation (reverse path filtering)</span>
+net.ipv4.conf.all.accept_redirects = 0     <span class="c"># refuser les ICMP redirect</span>
+net.ipv4.conf.all.send_redirects = 0
+net.ipv4.conf.all.accept_source_route = 0  <span class="c"># source routing</span>
+net.ipv4.tcp_syncookies = 1                <span class="c"># anti SYN flood</span>
+net.ipv4.icmp_echo_ignore_broadcasts = 1   <span class="c"># anti smurf</span>
+net.ipv4.conf.all.log_martians = 1
+net.netfilter.nf_conntrack_max = 262144
+</code></pre>
+<p>Compléments : <b>fail2ban</b> (analyse des journaux → bannissement dynamique, redondant avec un set nftables à expiration), <b>ipset</b> (listes de réputation), suppression de tout service inutile sur la passerelle, comptes d'administration nominatifs, mise à jour et sauvegarde des configurations, <b>durcissement du noyau</b> et supervision.</p>
+
+<!-- ===================================================================== -->
+<h2 id="ch4"><span class="num">4.</span> NAT — traduction d'adresses</h2>
+<div class="tw"><table>
+<thead><tr><th>Type</th><th>Ce qui est réécrit</th><th>Hook</th><th>Usage</th></tr></thead>
+<tbody>
+<tr><td><b>SNAT</b></td><td>Adresse (et port) <b>source</b>, vers une IP fixe</td><td>POSTROUTING</td><td>Sortie Internet avec adresse publique statique</td></tr>
+<tr><td><b>MASQUERADE</b></td><td>Idem SNAT mais l'adresse est prise dynamiquement sur l'interface de sortie</td><td>POSTROUTING</td><td>Liaison à adresse IP variable (ADSL/4G) ; un peu plus coûteux</td></tr>
+<tr><td><b>DNAT</b></td><td>Adresse (et port) <b>destination</b></td><td>PREROUTING</td><td>Publication d'un service hébergé en DMZ (port forwarding)</td></tr>
+<tr><td><b>REDIRECT</b></td><td>Destination réécrite vers la machine locale</td><td>PREROUTING/OUTPUT</td><td>Proxy transparent (<code>redirect to :3128</code>)</td></tr>
+<tr><td><b>PAT / NAPT (overload)</b></td><td>Plusieurs adresses internes derrière une seule publique, différenciées par le port source</td><td>POSTROUTING</td><td>Le NAT « grand public »</td></tr>
+<tr><td><b>NAT hairpin</b> (loopback NAT)</td><td>Un client interne joint le service par son adresse publique</td><td>PRE + POSTROUTING</td><td>Évite le « split DNS » ; souvent oublié en TP</td></tr>
+<tr><td><b>CGNAT / NAT444</b></td><td>NAT opérateur mutualisé</td><td>—</td><td>Pénurie d'IPv4 ; complique l'imputabilité (obligation de journaliser les plages de ports)</td></tr>
+<tr><td><b>NAT64 / NPTv6</b></td><td>Traduction IPv6↔IPv4 / translation de préfixe</td><td>—</td><td>Transition IPv6</td></tr>
+</tbody></table></div>
+
+<div class="callout danger"><div class="t">« Le NAT, c'est de la sécurité » : faux (nuancé)</div>
+Le NAT apporte un effet de bord utile — les machines internes ne sont pas <b>directement</b> joignables depuis l'extérieur — mais :
+<ul style="margin-bottom:0">
+<li>ce n'est <b>pas</b> une politique de sécurité : il n'exprime aucune règle, ne journalise rien d'intelligible et ne filtre pas le trafic sortant ;</li>
+<li>il est contourné par toute connexion initiée de l'intérieur (le canal usuel des logiciels malveillants et des C2) ;</li>
+<li>il <b>casse</b> la traçabilité (plusieurs machines derrière une IP → l'imputabilité exige de journaliser les <b>ports source</b> et les horodatages), la fin-à-fin, IPsec/AH, SIP, FTP actif ;</li>
+<li>la sécurité vient du <b>pare-feu à états</b>, pas du NAT. En IPv6, il n'y a normalement pas de NAT : c'est le filtrage qui protège.</li>
+</ul>
+</div>
+<p><b>Traversée de NAT</b> : STUN, TURN, ICE (WebRTC/SIP), UPnP/NAT-PMP (<b>à désactiver</b> : n'importe quelle application interne peut s'ouvrir un port), NAT-T pour IPsec (UDP 4500).</p>
+
+<!-- ===================================================================== -->
+<h2 id="ch5"><span class="num">5.</span> Architectures d'interconnexion</h2>
+
+<h3 id="ch5-passerelle">5.1 Anatomie d'une passerelle d'interconnexion sécurisée</h3>
+<p>Une passerelle d'interconnexion (ANSSI parle de <i>passerelle d'interconnexion sécurisée</i>) est le point de contrôle entre deux réseaux de <b>niveaux de confiance différents</b>. Elle enchaîne, dans cet ordre logique :</p>
+<ol>
+<li><b>Un filtrage réseau amont</b> (routeur filtrant / pare-feu externe) : anti-usurpation, listes de réputation, limitation de débit, protection anti-DDoS.</li>
+<li><b>Un pare-feu à états</b> qui porte la politique de flux entre zones.</li>
+<li><b>Des relais applicatifs</b> par protocole : proxy sortant, reverse proxy + WAF entrant, relais SMTP, résolveur DNS de coupure, passerelle de transfert de fichiers.</li>
+<li><b>Un dispositif de détection</b> : IDS/IPS sur TAP ou en coupure, analyse antivirale, bac à sable.</li>
+<li><b>Une journalisation complète</b> exportée vers un puits de logs hors zone.</li>
+<li><b>Une administration cloisonnée</b> : réseau d'administration hors bande, bastion, comptes dédiés, MFA.</li>
+</ol>
+<div class="callout"><div class="t">Principe du « double filtrage hétérogène »</div>
+Deux barrières successives, de <b>technologies différentes</b>, sur des <b>plans différents</b> (réseau puis applicatif) : une vulnérabilité de l'une ne doit pas suffire à traverser toute la passerelle. C'est le cœur de la défense en profondeur appliquée à l'interconnexion.
+</div>
+
+<h3 id="ch5-modeles">5.2 Modèles d'architecture</h3>
+<div class="tw"><table>
+<thead><tr><th>Modèle</th><th>Description</th><th>Quand l'utiliser</th></tr></thead>
+<tbody>
+<tr><td><b>Pare-feu unique 3 pattes</b></td><td>WAN / DMZ / LAN sur un seul équipement</td><td>PME, budget contraint ; point de défaillance unique</td></tr>
+<tr><td><b>Double pare-feu (back-to-back)</b></td><td>FW externe → DMZ → FW interne, marques différentes</td><td>Architecture de référence pour un SI exposé</td></tr>
+<tr><td><b>DMZ multiples / n-tiers</b></td><td>DMZ de présentation, DMZ applicative, zone de données</td><td>Applications métier exposées ; empêche l'accès direct à la base</td></tr>
+<tr><td><b>Bastion / rebond</b></td><td>Point de passage unique et tracé pour l'administration</td><td>Toute administration distante ou infogérée</td></tr>
+<tr><td><b>Diode / passerelle unidirectionnelle</b></td><td>Flux physiquement à sens unique</td><td>OIV, SCADA, zones classifiées</td></tr>
+<tr><td><b>Interconnexion chiffrée site à site</b></td><td>VPN IPsec IKEv2 entre pare-feu, ou WireGuard</td><td>Multi-sites sur liaison non maîtrisée</td></tr>
+<tr><td><b>SD-WAN / SASE</b></td><td>Interconnexion pilotée par logiciel, services de sécurité dans le nuage (SWG, CASB, ZTNA, FWaaS)</td><td>Multi-sites + nomades + SaaS ; déplace la confiance vers le fournisseur</td></tr>
+<tr><td><b>ZTNA</b></td><td>Accès par application après vérification d'identité et de posture, plutôt qu'accès réseau</td><td>Remplacement progressif du VPN nomade</td></tr>
+</tbody></table></div>
+
+<h3 id="ch5-inter">5.3 Interconnexion inter-sites : points de vigilance</h3>
+<ul>
+<li><b>Chiffrement</b> : IPsec IKEv2 avec suites modernes (AES-GCM 256, SHA-2, DH ≥ groupe 14 ou courbes elliptiques), <b>PFS</b> activé, certificats plutôt que PSK, renouvellement de clés.</li>
+<li><b>Le tunnel n'est pas une politique</b> : filtrer <b>à l'intérieur</b> du tunnel (un site compromis ne doit pas avoir accès à tout l'autre site).</li>
+<li><b>Routage</b> : éviter les routes par défaut croisées ; contrôler les préfixes annoncés.</li>
+<li><b>Interconnexion avec un tiers</b> (partenaire, infogérant, cloud) : zone d'échange dédiée, flux nominatifs, contractualisation (PAS/PAQ), révocation rapide, journalisation des accès distants — c'est le <b>risque écosystème</b> d'EBIOS RM.</li>
+<li><b>MTU/MSS</b> : l'encapsulation réduit la MTU utile → <code>tcp mss clamping</code> pour éviter les blocages silencieux.</li>
+</ul>
+
+<!-- ===================================================================== -->
+<h2 id="ch6"><span class="num">6.</span> Système de journalisation : définitions, sources, formats</h2>
+
+<h3 id="ch6-def">6.1 Définitions</h3>
+<div class="callout def"><div class="t">Vocabulaire</div>
+<ul style="margin-bottom:0">
+<li><b>Événement</b> : fait observable survenu dans le SI (une connexion, une authentification, un refus de paquet).</li>
+<li><b>Journal (log)</b> : enregistrement horodaté et structuré d'un événement.</li>
+<li><b>Trace</b> : ensemble de journaux permettant de reconstituer une activité.</li>
+<li><b>Imputabilité</b> : capacité à rattacher une action à une personne ou un système identifié — c'est <b>l'objectif</b> de la journalisation.</li>
+<li><b>Preuve</b> : journal dont l'intégrité, l'horodatage et la chaîne de conservation permettent de le produire en justice.</li>
+</ul>
+</div>
+<p><b>Pourquoi journaliser ?</b> (les cinq finalités à citer) : <b>1)</b> détecter (alimenter la supervision et le SIEM), <b>2)</b> investiguer et reconstituer après incident (forensic), <b>3)</b> prouver et imputer (obligations légales, contentieux), <b>4)</b> se conformer (LCEN, RGPD, NIS 2, PCI-DSS, ISO 27001 A.8.15), <b>5)</b> exploiter (diagnostic, capacité, qualité de service).</p>
+
+<h3 id="ch6-sources">6.2 Sources de journaux</h3>
+<div class="tw"><table>
+<thead><tr><th>Catégorie</th><th>Exemples</th><th>Événements à collecter en priorité</th></tr></thead>
+<tbody>
+<tr><td><b>Équipements réseau</b></td><td>Commutateurs, routeurs, points d'accès</td><td>Changements de configuration, err-disable, violations de port-security, authentifications 802.1X, état des liens</td></tr>
+<tr><td><b>Pare-feu / passerelle</b></td><td>nftables, pfSense, NGFW</td><td>Connexions acceptées <b>et</b> rejetées, NAT (avec ports source), VPN (ouverture/fermeture de session)</td></tr>
+<tr><td><b>Systèmes</b></td><td>Linux (<code>/var/log</code>, journald), Windows (EVTX)</td><td>Authentifications réussies/échouées (4624/4625), élévation de privilèges, création de comptes (4720), <code>sudo</code>, arrêt du service de journalisation (1102 : effacement du journal)</td></tr>
+<tr><td><b>Annuaire</b></td><td>Active Directory, LDAP</td><td>Kerberos (4768/4769/4771), modifications de groupes privilégiés, réplication</td></tr>
+<tr><td><b>Services d'infrastructure</b></td><td>DNS, DHCP, NTP, RADIUS</td><td>Requêtes DNS (détection de C2, exfiltration), baux DHCP (correspondance IP↔MAC↔horodatage), accounting RADIUS</td></tr>
+<tr><td><b>Applicatif / web</b></td><td>Apache/nginx, proxy, WAF, messagerie</td><td>Accès HTTP, erreurs 4xx/5xx, blocages WAF, URL demandées, authentifications applicatives</td></tr>
+<tr><td><b>Sécurité</b></td><td>IDS/IPS, antivirus, EDR, bac à sable</td><td>Alertes, détections, quarantaines</td></tr>
+<tr><td><b>Flux</b></td><td>NetFlow / IPFIX / sFlow</td><td>Métadonnées de tous les flux (voir chapitre 8)</td></tr>
+</tbody></table></div>
+<div class="exam"><div class="t">La correspondance qui sauve une investigation</div>
+Pour identifier « qui » se cache derrière une adresse IP à un instant donné, il faut croiser : <b>bail DHCP</b> (IP↔MAC↔heure) + <b>accounting RADIUS / 802.1X</b> (MAC↔identité↔port) + <b>journal du NAT</b> (IP privée+port↔IP publique) + <b>journal du proxy</b> (identité↔URL). Si une seule de ces sources manque ou n'est pas horodatée de façon cohérente, la chaîne d'imputabilité est rompue.
+</div>
+
+<h3 id="ch6-formats">6.3 Formats et protocoles</h3>
+<h4>Syslog RFC 3164 (« BSD syslog », historique)</h4>
+<pre><code>&lt;34&gt;Oct 11 22:14:15 passerelle sshd[1234]: Failed password for root from 10.0.0.9 port 5122 ssh2
+ └┬┘ └──────┬──────┘ └────┬────┘ └──┬──┘  └────────────────── MESSAGE ─────────────────────┘
+  │        TIMESTAMP    HOSTNAME   TAG
+  └── PRI = facility × 8 + severity
+</code></pre>
+<div class="grid c2">
+<div class="card"><h4>Sévérités (0 = le plus grave)</h4>
+<ol start="0" style="margin:0">
+<li>emerg — système inutilisable</li><li>alert — action immédiate</li><li>crit — critique</li><li>err — erreur</li><li>warning — avertissement</li><li>notice — normal mais notable</li><li>info — information</li><li>debug — mise au point</li>
+</ol></div>
+<div class="card"><h4>Facilités (extraits)</h4>
+<p>0 kern · 1 user · 2 mail · 3 daemon · <b>4 auth</b> · 5 syslog · 6 lpr · 7 news · 9 cron · <b>10 authpriv</b> · 11 ftp · <b>16 à 23 = local0 à local7</b> (réservées aux équipements et applications).</p>
+<p><b>Calcul</b> : PRI 34 → 34 ÷ 8 = 4 reste 2 → facility 4 (<i>auth</i>), severity 2 (<i>crit</i>).</p></div>
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>Format</th><th>Caractéristiques</th><th>Où on le rencontre</th></tr></thead>
+<tbody>
+<tr><td><b>RFC 3164</b></td><td>Texte libre, horodatage sans année ni fuseau ni sous-seconde, ≤ 1024 octets</td><td>Équipements anciens — à éviter pour de la preuve</td></tr>
+<tr><td><b>RFC 5424</b></td><td>Horodatage <b>ISO 8601 avec fuseau</b>, VERSION, APP-NAME, PROCID, MSGID, <b>STRUCTURED-DATA</b>, UTF-8</td><td>Le standard moderne à privilégier</td></tr>
+<tr><td><b>RFC 5425 / 6587</b></td><td>Syslog sur <b>TLS</b> (TCP 6514) / sur TCP (514) avec délimitation par taille</td><td>Transport fiable et confidentiel</td></tr>
+<tr><td><b>RELP</b></td><td>Transport fiable avec accusé applicatif (rsyslog)</td><td>Zéro perte de journal</td></tr>
+<tr><td><b>CEF</b> (ArcSight), <b>LEEF</b> (QRadar)</td><td>Champs clé=valeur normalisés</td><td>Interopérabilité SIEM</td></tr>
+<tr><td><b>JSON / ECS / OCSF</b></td><td>Structuré, imbriqué, auto-descriptif</td><td>ELK/OpenSearch, pipelines modernes</td></tr>
+<tr><td><b>CLF / Combined (Apache)</b>, <b>W3C ELF</b> (IIS)</td><td>Ligne à champs positionnels</td><td>Serveurs web et proxy</td></tr>
+<tr><td><b>EVTX</b></td><td>Binaire XML, riche (Event ID, SID, canaux)</td><td>Windows ; collecte par WEF/WEC ou agent</td></tr>
+<tr><td><b>Auditd</b></td><td>Appels système Linux, très verbeux</td><td>Traçabilité fine, forensic</td></tr>
+</tbody></table></div>
+
+<div class="callout warn"><div class="t">UDP 514 : le piège classique</div>
+Le syslog historique utilise <b>UDP 514</b> : <b>sans accusé de réception</b> (les journaux se perdent silencieusement en cas de congestion), <b>sans authentification</b> (n'importe qui peut injecter de faux journaux), <b>sans chiffrement</b> (les journaux transitent en clair). Pour une passerelle, exiger <b>TCP + TLS (6514)</b> ou <b>RELP</b>, avec authentification mutuelle par certificat.
+</div>
+
+<h3 id="ch6-outils">6.4 Chaîne technique</h3>
+<pre><code><span class="c"># rsyslog : émettre en TLS vers le collecteur, avec file d'attente sur disque</span>
+module(load="imfile")
+global(DefaultNetstreamDriver="gtls"
+       DefaultNetstreamDriverCAFile="/etc/ssl/ca.pem"
+       DefaultNetstreamDriverCertFile="/etc/ssl/client.pem"
+       DefaultNetstreamDriverKeyFile="/etc/ssl/client.key")
+action(type="omfwd" target="siem.interne" port="6514" protocol="tcp"
+       StreamDriverMode="1" StreamDriverAuthMode="x509/name"
+       queue.type="LinkedList" queue.filename="q_siem"
+       queue.saveOnShutdown="on" action.resumeRetryCount="-1")
+</code></pre>
+<p>Autres briques : <b>syslog-ng</b>, <b>journald</b> (<code>journalctl -u service -S "-1h"</code>, <code>--vacuum-time</code>), <b>Filebeat/Winlogbeat</b>, <b>Fluent Bit</b>, <b>NXLog</b>, <b>Vector</b>, <b>WEF/WEC</b> côté Windows, <b>logrotate</b> pour la rotation locale.</p>
+
+<!-- ===================================================================== -->
+<h2 id="ch7"><span class="num">7.</span> Politique de journalisation et agrégation</h2>
+
+<h3 id="ch7-politique">7.1 La politique de journalisation</h3>
+<p>C'est un <b>document</b> qui répond, source par source, aux questions : <b>quoi</b> journaliser, <b>où</b>, <b>combien de temps</b>, <b>qui</b> y accède, <b>comment</b> on protège et <b>comment</b> on exploite.</p>
+<div class="tw"><table>
+<thead><tr><th>Axe</th><th>Exigences</th></tr></thead>
+<tbody>
+<tr><td><b>Périmètre</b></td><td>Liste des sources et des événements, par niveau de criticité. Journaliser tout est aussi inefficace que ne rien journaliser : on cible les <b>événements de sécurité</b> (authentification, privilèges, accès aux données, changements de configuration, flux refusés, démarrage/arrêt des services de journalisation).</td></tr>
+<tr><td><b>Horodatage</b></td><td>Synchronisation <b>NTP</b> de toutes les sources sur une référence commune, expression en <b>UTC</b> (ou avec fuseau explicite), précision à la seconde au minimum. Sans cela, aucune corrélation.</td></tr>
+<tr><td><b>Contenu minimal</b></td><td>Horodatage, source, identité (utilisateur/machine), action, objet, résultat (succès/échec), adresses IP et ports (source <b>et</b> destination).</td></tr>
+<tr><td><b>Conservation</b></td><td>Journaux techniques : couramment <b>6 mois à 1 an</b> en ligne (recommandation ANSSI usuelle : 6 mois minimum, 1 an fréquemment retenu), archivage plus long si obligation. Données de connexion d'un accès Internet : <b>1 an</b> (cadre LCEN/CPCE). Durée <b>justifiée et documentée</b> au titre du RGPD.</td></tr>
+<tr><td><b>Intégrité</b></td><td>Export en temps réel vers un puits <b>hors de la portée de l'administrateur de la source</b>, support WORM ou stockage immuable, signature/hachage, contrôle d'accès strict.</td></tr>
+<tr><td><b>Confidentialité</b></td><td>Les journaux contiennent des données personnelles : accès restreint et tracé, pseudonymisation si possible, information des personnes, registre RGPD, durée limitée.</td></tr>
+<tr><td><b>Disponibilité</b></td><td>Dimensionnement (volumétrie en EPS et en Go/jour), files d'attente, redondance du collecteur, supervision de l'absence de journaux (<b>un silence est une alerte</b>).</td></tr>
+<tr><td><b>Exploitation</b></td><td>Règles de corrélation, cas d'usage, procédures d'astreinte, revue périodique, tests.</td></tr>
+</tbody></table></div>
+<div class="callout danger"><div class="t">Premier réflexe d'un attaquant : effacer les journaux</div>
+D'où trois exigences non négociables : <b>déport immédiat</b> des journaux vers un serveur dédié (l'attaquant qui compromet le serveur ne peut plus effacer ce qui est déjà parti), <b>flux unidirectionnel</b> vers le puits (le collecteur n'ouvre pas de session vers les sources), <b>compte d'accès distinct</b> de l'administration du système supervisé. Événement à surveiller en priorité : <i>Windows 1102 / arrêt du service rsyslog</i>.
+</div>
+
+<h3 id="ch7-agregation">7.2 Agrégation, normalisation, corrélation</h3>
+<figure><div class="svgbox">
+<svg viewBox="0 0 880 190" role="img" aria-label="Chaîne de traitement des journaux">
+ <g font-size="11" text-anchor="middle">
+  <rect x="10" y="60" width="110" height="52" rx="8" class="sbox"/><text x="65" y="82">Sources</text><text x="65" y="98" font-size="10">FW, OS, proxy, AD…</text>
+  <rect x="152" y="60" width="110" height="52" rx="8" style="fill:var(--accent-soft);stroke:var(--d-blue)"/><text x="207" y="82" style="fill:var(--d-blue)">Collecte</text><text x="207" y="98" font-size="10">agent / syslog TLS</text>
+  <rect x="294" y="60" width="118" height="52" rx="8" style="fill:var(--accent-soft);stroke:var(--d-blue)"/><text x="353" y="82" style="fill:var(--d-blue)">Normalisation</text><text x="353" y="98" font-size="10">parsing, schéma commun</text>
+  <rect x="444" y="60" width="118" height="52" rx="8" style="fill:var(--purple-soft);stroke:var(--d-purple)"/><text x="503" y="82" style="fill:var(--d-purple)">Enrichissement</text><text x="503" y="98" font-size="10">geoIP, CTI, actif, identité</text>
+  <rect x="594" y="60" width="118" height="52" rx="8" style="fill:var(--warn-soft);stroke:var(--d-amber)"/><text x="653" y="82" style="fill:var(--d-amber)">Corrélation</text><text x="653" y="98" font-size="10">règles, ATT&amp;CK, UEBA</text>
+  <rect x="744" y="60" width="126" height="52" rx="8" style="fill:var(--danger-soft);stroke:var(--d-red)"/><text x="807" y="82" style="fill:var(--d-red)">Alerte / SOC</text><text x="807" y="98" font-size="10">tri, réponse, SOAR</text>
+  <path d="M120 86 H152 M262 86 H294 M412 86 H444 M562 86 H594 M712 86 H744" style="stroke:var(--fg-soft)" stroke-width="2"/>
+  <text x="440" y="155" font-size="11" style="fill:var(--fg-soft)">Un SIEM ne vaut que par la qualité de ses sources, la justesse de sa normalisation et la pertinence de ses règles.</text>
+ </g>
+</svg></div><figcaption>Chaîne de traitement d'un système de journalisation centralisé.</figcaption></figure>
+
+<div class="grid c2">
+<div class="card"><h4>Notions</h4>
+<ul>
+<li><b>Agrégation</b> : regrouper les journaux de sources multiples en un point unique.</li>
+<li><b>Normalisation / parsing</b> : convertir des formats hétérogènes vers un schéma commun (ECS, CIM, OCSF) — <code>src_ip</code>, <code>user.name</code>, <code>event.action</code>…</li>
+<li><b>Enrichissement</b> : ajouter contexte (géolocalisation, réputation, criticité de l'actif, propriétaire, identité).</li>
+<li><b>Déduplication / agrégation d'événements</b> : « 5 000 refus identiques » → 1 alerte avec un compteur.</li>
+<li><b>Corrélation</b> : croiser plusieurs sources dans une fenêtre de temps (échecs d'authentification puis succès puis création de compte = alerte).</li>
+<li><b>Rétention chaude / tiède / froide</b> : recherche rapide vs archivage économique.</li>
+</ul></div>
+<div class="card"><h4>Solutions et écosystème</h4>
+<ul>
+<li><b>SIEM</b> : Splunk, QRadar, Sentinel, Elastic Security, <b>Wazuh</b>, Graylog, OpenSearch, Sekoia.</li>
+<li><b>Pile ELK</b> : Beats/Logstash → Elasticsearch → Kibana.</li>
+<li><b>SOAR</b> : orchestration et automatisation de la réponse.</li>
+<li><b>EDR / XDR / NDR</b> : détection sur le poste / multi-sources / réseau.</li>
+<li><b>Référentiel de détection</b> : <b>MITRE ATT&amp;CK</b> (tactiques, techniques), règles <b>Sigma</b> (format portable), Yara.</li>
+<li><b>SOC</b> : N1 tri, N2 investigation, N3 chasse (threat hunting) et ingénierie de détection ; indicateurs : MTTD, MTTR, taux de faux positifs.</li>
+</ul></div>
+</div>
+
+<h3 id="ch7-usage">7.3 Cas d'usage de détection (exemples à savoir citer)</h3>
+<ul>
+<li><b>Force brute</b> : N échecs d'authentification puis un succès depuis la même source.</li>
+<li><b>Voyage impossible</b> : deux connexions du même compte depuis deux pays en quelques minutes.</li>
+<li><b>Balayage</b> : une source contacte de nombreux ports/hôtes en peu de temps (visible en NetFlow).</li>
+<li><b>Exfiltration</b> : volume sortant anormal, ou nombreuses requêtes DNS avec des sous-domaines longs et aléatoires (<b>tunnel DNS</b>).</li>
+<li><b>Balise C2</b> (<i>beaconing</i>) : connexions régulières à intervalle quasi constant vers une même destination.</li>
+<li><b>Latéralisation</b> : connexions SMB/RDP/WinRM inhabituelles entre postes.</li>
+<li><b>Effacement de traces</b> : arrêt du service de journalisation, purge du journal de sécurité.</li>
+<li><b>Élévation</b> : ajout d'un compte à un groupe privilégié hors fenêtre de changement.</li>
+</ul>
+
+<!-- ===================================================================== -->
+<h2 id="ch8"><span class="num">8.</span> NetFlow, IPFIX et sFlow</h2>
+
+<h3 id="ch8-principe">8.1 Le principe des flux</h3>
+<div class="callout def"><div class="t">Qu'est-ce qu'un flux ?</div>
+Une <b>séquence unidirectionnelle</b> de paquets partageant les mêmes attributs pendant un intervalle de temps. Clé classique de NetFlow v5 (7 champs) : <b>IP source, IP destination, port source, port destination, protocole IP, champ ToS, interface d'entrée</b>. L'exportateur agrège les paquets en enregistrements de flux et exporte des <b>métadonnées</b> — <b>pas le contenu</b>.
+</div>
+<p><b>Architecture</b> : <b>exportateur</b> (routeur, pare-feu, sonde <code>softflowd</code>/<code>pmacct</code>) → <b>collecteur</b> (nfcapd, ntopng, Elastiflow) → <b>analyseur</b> (nfdump/NfSen, SiLK, Kibana).</p>
+<p><b>Minuteries</b> : <i>active timeout</i> (un flux long est exporté périodiquement, souvent 1 à 30 min) et <i>inactive/idle timeout</i> (flux clos après un silence, ~15 s). Elles expliquent le <b>décalage</b> entre l'instant réel et l'apparition dans le collecteur.</p>
+
+<div class="tw"><table>
+<thead><tr><th></th><th>NetFlow v5</th><th>NetFlow v9</th><th>IPFIX (RFC 7011)</th><th>sFlow</th></tr></thead>
+<tbody>
+<tr><td>Principe</td><td>Format <b>fixe</b>, IPv4 seul</td><td>Format à <b>modèles</b> (templates), extensible</td><td>Standard IETF dérivé de v9, champs propriétaires possibles (Enterprise IE)</td><td><b>Échantillonnage de paquets</b> (et compteurs d'interface)</td></tr>
+<tr><td>IPv6 / MPLS / VLAN</td><td>Non</td><td>Oui</td><td>Oui</td><td>Oui (voit la couche 2)</td></tr>
+<tr><td>Nature</td><td>Flux agrégés</td><td>Flux agrégés</td><td>Flux agrégés, transport SCTP/TCP/UDP</td><td>Échantillon d'en-têtes de paquets, temps réel</td></tr>
+<tr><td>Précision</td><td>Exacte si pas d'échantillonnage</td><td>Idem</td><td>Idem</td><td>Statistique (1 paquet sur N)</td></tr>
+<tr><td>Usage</td><td>Métrologie historique</td><td>Standard de fait</td><td>Le format à privilégier</td><td>Métrologie temps réel, cœur de réseau à très haut débit</td></tr>
+</tbody></table></div>
+
+<h3 id="ch8-secu">8.2 NetFlow pour la sécurité</h3>
+<div class="grid c2">
+<div class="card"><h4>Ce que les flux permettent de détecter</h4>
+<ul>
+<li><b>Balayages</b> : une source, beaucoup de destinations ou de ports, flux très courts et sans réponse.</li>
+<li><b>DDoS</b> : explosion du nombre de flux/paquets vers une même cible.</li>
+<li><b>Exfiltration</b> : asymétrie inhabituelle (volume sortant &gt;&gt; entrant) vers une destination rare.</li>
+<li><b>Beaconing C2</b> : périodicité régulière des flux vers une même IP.</li>
+<li><b>Machines qui parlent à qui elles ne devraient pas</b> : contrôle de la politique de cloisonnement <i>a posteriori</i>.</li>
+<li><b>Cartographie et capacité</b> : top talkers, matrices de flux réelles (base indispensable avant une micro-segmentation).</li>
+</ul></div>
+<div class="card"><h4>Limites</h4>
+<ul>
+<li>Pas de contenu : on ne sait pas <b>ce</b> qui a été transféré (impossible d'extraire un fichier ou une signature).</li>
+<li><b>Échantillonnage</b> : à 1/1000, les petits flux — souvent ceux d'un attaquant discret — peuvent disparaître.</li>
+<li>Décalage temporel dû aux minuteries.</li>
+<li>Charge sur le routeur exportateur ; export en <b>UDP non authentifié</b> (peut être forgé) → réseau de gestion dédié.</li>
+<li>Le NAT en amont écrase les adresses réelles si le NAT n'est pas journalisé.</li>
+</ul></div>
+</div>
+<div class="callout ok"><div class="t">Flux vs capture complète (full packet capture)</div>
+<b>NetFlow</b> : très faible volume (≈1 à 2 % du trafic), conservation longue (mois), vision de <b>tout</b> le réseau, aucune atteinte au contenu (meilleure acceptabilité RGPD). <b>PCAP</b> : contenu intégral, indispensable au forensic fin, mais volume énorme, conservation courte (heures/jours) et périmètre limité. Les deux sont <b>complémentaires</b> : le flux dit <i>où regarder</i>, la capture dit <i>ce qui s'est passé</i>.
+</div>
+<pre><code><span class="c"># Collecte et analyse avec nfdump</span>
+nfcapd -w -D -l /var/cache/nfdump -p 2055        <span class="c"># collecteur, port UDP 2055</span>
+nfdump -R /var/cache/nfdump -s srcip/bytes -n 10 <span class="c"># top 10 des emetteurs</span>
+nfdump -R /var/cache/nfdump 'dst port 53 and bytes &gt; 5000'   <span class="c"># suspicion de tunnel DNS</span>
+</code></pre>
+
+<!-- ===================================================================== -->
+<h2 id="ch9"><span class="num">9.</span> Filtrage applicatif (1) : le proxy</h2>
+
+<h3 id="ch9-principe">9.1 Principe et typologie</h3>
+<div class="callout def"><div class="t">Proxy (mandataire)</div>
+Un relais applicatif qui <b>rompt la connexion de bout en bout</b> : il termine la session du client, analyse la requête, puis en établit une <b>nouvelle</b> vers le serveur. Il « comprend » le protocole, ce qu'un pare-feu à états ne fait pas.
+</div>
+<div class="tw"><table>
+<thead><tr><th>Axe</th><th>Variantes</th><th>Conséquences</th></tr></thead>
+<tbody>
+<tr><td><b>Sens</b></td><td><b>Direct (forward)</b> : protège les clients internes qui sortent · <b>Inverse (reverse)</b> : protège les serveurs publiés</td><td>Deux fonctions distinctes, souvent deux machines distinctes</td></tr>
+<tr><td><b>Visibilité</b></td><td><b>Explicite</b> : configuré dans le navigateur ou par PAC/WPAD · <b>Transparent/interceptant</b> : le trafic est redirigé par le pare-feu (<code>redirect to :3128</code>) sans configuration du poste</td><td>L'explicite permet l'authentification et évite les contournements ; le transparent est déployable sans toucher aux postes mais gère mal HTTPS</td></tr>
+<tr><td><b>Protocole</b></td><td>HTTP(S), FTP, SMTP (relais), DNS (résolveur de coupure), SOCKS (générique L5), SSH</td><td>Un relais par protocole = surface d'attaque maîtrisée</td></tr>
+</tbody></table></div>
+
+<h3 id="ch9-fonctions">9.2 Fonctions de sécurité d'un proxy sortant</h3>
+<ul>
+<li><b>Authentification</b> des utilisateurs (Basic, NTLM, <b>Kerberos/Negotiate</b>, LDAP) → journalisation <b>nominative</b> des accès Internet : c'est la brique d'imputabilité.</li>
+<li><b>Filtrage d'URL et de catégories</b> (listes de l'université de Toulouse, éditeurs commerciaux), listes noires/blanches, filtrage par réputation.</li>
+<li><b>Contrôle du protocole</b> : seules les méthodes HTTP attendues, taille des en-têtes, blocage des <code>CONNECT</code> vers des ports non standard (contournement par tunnel).</li>
+<li><b>Analyse antivirale</b> via <b>ICAP</b> (RFC 3507) vers un service d'analyse (c-icap + ClamAV, éditeur commercial), et bac à sable pour les fichiers inconnus.</li>
+<li><b>Journalisation</b> : date, utilisateur, IP source, URL, méthode, code de retour, volume, catégorie, verdict.</li>
+<li><b>Cache</b> et limitation de bande passante (bénéfice historique, marginal aujourd'hui avec HTTPS).</li>
+<li><b>Rupture protocolaire</b> : aucun flux direct entre le poste interne et Internet — c'est ce qui bloque un grand nombre de canaux de commande et contrôle.</li>
+</ul>
+
+<pre><code><span class="c"># Squid : extrait de configuration commentée</span>
+acl reseau_interne src 192.168.10.0/24
+acl ports_surs    port 80 443
+acl methode_ok    method GET POST HEAD CONNECT
+acl connect_ssl   port 443
+acl domaines_interdits dstdomain "/etc/squid/blacklist.txt"
+
+http_access deny  domaines_interdits
+http_access deny  CONNECT !connect_ssl      <span class="c"># pas de tunnel vers un port arbitraire</span>
+http_access allow reseau_interne ports_surs methode_ok
+http_access deny  all                        <span class="c"># interdiction par defaut</span>
+
+auth_param negotiate program /usr/lib/squid/negotiate_kerberos_auth
+acl authentifie proxy_auth REQUIRED
+http_access allow authentifie
+
+icap_enable on
+icap_service antivirus respmod_precache icap://127.0.0.1:1344/avscan
+
+access_log /var/log/squid/access.log squid
+http_port 3128
+</code></pre>
+
+<h3 id="ch9-tls">9.3 L'interception TLS (SSL bump / inspection)</h3>
+<p>Plus de 90 % du trafic web étant chiffré, un proxy « aveugle » ne voit que le nom de domaine (via le <b>SNI</b>) et l'adresse IP. Pour analyser le contenu, on procède à un <b>MITM légitime</b> : le proxy présente un certificat émis par une <b>AC interne</b> déployée sur tous les postes.</p>
+<div class="grid c2">
+<div class="card"><h4>Ce que cela apporte</h4>
+<ul><li>Analyse antivirale et DLP du contenu réel.</li>
+<li>Filtrage d'URL complet (pas seulement le domaine).</li>
+<li>Détection de canaux de commande et contrôle chiffrés.</li></ul></div>
+<div class="card"><h4>Ce que cela coûte</h4>
+<ul><li><b>Juridique</b> : interception de correspondances → charte, information des utilisateurs, exclusion obligatoire des catégories sensibles (banque, santé, RH, syndicats), avis du DPO.</li>
+<li><b>Technique</b> : incompatible avec l'<b>épinglage de certificat</b> (HPKP, applications mobiles, mises à jour) ; risque de dégrader la sécurité TLS si le proxy valide mal les certificats amont.</li>
+<li><b>Risque concentré</b> : l'équipement voit tout en clair et détient une AC de confiance → cible de très grande valeur.</li>
+<li><b>ECH / DoH</b> : le chiffrement du SNI et le DNS sur HTTPS suppriment aussi la visibilité résiduelle → imposer un résolveur interne et bloquer les résolveurs DoH publics.</li></ul></div>
+</div>
+
+<h3 id="ch9-reverse">9.4 Le reverse proxy</h3>
+<ul>
+<li><b>Point d'entrée unique</b> des services publiés : masque l'architecture interne (adresses, technologies, en-têtes <code>Server</code>, <code>X-Powered-By</code>).</li>
+<li><b>Terminaison TLS</b> centralisée : gestion des certificats, HSTS, suites cryptographiques modernes, OCSP stapling.</li>
+<li><b>Répartition de charge</b> et haute disponibilité (round-robin, moindre connexion, persistance de session), contrôles de santé.</li>
+<li><b>Réécriture</b> d'URL et d'en-têtes, <code>X-Forwarded-For</code> (attention : à ne pas faire confiance en aveugle côté applicatif).</li>
+<li><b>Limitation de débit</b>, mise en cache, compression, protection contre le <i>slowloris</i>.</li>
+<li>Produits : <b>nginx</b>, <b>HAProxy</b>, Apache <code>mod_proxy</code>, Traefik, Envoy.</li>
+</ul>
+<div class="exam"><div class="t">Question type</div>
+« Un reverse proxy est-il un WAF ? » — <b>Non</b>. Le reverse proxy relaie, termine TLS et répartit ; il ne comprend pas les <b>attaques</b> applicatives. Le WAF est le module d'analyse qui s'ajoute (souvent <i>sur</i> le reverse proxy, par exemple ModSecurity dans nginx).
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch10"><span class="num">10.</span> Filtrage applicatif (2) : le WAF</h2>
+
+<h3 id="ch10-principe">10.1 Rôle et modèles de sécurité</h3>
+<div class="callout def"><div class="t">WAF (Web Application Firewall)</div>
+Pare-feu spécialisé <b>HTTP(S)</b>, placé devant une application web, qui inspecte requêtes et réponses pour détecter et bloquer les attaques applicatives. Il opère là où un pare-feu réseau est aveugle : le port 443 est « ouvert », c'est le <b>contenu</b> qui est malveillant.
+</div>
+<div class="tw"><table>
+<thead><tr><th>Modèle</th><th>Principe</th><th>Avantages</th><th>Inconvénients</th></tr></thead>
+<tbody>
+<tr><td><b>Négatif</b> (liste noire / signatures)</td><td>On décrit ce qui est interdit</td><td>Déploiement rapide, générique</td><td>Contournable (encodage, obfuscation) ; ne voit pas les attaques métier</td></tr>
+<tr><td><b>Positif</b> (liste blanche)</td><td>On décrit précisément ce qui est autorisé (paramètres, types, longueurs)</td><td>Très robuste, bloque l'inconnu</td><td>Coûteux à établir et à maintenir ; nécessite une phase d'apprentissage</td></tr>
+<tr><td><b>Hybride / scoring</b></td><td>Chaque anomalie ajoute des points ; on bloque au-delà d'un seuil</td><td>Compromis réaliste — c'est le modèle du <b>OWASP CRS</b></td><td>Réglage du seuil et des niveaux de paranoïa</td></tr>
+</tbody></table></div>
+
+<h3 id="ch10-crs">10.2 ModSecurity et l'OWASP Core Rule Set</h3>
+<ul>
+<li><b>ModSecurity</b> : moteur de règles (Apache, nginx, IIS ; successeur : <b>Coraza</b>). Modes : <code>SecRuleEngine On</code> (bloquant), <code>DetectionOnly</code> (journalise sans bloquer — <b>toujours commencer par là</b>), <code>Off</code>.</li>
+<li><b>Phases de traitement</b> : 1 en-têtes de requête, 2 corps de requête, 3 en-têtes de réponse, 4 corps de réponse, 5 journalisation.</li>
+<li><b>OWASP CRS</b> : jeu de règles générique. <b>Niveaux de paranoïa (PL1 à PL4)</b> : plus le niveau est élevé, plus la détection est stricte… et plus les faux positifs augmentent. <b>Notation d'anomalie</b> : seuils par défaut 5 en entrée / 4 en sortie ; les règles ajoutent 5 (critique), 4 (erreur), 3 (avertissement), 2 (notice).</li>
+<li><b>Réglage</b> : exclusions ciblées par règle/paramètre/URL plutôt que désactivation globale ; itérer en mode détection sur du trafic réel avant de bloquer.</li>
+</ul>
+<pre><code><span class="c"># nginx + ModSecurity : squelette</span>
+modsecurity on;
+modsecurity_rules_file /etc/nginx/modsec/main.conf;
+<span class="c"># main.conf :</span>
+Include /etc/modsecurity/modsecurity.conf
+Include /usr/share/modsecurity-crs/crs-setup.conf
+Include /usr/share/modsecurity-crs/rules/*.conf
+SecRuleEngine DetectionOnly           <span class="c"># puis On apres reglage</span>
+SecRequestBodyLimit 13107200
+SecAuditEngine RelevantOnly
+<span class="c"># Exclusion ciblee d'un faux positif :</span>
+SecRule REQUEST_URI "@beginsWith /admin/editor" \
+  "id:1001,phase:1,pass,nolog,ctl:ruleRemoveById=942100"
+</code></pre>
+
+<h3 id="ch10-owasp">10.3 Les attaques que le WAF vise — OWASP Top 10 (2021)</h3>
+<div class="tw"><table>
+<thead><tr><th>Rang</th><th>Catégorie</th><th>Exemple</th><th>Le WAF aide-t-il ?</th></tr></thead>
+<tbody>
+<tr><td>A01</td><td><b>Broken Access Control</b></td><td>Accès à <code>/admin</code> sans droits, IDOR</td><td>Peu : c'est de la logique métier</td></tr>
+<tr><td>A02</td><td>Cryptographic Failures</td><td>Données en clair, TLS faible</td><td>Partiellement (imposer HTTPS/HSTS)</td></tr>
+<tr><td>A03</td><td><b>Injection</b> (SQLi, XSS, commandes)</td><td><code>' OR 1=1 --</code></td><td><b>Oui</b>, cœur de cible</td></tr>
+<tr><td>A04</td><td>Insecure Design</td><td>Absence de limitation de tentatives</td><td>Partiellement (limitation de débit)</td></tr>
+<tr><td>A05</td><td>Security Misconfiguration</td><td>Console d'admin exposée, en-têtes absents</td><td>Oui (masquage, en-têtes de sécurité)</td></tr>
+<tr><td>A06</td><td>Vulnerable Components</td><td>Bibliothèque obsolète (Log4Shell)</td><td>Oui en <b>correctif virtuel</b> temporaire</td></tr>
+<tr><td>A07</td><td>Identification/Authentication Failures</td><td>Force brute, session prévisible</td><td>Partiellement</td></tr>
+<tr><td>A08</td><td>Software and Data Integrity Failures</td><td>Désérialisation, chaîne d'approvisionnement</td><td>Peu</td></tr>
+<tr><td>A09</td><td>Security Logging and Monitoring Failures</td><td>Aucune trace d'attaque</td><td>Oui, le WAF est une <b>source de journaux</b> majeure</td></tr>
+<tr><td>A10</td><td>SSRF</td><td>L'application va chercher <code>http://169.254.169.254/</code></td><td>Partiellement (filtrage sortant surtout)</td></tr>
+</tbody></table></div>
+
+<div class="callout warn"><div class="t">Limites et contournements du WAF</div>
+Encodages multiples (URL, double URL, unicode, hexadécimal), <b>HPP</b> (pollution de paramètres), fragmentation via <code>Transfer-Encoding: chunked</code>, requêtes surdimensionnées dépassant la limite d'inspection du corps, verbes HTTP inhabituels, <b>HTTP request smuggling</b> (désynchronisation entre le proxy et le serveur), accès direct au serveur en contournant le reverse proxy (adresse IP d'origine exposée). <b>Conclusion à retenir : le WAF est une mesure de réduction du risque et un correctif virtuel, jamais un substitut au code sécurisé.</b>
+</div>
+
+<h3 id="ch10-place">10.4 Positionnement dans l'architecture</h3>
+<div class="tw"><table>
+<thead><tr><th>Mode</th><th>Description</th><th>Remarque</th></tr></thead>
+<tbody>
+<tr><td><b>Reverse proxy</b> (le plus courant)</td><td>Le WAF termine la session TLS et relaie</td><td>Vision complète du trafic déchiffré ; impose de rediriger le DNS vers lui</td></tr>
+<tr><td><b>Pont / transparent</b></td><td>Inséré en coupure sans changer l'adressage</td><td>Déploiement simple, mais moins de fonctions</td></tr>
+<tr><td><b>Module embarqué</b></td><td>Dans le serveur web (ModSecurity/Coraza)</td><td>Voit le trafic déjà déchiffré ; partage le sort du serveur</td></tr>
+<tr><td><b>Cloud / WAAP</b></td><td>Service en amont (Cloudflare, Akamai…) avec anti-DDoS et anti-bots</td><td>Protège la bande passante ; il faut interdire l'accès direct à l'origine</td></tr>
+<tr><td><b>RASP</b></td><td>Instrumentation à l'intérieur de l'application</td><td>Très peu de faux positifs, mais dépendant du langage</td></tr>
+</tbody></table></div>
+<p><b>Compléments d'une passerelle applicative complète</b> : passerelle de messagerie (SPF, DKIM, DMARC, filtrage des pièces jointes, bac à sable), résolveur DNS de coupure avec filtrage (RPZ, listes de réputation), passerelle de transfert de fichiers avec analyse antivirale multimoteur, API gateway (authentification, quotas, validation de schéma) pour les interfaces programmatiques.</p>
+
+<!-- ===================================================================== -->
+<h2 id="ch11"><span class="num">11.</span> Fiche mémo express</h2>
+<div class="grid c2">
+<div class="card"><h4>Netfilter / nftables</h4>
+<ul>
+<li>5 hooks : prerouting, input, forward, output, postrouting</li>
+<li>DNAT → prerouting · SNAT/masquerade → postrouting</li>
+<li>Familles : ip, ip6, <b>inet</b>, arp, bridge, netdev</li>
+<li>Types de chaîne : filter, nat, route</li>
+<li>Priorités : raw −300, mangle −150, dstnat −100, filter 0, srcnat 100</li>
+<li>États : new, established, related, invalid, untracked</li>
+<li>Toujours : <code>ct state established,related accept</code> + <code>ct state invalid drop</code> + <code>policy drop</code></li>
+</ul></div>
+<div class="card"><h4>Journalisation</h4>
+<ul>
+<li>PRI = facility × 8 + severity ; sévérité 0 = emerg … 7 = debug</li>
+<li>RFC 3164 (BSD) vs <b>RFC 5424</b> (ISO 8601, structured data)</li>
+<li>UDP 514 (non fiable) · TCP 514 · <b>TLS 6514</b> · RELP</li>
+<li>Conservation courante 6 mois – 1 an ; données de connexion 1 an</li>
+<li>Déport immédiat + horodatage NTP/UTC + intégrité + accès restreint</li>
+<li>L'absence de journaux est une alerte</li>
+</ul></div>
+<div class="card"><h4>NetFlow</h4>
+<ul>
+<li>Flux = séquence unidirectionnelle, clé v5 sur 7 champs</li>
+<li>v5 fixe / v9 à modèles / <b>IPFIX</b> standard / sFlow échantillonné</li>
+<li>Exportateur → collecteur → analyseur ; port usuel UDP 2055</li>
+<li>Métadonnées uniquement : pas de contenu</li>
+<li>Détecte : balayage, DDoS, exfiltration, beaconing</li>
+</ul></div>
+<div class="card"><h4>Applicatif</h4>
+<ul>
+<li>Proxy direct = sortants (imputabilité) ; reverse proxy = entrants (publication)</li>
+<li>Explicite (PAC/WPAD) vs transparent (redirect)</li>
+<li>ICAP = analyse antivirale déportée</li>
+<li>WAF : modèle négatif / positif / scoring (OWASP CRS, PL1–PL4)</li>
+<li>Toujours démarrer un WAF en <b>DetectionOnly</b></li>
+<li>Le WAF ne remplace pas le code sécurisé</li>
+</ul></div>
+</div>
+
+<div class="callout"><div class="t">Plan type « concevez une passerelle d'interconnexion sécurisée »</div>
+<b>1)</b> Identifier les zones et le sens des flux → <b>2)</b> écrire la matrice de flux (source, destination, protocole, port, justification) → <b>3)</b> pare-feu à états en interdiction par défaut, avec règles nommées et journalisées → <b>4)</b> NAT si nécessaire, journalisé (ports source) → <b>5)</b> relais applicatifs : proxy sortant authentifiant, reverse proxy + WAF entrants, relais SMTP/DNS → <b>6)</b> détection : IDS/IPS, NetFlow, antivirus → <b>7)</b> journalisation centralisée en TLS vers un puits hors zone, horodatage NTP, conservation définie → <b>8)</b> administration cloisonnée (bastion, hors bande, MFA) → <b>9)</b> haute disponibilité et sauvegarde des configurations → <b>10)</b> exploitation : revue des règles, tests, mise à jour, procédures d'incident.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="qcm-sec"><span class="num">12.</span> QCM — <span id="count-badge" class="badge acc"></span></h2>
+<p>Filtrez par chapitre et par niveau. <b>Entraînement</b> = correction immédiate ; <b>Examen</b> = correction à la fin. Vos erreurs sont mémorisées : « Rejouer mes erreurs » reconstitue une série ciblée.</p>
+<div id="qcm"></div>
+
+  </main>
+</div>
+
+<button id="top" title="Haut de page">↑</button>
+<script src="data/qcm-inter.js?v=10"></script>
+<script src="assets/app.js?v=10"></script>
+<script>initQCM(window.QCM_DATA, window.QCM_CHAPTERS, 'inter');</script>
+</body>
+</html>

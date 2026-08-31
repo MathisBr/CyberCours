@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Révisions — Majeure Cybersécurité S9 (ESIEA)</title>
+<link rel="stylesheet" href="assets/core.css?v=10">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><span class="dot"></span> Majeure Cybersécurité S9 <small>· support de révision</small></div>
+  <div class="spacer"></div>
+  <button class="btn ghost" onclick="toggleTheme()" title="Thème clair / sombre">◐ Thème</button>
+</header>
+
+<main class="content" style="max-width:1180px;margin:0 auto">
+
+<div class="hero">
+  <h1>Révisions — Majeure Cybersécurité S9</h1>
+  <p class="lead">
+    Support d'apprentissage complet des trois premières matières de majeure : cours structuré chapitre par chapitre,
+    schémas, tableaux de synthèse, pièges d'examen et <b>QCM d'entraînement</b> avec correction commentée,
+    filtres par chapitre et par niveau, et rejeu automatique de vos erreurs.
+  </p>
+</div>
+
+<div class="grid c3" style="margin-top:26px">
+  <a class="course-card" href="01-securisation-reseaux-locaux.html">
+    <div class="code">INF5243 · coef. 1.5 · C.7.16</div>
+    <h3>Sécurisation des réseaux locaux</h3>
+    <p style="color:var(--fg-soft);font-size:.92rem">Vulnérabilités des RLE, moyens de sécurisation des équipements actifs, architectures de sécurité, passerelles d'accès Internet.</p>
+    <ul>
+      <li>Rappels LAN : Ethernet, VLAN, STP, ARP/DHCP</li>
+      <li>Cartographie et analyse protocolaire</li>
+      <li>Attaques L2 et contre-mesures des EAR</li>
+      <li>802.1X, RADIUS, NAC, MACsec</li>
+      <li>Wi-Fi : WEP → WPA3, attaques et défenses</li>
+      <li>Portail captif et obligations légales</li>
+      <li>DMZ, MLS, proxies, WAF, IDS, VPN</li>
+    </ul>
+    <p style="margin-bottom:0"><span class="badge acc">10 chapitres</span> <span class="badge b1">145 questions</span></p>
+  </a>
+
+  <a class="course-card" href="02-securisation-interconnexions.html">
+    <div class="code">INF5244 · coef. 1.5 · C.7.15 / C.7.16</div>
+    <h3>Sécurisation des interconnexions</h3>
+    <p style="color:var(--fg-soft);font-size:.92rem">Étudier, concevoir et mettre en œuvre une passerelle d'interconnexion réseau sécurisée.</p>
+    <ul>
+      <li>Rappels routage et TCP/IP côté filtrage</li>
+      <li>Familles de pare-feu et politique de filtrage</li>
+      <li><b>Netfilter et nftables</b> : hooks, conntrack, sets</li>
+      <li>NAT : SNAT, DNAT, PAT, limites</li>
+      <li>Architectures d'interconnexion et VPN</li>
+      <li>Journalisation : sources, formats, politique</li>
+      <li>Agrégation, SIEM, <b>NetFlow / IPFIX</b></li>
+      <li>Filtrage applicatif : proxy et WAF</li>
+    </ul>
+    <p style="margin-bottom:0"><span class="badge acc">12 chapitres</span> <span class="badge b1">135 questions</span></p>
+  </a>
+
+  <a class="course-card" href="03-methodologie-securite.html">
+    <div class="code">ENT5003 · coef. 1.5 · C.7.13 → C.7.16</div>
+    <h3>Méthodologie de la sécurité</h3>
+    <p style="color:var(--fg-soft);font-size:.92rem">Appréhender la gestion des risques, analyser une situation, proposer des mesures adaptées.</p>
+    <ul>
+      <li>De l'information à la SSI : DICP, risque</li>
+      <li>Acteurs, menaces, corpus documentaire</li>
+      <li>Normes ISO/NIST/CIS et réglementation</li>
+      <li>Qualification, certification, homologation</li>
+      <li>Audit, contrôle, sécurité des projets</li>
+      <li>Comitologie et <b>Zero Trust</b></li>
+      <li><b>EBIOS Risk Manager</b> : les 5 ateliers</li>
+      <li>Crise, continuité, droit et éthique</li>
+    </ul>
+    <p style="margin-bottom:0"><span class="badge acc">14 chapitres</span> <span class="badge b1">135 questions</span></p>
+  </a>
+</div>
+
+<h2 id="methode">Comment utiliser ce support</h2>
+<div class="grid c2">
+  <div class="card">
+    <h4>Stratégie de révision en 4 passes</h4>
+    <ol>
+      <li><b>Passe 1 — lecture active</b> (1 matière par jour) : lisez le cours en entier, chapitre par chapitre. Ne surlignez pas : reformulez à voix haute chaque encadré « piège d'examen ».</li>
+      <li><b>Passe 2 — QCM par chapitre</b> : ouvrez l’onglet QCM, filtrez sur un chapitre, niveau « Tous ». Une question à la fois, correction expliquée immédiatement. Objectif : comprendre les explications, pas le score.</li>
+      <li><b>Passe 3 — rejeu des erreurs</b> : le bouton « Rejouer mes erreurs » reconstitue une série ciblée à partir de vos ratés mémorisés. Répétez jusqu'à liste vide.</li>
+      <li><b>Passe 4 — simulation</b> : 60 questions tirées de tous les chapitres. Visez 85 % avant de considérer la matière acquise.</li>
+    </ol>
+  </div>
+  <div class="card">
+    <h4>Repères pour chaque épreuve</h4>
+    <ul>
+      <li><b>INF5243 / INF5244</b> — examen Moodle <b>sans documents ni Internet</b> + travail de synthèse sur environnement virtualisé. Travaillez la <b>précision</b> : ports, sigles, noms exacts des fonctions de sécurité, syntaxe nftables.</li>
+      <li><b>ENT5003</b> — examen <b>écrit</b> + projet d'équipe. Travaillez le <b>raisonnement</b> : plan de réponse, vocabulaire exact (valeur métier vs bien support, qualification vs homologation), chiffres réglementaires.</li>
+      <li>Les trois matières se recoupent : la DMZ, le WAF, le proxy, la journalisation et le Zero Trust apparaissent dans plusieurs cours. Réviser l'une consolide les autres.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Fonctions des pages</h4>
+    <ul>
+      <li><b>Ctrl + K</b> : recherche dans <b>tous</b> les chapitres, y compris ceux qui ne sont pas affichés ; un clic ouvre le bon onglet et surligne le passage.</li>
+      <li>Navigation par onglets : un chapitre à la fois, progression de lecture et boutons Précédent / Suivant.</li>
+      <li>Bouton <b>◐</b> : thème clair / sombre · bouton <b>⎙</b> : impression ou export PDF propre.</li>
+      <li>Le QCM mémorise vos statistiques dans le navigateur (aucune donnée n'est envoyée nulle part).</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Sources de référence à consulter</h4>
+    <ul>
+      <li>ANSSI — <i>Guide d'hygiène informatique</i>, <i>Maîtrise du risque numérique</i>, <i>La cybersécurité pour les TPE/PME en 13 questions</i>, <i>Guide EBIOS Risk Manager</i>.</li>
+      <li>ANSSI — guides d'architecture, de journalisation et d'homologation ; référentiels PASSI/PDIS/PRIS/SecNumCloud.</li>
+      <li>NIST — CSF 2.0, SP 800-61, SP 800-207. CIS Controls v8. OWASP Top 10 et CRS.</li>
+      <li>Textes : RGPD, directive NIS 2, LCEN, articles 323-1 et suivants du code pénal.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout" style="margin-top:26px"><div class="t">Avertissement</div>
+Ce support a été rédigé à partir des <b>syllabus officiels</b> des trois matières et de l'état de l'art public (référentiels ANSSI, NIST, ISO, OWASP).
+Il couvre largement le programme annoncé, mais il ne remplace pas les supports de vos enseignants : les cotations, échelles et exemples utilisés en TD peuvent différer.
+Vérifiez en particulier les <b>dates de textes réglementaires récents</b> et les conventions de notation propres au cours.
+</div>
+
+<p style="text-align:center;color:var(--fg-mute);font-size:.85rem;margin-top:40px">
+415 questions au total · Fonctionne hors ligne · Conservez le dossier complet (les pages utilisent <code>assets/</code> et <code>data/</code>).
+</p>
+
+</main>
+
+<script src="assets/app.js?v=10"></script>
+</body>
+</html>
