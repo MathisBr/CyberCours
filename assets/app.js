@@ -155,6 +155,8 @@
 
     if (history.replaceState) history.replaceState(null, '', '#' + (anchorId || SECTIONS[i].el.id));
 
+    revealAllSteps(SECTIONS[i].el);
+
     if (anchorId) {
       var t = document.getElementById(anchorId);
       if (t) { t.scrollIntoView({ block: 'start' }); return; }
@@ -263,6 +265,37 @@
     document.addEventListener('click', function (e) {
       if (!panel.contains(e.target) && e.target !== input) close();
     });
+  }
+
+  /* ================= Animations pédagogiques ================= */
+  /* Révèle les .step d'un conteneur une à une. La version statique reste
+     intégralement lisible : on ne masque rien de façon définitive, et
+     prefers-reduced-motion affiche tout d'emblée (voir core.css). */
+  var timers = {};
+  window.playSteps = function (id) {
+    var box = document.getElementById(id);
+    if (!box) return;
+    var steps = box.querySelectorAll('.step');
+    (timers[id] || []).forEach(clearTimeout);
+    timers[id] = [];
+    steps.forEach(function (s) { s.classList.remove('visible'); });
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    steps.forEach(function (s, i) {
+      if (reduce) { s.classList.add('visible'); return; }
+      timers[id].push(setTimeout(function () { s.classList.add('visible'); }, 350 + i * 900));
+    });
+  };
+  window.resetSteps = function (id) {
+    var box = document.getElementById(id);
+    if (!box) return;
+    (timers[id] || []).forEach(clearTimeout);
+    timers[id] = [];
+    box.querySelectorAll('.step').forEach(function (s) { s.classList.add('visible'); });
+  };
+  /* À l'ouverture d'un onglet, toutes les étapes sont visibles : l'animation
+     est un plus, jamais un prérequis pour lire le contenu. */
+  function revealAllSteps(scope) {
+    (scope || document).querySelectorAll('.step').forEach(function (s) { s.classList.add('visible'); });
   }
 
   /* ================= Retour en haut ================= */

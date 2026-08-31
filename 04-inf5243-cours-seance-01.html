@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cours en amphi — séance 1 (INF5243) | Révisions S9</title>
+<link rel="stylesheet" href="assets/core.css?v=15">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><span class="dot"></span> Cours en amphi — séance 1 <small>· INF5243</small></div>
+  <div class="spacer"></div>
+  <input id="search" type="search" placeholder="Rechercher dans tous les chapitres…  (Ctrl+K)">
+  <a class="home" href="index.html">← Accueil</a>
+  <button class="btn ghost" onclick="toggleTheme()" title="Thème clair / sombre">◐</button>
+  <button class="btn ghost" onclick="window.print()" title="Imprimer / PDF">⎙</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar"><h4>Chapitres</h4><div id="toc"></div></nav>
+  <main class="content">
+
+<h1>Sécurisation des réseaux locaux — ce qui a été dit en cours</h1>
+<p class="lead">
+Fiche construite en croisant <b>deux sources</b> : la <b>transcription intégrale de la séance 1</b>
+(3 h 23, trois enregistrements) et les <b>supports officiels de Richard Rey</b> —
+<code>Network-reminders</code>, <code>switch</code> et <code>vlan</code>. Elle ne contient <b>que ce que
+l'enseignant a effectivement traité</b>, avec ses formulations, ses chiffres et ses annonces d'examen.
+</p>
+
+<div class="callout def"><div class="t">L'intention annoncée du cours, dès la première minute</div>
+« Faire un cours sur un <b>UTM</b> sans savoir où je le fous dans l'architecture réseau globale, ça n'a
+pas de sens. » L'objectif de la séance est de poser <b>l'architecture d'ensemble</b> et le
+<b>vocabulaire</b> — où se placent les pare-feu, les reverse proxies, les <b>IDS / NIDS / HIDS</b>, à quel
+moment on fait de la cybersurveillance — avant d'entrer dans le détail de chaque brique dans les cours
+dédiés. D'où l'ordre suivi : support physique, puis carte réseau, puis trame, puis commutation, puis
+segmentation.
+<p style="margin-bottom:0"><b>Rappel :</b> un <b>UTM</b> (<i>Unified Threat Management</i>) regroupe
+pare-feu, IPS, antivirus, proxy et VPN dans un équipement unique — le détail est dans la fiche
+le cours dédié aux architectures de sécurité.</p>
+</div>
+
+<div class="callout"><div class="t">Pourquoi croiser les deux sources</div>
+Les planches donnent les <b>chiffres exacts</b> (tableau des catégories, latences de commutation, pertes
+optiques en dB, définition de la CAM) ; l'enregistrement donne le <b>raisonnement</b>, les exemples
+vécus et surtout ce sur quoi l'enseignant a <b>insisté</b>. Là où les deux divergent, la fiche le signale
+explicitement plutôt que de trancher en silence.
+</div>
+
+<div class="card">
+  <h4>Comment utiliser cette fiche</h4>
+  <ul>
+    <li>Les encadrés <span class="badge b2">Piège d'examen</span> reprennent les questions que l'enseignant a <b>explicitement annoncées</b> comme tombant à l'interro.</li>
+    <li>Les encadrés <span class="badge b3">Précision</span> signalent les endroits où le cours simplifie ou se trompe — détail dans <a href="transcription-inf5243-seance-01.html">l'annexe de la transcription</a>.</li>
+    <li>Le <b>glossaire</b> du chapitre 17 développe les 44 sigles employés : l'examen se déroulant sans documents, un sigle non maîtrisé est un point perdu.</li>
+  </ul>
+  <p style="margin-bottom:0"><span class="badge acc">Source</span> <a href="transcription-inf5243-seance-01.html">transcription-inf5243-seance-01.html</a> — les horodatages cités renvoient à ce document.</p>
+</div>
+
+<div class="callout danger"><div class="t">Quiz annoncé — à réviser en priorité</div>
+Un <b>quiz est annoncé pour vendredi</b>, portant sur les <b>supports physiques : câbles, fibre optique et
+PoE</b>. Ce sont les chapitres <a href="#sec-ch1">1</a>, <a href="#sec-ch2">2</a>,
+<a href="#sec-ch3">3</a> et <a href="#sec-ch4">4</a> de cette fiche. Le support officiel
+<code>Network-reminders</code> contient d'ailleurs une planche « Quizz : Support électrique ».
+<p style="margin-bottom:0">Suite annoncée du cours : pare-feu bas niveau sous Linux
+(<b>Netfilter</b>, <code>iptables</code>, <code>nftables</code>) et <b>ACL Cisco</b> — voir la fiche
+le cours dédié au filtrage.</p>
+</div>
+
+<div class="callout warn"><div class="t">Ce que l'enseignant a annoncé comme tombant</div>
+<ol style="margin-bottom:0">
+<li>Pourquoi <b>60 octets minimum et 1500 maximum</b> dans une trame Ethernet, et à quoi sert le <b>padding</b>.</li>
+<li>En quelle année Ethernet a été inventé (avec le moyen mnémotechnique du groupe <b>IEEE 802</b>).</li>
+<li>Les <b>6 modes du Wi-Fi</b>, à savoir par cœur.</li>
+<li>Les <b>3 attaques sur les VLANs</b> et leurs remédiations.</li>
+<li>La définition d'un <b>MLS</b> — présentée comme question type d'entretien d'embauche.</li>
+<li>Les <b>3 modes de commutation</b> et le fonctionnement de la <b>mémoire CAM</b>.</li>
+<li>La <b>catégorie 8</b> et la dérogation à la règle des 100 m.</li>
+</ol>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch1"><span class="num">1.</span> Le support physique : cuivre, blindage, catégories</h2>
+
+<h3 id="ch1-blindage">1.1 Lire un câble : shield et foil</h3>
+<p>Ethernet est parti de câbles sans aucune protection (<i>unshielded</i>, <i>unfoiled</i>). Deux protections
+existent, contre deux perturbations différentes :</p>
+<div class="tw"><table>
+<thead><tr><th>Protection</th><th>Réalisation</th><th>Bloque</th></tr></thead>
+<tbody>
+<tr><td><b>Shield</b> (blindage)</td><td>Tresse de masse autour de l'ensemble des 4 paires</td><td>Les perturbateurs <b>haute fréquence</b></td></tr>
+<tr><td><b>Foil</b> (écrantage)</td><td>Feuille d'aluminium, autour de chaque paire ou de l'ensemble</td><td>Les perturbateurs <b>basse fréquence</b></td></tr>
+</tbody></table></div>
+
+<div class="callout def"><div class="t">Lire la référence d'un câble</div>
+La notation se lit <b>de droite à gauche</b> : la partie droite décrit la <b>paire torsadée</b> (TP), la partie
+gauche décrit le <b>câble entier</b>.
+<ul style="margin-bottom:0">
+<li><code>U/UTP</code> — rien du tout : c'est du câble téléphonique.</li>
+<li><code>F/UTP</code> — câble écranté, paires nues.</li>
+<li><code>S/FTP</code> — <b>chaque paire écrantée</b> (foil) et <b>l'ensemble blindé</b> (shield). C'est la solution retenue aujourd'hui comme norme.</li>
+</ul>
+</div>
+
+<p>Un câble S/FTP est insensible aux perturbateurs extérieurs — éruptions solaires, câble voisin,
+bruit électromagnétique d'un data center — de sorte que le <b>codage Manchester</b> qui circule sur la
+paire n'est plus perturbable. C'est ce qui a permis de passer de 10 Mb/s à 100 Gb/s sur un support
+conçu à l'origine pour 10 Mb/s.</p>
+
+<div class="example"><div class="t">Exemple concret</div>
+Ethernet a « ravagé la planète » : tous les autres protocoles de LAN ont disparu. Il n'existe pas une
+entreprise non câblée. Chez toi c'est du Wi-Fi parce que la maison est faite comme ça, mais en
+entreprise et en usine, <b>tout est câblé</b>, en cuivre ou en fibre.
+</div>
+
+<h3 id="ch1-crc">1.2 Pourquoi les cartes réseau ne corrigent plus les erreurs</h3>
+<p>La couche 2 du modèle OSI doit s'assurer que la couche 1 n'a pas été perturbée : c'est le rôle du
+<b>FCS</b> (<i>Frame Check Sequence</i>) en fin de trame Ethernet. Le code correcteur associé est un <b>code convolutif</b>, implémenté
+dans le <b>driver</b> de la carte.</p>
+
+<ul class="key-points">
+<li><b>Le constat</b> — avec les câbles S/FTP et la fibre, il n'y a plus d'erreurs depuis une dizaine d'années.</li>
+<li><b>Le poids du code</b> — le code correcteur représentait environ <b>500 Ko de langage machine</b>, soit ~90 % de la taille du driver.</li>
+<li><b>La décision</b> — les fondeurs (Intel en tête) l'ont supprimé : le driver est passé à ~50 Ko.</li>
+<li><b>La conséquence</b> — plus personne ne contrôle les erreurs. Un câble médiocre non S/FTP produit des pannes <b>indémêlables</b> : latence, lag, « ça marche, ça marche pas ».</li>
+<li><b>À l'émission</b> — si le driver décide de ne pas faire le calcul, les 4 octets de FCS sont simplement laissés vides.</li>
+</ul>
+
+<div class="callout danger"><div class="t">Le diagnostic le plus pénible du métier</div>
+« Il n'y a rien de pire en diagnostic qu'un machin qui marche et qui marche pas. » Dès qu'un câble
+n'est pas S/FTP : poubelle. Aucune carte réseau de PC moderne n'a de code correcteur d'erreur.
+</div>
+
+<h3 id="ch1-categories">1.3 Les catégories</h3>
+<p>L'électricien ne connaît pas le vocabulaire <i>S/FTP</i> : il connaît <b>Cat 6, 6A, 7, 8</b>. C'est ainsi
+qu'il faut spécifier un marché de câblage.</p>
+<div class="tw"><table>
+<thead><tr><th>Catégorie</th><th>Fréquence max</th><th>Usage (tableau officiel du support)</th><th>Câble type</th></tr></thead>
+<tbody>
+<tr><td>1, 2 et 3</td><td>16 MHz</td><td>Téléphonie — en cours d'abandon</td><td>—</td></tr>
+<tr><td>4</td><td>20 MHz</td><td>Ethernet 10 Mb</td><td>UTP</td></tr>
+<tr><td>5</td><td>100 MHz</td><td>Ethernet 100 Mb — <b>2 paires</b></td><td>UTP, F/UTP</td></tr>
+<tr><td>6</td><td>250 MHz</td><td>Ethernet Gb — <b>4 paires</b></td><td>F/UTP, SF/UTP</td></tr>
+<tr><td><b>6a</b></td><td><b>500 MHz</b></td><td>Ethernet 10 Gbt</td><td><b>SF/UTP, S/FTP</b></td></tr>
+<tr><td>7</td><td>600 MHz</td><td><b>VHF/UHF</b> + Ethernet 10 Gb (<b>50 m</b>)</td><td>S/UTP</td></tr>
+<tr><td>7a</td><td>1 GHz</td><td>Ethernet 10 Gb (100 m)</td><td>S/FTP</td></tr>
+<tr><td><b>8</b></td><td><b>2 GHz</b></td><td>Ethernet <b>40 Gb</b> (<b>30 m</b>)</td><td>S/FTP</td></tr>
+</tbody></table></div>
+
+<div class="callout"><div class="t">Repères du support officiel</div>
+<ul style="margin-bottom:0">
+<li><b>Vitesse de propagation dans le cuivre : 2·10<sup>8</sup> m/s</b> (la lumière dans le vide ou dans la fibre : 3·10<sup>8</sup> m/s).</li>
+<li><b>Norme Ethernet : la longueur du câble doit rester inférieure à 100 m.</b></li>
+<li>Le coût du câble est <b>proportionnel à sa catégorie</b>. À partir de la 6a, le câble est S/FTP : blindage général + écrantage de chaque paire.</li>
+<li>Câblage structuré des postes de travail : norme <b>ISO 11801</b> (patch panel, patch cable, câble de desserte).</li>
+</ul>
+</div>
+
+<details><summary>Repères historiques donnés dans le support</summary>
+<ul>
+<li><b>1995</b> — IEEE <b>802.3u</b>, Fast Ethernet 100 Mb/s : <b>100BASE-TX</b> sur Cat 5, limité à 100 m.</li>
+<li><b>1999</b> — IEEE <b>802.3ab</b>, <b>1000BASE-T</b> : la multiplication par dix du débit impose de passer à <b>4 paires</b> en full-duplex, d'où la Cat <b>5e</b>.</li>
+<li><b>2006</b> — IEEE <b>802.3an</b>, <b>10GBASE-T</b> : contrairement à ce qu'on entend parfois, un câble <b>Cat 6 suffit</b>… à condition de ne pas dépasser <b>55 m</b>. Au-delà, il faut au minimum de la <b>Cat 6A</b> (500 MHz).</li>
+</ul>
+</details>
+
+<div class="exam"><div class="t">Piège d'examen — la catégorie 8</div>
+<b>Pourquoi s'autorise-t-on moins de 100 m avec la Cat 8 ?</b> Parce que c'est la première entorse à la
+norme Ethernet, et qu'elle est assumée : ces câbles servent <b>exclusivement en data center</b>, où l'on
+ne fait jamais 100 m entre deux baies. On a préféré monter en fréquence (40 Gb/s) et accepter
+&lt; 30 m. Raison économique sous-jacente : les prises optiques coûtent trop cher pour équiper toutes
+les liaisons inter-baies, donc on garde du cuivre, mais très rapide.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch2"><span class="num">2.</span> La fibre optique et sa connectique</h2>
+
+<h3 id="ch2-prix">2.1 Pourquoi on ne met pas de la fibre partout</h3>
+<p>Le câble optique lui-même ne coûte rien — c'est de la <b>silice</b>, du sable très pur fondu, dix fois
+moins cher que le câble cuivre. <b>Le coût, c'est la prise.</b></p>
+
+<ul class="key-points">
+<li><b>Aucune normalisation</b> — il existe une demi-douzaine de connecteurs optiques (LC, SC, ST…).</li>
+<li><b>Les constructeurs ne montent donc pas de prise</b> : ils mettent des <b>trous</b>, les slots <b>SFP</b>.</li>
+<li><b>Il faut acheter le module</b> SFP correspondant à ton type de fibre, des deux côtés de la liaison.</li>
+<li><b>Rapport de prix ≈ 1 à 1000</b> — un connecteur RJ45 coûte une fraction de centime, un module SFP de 17 à 60 $.</li>
+</ul>
+
+<div class="example"><div class="t">Exemple concret</div>
+Quand tu dois câbler <b>200 prises</b> dans un bâtiment, le calcul est vite fait : ce sera du cuivre. La
+fibre est réservée aux liens de collecte, aux liaisons inter-bâtiments et au cœur de réseau.
+</div>
+
+<h3 id="ch2-precision">2.2 La précision mécanique, vraie raison du prix</h3>
+<p>Une liaison fibre comporte <b>deux brins</b> : un pour l'émission (Tx), un pour la réception (Rx). La
+lumière voyage dans le cœur par <b>réflexion totale interne</b>. Le cœur d'une fibre <b>monomode</b> fait
+environ <b>9 µm</b> de diamètre — l'épaisseur d'un demi-cheveu.</p>
+<p>Pour raccorder deux fibres, il faut aligner ces deux cœurs face à face, avec des surfaces polies et
+planes. Le moindre grain de poussière, une rayure ou un angle imparfait bloque ou réfracte les
+photons : on parle de <b>perte d'insertion</b> et de <b>réflectance</b>. C'est ce contrôle qualité, et non le
+matériau, qui fait le prix.</p>
+
+<div class="callout ok"><div class="t">Les vrais chiffres — ceux du support officiel</div>
+Le cours parlé annonce un alignement « à 1,5 Angström près », ce qui n'est pas crédible (0,15 nm est
+une échelle atomique). Le support officiel donne les <b>métriques réellement utilisées</b>, et ce sont
+elles qu'il faut retenir :
+<ul style="margin-bottom:0">
+<li><b>Perte d'insertion</b> (<i>insertion loss</i>) : <b>&lt; 0,1 dB</b>.</li>
+<li><b>Perte de retour</b> (<i>return loss</i>) : <b>&gt; 40 dB</b> côté PC, <b>&gt; 50 dB</b> côté EAR.</li>
+<li>Ces valeurs sont <b>mesurées à la fabrication de chaque câble</b> et indiquées sur l'emballage.</li>
+<li>Il existe <b>6 types de connecteurs</b> optiques.</li>
+</ul>
+</div>
+
+<div class="callout def"><div class="t">Les interfaces universelles des EAR (Équipements Actifs de Réseau)</div>
+<b>SFP</b> (<i>Small Form-factor Pluggable</i>, aussi appelé <b>mini-GBIC</b> — <i>GigaBit Interface Converter</i>) — <b>4 Gb/s</b><br>
+<b>SFP+</b> — <b>10 Gb/s</b><br>
+<b>QSFP</b> (<i>Quad</i>) — <b>4 × 10 Gb/s</b>
+</div>
+
+<h3 id="ch2-vitesse">2.3 Vitesse de propagation et réalité des liaisons longues</h3>
+<ul>
+<li>Le signal électrique se propage à environ <b>200 000 km/s</b> dans le cuivre ; la lumière à
+<b>300 000 km/s</b> dans le vide, environ 200 000 km/s dans la fibre.</li>
+<li><b>99 % de la capillarité d'Internet</b> passe par de la <b>fibre sous-marine</b>. Le satellite ne sert
+plus que de secours.</li>
+<li>Mais <b>en LAN, c'est le cuivre qui fait foi</b>, pour la raison économique du § 2.1.</li>
+</ul>
+
+<!-- ===================================================================== -->
+<h2 id="ch3"><span class="num">3.</span> Câblage : règles, normes et baies</h2>
+
+<h3 id="ch3-paires">3.1 Deux paires ou quatre ?</h3>
+<div class="exam"><div class="t">Piège d'examen — le nombre de paires</div>
+Jusqu'à <b>100 Mb/s</b> (100BASE-TX), Ethernet n'utilise que <b>2 paires</b> sur les 4.<br>
+À partir de <b>1 Gb/s</b> (1000BASE-T), les <b>4 paires sont obligatoires</b>.<br>
+Conséquence : un câble bon marché où seules 2 paires sont câblées <b>ne dépassera jamais 100 Mb/s</b>.
+La carte tentera de négocier le Gigabit, constatera qu'il manque des paires, et se mettra en erreur.
+</div>
+
+<div class="example"><div class="t">Exemple concret — le piège de la maison neuve</div>
+Dans une maison, si l'électricien dérive une paire pour la TNT et une autre pour le téléphone, il ne
+reste que <b>2 paires</b> pour le réseau : tout le LAN de la maison est bridé à <b>100 Mb/s</b>. Il faut lui
+demander explicitement de câbler les <b>4 paires complètes</b> sur chaque RJ45.
+</div>
+
+<p>Autre effet de la montée en fréquence : les normes de construction <b>RT2012 / RE2020</b> ont supprimé
+le câble coaxial des maisons neuves. Une paire torsadée Cat 7 (600 MHz) transporte sans problème le
+signal TNT, qui est en UHF autour de 600 MHz.</p>
+
+<h3 id="ch3-mdix">3.2 Droit, croisé, Auto-MDIX</h3>
+<p>Un <b>câble croisé</b> relie deux équipements de même nature (PC à PC, switch à switch) : on croise la
+paire d'émission avec la paire de réception (1-2 avec 3-6), selon les normes de couleurs
+<b>T568A / T568B</b>. Aujourd'hui on ne produit quasiment plus que des câbles droits, parce que les
+cartes intègrent l'<b>Auto-MDIX</b> : elles détectent et compensent automatiquement le croisement.</p>
+
+<div class="exam"><div class="t">Cas pratique annoncé en cours</div>
+<b>Situation :</b> tu arrives dans une usine devant un automate industriel de 15 ans d'âge. Son chipset
+ne fait que du <b>10 Mb/s</b>, ne sait ni croiser ni négocier. Tu branches ton PC moderne en direct avec
+un câble droit : <code>link down</code>, rien ne se passe.<br>
+<b>Les trois solutions :</b>
+<ol style="margin-bottom:0">
+<li>Intercaler un vieux <b>hub</b>, qui joue le rôle de répéteur physique.</li>
+<li>Utiliser un <b>câble croisé</b>.</li>
+<li>Forcer la configuration côté Linux :
+<code>ethtool -s eth0 autoneg off speed 10 duplex full</code> (ou <code>mii-tool</code>).</li>
+</ol>
+</div>
+
+<details><summary>Pourquoi la commande s'appelle-t-elle <code>mii-tool</code> ?</summary>
+<p><b>MII</b> = <i>Media Independent Interface</i>. C'est l'API standardisée du noyau pour piloter le
+contrôleur physique Ethernet, indépendamment du constructeur.</p>
+<p>Le contexte historique est intéressant : dans les années 2010, Microsoft a imposé aux fondeurs que
+leurs drivers réseau <b>cessent de s'exécuter en Ring 0</b> sans contrôle — trop d'écrans bleus, trop de
+failles. D'où une couche d'abstraction (NDIS côté Windows) où le driver propriétaire dialogue avec
+l'OS par une API définie. Linux a suivi la même logique avec l'API MII.</p>
+</details>
+
+<h3 id="ch3-100m">3.3 La règle des 100 mètres</h3>
+<div class="callout"><div class="t">Règle normative — à connaître par cœur</div>
+La longueur maximale d'un lien Ethernet en cuivre est de <b>100 m</b>, répartis ainsi :
+<ul style="margin-bottom:0">
+<li><b>90 m maximum</b> de câble <b>rigide monobrin</b> dans les murs (câble de desserte) ;</li>
+<li><b>10 m maximum</b> de <b>cordons souples</b> de brassage : 5 m côté baie + 5 m côté bureau.</li>
+</ul>
+</div>
+<p>Si le câble mural fait 95 m et que l'on ajoute un cordon de 15 m au bureau, on est à 110 m : le
+signal s'atténue, des trames se perdent, et la carte réseau se met à « bagoter » — connexion et
+déconnexion en boucle.</p>
+
+<p><b>Les baies de brassage</b> sont au format mondial <b>19 pouces</b> de large. Les hauteurs se comptent en
+<b>U</b> : 1 U = 1,75 pouce = <b>4,445 cm</b>. À la maison, on trouve des coffrets de 10 ou 12 pouces. Une
+baie contient les bandeaux de distribution — où arrivent les câbles des prises murales — et les
+commutateurs.</p>
+
+<div class="example"><div class="t">Retour d'expérience — la passerelle LoRaWAN de l'école</div>
+Projet étudiant : installer une passerelle IoT LoRa sur le toit, qui reçoit 3 000 capteurs dans un
+rayon de 45 km (dont 2 500 sondes de température Lactalis). Il fallait tirer un câble de la salle A47
+jusqu'au toit pour l'alimenter en PoE.
+<p><b>L'erreur commise :</b> acheter du gros câble Cat 6A S/FTP rigide d'extérieur et tenter d'y sertir
+directement une fiche mâle RJ45. <b>C'est impossible</b> — les brins monobrins sont trop épais pour
+entrer dans les guides de la fiche.</p>
+<p style="margin-bottom:0"><b>La solution professionnelle :</b> raccorder le câble rigide sur une <b>embase femelle Keystone RJ45</b>
+blindée à l'aide d'une pince d'insertion, puis relier l'équipement avec un cordon souple court.</p>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch4"><span class="num">4.</span> PoE — Power over Ethernet</h2>
+
+<h3 id="ch4-principe">4.1 Le principe électrique</h3>
+<p>Le signal Ethernet en codage Manchester oscille <b>autour de 0 V</b> (par exemple −3 V / +3 V). L'idée du
+PoE est de <b>superposer une tension continue</b> : si l'on ajoute 12 V, le signal oscille désormais entre
+9 V et 15 V. À la réception, un simple filtre — condensateur et self de découplage — sépare :</p>
+<ul>
+<li>la <b>composante continue</b>, qui alimente l'appareil ;</li>
+<li>la <b>composante haute fréquence</b>, qui porte les données.</li>
+</ul>
+
+<figure><div class="svgbox">
+<svg viewBox="0 0 760 220" role="img" aria-label="Principe de superposition du PoE">
+ <g font-size="12">
+  <text x="20" y="30" style="fill:var(--fg-soft)">Signal Manchester seul — oscille autour de 0 V</text>
+  <line x1="20" y1="70" x2="340" y2="70" style="stroke:var(--fg-soft)" stroke-dasharray="4 4"/>
+  <text x="345" y="74" font-size="11" style="fill:var(--fg-soft)">0 V</text>
+  <polyline points="20,55 60,55 60,85 100,85 100,55 140,55 140,85 180,85 180,55 220,55 220,85 260,85 260,55 300,55 300,85 340,85"
+            fill="none" style="stroke:var(--d-blue)" stroke-width="2"/>
+  <text x="420" y="30" style="fill:var(--fg-soft)">Avec 12 V continus superposés</text>
+  <line x1="420" y1="70" x2="740" y2="70" style="stroke:var(--fg-soft)" stroke-dasharray="4 4"/>
+  <text x="745" y="74" font-size="11" style="fill:var(--fg-soft)">12 V</text>
+  <polyline points="420,55 460,55 460,85 500,85 500,55 540,55 540,85 580,85 580,55 620,55 620,85 660,85 660,55 700,55 700,85 740,85"
+            fill="none" style="stroke:var(--d-green)" stroke-width="2"/>
+  <rect x="20" y="130" width="330" height="52" rx="8" style="fill:var(--accent-soft);stroke:var(--d-blue)"/>
+  <text x="185" y="152" text-anchor="middle" font-size="11" style="fill:var(--d-blue)">Les données sont dans la variation</text>
+  <text x="185" y="170" text-anchor="middle" font-size="11" style="fill:var(--d-blue)">(haute fréquence)</text>
+  <rect x="410" y="130" width="330" height="52" rx="8" style="fill:var(--ok-soft);stroke:var(--d-green)"/>
+  <text x="575" y="152" text-anchor="middle" font-size="11" style="fill:var(--d-green)">L'énergie est dans la composante continue</text>
+  <text x="575" y="170" text-anchor="middle" font-size="11" style="fill:var(--d-green)">séparée par un filtre à la réception</text>
+ </g>
+</svg></div><figcaption>Le PoE superpose énergie et données sur le même conducteur, puis les sépare par filtrage.</figcaption></figure>
+
+<h3 id="ch4-normes">4.2 Les normes</h3>
+<div class="tw"><table>
+<thead><tr><th>Norme</th><th>Nom courant</th><th>Puissance source</th><th>Disponible à l'appareil</th><th>Paires</th></tr></thead>
+<tbody>
+<tr><td><b>802.3af</b></td><td>PoE</td><td>15,4 W</td><td>12,95 W</td><td>2</td></tr>
+<tr><td><b>802.3at</b></td><td>PoE+</td><td>30 W</td><td>25,5 W</td><td>2</td></tr>
+<tr><td><b>802.3bt</b> type 3</td><td>PoE++ / 4PPoE</td><td>60 W</td><td>51 W</td><td><b>4</b></td></tr>
+<tr><td><b>802.3bt</b> type 4</td><td>PoE++ / 4PPoE</td><td>90–100 W</td><td>71,3 W</td><td><b>4</b></td></tr>
+</tbody></table></div>
+
+<div class="callout warn"><div class="t">La notation de la planche</div>
+Le support empile quatre marches — <code>802.3af</code> → <code>802.3at</code> →
+<code>802.3bt 60W</code> → <code>802.3bta</code> — et associe la dernière au <b>smart building</b>.
+La mention « <b>802.3bta</b> » n'est pas une norme distincte : elle désigne le palier supérieur de
+802.3bt (les <b>types 3 et 4</b>, jusqu'à 90 W sur les 4 paires). Si la question tombe telle quelle,
+reprends la progression af → at → bt en donnant les puissances ; c'est ce qui est attendu.
+</div>
+<p>Tension d'alimentation : <b>48 V</b>. Conséquence sur le matériel : un switch PoE 24 ports délivrant
+60 à 90 W par port exige une alimentation interne de <b>1 500 à 2 000 W</b> et une ventilation
+conséquente. Un switch classique à 100 € coûte 800 à 1 500 € en version PoE++.</p>
+
+<h3 id="ch4-usages">4.3 Pourquoi c'est indispensable en entreprise</h3>
+<div class="example"><div class="t">Exemple concret — une tour de bureaux à La Défense</div>
+6 000 bureaux. Installer 3 prises 230 V par bureau représente des <b>millions d'euros</b> de câblage
+électrique, de disjoncteurs et de tableaux. Avec le PoE, <b>un seul câble Ethernet</b> alimente le
+téléphone IP, la borne Wi-Fi, la caméra de surveillance — et même l'éclairage LED du bureau.
+</div>
+
+<ul class="key-points">
+<li><b>Téléphonie sur IP</b> — l'ancien téléphone analogique était alimenté en 48 V par la ligne France Télécom. En VoIP, exiger un bloc secteur par poste aurait été ingérable ; le PoE règle le problème : une seule prise RJ45, le téléphone démarre son Linux embarqué et contacte l'IPBX (Asterisk).</li>
+<li><b>Affichage dynamique</b> — les écrans de hall et les haut-parleurs de faux plafond (Leclerc, Carrefour) sont alimentés en PoE 90 W et reçoivent le flux audio par le même câble.</li>
+<li><b>Smart building</b> — les vitres intelligentes de la Tour Montparnasse, qui s'opacifient selon l'ensoleillement, sont pilotées et alimentées en Ethernet PoE.</li>
+</ul>
+
+<!-- ===================================================================== -->
+<h2 id="ch5"><span class="num">5.</span> La carte réseau (NIC — <i>Network Interface Card</i>), le driver et la capture</h2>
+
+<h3 id="ch5-chemin">5.1 Le chemin d'une trame, de la NIC à l'OS</h3>
+<p>Ce que l'enseignant a insisté à faire comprendre : <b>l'OS ne voit pas toute la trame</b>. Le préambule,
+le délimiteur et le FCS sont consommés par la carte et le driver ; ils n'ont aucun intérêt pour le
+système.</p>
+
+<figure><div class="svgbox">
+<svg viewBox="0 0 840 240" role="img" aria-label="Chemin d'une trame de la carte réseau vers l'OS">
+ <g font-size="12" text-anchor="middle">
+  <rect x="15" y="80" width="130" height="56" rx="8" style="fill:var(--accent-soft);stroke:var(--d-blue)"/>
+  <text x="80" y="103" style="fill:var(--d-blue)">Carte (NIC)</text><text x="80" y="121" font-size="10" style="fill:var(--d-blue)">horloge, préambule</text>
+  <rect x="185" y="80" width="130" height="56" rx="8" style="fill:var(--accent-soft);stroke:var(--d-blue)"/>
+  <text x="250" y="103" style="fill:var(--d-blue)">Driver</text><text x="250" y="121" font-size="10" style="fill:var(--d-blue)">vérifie (ou non) le FCS</text>
+  <rect x="355" y="80" width="150" height="56" rx="8" style="fill:var(--warn-soft);stroke:var(--d-amber)"/>
+  <text x="430" y="100" style="fill:var(--d-amber)">Zone d'échange</text><text x="430" y="118" font-size="10" style="fill:var(--d-amber)">≈ 15 trames · map mémoire</text>
+  <rect x="545" y="80" width="140" height="56" rx="8" style="fill:var(--danger-soft);stroke:var(--d-red)"/>
+  <text x="615" y="100" style="fill:var(--d-red)">Interruption</text><text x="615" y="118" font-size="10" style="fill:var(--d-red)">matérielle</text>
+  <rect x="725" y="80" width="100" height="56" rx="8" style="fill:var(--ok-soft);stroke:var(--d-green)"/>
+  <text x="775" y="103" style="fill:var(--d-green)">Noyau</text><text x="775" y="121" font-size="10" style="fill:var(--d-green)">IP, TCP…</text>
+  <path d="M145 108 H185 M315 108 H355 M505 108 H545 M685 108 H725" style="stroke:var(--fg-soft)" stroke-width="2"/>
+  <text x="420" y="180" font-size="11" style="fill:var(--fg-soft)">Si la zone d'échange est pleine, la carte doit temporiser : c'est pourquoi les NIC ont de la mémoire.</text>
+  <text x="420" y="200" font-size="11" style="fill:var(--fg-soft)">Taille ajustable dans /proc/sys/net/… — paramètre clé pour capturer sur un lien saturé.</text>
+ </g>
+</svg></div><figcaption>De la carte au noyau : ce qui est consommé en route et où se produit la perte de trames.</figcaption></figure>
+
+<ul class="key-points">
+<li><b>Le préambule</b> — une alternance <code>1010…</code> qui sert uniquement à <b>caler l'horloge</b> de la carte sur la vitesse de la trame, pour lire chaque bit au bon moment (au milieu, pas au bord). Le <code>11</code> final marque la fin du délimiteur.</li>
+<li><b>La vitesse change à chaque trame</b> — on est à la vitesse négociée entre les deux cartes (10, 100 ou 1000 Mb/s), d'où la resynchronisation systématique.</li>
+<li><b>La zone d'échange</b> — environ <b>15 trames</b>. Pleine, elle force la carte à temporiser sur sa propre mémoire.</li>
+<li><b>La trame remonte</b> par une <b>interruption matérielle</b> qui réveille le driver Ethernet du noyau.</li>
+</ul>
+
+<h3 id="ch5-capture">5.2 Capturer sur un lien rapide sans perdre de trames</h3>
+<div class="callout warn"><div class="t">Le problème réel</div>
+Tu arrives avec ton portable sur la sortie Ethernet d'une entreprise pour « faire un petit coup de
+Wireshark » : tu ne feras rien du tout. Tu auras <b>1 trame sur 15</b>. Ce qui compte n'est pas tant le
+<b>débit</b> — la vitesse d'une trame — que la <b>densité</b>, c'est-à-dire le volume de trames.
+</div>
+
+<ul class="key-points">
+<li><b>Le symptôme</b> — les trames sont numérotées : quand tu vois 1, 2, 3, 8, 9, 10… ça saute, tu perds des trames.</li>
+<li><b>Astuce n° 1</b> — dire à Wireshark d'<b>arrêter l'analyse en temps réel</b> : capturer d'abord, analyser après. Par défaut, tous ces outils décortiquent toutes les couches et affichent en direct, ce qui est très coûteux.</li>
+<li><b>Astuce n° 2</b> — augmenter la <b>fenêtre d'échange</b> entre le driver et l'OS via les paramètres noyau, modifiables à chaud dans <code>/proc/sys/net/…</code>.</li>
+</ul>
+
+<h3 id="ch5-promiscuous">5.3 Filtrage par la carte, mode promiscuous et mode monitor</h3>
+<p>Par défaut, la carte ne remonte à l'OS que les trames qui la concernent. Le driver trie : « c'est pour
+moi, je donne ; ce n'est pas pour moi, je jette ». Avec deux exceptions : les trames de <b>broadcast</b>
+(<code>ff:ff:ff:ff:ff:ff</code>) sont toujours remontées, et les trames de <b>multicast</b> que la carte ne sait
+pas traiter elle-même sont passées à l'OS.</p>
+
+<div class="callout def"><div class="t">Mode promiscuous</div>
+Un bit positionné à 1 dans les paramètres du driver ordonne à la carte d'abandonner tout filtrage :
+<b>toutes</b> les trames vues sur le câble sont remontées à l'OS. Wireshark l'active tout seul au
+lancement.
+</div>
+
+<div class="callout warn"><div class="t">Mais est-ce vraiment utile ?</div>
+Assez peu, aujourd'hui. Le travail d'un commutateur est précisément de ne t'envoyer <b>que</b> les trames
+dont tu es destinataire. Le mode promiscuous ne devient réellement payant que si le trafic arrive
+jusqu'à toi — port miroir, TAP, ou <b>attaque de couche 2</b> qui force l'inondation.
+</div>
+
+<div class="exam"><div class="t">Question posée en cours</div>
+<b>Quel est l'équivalent du mode promiscuous sur une carte Wi-Fi ?</b> Le <b>mode monitor</b>.
+</div>
+
+<h3 id="ch5-outils">5.4 La boîte à outils de diagnostic</h3>
+<p>L'examen se déroulant <b>sans documents</b>, ces commandes doivent être connues de mémoire. Elles
+figurent toutes dans le support officiel ou dans le cours parlé.</p>
+
+<div class="tw"><table>
+<thead><tr><th>Commande</th><th>Ce qu'elle donne</th></tr></thead>
+<tbody>
+<tr><td><code>lspci</code></td><td>Le matériel sur le bus PCI — point de départ pour identifier la carte.</td></tr>
+<tr><td><code>lshw -class network</code></td><td>La fiche complète de la carte : produit, fabricant, nom logique, <b>capacités</b> (10bt, 100bt, 1000bt, full/half duplex), vitesse négociée, driver, firmware, adresse MAC, état de l'auto-négociation.</td></tr>
+<tr><td><code>ip link</code> (ou <code>ip l</code>)</td><td>La configuration courante : état, <b>MTU</b> (<i>Maximum Transmission Unit</i>), adresse MAC, drapeaux (BROADCAST, MULTICAST, UP, LOWER_UP).</td></tr>
+<tr><td><code>ip link set enp0s3 up|down</code></td><td>Activer ou désactiver une interface.</td></tr>
+<tr><td><code>watch ip l</code> · <code>watch ifplugstatus</code></td><td>Observer la configuration <b>en continu</b>, rafraîchie toutes les 2 secondes. L'astuce du cours : lancer un <code>watch</code> dans un terminal et basculer l'interface dans un autre pour voir l'état changer en direct.</td></tr>
+<tr><td><code>ethtool enp2s0</code></td><td>Les modes annoncés et ceux du <b>partenaire de lien</b> (<i>link partner advertised</i>), la vitesse, le duplex, le port (MII), l'état de l'auto-négociation, <code>Link detected: yes/no</code>.</td></tr>
+<tr><td><code>ethtool -s eth0 autoneg off speed 10 duplex full</code></td><td>Forcer vitesse et duplex — la solution du cas de l'automate industriel.</td></tr>
+<tr><td><code>mii-tool</code></td><td>Même usage, via l'API <b>MII</b> du noyau.</td></tr>
+<tr><td><b><code>rfkill</code></b></td><td><b>Activer/désactiver la radio Wi-Fi au niveau 1.</b> C'est la commande citée sur la planche « Ethernet NIC modes / WIFI NIC modes » à côté du mode promiscuous.</td></tr>
+</tbody></table></div>
+
+<div class="exam"><div class="t">Piège de vocabulaire</div>
+<code>rfkill</code> agit sur la <b>couche 1</b> — il coupe l'émetteur radio. Ce n'est pas un mode de carte :
+il ne remplace ni le mode monitor ni le mode promiscuous, qui relèvent du traitement des trames.
+</div>
+
+<div class="callout danger"><div class="t">Précision</div>
+Deux points du cours à nuancer. <b>1)</b> Le mode promiscuous <i>existe</i> en Wi-Fi, mais il ne montre que
+le trafic du BSS auquel on est associé, et seulement s'il est déchiffrable ; le mode monitor est
+plus puissant car il capte tout le trafic radio d'un canal, <b>trames de gestion comprises</b>, sans
+association. <b>2)</b> Le Spanning Tree n'est pas traité par la carte réseau d'un poste mais par les
+<b>commutateurs</b> : une NIC reçoit les BPDU (<i>Bridge Protocol Data Unit</i>) et les ignore.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch6"><span class="num">6.</span> La trame Ethernet</h2>
+
+<h3 id="ch6-structure">6.1 Structure</h3>
+<p>« La trame Ethernet est l'un des protocoles les plus simples de la planète. Source, destination,
+qu'est-ce que je transporte, et ce que je transporte. On ne peut pas faire moins que ça. »</p>
+
+<div class="tw"><table>
+<thead><tr><th>Champ</th><th>Taille</th><th>Traité par</th><th>Rôle</th></tr></thead>
+<tbody>
+<tr><td>Préambule + SFD (<i>Start Frame Delimiter</i>)</td><td>7 + 1 o.</td><td>Carte</td><td>Synchronisation d'horloge, <code>11</code> = fin du délimiteur</td></tr>
+<tr><td>MAC destination</td><td>6 o.</td><td>Carte / OS</td><td>Décision de commutation</td></tr>
+<tr><td>MAC source</td><td>6 o.</td><td>Switch</td><td>C'est elle qui alimente la table CAM</td></tr>
+<tr><td>EtherType</td><td>2 o.</td><td>OS</td><td>Ce qui est transporté</td></tr>
+<tr><td>Données (+ padding)</td><td><b>46 à 1500 o.</b></td><td>OS</td><td>Charge utile, complétée par du padding si &lt; 60 o. de trame</td></tr>
+<tr><td>FCS</td><td>4 o.</td><td>Driver</td><td>Contrôle d'erreur — <b>jamais affiché par les analyseurs de trames</b></td></tr>
+</tbody></table></div>
+
+<div class="callout def"><div class="t">La convention du support officiel — décisive pour répondre juste</div>
+La planche du cours écrit noir sur blanc : <b>« Minimum 60 bytes — Maximum 1514 bytes »</b>, et précise
+que le <b>FCS n'est jamais montré par les logiciels d'analyse de trames</b>.
+<p>Autrement dit, l'enseignant compte la trame <b>sans le FCS</b> :</p>
+<ul style="margin-bottom:0">
+<li><b>60 octets</b> = 14 (en-tête) + 46 (données minimum)</li>
+<li><b>1514 octets</b> = 14 (en-tête) + 1500 (données maximum)</li>
+<li>Avec le FCS, la norme parle de <b>64 à 1518 octets</b> (1522 avec un tag 802.1Q).</li>
+</ul>
+</div>
+
+<div class="exam"><div class="t">Comment répondre sans se tromper</div>
+La question orale portait sur « 60 minimum et <b>1500</b> maximum » ; la planche officielle dit
+« 60 minimum et <b>1514</b> maximum ». Les deux sont cohérents si l'on distingue bien :
+<b>1500 = données</b>, <b>1514 = trame sans FCS</b>, <b>1518 = trame avec FCS</b>. En copie, écris la
+valeur <b>et</b> sa convention — c'est ce qui rend la réponse inattaquable.
+</div>
+
+<div class="exam"><div class="t">Piège d'examen annoncé explicitement</div>
+<b>« Pourquoi 60 octets minimum et 1500 maximum ? Et s'il n'y a pas 46 octets, on fait quoi ? »</b>
+<ul>
+<li>60 − 14 (en-tête) = <b>46 octets de données minimum</b>.</li>
+<li>S'il y en a moins : on fait du <b>padding</b>.</li>
+<li><b>Pourquoi 46 ?</b> Pour que le calcul du code correcteur d'erreur ait un sens. Il faut un volume
+minimal de données pour qu'une fonction mathématique de détection/correction soit exploitable — on ne
+détecte pas une erreur sur 2 bits. Même un simple bit de parité exige une dizaine de bits pour avoir
+du sens.</li>
+</ul>
+<b>Le support officiel confirme la convention :</b> 60 à 1514 octets, FCS exclu — parce que les
+analyseurs de trames ne l'affichent jamais. Avec le FCS, la norme dit 64 à 1518.
+</div>
+
+<ul class="key-points">
+<li><b>Bit U/L</b> — 0 = adresse <b>Universelle</b> (gérée par l'IEEE), 1 = adresse <b>Locale</b> (forgée, randomisée, virtuelle).</li>
+<li><b>Bit I/G</b> — 0 = adresse <b>Individuelle</b> (unicast), l'octet est <b>pair</b> ; 1 = adresse de <b>Groupe</b> (multicast), l'octet est <b>impair</b>.</li>
+<li><b>Structure</b> — OUI (3 octets, constructeur) + numéro de série (3 octets). Exemple du support : <code>08 00 02 15 60 AA</code>.</li>
+</ul>
+
+<div class="example"><div class="t">Exemple concret — le padding trahit l'OS</div>
+La norme impose de compléter, mais ne dit pas avec quoi. Chaque constructeur padde à sa façon : des
+zéros, des <code>FF</code>, autre chose. En lisant le padding d'une trame, on peut donc <b>deviner l'OS
+émetteur</b> : « tiens, c'est un Android, tiens c'est du Raspberry ». C'est un marqueur classique de
+prise d'empreinte passive.
+</div>
+
+<h3 id="ch6-mac">6.2 L'adresse MAC et le bit I/G</h3>
+<ul class="key-points">
+<li><b>Les 3 premiers octets</b> identifient le constructeur (OUI, <i>Organizationally Unique Identifier</i>).</li>
+<li><b>Le bit de poids faible du premier octet</b> indique si l'adresse est <b>unicast</b> (0, octet pair) ou <b>multicast</b> (1, octet impair).</li>
+<li><b>Broadcast</b> = <code>ff:ff:ff:ff:ff:ff</code>, toujours remonté à l'OS.</li>
+<li><b>OUI des machines virtuelles</b> — <code>08:00:27</code> VirtualBox ; <code>00:50:56</code>, <code>00:1c:14</code> et <code>00:2c:29</code> VMware.</li>
+</ul>
+
+<div class="callout def"><div class="t">À quoi sert une adresse multicast — le raisonnement du cours</div>
+Un constructeur veut faire dialoguer ses propres équipements sur un LAN, sans IP puisqu'il voit
+toutes les MAC. Il demande à l'IEEE une adresse MAC <b>de multicast</b> portant son code constructeur.
+Les commutateurs diffusent cette adresse à tout le monde ; seuls les équipements de la marque la
+reconnaissent et traitent les données. C'est exactement <b>CDP</b> (Cisco Discovery Protocol).
+Le <b>Spanning Tree</b> fonctionne sur le même principe : des trames de multicast que tous les
+commutateurs reconnaissent comme les concernant, pour détecter et casser les boucles.
+</div>
+
+<div class="callout danger"><div class="t">Attention aux MAC de VM</div>
+Ne présume jamais de l'adresse MAC d'une machine virtuelle. Jusqu'à une certaine version, <b>toutes</b>
+les cartes VirtualBox avaient la même MAC par défaut. En école, avec tout le monde en mode <b>pont</b>,
+c'est le chaos — et un chaos <b>indémêlable</b> : « ça marche, ça marche pas ». Réflexe : à chaque
+nouvelle VM, <b>régénérer une adresse MAC aléatoire</b> dans les paramètres réseau.
+</div>
+
+<h3 id="ch6-jumbo">6.3 MTU et jumbo frames</h3>
+<p>Le MTU par défaut est de <b>1500</b> octets, valeur fixée en 1980 pour des liens à 10 Mb/s sur 100 m.
+Sur un LAN moderne à 10 Gb/s, découper de gros flux en tranches de 1500 octets sature le CPU en
+interruptions pour rien.</p>
+<ul class="key-points">
+<li><b>Jumbo frames</b> — on étend la trame jusqu'à <b>9000 octets</b>, uniquement <b>en Gb/s</b>.</li>
+<li><b>L'usage réel selon le support officiel</b> — « <i>Useful only with local SAN/NAS</i> » : c'est fait pour le stockage en réseau — <b>SAN</b> (<i>Storage Area Network</i>) ou <b>NAS</b> (<i>Network Attached Storage</i>) — et non pour le trafic bureautique.</li>
+<li><b>Condition impérative</b> — <b>tous</b> les équipements du chemin doivent être compatibles et configurés.</li>
+<li><b>Le gain réel</b> — là où le processeur traitait 6 trames, il n'en traite plus qu'une : c'est la <b>charge CPU</b> et le nombre d'interruptions qui sont divisés par ~6.</li>
+<li><b>Limite</b> — ça ne vaut que sur le LAN. Dès qu'un paquet sort vers Internet ou traverse une box, on repasse en MTU 1500 (voire moins sur du satellite type Starlink).</li>
+</ul>
+<div class="callout danger"><div class="t">Précision</div>
+Le cours annonce que les jumbo frames « démultiplient la vitesse par 5 ou 6 ». Ce qui est divisé par
+6, c'est le <b>nombre de trames</b> et la charge de traitement. Le gain en <b>débit</b> réel dépend du
+goulot d'étranglement et reste généralement bien plus modeste.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch7"><span class="num">7.</span> Le Wi-Fi : les 6 modes</h2>
+
+<div class="exam"><div class="t">À savoir par cœur — annoncé comme question d'examen</div>
+<b>Master/AP · Managed · Repeater · Ad-Hoc · Mesh · Monitor</b>
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>Mode</th><th>Ce que fait la carte</th><th>Point clé du cours</th></tr></thead>
+<tbody>
+<tr><td><b>1. Access Point</b> (Master)</td><td>Autorise la carte à faire de l'<b>injection</b> : fabriquer des trames dont la MAC source n'est pas celle du chipset</td><td>C'est <b>tout</b> ce que fait le mode AP — mais c'est déjà beaucoup. Il faut ensuite ajouter <code>hostapd</code>, un serveur DHCP et un pare-feu pour obtenir un vrai point d'accès.</td></tr>
+<tr><td><b>2. Managed</b></td><td>Se fait gérer par un AP : cherche les balises émises toutes les ~100 ms annonçant le SSID, puis s'associe</td><td>Mode par défaut de toute carte cliente. C'est l'exact opposé du mode AP.</td></tr>
+<tr><td><b>3. Repeater</b></td><td>Reçoit sur un canal et réémet sur un autre</td><td>On <b>ne peut pas</b> réémettre sur la même fréquence au même endroit en même temps. Le répéteur consomme donc une part de la bande passante, et toutes les cartes n'en sont pas capables : il faut émettre et recevoir simultanément.</td></tr>
+<tr><td><b>4. Ad-Hoc</b></td><td>Pair à pair, sans point d'accès</td><td>Le mode <b>le plus efficace</b> : toute la bande passante pour les deux participants. Largement retiré des drivers.</td></tr>
+<tr><td><b>5. Mesh</b> (802.11s)</td><td>Réseau maillé : chaque nœud cartographie et relaie dynamiquement (OLSR, AODV)</td><td>Usage type : réseaux de secours — sécurité civile, armée, zones de catastrophe.</td></tr>
+<tr><td><b>6. Monitor</b></td><td>Écoute passive brute de toutes les trames radio d'un canal, sans association</td><td>L'équivalent Wi-Fi du mode promiscuous.</td></tr>
+</tbody></table></div>
+
+<div class="callout ok"><div class="t">Formulation à retenir</div>
+« <b>Ne dites pas que le Wi-Fi c'est Ethernet.</b> Dites : le Wi-Fi <b>transporte</b> des trames Ethernet.
+Ethernet, c'est du filaire et de la fibre ; le Wi-Fi, c'est de la radio qui transporte une trame
+Ethernet. »
+</div>
+
+<div class="callout danger"><div class="t">Précision</div>
+Le retrait du mode Ad-Hoc est présenté comme une pression des opérateurs télécoms contre les réseaux
+maillés gratuits. C'est une anecdote invérifiable. La raison technique est plus solide : le mode IBSS
+ne gère ni la QoS ni les débits 802.11n/ac, ce qui l'a rendu inutilisable en pratique.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch8"><span class="num">8.</span> De l'hub au commutateur</h2>
+
+<h3 id="ch8-hub">8.1 Le hub et sa disparition</h3>
+<p>Le <b>hub</b> est un répéteur de niveau 1 : il reçoit une trame et la répète sur <b>tous</b> ses ports. Deux
+défauts rédhibitoires, qui l'ont fait disparaître :</p>
+<ul>
+<li><b>Confidentialité</b> — tout le monde voit tout.</li>
+<li><b>Performance</b> — collisions et saturation dès 10 Mb/s.</li>
+</ul>
+<p>Il garde une seule utilité, vue au § 3.2 : servir d'intermédiaire pour raccorder un vieil équipement
+incapable de négocier.</p>
+
+<div class="exam"><div class="t">Les questions exactes de la planche de révision</div>
+<div class="tw"><table>
+<thead><tr><th>Question</th><th>Hub</th><th>Switch</th></tr></thead>
+<tbody>
+<tr><td>Y a-t-il des collisions ?</td><td><b>Oui</b> — un seul domaine de collision partagé par tous les ports</td><td><b>Non</b> — un domaine de collision par port, et aucun en full duplex</td></tr>
+<tr><td><b>Half ou full duplex ?</b></td><td><b>Half duplex obligatoirement</b> : on ne peut pas émettre et recevoir en même temps sur un média partagé</td><td><b>Full duplex</b> : émission et réception simultanées sur des paires distinctes</td></tr>
+<tr><td>Méthode d'accès</td><td><b>CSMA/CD</b> (<i>Carrier Sense Multiple Access with Collision Detection</i>) — écouter, émettre, détecter la collision, attendre un délai aléatoire, réémettre</td><td>Aucune : plus de média partagé, donc plus besoin d'arbitrage</td></tr>
+<tr><td>Combien en cascade ?</td><td>Règle historique des 5-4-3 en 10BASE ; en pratique le hub a disparu</td><td>Pas de limite normative, mais une <b>cascade crée des goulots d'étranglement</b> : la réponse attendue est la <b>topologie en étoile</b> autour d'un core switch</td></tr>
+</tbody></table></div>
+<b>Quelles autres technologies de niveau 2 partagent le média ?</b> Les topologies en <b>bus</b> :
+10BASE2 / 10BASE5 sur coaxial, <b>Token Ring</b>, ARCNET — et le <b>Wi-Fi</b>, qui partage le média radio
+et utilise pour cela le <b>CSMA/CA</b> (<i>Collision Avoidance</i>) (évitement, faute de pouvoir détecter les collisions en radio).
+</div>
+
+<div class="callout def"><div class="t">Pourquoi le full duplex supprime les collisions</div>
+En half duplex, émission et réception empruntent le même canal : deux stations qui parlent en même
+temps se percutent, d'où CSMA/CD. En full duplex sur paires torsadées, l'émission utilise une paire
+et la réception une autre : <b>la collision devient physiquement impossible</b>, et CSMA/CD est
+désactivé. C'est le passage du hub au switch qui a rendu cela possible.
+</div>
+
+<h3 id="ch8-switch">8.2 Le commutateur et la topologie</h3>
+<p>Le <b>commutateur</b> est un équipement de niveau 2 doté d'une <b>matrice de commutation</b>. Il lit la MAC
+de destination et n'envoie la trame que sur le port concerné.</p>
+
+<div class="callout def"><div class="t">Penser le LAN comme un plombier</div>
+On met des <b>gros tuyaux</b> (fibre 10 ou 40 G) là où il faut beaucoup d'eau — data center, Active
+Directory, NAS, passerelle Internet — et des <b>petits tuyaux</b> (1 G, 100 M) vers les postes de
+travail. C'est l'image utilisée en cours pour le dimensionnement.
+</div>
+
+<p>Mettre les commutateurs en cascade sans fin crée des <b>goulots d'étranglement</b>. La règle est la
+<b>topologie en étoile</b> autour d'un <b>core switch</b> : on choisit l'équipement dont la matrice est la
+plus véloce en paquets par seconde, on le place au centre, et tous les commutateurs d'étage s'y
+raccordent directement.</p>
+
+<h3 id="ch8-prix">8.3 Ce qui fait le prix d'un commutateur</h3>
+<ul class="key-points">
+<li>Ce n'est pas le nombre de ports, c'est le nombre de trames commutables <b>en même temps</b> — la matrice de commutation (<i>switching fabric</i>).</li>
+<li><b>Entrée de gamme</b> (box Internet) — une seule matrice : les trames sont traitées les unes après les autres, la seconde attend en mémoire tampon.</li>
+<li><b>Haut de gamme</b> — plusieurs matrices en parallèle (une quinzaine), donc autant de trames commutées simultanément sans attente.</li>
+<li>C'est ce qui explique que deux commutateurs de cœur de réseau puissent coûter <b>300 000 €</b>.</li>
+</ul>
+
+<h3 id="ch8-autoneg">8.4 L'auto-négociation, sous le capot</h3>
+<div class="callout def"><div class="t">C'est de l'électronique, pas du protocole</div>
+À l'établissement du lien, chaque pair annonce ses capacités (débits et mode de fonctionnement) par une
+série de <b>16 impulsions électriques</b> — les <b>FLP</b> (<i>Fast Link Pulses</i>), définies par
+<b>IEEE 802.3u</b>. « Un peu comme du morse. »
+<p style="margin-bottom:0"><b>Aucune trame, aucune adresse MAC, aucune donnée</b> n'est échangée : c'est
+du pur signal de <b>niveau 1</b>. Conséquence directe : à ce stade, le commutateur n'a encore appris
+<b>aucune</b> adresse MAC.</p>
+</div>
+
+<div class="callout"><div class="t">Ce qu'apporte un switch, en trois lignes (support officiel)</div>
+<b>1)</b> L'auto-négociation. <b>2)</b> L'<b>optimisation de bande passante</b> : plusieurs débits
+coexistent dans un même switch. <b>3)</b> Les <b>communications simultanées</b>, s'il y a plusieurs
+matrices de commutation.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch9"><span class="num">9.</span> Le MLS (Multi-Layer Switch) et les modes de commutation</h2>
+
+<h3 id="ch9-mls">9.1 MLS contre routeur — la question d'entretien</h3>
+<div class="exam"><div class="t">Question type d'entretien d'embauche, annoncée comme telle</div>
+<b>« Qu'est-ce qu'un MLS ? »</b> — La réponse attendue, mot pour mot :<br>
+<b>« C'est un commutateur dont la décision de commutation dépend des couches 1, 2, 3 et 4. »</b>
+</div>
+
+<p>La <b>décision de commutation</b>, c'est le fait de prendre une trame et de décider sur quel port
+l'envoyer.</p>
+
+<div class="tw"><table>
+<thead><tr><th></th><th>Commutateur simple</th><th>MLS</th><th>Routeur</th></tr></thead>
+<tbody>
+<tr><td>Ce qu'il lit</td><td>MAC source et destination</td><td>MAC + <b>on rentre dans la data</b> : IP source/destination, ports TCP/UDP</td><td>En-tête IP</td></tr>
+<tr><td>Action sur la trame</td><td>Ne la touche pas</td><td>Ne la touche pas — il l'envoie ou non selon les critères donnés</td><td><b>Retire</b> l'en-tête Ethernet et en <b>recalcule</b> un nouveau (nouvelles MAC source et destination)</td></tr>
+<tr><td>Routage dynamique</td><td>Non</td><td>Non (selon le cours)</td><td><b>Oui</b> : OSPF, BGP, RIP, RIPv2, IS-IS</td></tr>
+<tr><td>Finalité</td><td>Commuter</td><td>Commuter très vite <b>en filtrant</b></td><td>Interconnecter des réseaux</td></tr>
+</tbody></table></div>
+
+<div class="callout danger"><div class="t">Précision — la simplification la plus risquée du cours</div>
+Deux affirmations sont pédagogiquement commodes mais fausses en pratique :
+<ul style="margin-bottom:0">
+<li><b>« Un MLS ne fait pas de routage dynamique »</b> — les commutateurs de niveau 3 modernes
+(Catalyst, Nexus, Arista, OmniSwitch) font tourner OSPF et BGP sans difficulté.</li>
+<li><b>« Le MLS ne touche pas la trame »</b> — vrai quand il commute en couche 2 avec des ACL L3/L4 ;
+<b>faux dès qu'il route entre VLANs</b>, où il réécrit les MAC et décrémente le TTL comme un routeur.</li>
+</ul>
+Réponds ce que l'enseignant attend, mais garde la nuance : la frontière switch/routeur s'est
+largement effacée.
+</div>
+
+<h3 id="ch9-modes">9.2 Les 3 modes de commutation</h3>
+<div class="exam"><div class="t">Point d'examen</div>
+<b>Store &amp; Forward</b> (vérifie le CRC) · <b>Cut-Through</b> (commute dès les 6 octets de MAC destination) ·
+<b>Smart / adaptatif</b> (bascule automatiquement de l'un à l'autre).
+</div>
+
+<div class="grid c3">
+<div class="card"><h4>1. Store and Forward</h4>
+<p>Les 4 étapes du support officiel :</p>
+<ol><li>Il <b>stocke</b> la trame ;</li><li>il <b>contrôle sa validité</b> — CRC <b>et taille</b> ;</li><li>il lit la <b>MAC destination</b> ;</li><li>il décide de commuter.</li></ol>
+<p><b>Latence moyenne : 5 à 50 µs.</b></p></div>
+
+<div class="card"><h4>2. Cut-Through / Fast Forward</h4>
+<p>Aussi appelé <i>On the Fly</i>.</p>
+<ol><li>Il lit la <b>MAC destination</b> dès son arrivée — c'est le <b>premier champ</b> de la trame ;</li><li>il commute <b>immédiatement</b> ;</li><li>il ne stocke pas ;</li><li>il <b>ne peut contrôler ni le CRC ni la taille</b>, puisque le CRC est en <b>fin</b> de trame.</li></ol>
+<p><b>Latence moyenne : 1 à 10 µs.</b> Exige un réseau de bonne qualité, à faible taux d'erreurs.</p></div>
+
+<div class="card"><h4>3. Intelligent</h4>
+<p>Le switch <b>conserve des statistiques</b> et <b>bascule entre les deux modes</b> selon le taux
+d'erreurs constaté.</p>
+<p>Démarre en Fast Forward, passe en Store and Forward quand la qualité se dégrade, et revient en
+Cut-Through quand le lien redevient sain.</p></div>
+</div>
+
+<div class="callout"><div class="t">Repère de comparaison donné en cours</div>
+Latence moyenne d'un <b>routeur</b> : <b>100 µs à 1 ms</b> — soit un à deux ordres de grandeur au-dessus
+d'un commutateur. C'est l'argument qui justifie le MLS : router coûte cher en latence.
+</div>
+
+<div class="exam"><div class="t">Question ouverte posée sur la planche</div>
+« <b>Que penser des trames taguées (802.1Q) en mode Cut-Through ?</b> » — Le tag est inséré <b>après</b> les
+adresses MAC. Le switch qui commute dès la lecture des 6 premiers octets prend donc sa décision
+<b>avant</b> d'avoir lu le tag VLAN. Un équipement devant tenir compte du VLAN doit lire plus loin dans
+la trame, ce qui réduit l'intérêt du Cut-Through.
+</div>
+
+<div class="callout warn"><div class="t">Complément — le 4ᵉ mode que le cours ne cite pas</div>
+Le <b>fragment-free</b> attend les <b>64 premiers octets</b> avant de commuter, ce qui permet d'écarter les
+trames issues d'une collision (les « runts ») tout en gardant une latence faible. C'est le compromis
+historique entre les deux premiers modes.
+</div>
+
+<div class="callout danger"><div class="t">Précision</div>
+Le « environ 5 microsecondes » du Store and Forward est un ordre de grandeur : la latence dépend de la
+taille de la trame et du débit. À 1 Gb/s, une trame de 1518 octets met déjà ≈ 12 µs à être reçue.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch10"><span class="num">10.</span> La mémoire CAM (Content Addressable Memory) et l'apprentissage des MAC</h2>
+
+<h3 id="ch10-cam">10.1 Pourquoi ce n'est pas de la RAM</h3>
+<div class="exam"><div class="t">Point d'examen — le fonctionnement inversé</div>
+<b>RAM</b> : on donne une <b>adresse</b> → elle renvoie la <b>donnée</b>.<br>
+<b>CAM</b> (<i>Content Addressable Memory</i>) : on donne la <b>donnée</b> (l'adresse MAC) → elle renvoie
+l'<b>adresse de la case</b>, c'est-à-dire le <b>numéro de port</b>, en <b>un seul cycle d'horloge</b>.
+</div>
+<p>C'est ce composant matériel qui permet de commuter des millions de trames par seconde sans
+ralentissement.</p>
+
+<div class="callout def"><div class="t">La définition exacte du support officiel</div>
+« <b>CAM : RAM memory with a search engine based on exact (Binary CAM) or partial (Ternary CAM)
+content.</b> »
+<ul style="margin-bottom:0">
+<li>Le switch y enregistre l'association <b>(numéro de port, VLAN, adresse MAC)</b> — donc le VLAN aussi, pas seulement le port.</li>
+<li><b>BCAM</b> (binaire) : recherche sur un contenu <b>exact</b>.</li>
+<li><b>TCAM</b> (ternaire) : recherche sur un contenu <b>partiel</b>, avec des bits « indifférents » — c'est ce qui permet d'implémenter des <b>ACL</b> et du routage par préfixe en matériel.</li>
+<li>Un enregistrement est supprimé quand son <b>aging time</b> est atteint.</li>
+</ul>
+</div>
+
+<div class="exam"><div class="t">Les deux questions posées sur la planche</div>
+« <b>Comment le switch apprend-il le port d'un équipement ?</b> » et « <b>Combien de temps doit-il
+conserver cette information ?</b> » — Réponse : il apprend sur la <b>MAC source</b> de la première trame
+émise, et conserve l'entrée jusqu'à expiration de l'<b>aging time</b>.
+</div>
+
+<h3 id="ch10-apprentissage">10.2 Comment le switch apprend</h3>
+<div class="steps" id="anim-cam">
+  <div class="step"><b>Étape 1 — Branchement.</b> L'auto-négociation a lieu (niveau 1, impulsions FLP). À ce stade le switch <b>n'apprend aucune adresse MAC</b> : rien n'a encore été émis.</div>
+  <div class="step"><b>Étape 2 — Attente passive.</b> Le switch attend que la machine émette sa <b>première trame</b> : requête DHCP, requête ARP, peu importe.</div>
+  <div class="step"><b>Étape 3 — Apprentissage.</b> Une trame entre sur le port 3. Le switch lit son <b>adresse MAC SOURCE</b> et écrit dans la CAM : <code>Port 3 = MAC_A</code>.</div>
+  <div class="step"><b>Étape 4 — Commutation.</b> À la trame suivante destinée à MAC_A, la CAM répond « port 3 » en un cycle, et la trame ne part que là.</div>
+</div>
+<div class="qactions" style="margin-top:10px">
+  <button class="btn primary" onclick="playSteps('anim-cam')">▶ Lancer l'animation</button>
+  <button class="btn ghost" onclick="resetSteps('anim-cam')">↻ Réinitialiser</button>
+</div>
+
+<div class="callout"><div class="t">Le point qui fait la différence en examen</div>
+L'apprentissage se fait sur l'<b>adresse MAC SOURCE</b>, jamais sur la destination. La destination sert
+à <b>décider</b>, la source sert à <b>apprendre</b>.
+</div>
+
+<h3 id="ch10-comportements">10.3 Les trois comportements du commutateur</h3>
+<div class="tw"><table>
+<thead><tr><th>Type de trafic</th><th>Comportement</th></tr></thead>
+<tbody>
+<tr><td><b>Unicast connu</b></td><td>La MAC destination est dans la CAM → la trame part <b>uniquement</b> sur le port associé.</td></tr>
+<tr><td><b>Broadcast / Multicast</b></td><td>La trame est dupliquée sur <b>tous les ports actifs du VLAN</b>, sauf le port d'entrée.</td></tr>
+<tr><td><b>Unicast inconnu</b> (<i>unknown unicast flooding</i>)</td><td>La cible n'a jamais émis, sa MAC n'est pas dans la CAM → le switch <b>inonde tous les ports du VLAN</b> et le lien de <i>backbone</i>. Le support qualifie ce cas de « <b>very rare situation</b> » : la CAM est mise à jour dès la <b>réponse</b> de la station.</td></tr>
+</tbody></table></div>
+<p><small>Le support précise que le relayage des trames de diffusion s'effectue conformément à
+<b>IEEE 802.1d</b>, sur tous les ports locaux <b>sauf celui de l'émetteur</b>, plus le lien de backbone.
+Rappel donné sur la même planche : le premier octet de la MAC destination est <b>impair</b> —
+par exemple <code>01:00:0c:ac:d3:40</code> ou <code>FF:FF:FF:FF:FF:FF</code>.</small></p>
+
+<div class="callout danger"><div class="t">C'est exactement ce qu'exploite le MAC flooding</div>
+Un attaquant émet des milliers de trames avec de <b>fausses adresses MAC source</b>. La CAM sature, le
+switch ne peut plus apprendre, et il se met à <b>inonder</b> tout le trafic sur tous les ports — ce qui
+le fait retomber au comportement d'un hub, et rend l'écoute passive possible. C'est le lien direct
+entre le fonctionnement normal vu ici et l'attaque.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch11"><span class="num">11.</span> Les VLANs (Virtual Local Area Network) et 802.1Q</h2>
+
+<h3 id="ch11-pourquoi">11.1 Pourquoi segmenter</h3>
+<ul class="key-points">
+<li><b>Séparer les entités</b> de l'entreprise : RH, R&amp;D, direction, production, invités.</li>
+<li><b>Sécurité</b> — faire des <b>caissons étanches comme dans un sous-marin</b> : si un poste est infecté, l'attaque est confinée à son caisson.</li>
+<li><b>Réduire les domaines de diffusion</b> (broadcast).</li>
+</ul>
+
+<h3 id="ch11-niveaux">11.2 Les 3 niveaux de VLAN</h3>
+<div class="callout warn"><div class="t">Le cours parlé n'en cite que deux — le support officiel en définit trois</div>
+L'enregistrement ne mentionne que les niveaux 1 et 2. La planche officielle en liste <b>trois</b> :
+<b>L1 par ports physiques</b>, <b>L2 par adresses MAC</b>, <b>L3 par plan d'adressage réseau</b>. C'est le
+niveau 3 qui manquait, et il porte le piège le plus intéressant.
+</div>
+
+<div class="tw"><table>
+<thead><tr><th></th><th>L1 — par port physique</th><th>L2 — par adresse MAC</th><th>L3 — par plan d'adressage IP</th></tr></thead>
+<tbody>
+<tr><td>Principe</td><td>Chaque port du switch est affecté à un VLAN ID</td><td>Le switch reconnaît la MAC et applique le VLAN correspondant</td><td>Le VLAN découle du réseau IP de la machine (ex. 10.0.0.0/8 → VLAN 2)</td></tr>
+<tr><td>Avantage</td><td>Simple et déterministe</td><td><b>Mobilité</b> des équipements</td><td><b>Aucune administration</b> sur le switch <b>et</b> mobilité</td></tr>
+<tr><td>Inconvénient</td><td><b>Pas de mobilité</b> : changer de prise fait perdre le VLAN</td><td><b>Charge d'administration</b> : les règles doivent être saisies dans le switch</td><td><b>Cloisonnement purement logique — aucune sécurité</b>, et une trame de diffusion est reçue par tous les équipements</td></tr>
+</tbody></table></div>
+
+<div class="exam"><div class="t">Le piège du VLAN de niveau 3</div>
+Il est tentant : rien à configurer, mobilité totale. Mais le support est catégorique — « <i>the
+partitioning is <b>logical only (no security)</b></i> ». Une machine qui change son adresse IP change de
+VLAN toute seule, et les diffusions traversent. <b>Ne jamais le présenter comme une mesure de
+sécurité.</b>
+</div>
+
+<div class="callout ok"><div class="t">Recommandation d'administration du support</div>
+<b>Associer un plan d'adressage IP à chaque VLAN</b> (VLAN 2 → 12.0.0.0/8, VLAN 3 → 11.0.0.0/8,
+VLAN 4 → 10.0.0.0/8…). Le support montre explicitement le contre-exemple à ne pas suivre — un même
+plan d'adressage réparti sur plusieurs VLANs — sous la mention « <i>Do not do that!</i> ».
+<p style="margin-bottom:0">À noter : deux équipements peuvent porter la <b>même adresse IP</b> sans conflit
+s'ils sont dans des VLANs différents. Et un ping entre deux machines de VLANs différents est
+<b>impossible</b> sans routage, même avec des adresses du même réseau.</p>
+</div>
+
+<h3 id="ch11-8021q">11.3 Le trunk et le tag 802.1Q</h3>
+<p>On ne va pas tirer un câble par VLAN entre deux commutateurs. On utilise un seul câble configuré en
+<b>trunk</b>, normalisé par <b>IEEE 802.1Q</b>, qui transporte tous les VLANs en les <b>taguant</b>.</p>
+
+<div class="exam"><div class="t">Point d'examen — le tag, tel que la planche le décompose</div>
+<b>4 octets</b> insérés entre la MAC source et le champ Frame Type :
+<ul style="margin-bottom:0">
+<li><b>EtherType <code>8100</code></b> — 2 octets</li>
+<li><b>PRI</b> — 3 bits de priorité</li>
+<li><b>Token Ring encapsulation flag</b> — 1 bit (le bit historiquement appelé CFI, aujourd'hui DEI)</li>
+<li><b>VLAN ID</b> — <b>12 bits</b> → 4096 valeurs, dont <b>4094 VLANs utilisables</b> (0 et 4095 réservés)</li>
+</ul>
+</div>
+
+<div class="callout warn"><div class="t">Le prédécesseur : ISL</div>
+La planche porte une note de bas de page à ne pas manquer : 802.1Q a été <b>précédé par ISL</b>
+(<i>Inter Switch Link</i>), le protocole <b>propriétaire Cisco</b> de transport de VLANs entre
+commutateurs. Différence de principe : ISL <b>encapsule</b> la trame entière dans un nouvel en-tête de
+26 octets, là où 802.1Q se contente d'<b>insérer 4 octets</b> dans la trame existante. ISL est
+aujourd'hui abandonné au profit de la norme ouverte.
+</div>
+
+<div class="callout def"><div class="t">Où le tag est ajouté, et où il disparaît</div>
+Le switch 1 ajoute le numéro de VLAN <b>uniquement sur le port d'interconnexion</b> (le trunk). À
+réception, le switch 2 <b>retire le tag</b> et transmet une trame normale sur le ou les ports du VLAN
+concerné. Le tag n'existe donc que <b>sur le lien entre switches</b> : les machines finales ne le voient
+jamais.
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>Terme</th><th>Définition</th></tr></thead>
+<tbody>
+<tr><td><b>Port d'accès</b></td><td>Port <b>non tagué</b> relié à une machine finale.</td></tr>
+<tr><td><b>Port trunk / tagué</b></td><td>Port qui transporte <b>plusieurs VLANs</b> avec leurs tags, entre commutateurs ou vers un routeur ou un hyperviseur.</td></tr>
+<tr><td><b>VLAN natif</b></td><td>Le VLAN qui circule <b>sans tag</b> sur un trunk — VLAN 1 par défaut. C'est la faille exploitée par le double tagging.</td></tr>
+</tbody></table></div>
+
+<div class="example"><div class="t">Exemple concret — propager les VLANs en Wi-Fi</div>
+On associe chaque VLAN tagué sur le port de la borne à un <b>SSID</b> (<i>Service Set Identifier</i>) différent : SSID « Étudiants » sur
+VLAN 10, « Profs » sur VLAN 20, « Invités » sur VLAN 30. Le port de la borne est un trunk.
+</div>
+
+<h3 id="ch11-routage">11.4 Routage inter-VLAN</h3>
+<p>Par définition, deux machines de VLANs différents <b>ne peuvent pas</b> communiquer en couche 2. Le
+support propose <b>trois solutions</b>, dans cet ordre :</p>
+
+<div class="tw"><table>
+<thead><tr><th>Solution</th><th>Principe</th><th>Quand</th></tr></thead>
+<tbody>
+<tr><td><b>1. Routeur externe</b></td><td>Un routeur classique, une patte par VLAN, avec des règles de filtrage</td><td>Petits LAN</td></tr>
+<tr><td><b>2. Router-on-a-stick</b></td><td>Un seul lien <b>tagué 802.1Q</b> entre le switch et le routeur, qui porte toutes les passerelles</td><td>Économise les interfaces physiques</td></tr>
+<tr><td><b>3. MLS</b></td><td>Le commutateur commute après analyse des couches 3 ou 4. « <i>With MLS, L3 VLAN make sense.</i> »</td><td>Performance : évite la latence d'un routeur (100 µs–1 ms)</td></tr>
+</tbody></table></div>
+
+<div class="callout danger"><div class="t">La phrase qui revient sur les trois planches</div>
+« <i>Useful <b>only if filtering rules are enabled</b> on the router / on the MLS (ACL or firewall
+rules).</i> » Exemples donnés : <i>seul A peut joindre E en SSH</i> ; <i>tout le VLAN 2 peut joindre E,
+mais uniquement en HTTP/HTTPS</i>. Sans règles, on a juste reconstruit un réseau plat.
+</div>
+
+<details><summary>Configurer un VLAN tagué sous Linux (serveur ou hyperviseur)</summary>
+<pre><code><span class="c"># vérifier que le module 802.1Q est disponible</span>
+modinfo 8021q
+
+<span class="c"># créer une sous-interface taguée sur le VLAN 3</span>
+ip link add link enp1s0 name enp1s0.3 type vlan id 3
+
+<span class="c"># lui donner une adresse</span>
+ip a add w.x.y.z dev enp1s0.3</code></pre>
+<p style="margin-bottom:0">Sur une borne Wi-Fi, l'équivalent consiste à <b>associer un nom de SSID à un
+identifiant de VLAN</b>.</p>
+</details>
+
+<div class="callout danger"><div class="t">L'erreur qui annule tout le travail</div>
+« Si on met un routeur qui laisse tout passer entre les VLANs, <b>on détruit tout l'intérêt des
+VLANs</b>. » Le routage inter-VLAN doit impérativement être associé à un <b>pare-feu</b>.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch12"><span class="num">12.</span> Les 3 attaques sur les VLANs</h2>
+<p class="lead">Annoncées explicitement comme question d'examen, et confirmées par la planche
+« VLAN security » du support officiel, qui les regroupe sous le terme <b>Hopping : 3 attacks</b>.</p>
+
+<div class="callout ok"><div class="t">Gains et limites des VLANs — la planche de synthèse</div>
+<b>Gains :</b> améliorer les <b>performances</b> (moins de trames de diffusion par VLAN) ; améliorer la
+<b>sécurité</b> par segmentation — « <i>c'est l'un des éléments du zero trust</i> » ; <b>optimiser</b>
+l'usage des switches.<br>
+<b>Limites :</b> le nombre de VLANs est « limité » à <b>4094</b> ; il <b>faut</b> créer des règles de
+pare-feu dans un routeur, un pare-feu ou un MLS pour faire communiquer les VLANs entre eux.
+</div>
+
+<h3 id="ch12-reset">Attaque 1 — Reset physique en configuration d'usine</h3>
+<div class="grid c2">
+<div class="card"><h4>Le mode opératoire</h4>
+<p>L'attaquant accède physiquement à la baie de brassage et maintient le bouton <b>reset</b> du
+commutateur quelques secondes. L'équipement redémarre en configuration d'usine : <b>tous les ports
+dans le VLAN 1</b>. Toute la segmentation saute instantanément.</p></div>
+<div class="card"><h4>La remédiation</h4>
+<p><b>Sécurité physique</b> stricte des locaux techniques et des baies : fermeture à clé, contrôle
+d'accès, journalisation des entrées, voire détection d'ouverture de porte.</p>
+<p style="margin-bottom:0">C'est le rappel que la meilleure configuration ne résiste pas à un accès physique.</p></div>
+</div>
+
+<h3 id="ch12-dtp">Attaque 2 — Négociation DTP (switch spoofing)</h3>
+<p><b>DTP</b> (<i>Dynamic Trunking Protocol</i>) est un protocole propriétaire Cisco qui permet à deux
+commutateurs de négocier automatiquement l'établissement d'un trunk.</p>
+<div class="steps" id="anim-dtp">
+  <div class="step"><b>1.</b> Un port d'accès a DTP <b>activé par défaut</b> — c'est le cas sur beaucoup d'équipements sortis de carton.</div>
+  <div class="step"><b>2.</b> L'attaquant, branché sur ce port, forge des <b>trames DTP</b> depuis son PC.</div>
+  <div class="step"><b>3.</b> Le commutateur croit dialoguer avec un autre commutateur et <b>bascule le port en trunk</b>.</div>
+  <div class="step"><b>4.</b> L'attaquant reçoit désormais <b>tous les VLANs</b> du commutateur, tagués. La segmentation est contournée.</div>
+</div>
+<div class="qactions" style="margin-top:10px">
+  <button class="btn primary" onclick="playSteps('anim-dtp')">▶ Lancer l'animation</button>
+  <button class="btn ghost" onclick="resetSteps('anim-dtp')">↻ Réinitialiser</button>
+</div>
+<div class="callout ok"><div class="t">Remédiation</div>
+Désactiver explicitement DTP sur tous les ports d'accès :
+<pre style="margin:8px 0 0"><code>switchport mode access
+switchport nonegotiate</code></pre>
+</div>
+
+<h3 id="ch12-double">Attaque 3 — Double tagging (VLAN hopping)</h3>
+<p>Elle exploite le <b>VLAN natif</b>, celui qui circule sans tag sur le trunk.</p>
+<div class="steps" id="anim-dt">
+  <div class="step"><b>1.</b> L'attaquant forge une trame portant <b>deux tags 802.1Q</b> superposés : tag externe = <b>VLAN 1</b> (le natif), tag interne = <b>VLAN 40</b> (la cible).</div>
+  <div class="step"><b>2.</b> Le <b>premier commutateur</b> reçoit la trame, voit le tag VLAN 1 qui correspond au VLAN natif, <b>retire ce tag</b> et transmet la trame non taguée sur le trunk.</div>
+  <div class="step"><b>3.</b> Le <b>second commutateur</b> reçoit la trame, lit le tag restant — VLAN 40 — et la délivre dans le VLAN cible.</div>
+  <div class="step"><b>4.</b> L'attaquant a injecté dans un VLAN auquel il n'a pas accès. L'attaque est <b>unidirectionnelle</b> : aucune réponse ne lui revient.</div>
+</div>
+<div class="qactions" style="margin-top:10px">
+  <button class="btn primary" onclick="playSteps('anim-dt')">▶ Lancer l'animation</button>
+  <button class="btn ghost" onclick="resetSteps('anim-dt')">↻ Réinitialiser</button>
+</div>
+<div class="callout ok"><div class="t">Remédiation — trois mesures cumulatives</div>
+<ol style="margin-bottom:0">
+<li><b>Ne jamais utiliser le VLAN 1</b> pour du trafic de production.</li>
+<li>Changer l'ID du <b>VLAN natif</b> des trunks pour un VLAN dédié et inutilisé.</li>
+<li>Forcer le taguage du VLAN natif : <code>vlan dot1q tag native</code>.</li>
+</ol>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch13"><span class="num">13.</span> Filtrage, pare-feu et Zero Trust</h2>
+
+<h3 id="ch13-fw">13.1 Où est le pare-feu sous Linux</h3>
+<p>Sous Linux, le pare-feu est <b>directement intégré au noyau</b> : c'est <b>Netfilter</b>. On le configure
+avec <code>iptables</code> ou <code>nftables</code>. Chez Cisco, l'équivalent s'appelle une <b>ACL</b>
+(<i>Access Control List</i>).</p>
+
+<div class="callout"><div class="t">Règle d'or énoncée en cours</div>
+<b>Tout interdire par défaut</b> (<i>default DROP</i>), puis ne créer que des règles d'autorisation
+<b>explicites et très précises</b>. Exemple donné : autoriser uniquement la machine A à faire du SSH sur
+le port 22 vers le serveur B — rien d'autre.
+</div>
+
+<h3 id="ch13-zt">13.2 Zero Trust et micro-segmentation</h3>
+<p>Le support officiel énumère précisément <b>cinq éléments</b>, à réciter dans cet ordre :</p>
+<ul class="key-points">
+<li><b>No implicit trust</b> — aucune confiance implicite, y compris à l'intérieur du périmètre.</li>
+<li><b>Continuous authentication</b> — authentification continue, et non une seule fois à l'entrée.</li>
+<li><b>Least privilege</b> — moindre privilège.</li>
+<li><b>Network segmentation</b> — c'est là que les VLANs entrent dans le modèle : le support précise que la segmentation par VLAN « <i>est l'un des éléments du zero trust</i> ».</li>
+<li><b>Real-time monitoring and response</b> — surveillance et réaction en temps réel.</li>
+</ul>
+<p>C'est le prolongement logique du raisonnement sur les VLANs : segmenter, puis filtrer entre les
+segments, puis ne plus accorder de confiance implicite à l'appartenance à un segment.</p>
+
+<!-- ===================================================================== -->
+<h2 id="ch14"><span class="num">14.</span> Stacking, agrégation et administration</h2>
+
+<h3 id="ch14-stacking">14.1 Le stacking</h3>
+<div class="exam"><div class="t">Point d'examen</div>
+Pour empiler des commutateurs, il faut la <b>même marque</b>, le <b>même modèle</b> et surtout la
+<b>MÊME VERSION DE FIRMWARE</b>.
+</div>
+<p>Un commutateur d'entreprise coûte de 10 000 à 500 000 €. Quand il faut plus de ports, plutôt que de
+racheter un châssis gigantesque, on relie plusieurs commutateurs identiques par des <b>câbles de fond
+de panier</b> dédiés (StackWise, VSS — <i>Virtual Switching System</i>). Les matrices fusionnent, l'ensemble partage <b>une seule adresse IP
+d'administration</b> : pour l'administrateur, c'est un seul gros commutateur logique.</p>
+
+<h3 id="ch14-lacp">14.2 L'agrégation de liens</h3>
+<p><b>LAG</b> (<i>Link AGgregation</i>) / <b>LACP</b> (<i>Link Aggregation Control Protocol</i>), normalisé <b>IEEE 802.3ad</b>, <b>802.1AX</b> et <b>802.1aq</b>. On regroupe plusieurs
+câbles physiques en une seule liaison logique, entre deux commutateurs ou entre un commutateur et un
+serveur.</p>
+
+<div class="callout def"><div class="t">Deux finalités opposées, à ne pas confondre</div>
+<b>Pour la bande passante</b> — bande passante = <b>n × celle d'un lien</b>. Tous les liens sont actifs.
+Usage : relier des switches entre eux.<br>
+<b>Pour la sécurité</b> — <b>un seul lien actif à la fois</b>, les autres en attente : c'est du
+<b>failover</b>, pas de l'agrégation de débit.
+</div>
+
+<p><b>Les autres noms de la même chose :</b> <i>port trunking</i>, <i>link bundling</i>, <b>NIC bonding</b>,
+<b>EtherChannel</b> (Cisco).</p>
+
+<div class="exam"><div class="t">Piège de vocabulaire</div>
+Le « <b>trunk</b> » de l'agrégation de liens (<i>port trunking</i>) n'a rien à voir avec le « <b>trunk</b> »
+du 802.1Q, qui désigne un port tagué transportant plusieurs VLANs. Même mot, deux notions.
+</div>
+
+<h3 id="ch14-admin">14.3 Administration sécurisée</h3>
+<ul class="key-points">
+<li><b>Le switch peut avoir une pile TCP/IP et une adresse IP</b> pour être administré à distance.</li>
+<li><b>Supprimer telnet et HTTP</b> — mots de passe en clair. Ne garder que <b>SSH et HTTPS</b>…</li>
+<li>… et <b>uniquement depuis le VLAN « admin »</b>. C'est la précision du support officiel : ce n'est pas seulement le protocole qui doit être durci, c'est aussi <b>d'où</b> l'administration est joignable.</li>
+<li><b>À défaut de pile IP</b>, le switch s'administre par un <b>port série dédié</b>, appelé <b>port console</b>.</li>
+<li>Les commutateurs modernes embarquent un <b>mini-Linux</b> dédié à l'interface de gestion : CLI, interface web HTTPS, SNMPv3.</li>
+<li><b>Cisco / Linksys</b> — mêmes puces et mêmes fonctions avancées (VLAN, QoS, 802.1X, LACP) dans la gamme PME que dans les Catalyst, ce qui permet des architectures complètes à coût réduit.</li>
+</ul>
+
+<div class="callout def"><div class="t">L'évolution annoncée sur la dernière planche : le SDN</div>
+<b>Software Defined Network</b> — la séparation explicite en trois plans :
+<b>plan de données</b> (data plane, la commutation effective), <b>plan de contrôle</b> (control plane, les
+décisions et la topologie) et <b>plan de gestion</b> (management plane, l'administration). Chacun se
+protège séparément — c'est exactement le découpage repris dans la fiche
+le cours dédié à la sécurisation des interconnexions.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch15"><span class="num">15.</span> Fiche mémo express</h2>
+
+<div class="grid c2">
+<div class="card"><h4>Chiffres à retenir</h4>
+<ul>
+<li>Trame : <b>60 à 1514</b> o. (FCS exclu, convention du support) · <b>64 à 1518</b> avec FCS · données <b>46–1500</b></li>
+<li>En-tête 14 o. · FCS 4 o. · préambule 7+1 o. · padding si &lt; 60 o.</li>
+<li>Jumbo : <b>9000</b> o., en Gb/s, pour SAN/NAS local</li>
+<li>Tag 802.1Q : <b>4 o.</b>, EtherType <b>8100</b>, PRI 3 bits, flag 1 bit, VID <b>12 bits</b> → <b>4094</b> VLANs</li>
+<li>Auto-négociation : <b>16 impulsions</b> FLP (802.3u)</li>
+<li>Latence : Store&amp;Forward <b>5–50 µs</b> · Cut-through <b>1–10 µs</b> · <b>routeur 100 µs–1 ms</b></li>
+<li>Cut-through : <b>6 octets</b> lus · Zone d'échange driver/OS <b>≈ 15 trames</b></li>
+<li>Câblage : <b>100 m</b> = <b>90 m</b> rigide + <b>2 × 5 m</b> souple · <b>ISO 11801</b></li>
+<li>Propagation cuivre <b>2·10<sup>8</sup> m/s</b> · fibre/vide <b>3·10<sup>8</sup></b></li>
+<li>Cat 6 <b>250</b> / 6a <b>500</b> / 7 <b>600 MHz</b> / 7a <b>1 GHz</b> / 8 <b>2 GHz, 40 Gb, 30 m</b></li>
+<li>PoE <b>15,4</b> / <b>30</b> / <b>60</b> / <b>90 W</b> — 48 V</li>
+<li>Optique : insertion <b>&lt; 0,1 dB</b> · retour <b>&gt; 40 dB</b> (PC) / <b>&gt; 50 dB</b> (EAR)</li>
+<li>SFP <b>4 Gb/s</b> · SFP+ <b>10 Gb/s</b> · QSFP <b>4 × 10 Gb/s</b></li>
+<li>2 paires jusqu'à <b>100 Mb/s</b>, <b>4 paires</b> à partir du Gigabit</li>
+<li>VirtualBox <b>08:00:27</b> · VMware <b>00:50:56</b>, <b>00:1c:14</b>, <b>00:2c:29</b></li>
+</ul></div>
+
+<div class="card"><h4>Notion → distinction</h4>
+<ul>
+<li><b>Shield</b> = tresse, haute fréquence · <b>Foil</b> = alu, basse fréquence</li>
+<li><b>MAC source</b> = apprendre · <b>MAC destination</b> = décider</li>
+<li><b>RAM</b> : adresse → donnée · <b>CAM</b> : donnée → numéro de port</li>
+<li><b>Promiscuous</b> (filaire) ≈ <b>Monitor</b> (Wi-Fi)</li>
+<li><b>AP</b> = gère des clients · <b>Managed</b> = est géré</li>
+<li><b>Switch</b> ne touche pas la trame · <b>Routeur</b> la reconstruit</li>
+<li><b>VLAN niveau 1</b> = par port · <b>niveau 2</b> = par MAC</li>
+<li><b>Port d'accès</b> = non tagué · <b>Trunk</b> = tagué</li>
+<li><b>Store &amp; Forward</b> = sûr, lent · <b>Cut-through</b> = rapide, aveugle</li>
+<li><b>Hub</b> = niveau 1, répète · <b>Switch</b> = niveau 2, commute</li>
+</ul></div>
+</div>
+
+<div class="callout"><div class="t">Les 3 attaques VLAN en une ligne chacune</div>
+<b>Reset usine</b> → tous les ports en VLAN 1 → <i>sécurité physique de la baie</i>.<br>
+<b>DTP / switch spoofing</b> → le port bascule en trunk → <i>mode access + nonegotiate</i>.<br>
+<b>Double tagging</b> → saut vers un VLAN cible via le VLAN natif → <i>VLAN natif dédié + tag native</i>.
+</div>
+
+<div class="callout ok"><div class="t">Plan de réponse type — « expliquez le trajet d'une trame »</div>
+<b>1)</b> Le préambule cale l'horloge sur la vitesse négociée → <b>2)</b> la carte lit la MAC destination et
+filtre (sauf mode promiscuous) → <b>3)</b> le driver vérifie ou non le FCS → <b>4)</b> la trame est déposée
+dans la zone d'échange (≈ 15 trames) → <b>5)</b> une interruption matérielle réveille le noyau →
+<b>6)</b> les couches supérieures sont décapsulées. Côté commutateur : <b>a)</b> apprentissage sur la MAC
+source dans la CAM, <b>b)</b> décision sur la MAC destination, <b>c)</b> inondation si elle est inconnue.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch16"><span class="num">16.</span> Précisions à connaître</h2>
+<p class="lead">Les points où retenir le cours mot pour mot te coûterait des points ailleurs. Détail
+complet dans l'annexe de <a href="transcription-inf5243-seance-01.html">la transcription</a>.</p>
+
+<div class="callout ok"><div class="t">Ce que les supports officiels ont tranché</div>
+Plusieurs points que j'avais signalés d'après le seul enregistrement sont <b>résolus par les planches</b> :
+la taille de trame (le support écrit <b>1514</b>, pas 1500), la précision des connecteurs optiques
+(exprimée en <b>dB</b>, pas en Angströms) et les latences de commutation (<b>chiffrées</b>). Le tableau
+ci-dessous ne conserve que les écarts qui subsistent.
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>Point</th><th>Ce que disent les sources</th><th>Quoi répondre</th></tr></thead>
+<tbody>
+<tr><td><b>Taille de trame</b></td><td>Planche officielle : <b>60 à 1514 octets, FCS exclu</b> (le FCS n'est jamais affiché par les analyseurs). Norme IEEE : <b>64 à 1518</b>, FCS inclus. L'oral disait « 1500 max », ce qui désigne en fait les <b>données</b>.</td><td>Donner la valeur <b>avec sa convention</b> : « 60–1514 sans FCS, 64–1518 avec, 46–1500 de données »</td></tr>
+<tr><td><b>Date d'Ethernet</b></td><td>Février 1980 = lancement du projet <b>IEEE 802</b>. Ethernet inventé en <b>1973</b> (Metcalfe, Xerox PARC), spécification DIX en 1980, norme 802.3 en 1983.</td><td>« Février 1980 » sur le mnémotechnique, « 1973, Metcalfe » sur l'invention</td></tr>
+<tr><td><b>802.1 ou 802.3 ?</b></td><td>La planche écrit « <i>Physical address : IEEE (802.1)</i> » — elle parle de l'<b>adresse MAC</b>, dont l'administration relève bien du niveau IEEE 802. En revanche le <b>format de la trame</b> est normalisé par <b>802.3</b>. L'oral a mélangé les deux.</td><td>Adresse → IEEE 802 ; <b>format de trame → 802.3</b></td></tr>
+<tr><td><b>Niveaux de VLAN</b></td><td>L'oral n'en cite que 2 ; la planche en définit <b>3</b> — L1 port, L2 MAC, <b>L3 plan d'adressage IP</b>.</td><td>Toujours en citer <b>3</b>, et signaler que le L3 n'apporte <b>aucune sécurité</b></td></tr>
+<tr><td><b>« les 6 couches OSI »</b></td><td>OSI en compte <b>7</b>.</td><td>7</td></tr>
+<tr><td><b>Le MLS</b></td><td>Définition du cours : décision sur les couches 1 à 4, sans toucher la trame, sans routage dynamique. En pratique, les switchs L3 modernes font OSPF/BGP, et un MLS qui route réécrit bien les MAC et décrémente le TTL.</td><td>La définition du prof en entretien, la nuance si l'on creuse</td></tr>
+<tr><td><b>STP</b></td><td>Traité par les <b>commutateurs</b> (fonction de pont). Une carte réseau de poste reçoit les BPDU et les ignore.</td><td>Commutateurs</td></tr>
+<tr><td><b>Jumbo frames</b></td><td>Ce qui est divisé par ~6, c'est le <b>nombre de trames</b> et la charge CPU. Le support précise l'usage réel : <b>SAN/NAS local uniquement</b>.</td><td>Parler de charge CPU et d'interruptions, pas de « vitesse × 6 »</td></tr>
+<tr><td><b>Modes de commutation</b></td><td>Le cours en donne 3. Il existe un 4ᵉ classique, <b>fragment-free</b> (64 octets), qui écarte les trames de collision.</td><td>Citer les 3, mentionner le 4ᵉ en bonus</td></tr>
+</tbody></table></div>
+
+<h3 id="ch16-quizz">16.1 Les questions de révision posées sur les planches</h3>
+<p>Le support <code>Network-reminders</code> se termine par une planche de questions ouvertes. Ce sont
+les plus susceptibles de revenir telles quelles :</p>
+<div class="tw"><table>
+<thead><tr><th>Thème</th><th>Questions posées</th></tr></thead>
+<tbody>
+<tr><td><b>Hub &amp; CSMA/CD</b></td><td>Comment ça marche ? Half ou full duplex ? Quelles autres technologies de niveau 2 partagent le média (topologie en bus) ?</td></tr>
+<tr><td><b>Switch</b></td><td>Y a-t-il des collisions ? Half ou full duplex ? Qu'est-ce que l'auto-négociation ? Combien de switches en cascade ?</td></tr>
+<tr><td><b>VLAN</b></td><td>Quel est l'objectif principal ? Qu'est-ce que 802.1Q ? Quels problèmes de sécurité ?</td></tr>
+<tr><td><b>IP / Ethernet</b></td><td>Broadcast IP et multicast IP : en quoi diffèrent-ils de leurs équivalents Ethernet ?</td></tr>
+</tbody></table></div>
+<div class="callout warn"><div class="t">Deux de ces questions ne sont pas couvertes par la séance enregistrée</div>
+« Quelles <b>autres technologies de niveau 2 partagent le média</b> ? » (réponse attendue : les
+technologies à topologie en bus — Token Ring, ARCNET, le Wi-Fi qui partage le média radio, le
+10BASE2/5 sur câble coaxial) et la comparaison <b>broadcast/multicast IP contre Ethernet</b>. Prépare-les
+séparément : elles figurent au support mais n'ont pas été traitées à l'oral.
+</div>
+
+<!-- ===================================================================== -->
+<!-- ===================================================================== -->
+<h2 id="ch17"><span class="num">17.</span> Glossaire des sigles</h2>
+<p class="lead">Tous les sigles employés dans la séance, développés et traduits. L'examen se déroule
+<b>sans documents</b> : un sigle dont on ne sait pas ce qu'il signifie est un point perdu, et un
+développé qu'on ne sait pas abréger aussi.</p>
+
+<h3 id="ch17-support">17.1 Support physique et câblage</h3>
+<div class="tw"><table>
+<thead><tr><th>Sigle</th><th>Développé</th><th>Ce que c'est</th></tr></thead>
+<tbody>
+<tr><td><b>TP</b></td><td><i>Twisted Pair</i></td><td>Paire torsadée</td></tr>
+<tr><td><b>UTP</b></td><td><i>Unshielded Twisted Pair</i></td><td>Paire non blindée, non écrantée</td></tr>
+<tr><td><b>FTP</b></td><td><i>Foiled Twisted Pair</i></td><td>Paire écrantée par une feuille d'aluminium</td></tr>
+<tr><td><b>S/FTP</b></td><td><i>Shielded / Foiled Twisted Pair</i></td><td>Blindage général + écrantage de chaque paire — la référence actuelle</td></tr>
+<tr><td><b>SF/UTP</b></td><td><i>Shielded and Foiled / UTP</i></td><td>Câble blindé et écranté, paires nues</td></tr>
+<tr><td><b>PoE</b></td><td><i>Power over Ethernet</i></td><td>Alimentation électrique par le câble réseau (48 V)</td></tr>
+<tr><td><b>4PPoE</b></td><td><i>4-Pair PoE</i></td><td>PoE sur les 4 paires (802.3bt)</td></tr>
+<tr><td><b>SFP</b></td><td><i>Small Form-factor Pluggable</i></td><td>Module optique amovible, 4 Gb/s</td></tr>
+<tr><td><b>QSFP</b></td><td><i>Quad Small Form-factor Pluggable</i></td><td>4 × 10 Gb/s</td></tr>
+<tr><td><b>GBIC</b></td><td><i>GigaBit Interface Converter</i></td><td>Ancien nom du SFP (« mini-GBIC »)</td></tr>
+<tr><td><b>PC / APC</b></td><td><i>Physical Contact / Angled PC</i></td><td>Types de polissage des connecteurs optiques</td></tr>
+<tr><td><b>RJ45</b></td><td><i>Registered Jack 45</i></td><td>Connecteur Ethernet cuivre</td></tr>
+<tr><td><b>MDI / MDI-X</b></td><td><i>Medium Dependent Interface (Crossed)</i></td><td>Brochage droit / croisé ; <b>Auto-MDIX</b> = détection automatique</td></tr>
+</tbody></table></div>
+
+<h3 id="ch17-carte">17.2 Carte réseau, trame et capture</h3>
+<div class="tw"><table>
+<thead><tr><th>Sigle</th><th>Développé</th><th>Ce que c'est</th></tr></thead>
+<tbody>
+<tr><td><b>NIC</b></td><td><i>Network Interface Card</i></td><td>La carte réseau</td></tr>
+<tr><td><b>MAC</b></td><td><i>Media Access Control</i></td><td>Adresse physique sur 48 bits</td></tr>
+<tr><td><b>OUI</b></td><td><i>Organizationally Unique Identifier</i></td><td>Les 3 premiers octets d'une MAC : le constructeur</td></tr>
+<tr><td><b>U/L</b></td><td><i>Universal / Local</i></td><td>Bit indiquant si l'adresse est attribuée par l'IEEE ou forgée localement</td></tr>
+<tr><td><b>I/G</b></td><td><i>Individual / Group</i></td><td>Bit indiquant unicast (octet pair) ou multicast (octet impair)</td></tr>
+<tr><td><b>SFD</b></td><td><i>Start Frame Delimiter</i></td><td>Le <code>10101011</code> qui clôt le préambule</td></tr>
+<tr><td><b>FCS</b></td><td><i>Frame Check Sequence</i></td><td>Les 4 octets de contrôle d'erreur en fin de trame</td></tr>
+<tr><td><b>CRC</b></td><td><i>Cyclic Redundancy Check</i></td><td>L'algorithme du FCS (CRC-32)</td></tr>
+<tr><td><b>MTU</b></td><td><i>Maximum Transmission Unit</i></td><td>Charge utile maximale : 1500 o., 9000 en jumbo</td></tr>
+<tr><td><b>FLP</b></td><td><i>Fast Link Pulse</i></td><td>Les 16 impulsions de l'auto-négociation (802.3u)</td></tr>
+<tr><td><b>MII</b></td><td><i>Media Independent Interface</i></td><td>L'API noyau de pilotage du contrôleur Ethernet</td></tr>
+<tr><td><b>NDIS</b></td><td><i>Network Driver Interface Specification</i></td><td>L'équivalent côté Windows</td></tr>
+<tr><td><b>CSMA/CD</b></td><td><i>Carrier Sense Multiple Access with Collision Detection</i></td><td>Méthode d'accès du média partagé filaire (hub)</td></tr>
+<tr><td><b>CSMA/CA</b></td><td><i>… with Collision Avoidance</i></td><td>Variante du Wi-Fi : on évite, faute de pouvoir détecter</td></tr>
+</tbody></table></div>
+
+<h3 id="ch17-commutation">17.3 Commutation et VLANs</h3>
+<div class="tw"><table>
+<thead><tr><th>Sigle</th><th>Développé</th><th>Ce que c'est</th></tr></thead>
+<tbody>
+<tr><td><b>CAM</b></td><td><i>Content Addressable Memory</i></td><td>Mémoire adressée par le contenu : on donne la MAC, elle rend le port</td></tr>
+<tr><td><b>BCAM / TCAM</b></td><td><i>Binary / Ternary CAM</i></td><td>Recherche sur contenu exact / partiel (la TCAM permet les ACL en matériel)</td></tr>
+<tr><td><b>MLS</b></td><td><i>Multi-Layer Switch</i></td><td>Commutateur décidant sur les couches 1 à 4</td></tr>
+<tr><td><b>EAR</b></td><td>Équipement Actif de Réseau</td><td>Terme français du cours : switch, routeur, borne, pare-feu</td></tr>
+<tr><td><b>VLAN</b></td><td><i>Virtual Local Area Network</i></td><td>Réseau local virtuel</td></tr>
+<tr><td><b>TPID</b></td><td><i>Tag Protocol Identifier</i></td><td>Les 2 premiers octets du tag 802.1Q : <code>0x8100</code></td></tr>
+<tr><td><b>PRI / PCP</b></td><td><i>Priority Code Point</i></td><td>Les 3 bits de priorité du tag (802.1p)</td></tr>
+<tr><td><b>CFI / DEI</b></td><td><i>Canonical Format Indicator / Drop Eligible Indicator</i></td><td>Le bit dit « <i>Token Ring encapsulation flag</i> » sur la planche</td></tr>
+<tr><td><b>ISL</b></td><td><i>Inter Switch Link</i></td><td>Le prédécesseur propriétaire Cisco de 802.1Q</td></tr>
+<tr><td><b>DTP</b></td><td><i>Dynamic Trunking Protocol</i></td><td>Négociation automatique de trunk — vecteur de l'attaque n° 2</td></tr>
+<tr><td><b>VTP</b></td><td><i>VLAN Trunking Protocol</i></td><td>Propagation de la base VLAN entre switches Cisco</td></tr>
+<tr><td><b>STP</b></td><td><i>Spanning Tree Protocol</i></td><td>Prévention des boucles de niveau 2 (802.1d)</td></tr>
+<tr><td><b>BPDU</b></td><td><i>Bridge Protocol Data Unit</i></td><td>Les trames de contrôle du Spanning Tree</td></tr>
+<tr><td><b>LAG</b></td><td><i>Link AGgregation</i></td><td>Agrégation de liens physiques en un lien logique</td></tr>
+<tr><td><b>LACP</b></td><td><i>Link Aggregation Control Protocol</i></td><td>Le protocole de négociation du LAG (802.3ad / 802.1AX)</td></tr>
+<tr><td><b>VSS</b></td><td><i>Virtual Switching System</i></td><td>Technologie d'empilement Cisco, comme StackWise</td></tr>
+<tr><td><b>ACL</b></td><td><i>Access Control List</i></td><td>Règles de filtrage sur un équipement Cisco</td></tr>
+<tr><td><b>SDN</b></td><td><i>Software Defined Network</i></td><td>Séparation des plans données / contrôle / gestion</td></tr>
+</tbody></table></div>
+
+<h3 id="ch17-wifi">17.4 Wi-Fi, services et sécurité</h3>
+<div class="tw"><table>
+<thead><tr><th>Sigle</th><th>Développé</th><th>Ce que c'est</th></tr></thead>
+<tbody>
+<tr><td><b>AP</b></td><td><i>Access Point</i></td><td>Point d'accès Wi-Fi (mode Master)</td></tr>
+<tr><td><b>SSID</b></td><td><i>Service Set Identifier</i></td><td>Le nom du réseau Wi-Fi</td></tr>
+<tr><td><b>BSS / IBSS</b></td><td><i>(Independent) Basic Service Set</i></td><td>Cellule avec AP / sans AP (mode ad-hoc)</td></tr>
+<tr><td><b>OLSR / AODV</b></td><td><i>Optimized Link State Routing / Ad hoc On-demand Distance Vector</i></td><td>Protocoles de routage des réseaux maillés (802.11s)</td></tr>
+<tr><td><b>UTM</b></td><td><i>Unified Threat Management</i></td><td>Boîtier regroupant pare-feu, IPS, antivirus, proxy et VPN</td></tr>
+<tr><td><b>IDS / NIDS / HIDS</b></td><td><i>(Network / Host) Intrusion Detection System</i></td><td>Détection d'intrusion réseau / sur l'hôte</td></tr>
+<tr><td><b>SAN / NAS</b></td><td><i>Storage Area Network / Network Attached Storage</i></td><td>Stockage en réseau — la cible des jumbo frames</td></tr>
+<tr><td><b>VoIP / ToIP</b></td><td><i>Voice / Telephony over IP</i></td><td>Téléphonie sur IP, alimentée en PoE</td></tr>
+<tr><td><b>IPBX</b></td><td><i>IP Private Branch eXchange</i></td><td>Autocommutateur téléphonique IP (ex. Asterisk)</td></tr>
+<tr><td><b>LoRaWAN</b></td><td><i>Long Range Wide Area Network</i></td><td>Réseau IoT longue portée — la passerelle du toit de l'école</td></tr>
+<tr><td><b>IoT</b></td><td><i>Internet of Things</i></td><td>Objets connectés</td></tr>
+</tbody></table></div>
+
+<div class="exam"><div class="t">Les pièges de sigles voisins</div>
+<ul style="margin-bottom:0">
+<li><b>802.3ad</b> = agrégation de liens · <b>802.3af</b> = PoE. Une lettre d'écart, deux sujets sans rapport.</li>
+<li><b>LAG</b> (agrégation) ≠ <b>trunk 802.1Q</b> (port tagué). Le mot « trunk » désigne les deux selon le contexte.</li>
+<li><b>DTP</b> (négociation de trunk) ≠ <b>VTP</b> (propagation des VLANs) ≠ <b>CDP</b> (découverte de voisins).</li>
+<li><b>FCS</b> est le champ, <b>CRC</b> est l'algorithme qui le calcule.</li>
+<li><b>SFP</b> est le module, <b>GBIC</b> son ancien nom, <b>QSFP</b> la version à 4 canaux.</li>
+<li><b>CSMA/CD</b> = filaire (détection) · <b>CSMA/CA</b> = Wi-Fi (évitement).</li>
+</ul>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="qcm-sec"><span class="num">18.</span> QCM — <span id="count-badge" class="badge acc"></span></h2>
+<p>Uniquement des questions portant sur <b>ce qui a été dit dans cette séance</b>. Une question à la fois,
+ordre des questions et des propositions tiré au hasard, correction expliquée immédiatement.</p>
+<div id="qcm"></div>
+
+  </main>
+</div>
+
+<button id="top" title="Haut de page">↑</button>
+<script src="data/qcm-seance01.js?v=15"></script>
+<script src="assets/app.js?v=15"></script>
+<script>initQCM(window.QCM_DATA, window.QCM_CHAPTERS, 'seance01');</script>
+</body>
+</html>
