@@ -1,0 +1,2233 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cours en amphi — séance 2 (INF5243) | Révisions S9</title>
+<link rel="stylesheet" href="assets/core.css?v=15">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><span class="dot"></span> Cours en amphi — séance 2 <small>· INF5243</small></div>
+  <div class="spacer"></div>
+  <input id="search" type="search" placeholder="Rechercher dans tous les chapitres…  (Ctrl+K)">
+  <a class="home" href="index.html">← Accueil</a>
+  <a class="home" href="transcription-inf5243-seance-02.html">Transcription →</a>
+  <button class="btn ghost" onclick="toggleTheme()" title="Thème clair / sombre">◐</button>
+  <button class="btn ghost" onclick="window.print()" title="Imprimer / PDF">⎙</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar"><h4>Chapitres</h4><div id="toc"></div></nav>
+  <main class="content">
+
+<h1>Séance 2 — du commutateur au portail captif : tout ce qui a été dit</h1>
+<p class="lead">
+Fiche construite en croisant <b>trois sources</b> : les <b>5 enregistrements de la journée</b>
+(4 h 34 de transcription verbatim), la version <b>enrichie</b> du support officiel
+<code>Network-reminders</code> de Richard Rey — 54 planches accompagnées cette fois de leurs
+<b>notes de conférencier</b> —, et le <b>sujet du lab NAC / Alcasar</b> à rendre. Elle ne contient que
+ce qui a réellement été traité, avec les chiffres et les formulations de l'enseignant.
+</p>
+
+<div class="callout def"><div class="t">Le fil conducteur de la journée</div>
+La séance part du <b>commutateur</b> (là où s'était arrêtée la séance 1) et remonte toute la pile
+jusqu'au <b>cadre légal</b> : sécuriser un switch → sortir du LAN (IP, NAT, routage) → identifier une
+conversation (socket, TCP) → nommer (DNS) → chiffrer (TLS) → et enfin <b>imputer</b> les connexions à
+une personne physique, ce que la loi française impose. Le dernier maillon — le <b>NAC</b> — est
+exactement l'objet du lab à rendre.
+</div>
+
+<div class="callout warn"><div class="t">Ce qui a été explicitement annoncé pour la suite</div>
+<ul style="margin-bottom:0">
+<li>Le <b>pare-feu</b> fait l'objet du cours de la semaine prochaine — il n'y aura donc pas de lab dessus.</li>
+<li><b>EDR</b>, <b>audit</b> et <b>pentest</b> sont annoncés pour « demain » ; les <b>listes noires DNS</b>
+et les <b>listes noires de reverse proxy</b> découvertes dans Alcasar y servent d'introduction.</li>
+<li>Le lab <b>NAC / Alcasar</b> est à rendre <b>le lendemain matin</b> sur Moodle, au format
+<code>LAB-NAC-vos_noms.odt</code>. « Lisez bien la doc, chaque mot du lab est important. »</li>
+<li>Le Moodle a été <b>wipé</b> : les supports sont re-déposés au fur et à mesure.</li>
+</ul>
+</div>
+
+<div class="card">
+  <h4>Comment utiliser cette fiche</h4>
+  <ul>
+    <li>Les encadrés <span class="badge b2">Piège d'examen</span> marquent les confusions que l'enseignant a signalées lui-même, ou que le quiz du matin a produites.</li>
+    <li>Le <b>chapitre 22</b> reprend le <b>quiz réellement passé ce matin</b>, ses 13 questions et ses bonnes réponses.</li>
+    <li>Le <b>chapitre 23</b> développe les <b>sigles</b> de la journée : l'examen se déroule sans documents.</li>
+    <li>Le <b>chapitre 24</b> est la <b>mémo express</b> : chiffres, tableaux attaque → parade, plans de réponse.</li>
+  </ul>
+  <p style="margin-bottom:0"><span class="badge acc">Sources</span>
+  <a href="transcription-inf5243-seance-02.html">transcription-inf5243-seance-02.html</a> ·
+  <code>Network-reminders.pdf</code> (version enrichie, 54 planches + notes) ·
+  <code>Lab - NAC.odt</code> · <code>alcasar-3.8.0-installation-fr.pdf</code>.</p>
+</div>
+
+<div class="callout"><div class="t">Ce que la version enrichie du support apporte par rapport à la séance 1</div>
+Le <code>Network-reminders.pdf</code> déposé aujourd'hui contient le <b>même jeu de 54 planches</b>, mais
+doublé : la seconde moitié du PDF ajoute les <b>notes de conférencier en français</b> sous chaque
+planche. C'est là que se trouvent les éléments qui n'étaient nulle part ailleurs : l'historique daté du
+PoE, les seuils de perte optique en dB, la définition exacte des pertes d'insertion et de retour, les
+dates de normalisation Ethernet (802.3u / ab / an), le détail du contrôle de flux TCP, et les effets de
+bord juridiques du CGNAT. Tout cela est intégré ci-dessous.
+</div>
+
+<h2 id="ch1"><span class="num">1.</span> La trame Ethernet : les quatre chiffres à ne jamais confondre</h2>
+
+<p>C'est le point le plus piégeux de toute la matière, et il est tombé <b>dès le quiz du matin</b>. Quatre
+nombres circulent — <b>60</b>, <b>64</b>, <b>1514</b>, <b>1518</b> — et ils désignent tous une longueur de
+trame Ethernet. Ils sont tous justes : ils ne comptent simplement pas les mêmes champs.</p>
+
+<h3 id="ch1-champs">1.1 Structure exacte de la trame</h3>
+
+<div class="tw"><table>
+<thead><tr><th>Champ</th><th>Taille</th><th>Rôle</th><th>Dans 1514 ?</th><th>Dans 1518 ?</th></tr></thead>
+<tbody>
+<tr><td>Préambule</td><td>7 octets</td><td>Suite de <code>10101010</code> : synchronisation de l'horloge de la carte réceptrice</td><td>non</td><td>non</td></tr>
+<tr><td>SFD (<i>Start Frame Delimiter</i>)</td><td>1 octet</td><td><code>10101011</code> — le double 1 final marque le début réel de la trame</td><td>non</td><td>non</td></tr>
+<tr><td>@MAC destination</td><td>6 octets</td><td>Placée en tête pour que le récepteur décide <b>immédiatement</b> s'il traite la trame</td><td>oui</td><td>oui</td></tr>
+<tr><td>@MAC source</td><td>6 octets</td><td><b>Toujours unicast.</b> C'est sur elle que le switch apprend</td><td>oui</td><td>oui</td></tr>
+<tr><td>Frame type / EtherType</td><td>2 octets</td><td>Protocole de la couche supérieure : <code>0x0800</code> = IPv4, <code>0x0806</code> = ARP, <code>0x8035</code> = RARP, <code>0x86DD</code> = IPv6</td><td>oui</td><td>oui</td></tr>
+<tr><td>Données</td><td>46 à 1500 octets</td><td>Le paquet de niveau 3. Le plafond de 1500 est <b>arbitraire</b> : il empêche une station de monopoliser le support</td><td>oui</td><td>oui</td></tr>
+<tr><td>Bourrage (<i>padding</i>)</td><td>0 à 46 octets</td><td>Ajouté <b>seulement si</b> les données ne suffisent pas à atteindre la taille minimale</td><td>oui</td><td>oui</td></tr>
+<tr><td>FCS (<i>Frame Check Sequence</i>)</td><td>4 octets</td><td>CRC calculé sur adresses + type + données. <b>Jamais affiché</b> par les analyseurs de trames</td><td><b>non</b></td><td><b>oui</b></td></tr>
+</tbody>
+</table></div>
+
+<div class="exam"><div class="t">Piège d'examen — la réponse attendue dépend de la question posée</div>
+<ul style="margin-bottom:6px">
+<li><b>« Longueur maximale d'une trame Ethernet ? » → 1518 octets.</b> C'est la réponse cochée comme
+correcte au quiz du 1<sup>er</sup> septembre. On compte tout <b>sauf</b> le préambule et le SFD, FCS inclus.</li>
+<li><b>« Longueur minimale d'une trame Ethernet ? » → 60 octets</b> hors FCS, <b>64 octets</b> FCS inclus.
+Le QCM de 4<sup>e</sup> année attendait <b>60</b>, avec 64 en distracteur.</li>
+<li><b>1514</b> = maximum <b>hors FCS</b>. C'est ce que la planche du support affiche
+(« Maximum 1514 bytes ») et ce que montre Wireshark, puisque la carte réseau retire le FCS avant de
+remonter la trame au système.</li>
+</ul>
+<b>Formulation robuste à écrire en copie :</b> « de <b>64 à 1518 octets</b> FCS compris, soit
+<b>60 à 1514 octets</b> tels que les affiche un analyseur ; préambule et SFD (8 octets) ne sont jamais
+comptés ».
+</div>
+
+<div class="callout danger"><div class="t">Incohérence interne au support officiel — à connaître</div>
+La planche 11 affiche « <b>Minimum 60 bytes / Maximum 1514 bytes</b> », alors que ses propres notes de
+conférencier écrivent « minimum <b>64</b> octets […] préambule et FCS non compris ». Les deux ne peuvent
+pas être vraies en même temps : 64 n'a de sens qu'<b>avec</b> le FCS. Si la question tombe sous forme
+ouverte, écrire les deux conventions et dire laquelle on retient — c'est ce qui distingue une bonne copie.
+</div>
+
+<h3 id="ch1-padding">1.2 Le bourrage, et pourquoi il existe</h3>
+
+<div class="callout def"><div class="t">Définition</div>
+Le <b>bourrage</b> (<i>padding</i>) est le remplissage ajouté par la carte réseau émettrice lorsque les
+données utiles ne suffisent pas à atteindre la taille minimale de trame. Il n'est <b>jamais</b> ajouté si
+les données font déjà 46 octets ou plus.
+</div>
+
+<p>La raison historique est la <b>détection de collision</b> sur un support partagé : une trame doit être
+assez longue pour que l'émetteur soit encore en train d'émettre au moment où l'écho d'une collision lui
+revient. Trop courte, la collision passerait inaperçue et la trame serait perdue silencieusement.</p>
+
+<div class="callout danger"><div class="t">Shadow Ethernet — l'attaque par le bourrage</div>
+La norme dit qu'il faut <b>remplir</b> ; elle ne dit pas <b>avec quoi</b>. Rien n'oblige à mettre des zéros.
+Un attaquant qui contrôle la pile d'émission peut donc écrire <b>ce qu'il veut</b> dans les octets de
+bourrage : c'est le <b>Shadow Ethernet</b>, un canal caché de niveau 2.
+<ul style="margin-bottom:0">
+<li><b>Débit</b> : jusqu'à 46 octets par trame courte — dérisoire, mais suffisant pour exfiltrer une clé,
+un mot de passe ou un ordre de commande.</li>
+<li><b>Furtivité</b> : les analyseurs affichent le bourrage comme du remplissage et ne le montrent
+généralement pas ; les pare-feu de niveau 3 ne le voient jamais, puisqu'ils lisent le paquet IP, pas la
+trame.</li>
+<li><b>Détection</b> : un bourrage qui n'est pas uniformément nul est déjà une anomalie. C'est ce que
+cherche une sonde de niveau 2.</li>
+<li><b>Parade</b> : réécriture du bourrage par l'équipement de bordure, ou sonde L2 qui contrôle
+l'entropie des octets de padding.</li>
+</ul>
+</div>
+
+<div class="example"><div class="t">Exemple concret</div>
+Une requête <b>ARP</b> ne transporte que 28 octets utiles. La carte doit donc ajouter <b>18 octets</b> de
+bourrage à chaque requête. Une machine qui interroge son réseau en ARP émet des dizaines de trames par
+minute : autant de canaux de fuite de 18 octets, sur un protocole que personne n'inspecte.
+</div>
+
+<h3 id="ch1-mac">1.3 L'adresse MAC : lecture des bits U/L et I/G</h3>
+
+<ul class="key-points">
+<li><b>Normalisée par l'IEEE</b> — c'est la réponse du quiz. L'IETF normalise IP, TCP et les protocoles applicatifs ; l'IEEE normalise Ethernet, le Wi-Fi, Bluetooth, ZigBee, WiMAX.</li>
+<li><b>48 bits = 6 octets</b>, dont les <b>3 premiers</b> forment l'<b>OUI</b> (<i>Organizational Unit Identifier</i>) attribué au constructeur, et les 3 derniers le numéro de série.</li>
+<li><b>Écriture conventionnelle</b> — <code>08-00-02-15-60-AA</code> <b>ou</b> <code>08:00:02:15:60:AA</code>. Les deux notations sont valables : c'est la réponse du quiz.</li>
+<li><b>Bit U/L</b> — 0 = adresse <b>universelle</b> (gérée par l'IEEE), 1 = adresse <b>locale</b> (forgée localement).</li>
+<li><b>Bit I/G</b> — 0 = adresse <b>individuelle</b> (unicast) → le premier octet est <b>pair</b> ; 1 = adresse de <b>groupe</b> (multicast) → premier octet <b>impair</b>.</li>
+<li><b>Broadcast</b> — <code>FF:FF:FF:FF:FF:FF</code>, les 48 bits à 1. Question du quiz.</li>
+</ul>
+
+<div class="callout"><div class="t">Quand la carte remonte-t-elle une trame au système ?</div>
+Une carte Ethernet ne donne la trame au système que si l'adresse MAC destination est <b>la sienne</b>.
+Trois exceptions : les trames de <b>broadcast</b>, les trames <b>multicast</b> dont l'adresse est
+pré-enregistrée dans la carte (trames constructeur), et le <b>mode promiscuous</b>, qui désactive
+entièrement ce filtre.
+</div>
+
+<div class="example"><div class="t">Exemple concret — reconnaître une machine virtuelle à sa MAC</div>
+Les OUI de virtualisation sont à connaître par cœur : <code>08:00:27</code> = <b>VirtualBox</b> ;
+<code>00:50:56</code>, <code>00:1C:14</code> et <code>00:0C:29</code> = <b>VMware</b>. Voir une de ces
+adresses dans une capture, c'est savoir immédiatement qu'on parle à une VM — information précieuse en
+audit comme en réponse à incident.
+</div>
+
+<h3 id="ch1-8021x">1.4 802.1X en rappel</h3>
+<p><b>802.1X</b> est le contrôle d'accès au réseau <b>au niveau du port</b>. Tant que le supplicant ne
+s'est pas authentifié auprès de l'authentificateur (le switch ou le point d'accès), lequel interroge un
+serveur <b>RADIUS</b>, le port ne laisse passer que le trafic d'authentification (EAPOL). Ce mécanisme
+réapparaît deux fois dans la journée : au <b>chapitre 20</b> (le pare-feu enrichit ses journaux en
+demandant à l'AD qui est authentifié sur telle MAC/IP) et au <b>chapitre 21</b> (les invités, qui ne sont
+pas dans l'AD, doivent passer par un NAC à la place).</p>
+
+<ul class="key-points">
+<li><b>Supplicant</b> — le poste qui demande l'accès.</li>
+<li><b>Authenticator</b> — le switch ou le point d'accès, qui relaie sans décider.</li>
+<li><b>Serveur d'authentification</b> — RADIUS, adossé à l'annuaire (LDAP / Active Directory).</li>
+<li><b>À retenir</b> — 802.1X authentifie <b>un compte</b>, pas une machine ; c'est ce qui permet ensuite d'imputer une connexion à une personne.</li>
+</ul>
+
+<h2 id="ch2"><span class="num">2.</span> Le commutateur : vocabulaire, CAM et filtrage de niveau 2</h2>
+
+<h3 id="ch2-vocab">2.1 Le vocabulaire qu'il faut employer</h3>
+
+<div class="tw"><table>
+<thead><tr><th>Terme</th><th>Ce que c'est</th><th>Ce qu'il ne faut pas dire</th></tr></thead>
+<tbody>
+<tr><td><b>Commutateur</b> (<i>switch</i>)</td><td>Équipement de niveau 2 qui aiguille une trame vers le seul port utile</td><td>« hub intelligent »</td></tr>
+<tr><td><b>Matrice de commutation</b></td><td>Le circuit qui relie physiquement les ports entre eux. C'est <b>elle</b> qu'on paye : le prix d'un switch vient du nombre de trames commutables <b>simultanément</b></td><td>confondre avec le nombre de ports</td></tr>
+<tr><td><b>Table CAM</b></td><td><i>Content Addressable Memory</i> : mémoire adressable par le contenu. On lui donne une <b>@MAC</b>, elle rend un <b>numéro de port</b> en <b>un cycle d'horloge</b></td><td>« table ARP du switch » — l'ARP est de niveau 3</td></tr>
+<tr><td><b>TCAM</b></td><td><i>Ternary CAM</i> : même principe, mais chaque bit peut valoir 0, 1 ou « indifférent ». Indispensable pour comparer des <b>préfixes</b> (ACL, routage) et non des valeurs exactes</td><td>l'employer pour la commutation MAC pure</td></tr>
+<tr><td><b>MLS</b></td><td><i>Multi-Layer Switch</i> : commute en L2 <b>et</b> route en L3 dans la matrice, à la vitesse du fil</td><td>« routeur »</td></tr>
+<tr><td><b>Aging time</b></td><td>Durée de vie d'une entrée CAM en l'absence de trafic (typiquement 300 s)</td><td>—</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout"><div class="t">Ce qui distingue vraiment CAM et TCAM</div>
+La CAM répond à « <b>cette adresse exacte, quel port ?</b> ». La TCAM répond à « <b>quelle est la règle
+la plus spécifique qui correspond à ce motif ?</b> » — c'est ce dont on a besoin pour une ACL
+(<code>192.168.1.0/24 → deny</code>) ou pour un <i>longest prefix match</i> de routage. La TCAM coûte
+beaucoup plus cher en silicium et en consommation : c'est pourquoi le nombre d'ACL supportées par un
+switch est toujours limité et annoncé dans la fiche produit.
+</div>
+
+<h3 id="ch2-modes">2.2 Les modes de commutation</h3>
+
+<div class="tw"><table>
+<thead><tr><th>Mode</th><th>Ce que le switch attend avant de réémettre</th><th>Latence</th><th>Trames corrompues</th></tr></thead>
+<tbody>
+<tr><td><b>Store and forward</b></td><td>La <b>trame entière</b>, puis il vérifie le FCS</td><td>≈ 5 à 50 µs</td><td>éliminées</td></tr>
+<tr><td><b>Cut-through</b></td><td>Les <b>6 premiers octets</b> (l'@MAC destination) et il commute aussitôt</td><td>≈ 1 à 10 µs</td><td><b>propagées</b></td></tr>
+<tr><td><b>Fragment-free</b></td><td>Les <b>64 premiers octets</b> — au-delà, une collision n'est plus possible</td><td>intermédiaire</td><td>écarte celles issues d'une collision</td></tr>
+<tr><td><b>Adaptatif</b></td><td>Cut-through, puis bascule en store and forward si le taux d'erreur monte</td><td>variable</td><td>selon le mode courant</td></tr>
+</tbody>
+</table></div>
+
+<div class="exam"><div class="t">Piège d'examen</div>
+Le <b>cut-through</b> est le plus rapide mais il <b>relaie les trames corrompues</b> : il ne peut pas
+vérifier le FCS, qu'il n'a pas encore lu quand il commute. Le <b>store and forward</b> est le seul qui
+garantisse l'intégrité. Ne pas inverser les latences : le mode rapide est celui qui lit le <b>moins</b>.
+</div>
+
+<h3 id="ch2-cam-attaque">2.3 La CAM comme surface d'attaque</h3>
+
+<div class="steps" id="anim-camflood">
+  <div class="step"><b>Étape 1 — État normal.</b> La CAM associe chaque @MAC connue à son port. Une trame destinée à MAC_A ne sort que sur le port 3.</div>
+  <div class="step"><b>Étape 2 — L'attaquant sature.</b> Il émet des milliers de trames avec des <b>@MAC source aléatoires</b>. Le switch apprend consciencieusement chacune d'elles.</div>
+  <div class="step"><b>Étape 3 — Débordement.</b> La CAM est pleine. Les entrées légitimes sont évincées.</div>
+  <div class="step"><b>Étape 4 — Repli en inondation.</b> Ne sachant plus où est MAC_A, le switch <b>inonde</b> (<i>unknown unicast flooding</i>). L'attaquant reçoit tout le trafic : le switch s'est comporté comme un hub.</div>
+  <div class="step"><b>Parade — MAC locking / port security.</b> On limite le nombre d'@MAC apprises par port, et on ferme ou on alerte au-delà.</div>
+</div>
+<div class="qactions" style="margin-top:10px">
+  <button class="btn primary" onclick="playSteps('anim-camflood')">▶ Lancer l'animation</button>
+  <button class="btn ghost" onclick="resetSteps('anim-camflood')">↻ Réinitialiser</button>
+</div>
+
+<h3 id="ch2-ebtables">2.4 Filtrer en niveau 2 : ebtables, pas iptables</h3>
+
+<div class="callout danger"><div class="t">Le point que l'enseignant a présenté comme éliminatoire en entretien</div>
+Répondre « <b>iptables</b> » à la question « quel est le pare-feu de Linux ? » est une <b>faute</b> —
+présentée comme rédhibitoire dans un entretien ANSSI. Le pare-feu de Linux, c'est <b>Netfilter</b> : le
+module noyau. <code>iptables</code> (et aujourd'hui <code>nftables</code>) n'est que la <b>commande
+d'administration</b> qui écrit ses règles.
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>Outil</th><th>Niveau</th><th>Ce qu'il voit</th><th>Emploi type</th></tr></thead>
+<tbody>
+<tr><td><b>Netfilter</b></td><td>noyau — le moteur</td><td>tout ce qu'on lui déclare</td><td>c'est <b>lui</b> le pare-feu</td></tr>
+<tr><td><code>iptables</code> / <code>nftables</code></td><td>espace utilisateur</td><td>—</td><td>écrire les règles L3/L4 (@IP, ports, états)</td></tr>
+<tr><td><code>ebtables</code></td><td>espace utilisateur</td><td>trames Ethernet</td><td>filtrer sur <b>@MAC</b>, EtherType, tag VLAN — dans un <b>pont</b> (<i>bridge</i>)</td></tr>
+<tr><td><code>arptables</code></td><td>espace utilisateur</td><td>trames ARP</td><td>bloquer l'empoisonnement ARP</td></tr>
+</tbody>
+</table></div>
+
+<div class="example"><div class="t">Exemple concret</div>
+Un pare-feu <b>transparent</b> (bridge, sans adresse IP, invisible pour le réseau) placé devant un
+serveur ne peut pas filtrer avec <code>iptables</code> seul : il doit voir des <b>trames</b>. C'est
+<code>ebtables</code> qui autorise « seule l'@MAC du routeur légitime peut parler à ce port » — un
+filtrage qu'aucune règle de niveau 3 ne sait exprimer.
+</div>
+
+<h2 id="ch3"><span class="num">3.</span> Agréger et empiler : stacking vs LAG</h2>
+
+<div class="tw"><table>
+<thead><tr><th></th><th><b>Stacking</b></th><th><b>LAG</b> / <i>Link Aggregation</i></th></tr></thead>
+<tbody>
+<tr><td>Ce qu'on agrège</td><td>plusieurs <b>châssis</b></td><td>plusieurs <b>liens</b></td></tr>
+<tr><td>Résultat</td><td>N switchs vus comme <b>un seul équipement logique</b>, une seule adresse d'administration, une seule configuration</td><td>N câbles vus comme <b>un seul lien logique</b> de débit cumulé</td></tr>
+<tr><td>Câblage</td><td>câbles <b>propriétaires</b> de stack, en anneau, à l'arrière du châssis</td><td>câbles Ethernet ordinaires</td></tr>
+<tr><td>Norme</td><td><b>aucune</b> — jamais interopérable entre constructeurs</td><td><b>IEEE 802.3ad / 802.1AX</b>, protocole <b>LACP</b></td></tr>
+<tr><td>Apport sécurité</td><td>une seule surface d'administration à durcir, mais un seul point de compromission</td><td>tolérance de panne : la perte d'un lien ne coupe pas le service</td></tr>
+<tr><td>Effet sur STP</td><td>la stack ne présente qu'un pont à STP</td><td>le faisceau ne compte que pour <b>un</b> lien : plus de blocage STP inutile</td></tr>
+</tbody>
+</table></div>
+
+<div class="exam"><div class="t">Piège d'examen</div>
+<b>Stacking = châssis, LAG = liens.</b> Le stacking n'est <b>pas normalisé</b> (on ne mélange pas les
+marques) alors que le LAG l'est (<b>LACP</b>, 802.3ad). Et un LAG ne multiplie pas le débit d'un flux
+unique : la répartition se fait <b>par flux</b> (hachage @MAC/@IP/ports), donc une seule copie de fichier
+reste plafonnée à la vitesse d'un lien.
+</div>
+
+<h2 id="ch4"><span class="num">4.</span> SDN et OpenFlow</h2>
+
+<div class="callout def"><div class="t">Définition</div>
+Le <b>SDN</b> (<i>Software Defined Networking</i>) sépare le <b>plan de contrôle</b> — la décision, « où
+va cette trame ? » — du <b>plan de données</b> — l'exécution, « je la pousse sur ce port ». Le plan de
+contrôle est centralisé dans un <b>contrôleur</b> logiciel ; les équipements ne gardent que le plan de
+données et appliquent les règles qu'on leur pousse.
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>Élément</th><th>Rôle</th></tr></thead>
+<tbody>
+<tr><td><b>Plan de données</b> (<i>data plane</i>)</td><td>Dans l'équipement : appliquer les règles reçues, à la vitesse du fil</td></tr>
+<tr><td><b>Plan de contrôle</b> (<i>control plane</i>)</td><td>Déporté dans le contrôleur : calculer les chemins, décider les politiques</td></tr>
+<tr><td><b>Interface sud</b> (<i>southbound</i>)</td><td>Contrôleur → équipements. C'est là qu'on trouve <b>OpenFlow</b></td></tr>
+<tr><td><b>Interface nord</b> (<i>northbound</i>)</td><td>Applications → contrôleur. API REST : c'est par là qu'un outil de sécurité demande « isole ce port »</td></tr>
+<tr><td><b>ONF</b></td><td><i>Open Networking Foundation</i> — l'organisme qui normalise OpenFlow</td></tr>
+</tbody>
+</table></div>
+
+<ul class="key-points">
+<li><b>L'intérêt sécurité</b> — la réaction devient programmable : une sonde détecte une compromission, appelle l'API nord, et le port est isolé en une seconde sans intervention humaine.</li>
+<li><b>Le risque</b> — le contrôleur devient le <b>point unique de compromission</b> de tout le réseau. Qui tient le contrôleur tient chaque port.</li>
+<li><b>L'autre risque</b> — si le lien vers le contrôleur tombe, les équipements continuent avec leurs dernières règles, mais plus rien n'évolue.</li>
+<li><b>L'abstraction d'administration</b> — c'est le vrai argument commercial : on cesse de configurer 200 switchs un par un, on décrit une politique et le contrôleur la traduit.</li>
+</ul>
+
+<h2 id="ch5"><span class="num">5.</span> Superviser : SNMP</h2>
+
+<div class="callout def"><div class="t">Définition</div>
+<b>SNMP</b> (<i>Simple Network Management Protocol</i>) est le protocole de supervision des équipements
+réseau. Il fonctionne <b>exclusivement en UDP</b> et dans <b>deux sens</b> : le superviseur interroge
+(<i>polling</i>), et l'équipement alerte de lui-même (<i>trap</i>).
+</div>
+
+<div class="tw"><table>
+<thead><tr><th></th><th><b>Polling</b> (interrogation)</th><th><b>Trap</b> (alerte)</th></tr></thead>
+<tbody>
+<tr><td>Qui parle en premier</td><td>le superviseur</td><td>l'<b>équipement</b></td></tr>
+<tr><td>Port</td><td><b>UDP 161</b> (sur l'équipement)</td><td><b>UDP 162</b> (sur le superviseur)</td></tr>
+<tr><td>Rythme</td><td>périodique — toutes les 5 min par exemple</td><td>événementiel — « mon port 12 vient de tomber »</td></tr>
+<tr><td>Défaut</td><td>on ne voit rien entre deux interrogations</td><td>en UDP, une alerte perdue est perdue <b>définitivement</b></td></tr>
+</tbody>
+</table></div>
+
+<div class="exam"><div class="t">Piège d'examen</div>
+<b>161 = polling, 162 = traps</b>, les deux en <b>UDP uniquement</b>. Ne pas les inverser, et ne jamais
+écrire « SNMP sur TCP ». Le moyen mnémotechnique : 161 est le port <b>de l'équipement supervisé</b>
+(on l'appelle), 162 est le port <b>du superviseur</b> (il est appelé).
+</div>
+
+<h3 id="ch5-mib">5.1 MIB et OID</h3>
+<p>Une <b>MIB</b> (<i>Management Information Base</i>) est l'arbre des variables qu'un équipement expose :
+compteurs d'octets par port, température, état des liens, table CAM, table ARP, table de routage. Chaque
+variable est repérée par un <b>OID</b> (<i>Object IDentifier</i>), une suite de nombres pointés. Un
+constructeur ajoute ses propres branches privées à la MIB standard — c'est pourquoi on doit
+<b>importer la MIB du constructeur</b> dans le superviseur pour comprendre ce qu'il raconte.</p>
+
+<div class="callout danger"><div class="t">SNMP est une mine pour l'attaquant</div>
+<ul style="margin-bottom:0">
+<li><b>SNMP v1 et v2c</b> n'ont pour toute authentification qu'une <b>communauté</b> — une chaîne en
+clair, souvent laissée à <code>public</code> (lecture) et <code>private</code> (écriture).</li>
+<li>En lecture seule, un attaquant obtient déjà la <b>cartographie complète</b> du réseau : interfaces,
+table ARP, table de routage, versions logicielles.</li>
+<li>En écriture, il <b>reconfigure</b> l'équipement.</li>
+<li><b>Parade</b> — <b>SNMP v3</b> (authentification et chiffrement), restriction par ACL aux seules
+adresses du superviseur, et un VLAN d'administration séparé.</li>
+</ul>
+</div>
+
+<div class="example"><div class="t">Exemple concret — la détection de point d'accès pirate</div>
+Les points d'accès Wi-Fi remontent en SNMP la liste des <b>SSID qu'ils entendent</b> autour d'eux, en
+plus de ceux qu'ils diffusent : ils servent de radar. Le superviseur compare cette liste au référentiel.
+Un SSID inconnu qui apparaît de façon stable dans un bâtiment, c'est un <b>rogue AP</b> — souvent un
+employé qui a branché sa propre box pour « avoir du réseau », et qui vient de créer un contournement
+complet du pare-feu. Une console commerciale de ce type (le cours cite HP OpenView) se chiffre autour de
+<b>15 000 €</b>.
+</div>
+
+<h2 id="ch6"><span class="num">6.</span> Écouter le réseau : port mirroring et NIDS</h2>
+
+<div class="callout def"><div class="t">Définition</div>
+Le <b>port mirroring</b> (Cisco : <b>SPAN</b>, <i>Switched Port ANalyzer</i>) recopie le trafic d'un
+port, d'un groupe de ports ou d'un VLAN vers un <b>port d'observation</b> sur lequel on branche une
+sonde. <b>RSPAN</b> fait la même chose vers un port situé sur un autre switch, via un VLAN dédié.
+</div>
+
+<ul class="key-points">
+<li><b>Le coût caché</b> — la duplication consomme <b>une place dans la matrice de commutation</b>. Sur un switch chargé, activer un miroir dégrade le débit global.</li>
+<li><b>Le port miroir sature vite</b> — recopier dix ports gigabit vers un seul port gigabit est arithmétiquement impossible : la sonde perd des trames, sans le dire.</li>
+<li><b>La sonde doit être invisible</b> — pas d'adresse IP sur l'interface de capture, câble <b>receive-only</b> si possible. Une sonde qui répond est une sonde qu'on peut attaquer, et une preuve qu'on est surveillé.</li>
+<li><b>Alternative matérielle</b> — le <b>TAP</b> réseau, boîtier passif inséré sur le câble, qui ne consomme rien du switch et ne peut pas être désactivé par une commande.</li>
+</ul>
+
+<div class="tw"><table>
+<thead><tr><th>Sigle</th><th>Où il est placé</th><th>Ce qu'il fait</th></tr></thead>
+<tbody>
+<tr><td><b>NIDS</b></td><td>sur le réseau, derrière un miroir ou un TAP</td><td><b>détecte</b> et alerte, ne bloque pas</td></tr>
+<tr><td><b>NIPS</b></td><td><b>en coupure</b> sur le flux</td><td>détecte <b>et bloque</b> — mais devient un point de panne</td></tr>
+<tr><td><b>HIDS</b></td><td>sur la machine</td><td>surveille fichiers, journaux, processus</td></tr>
+<tr><td><b>EDR</b></td><td>sur la machine, avec accès mémoire</td><td>détection comportementale et réponse ; voir <b>chapitre 19</b> : il lit le clair <b>en mémoire vive</b> au lieu de casser TLS</td></tr>
+</tbody>
+</table></div>
+
+<div class="example"><div class="t">Exemple concret</div>
+<b>Suricata</b> est le NIDS cité en cours. Branché sur un port SPAN, il analyse les flux et déclenche des
+signatures. Placé <b>en coupure</b>, le même logiciel devient un NIPS. La différence n'est pas dans
+l'outil : elle est dans <b>où on le branche</b>.
+</div>
+
+<h2 id="ch7"><span class="num">7.</span> La menace interne : désactivation de ports, MAC locking, DLP</h2>
+
+<p>Toute la sécurité du switch part d'un constat : <b>la menace vient aussi de l'intérieur</b>. Un
+visiteur, un prestataire, un stagiaire ou un employé mécontent a un accès physique aux prises. Trois
+mesures, du plus simple au plus subtil.</p>
+
+<h3 id="ch7-portdisable">7.1 Désactiver les ports inutilisés</h3>
+<p>La mesure la moins chère et la plus efficace : <b>tout port non utilisé est administrativement fermé</b>.
+Brancher un câble dans une prise de salle de réunion ne donne alors rien du tout. La contrainte est
+organisationnelle : il faut un inventaire à jour et une procédure d'ouverture, sinon l'exploitation
+rouvre tout « pour ne pas être embêtée ».</p>
+
+<h3 id="ch7-maclocking">7.2 MAC locking (port security)</h3>
+
+<div class="callout def"><div class="t">Définition</div>
+Le <b>MAC locking</b> (Cisco : <i>port security</i>) fige l'association <b>port ↔ adresse MAC</b>. Le port
+n'accepte plus qu'une @MAC déclarée — ou les N premières apprises, alors mémorisées
+(<i>sticky learning</i>). Toute autre @MAC déclenche une action : alerte, restriction, ou fermeture du port.
+</div>
+
+<div class="callout danger"><div class="t">Et pourquoi ce n'est pas suffisant</div>
+L'adresse MAC est <b>modifiable en une commande</b>, sans privilège particulier au-delà de root :
+<pre><code># couper l'interface, changer l'@MAC, la remonter
+ip link set dev eth0 down
+ip link set dev eth0 address 08:00:27:AA:BB:CC
+ip link set dev eth0 up</code></pre>
+Il suffit donc à l'attaquant de <b>lire l'@MAC autorisée</b> — écrite sur l'étiquette de l'imprimante,
+visible dans une capture, ou récupérée par SNMP — et de la recopier. Le MAC locking <b>ralentit</b>
+l'attaquant opportuniste et journalise la tentative ; il n'arrête pas un attaquant déterminé. La vraie
+réponse est <b>802.1X</b>, qui authentifie un compte et non une étiquette.
+</div>
+
+<div class="exam"><div class="t">Piège d'examen</div>
+Question classique : « le MAC locking protège-t-il contre l'usurpation ? » — <b>Non.</b> Il protège
+contre le <b>MAC flooding</b> (saturation de la CAM) en limitant le nombre d'adresses apprises par port,
+et il fournit une <b>trace</b>. Contre l'usurpation d'une @MAC légitime, il ne peut rien.
+</div>
+
+<h3 id="ch7-dlp">7.3 DLP</h3>
+<p><b>DLP</b> (<i>Data Loss Prevention</i>) désigne les dispositifs qui empêchent une donnée sensible de
+<b>sortir</b> : blocage des ports USB, inspection des pièces jointes de messagerie, marquage des
+documents, détection de motifs (numéros de carte, mentions de classification) dans les flux sortants.
+La difficulté est que le DLP suppose de <b>lire le contenu</b> — d'où le lien direct avec l'inspection
+profonde TLS du <b>chapitre 19</b> : sans déchiffrement, un DLP réseau ne voit rien du HTTPS.</p>
+
+<h2 id="ch8"><span class="num">8.</span> Private VLAN (PVLAN)</h2>
+
+<div class="callout def"><div class="t">Définition</div>
+Un <b>Private VLAN</b> subdivise un VLAN existant pour empêcher les machines qui s'y trouvent de se
+parler <b>entre elles</b>, tout en leur laissant l'accès à une passerelle commune. Le VLAN d'origine
+devient le <b>VLAN primaire</b> ; les subdivisions sont des <b>VLAN secondaires</b>.
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>Type de port</th><th>Peut parler à…</th><th>Ne peut pas parler à…</th><th>Usage type</th></tr></thead>
+<tbody>
+<tr><td><b>Isolé</b> (<i>isolated</i>)</td><td>uniquement aux ports <b>promiscuous</b></td><td>tous les autres ports isolés, <b>y compris entre eux</b></td><td>postes invités, chambres d'hôtel, machines de consultation</td></tr>
+<tr><td><b>Communautaire</b> (<i>community</i>)</td><td>les ports de <b>sa</b> communauté + les promiscuous</td><td>les autres communautés, les isolés</td><td>serveurs d'un même cluster, équipe projet</td></tr>
+<tr><td><b>Promiscuous</b></td><td><b>tout le monde</b></td><td>—</td><td>routeur, pare-feu, serveur DHCP, sonde</td></tr>
+</tbody>
+</table></div>
+
+<div class="example"><div class="t">Exemple concret — d'où vient l'idée</div>
+Le PVLAN est la transposition filaire de l'<b>isolation de clients</b> (<i>Client Isolation</i>, ou
+<i>AP Isolation</i>) du Wi-Fi public : sur un hotspot, tous les téléphones ont une adresse du même
+réseau, mais aucun ne peut joindre le voisin — chacun ne parle qu'à la passerelle. Le PVLAN fait la
+même chose sur des ports cuivre, et c'est <b>exactement</b> ce qu'il faut sur un réseau de consultation
+en libre-service (voir le NAC, chapitre 21).
+</div>
+
+<ul class="key-points">
+<li><b>L'intérêt majeur</b> — on obtient l'isolation <b>sans consommer un VLAN ni un sous-réseau IP par machine</b>. Un hôtel de 400 chambres n'a pas besoin de 400 VLAN.</li>
+<li><b>L'effet sécurité</b> — le vers qui se propage latéralement, le scan de voisinage et l'empoisonnement ARP entre postes deviennent impossibles : les trames ne franchissent pas le switch.</li>
+<li><b>Le trafic doit remonter</b> — puisque tout passe par le port promiscuous, la passerelle ou le pare-feu <b>voit</b> et peut filtrer les échanges qui, autrement, seraient restés invisibles en niveau 2.</li>
+<li><b>La limite</b> — le PVLAN se configure par switch et se propage mal entre constructeurs ; il faut vérifier la prise en charge sur toute la chaîne, y compris sur les liens trunk.</li>
+</ul>
+
+<h2 id="ch9"><span class="num">9.</span> Qui normalise quoi : IEEE, IETF, ISOC, ICANN</h2>
+
+<div class="tw"><table>
+<thead><tr><th>Organisme</th><th>Nom développé</th><th>Ce qu'il produit</th></tr></thead>
+<tbody>
+<tr><td><b>ISOC</b></td><td><i>Internet SOCiety</i></td><td>Association de droit américain créée en <b>janvier 1992</b> par les pionniers de l'Internet ; chapeau juridique et moral de tout l'écosystème</td></tr>
+<tr><td><b>IAB</b></td><td><i>Internet Architecture Board</i></td><td>Supervision de l'architecture et du processus de normalisation</td></tr>
+<tr><td><b>IETF</b></td><td><i>Internet Engineering Task Force</i></td><td>Produit les <b>RFC</b> — normes ouvertes : IP, TCP, UDP, DNS, HTTP…</td></tr>
+<tr><td><b>IESG</b></td><td><i>Internet Engineering Steering Group</i></td><td>Pilotage des groupes de travail de l'IETF</td></tr>
+<tr><td><b>IRTF</b></td><td><i>Internet Research Task Force</i></td><td>Le versant recherche, en amont de la normalisation</td></tr>
+<tr><td><b>IANA</b></td><td><i>Internet Assigned Numbers Authority</i></td><td>Créée en <b>1988</b> : registre des @IP, noms de domaine, numéros de ports, numéros de protocole</td></tr>
+<tr><td><b>ICANN</b></td><td><i>Internet Corporation for Assigned Names and Numbers</i></td><td>Créée en <b>1998</b> ; opère l'IANA et gouverne l'espace de nommage</td></tr>
+<tr><td><b>IEEE</b></td><td><i>Institute of Electrical and Electronics Engineers</i></td><td>Normes de niveaux 1 et 2 : Ethernet <b>802.3</b>, Wi-Fi <b>802.11</b>, Bluetooth <b>802.15.1</b>, ZigBee <b>802.15.4</b>, LLC <b>802.2</b>, VLAN <b>802.1Q</b>, contrôle d'accès <b>802.1X</b></td></tr>
+<tr><td><b>UIT / 3GPP</b></td><td>—</td><td>Télécoms et mobiles : GSM, xG. Avec les constructeurs pour MPLS, ATM, LoRa, Z-Wave, Matter</td></tr>
+</tbody>
+</table></div>
+
+<div class="exam"><div class="t">Piège d'examen — la ligne de partage</div>
+<b>L'IEEE s'arrête à la carte réseau et au commutateur</b> (couches 1 et 2). <b>L'IETF commence au
+paquet IP</b> (couches 3 et au-dessus). L'adresse <b>MAC</b> est donc IEEE ; l'adresse <b>IP</b> est
+IETF ; l'<b>attribution</b> concrète des adresses IP est ICANN/IANA. Trois organismes différents pour
+trois questions différentes.
+</div>
+
+<h3 id="ch9-osi">9.1 OSI (7 couches) vs TCP/IP (4 couches, modèle DoD)</h3>
+
+<div class="tw"><table>
+<thead><tr><th>OSI</th><th>Architecture TCP/IP</th><th>Protocoles</th><th>Équipements</th></tr></thead>
+<tbody>
+<tr><td>7 Application<br>6 Présentation<br>5 Session</td><td><b>Application</b></td><td>HTTP/HTTPS, DNS, POP, SMTP, FTP, SSH, SMB, NFS, jeux</td><td>ports 0 à 65535</td></tr>
+<tr><td>4 Transport</td><td><b>Transport</b></td><td><b>TCP</b> (RFC 793), <b>UDP</b> (RFC 768)</td><td>multiplexage par n° de port</td></tr>
+<tr><td>3 Réseau</td><td><b>Internet</b></td><td><b>IPv4</b> (RFC 791, 09/1981), <b>IPv6</b> (RFC 2460, 12/1998), <b>ICMP</b> (RFC 792), <b>ARP</b> (RFC 826)</td><td>routeur</td></tr>
+<tr><td>2 Liaison<br>1 Physique</td><td><b>Accès réseau</b></td><td>802.3, 802.11, 802.15.1, 802.15.4 ; 802.2 = LLC</td><td>carte réseau, répéteur, pont, hub, switch, modem</td></tr>
+</tbody>
+</table></div>
+
+<ul class="key-points">
+<li><b>OSI a 7 couches, TCP/IP en a 4</b> — TCP/IP s'appuie sur le <b>modèle DoD</b>, cohérent avec OSI mais plus grossier.</li>
+<li><b>Les niveaux 3 et 4 s'identifient différemment</b> — un protocole de transport se repère par un <b>numéro de protocole</b> (ICMP = 1, TCP = 6, UDP = 17), un service applicatif par un <b>numéro de port</b>.</li>
+<li><b>Les EtherType à connaître</b> — <code>0x0800</code> IPv4, <code>0x0806</code> ARP, <code>0x8035</code> RARP, <code>0x86DD</code> IPv6.</li>
+<li><b>ARP est un cas à part</b> — il est encapsulé directement dans une <b>trame Ethernet</b>, pas dans IP. ICMP, lui, est encapsulé <b>dans</b> IP.</li>
+</ul>
+
+<h3 id="ch9-rfc">9.2 Les RFC citées dans le support</h3>
+<div class="tw"><table>
+<thead><tr><th>RFC</th><th>Objet</th><th>RFC</th><th>Objet</th></tr></thead>
+<tbody>
+<tr><td>791</td><td>IPv4 (09/1981)</td><td>1918</td><td>Adresses privées</td></tr>
+<tr><td>792</td><td>ICMP</td><td>1945</td><td>HTTP</td></tr>
+<tr><td>793</td><td>TCP — et définition de la <b>socket</b></td><td>2460</td><td>IPv6 (12/1998)</td></tr>
+<tr><td>768</td><td>UDP</td><td>2818</td><td>HTTPS</td></tr>
+<tr><td>826</td><td>ARP</td><td>3021</td><td><b>Le /31</b> pour les liens point à point</td></tr>
+<tr><td>950 / 1219 / 4878</td><td>Sous-adressage (<i>subnetting</i>)</td><td>3927</td><td>APIPA / IPv4 Link-Local (169.254/16)</td></tr>
+<tr><td>959</td><td>FTP</td><td>4893</td><td>Numéros d'AS sur <b>32 bits</b></td></tr>
+<tr><td>1034</td><td>DNS</td><td>6598</td><td><b>CGNAT</b> : 100.64.0.0/10</td></tr>
+<tr><td>1519</td><td>CIDR</td><td>8200</td><td>IPv6, spécification consolidée</td></tr>
+<tr><td>1700</td><td><i>Well known ports</i></td><td>1917</td><td>Appel à restituer les blocs IPv4 inutilisés</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout warn"><div class="t">Point à formuler prudemment</div>
+Une planche associe « <b>1996</b> » à la <b>RFC 8200</b>. Les deux ne vont pas ensemble : 1996 est la
+période des travaux, <b>RFC 2460</b> date de <b>décembre 1998</b> et <b>RFC 8200</b> de 2017 (elle
+remplace la 2460). En copie, écrire « IPv6, spécifié par la RFC 2460 (1998), remplacée par la RFC 8200 »
+est toujours exact.
+</div>
+
+<h2 id="ch10"><span class="num">10.</span> IoT longue portée et partages Microsoft</h2>
+
+<h3 id="ch10-lora">10.1 LoRa vs Sigfox</h3>
+
+<div class="tw"><table>
+<thead><tr><th></th><th><b>LoRa / LoRaWAN</b></th><th><b>Sigfox</b></th></tr></thead>
+<tbody>
+<tr><td>Modèle</td><td>Technologie <b>ouverte</b> : on peut déployer sa propre passerelle et son propre réseau</td><td>Opérateur <b>unique</b> : on souscrit un abonnement, on ne possède rien</td></tr>
+<tr><td>Bande</td><td>ISM sans licence (868 MHz en Europe)</td><td>ISM sans licence (868 MHz en Europe)</td></tr>
+<tr><td>Débit / charge utile</td><td>quelques centaines à quelques milliers de bits/s</td><td><b>12 octets</b> par message, <b>140 messages par jour</b> au maximum</td></tr>
+<tr><td>Portée</td><td>quelques kilomètres en ville, plus de 10 km en dégagé</td><td>ordre de grandeur comparable</td></tr>
+<tr><td>Souveraineté</td><td>on maîtrise l'infrastructure et les clés</td><td>dépendance totale à l'opérateur, y compris pour la disponibilité</td></tr>
+</tbody>
+</table></div>
+
+<p>Les deux s'opposent au <b>maillage</b> (<i>mesh</i>) de ZigBee, Z-Wave ou Thread/Matter, où chaque nœud
+relaie ses voisins : portée obtenue par <b>rebonds</b> plutôt que par puissance. L'enjeu sécurité est le
+même dans les trois cas : des objets déployés pour dix ans, sans écran, souvent sans mise à jour, avec
+des clés provisionnées en usine.</p>
+
+<h3 id="ch10-smb">10.2 SMB et Samba</h3>
+
+<ul class="key-points">
+<li><b>SMB</b> (<i>Server Message Block</i>) est le protocole de partage de fichiers et d'imprimantes de Microsoft. <b>CIFS</b> en est une ancienne appellation.</li>
+<li><b>Samba</b> est la réimplémentation <b>libre</b> de SMB sous Linux — elle permet à un serveur Linux de se comporter en serveur de fichiers Windows, voire en contrôleur de domaine.</li>
+<li><b>Tous les routeurs d'accès Internet bloquent SMB</b> (ports <b>445</b> TCP, et les historiques 137-139). Ce n'est pas une option : c'est un réflexe de survie hérité des vers qui ont ravagé Internet par ce protocole.</li>
+<li><b>SMB ne doit jamais traverser un WAN</b> — s'il faut accéder à un partage à distance, cela passe par un <b>VPN</b>, jamais par une exposition directe.</li>
+<li><b>Ports Active Directory</b> cités dans le support : <b>135-139</b>, <b>445</b> TCP, plus LDAP et Kerberos.</li>
+</ul>
+
+<div class="example"><div class="t">Exemple concret</div>
+<b>WannaCry</b> (2017) s'est propagé en exploitant une faille de SMBv1. Ce qui a limité la casse à
+l'échelle d'Internet, c'est précisément que le port 445 était déjà bloqué partout en bordure : les
+dégâts se sont concentrés <b>à l'intérieur</b> des réseaux d'entreprise, où rien ne filtrait. La leçon
+tient en une phrase : le filtrage périmétrique ne dit rien du niveau de sécurité <b>interne</b>.
+</div>
+
+<h2 id="ch11"><span class="num">11.</span> Adressage IPv4 : classes, adresses interdites, exercices</h2>
+
+<div class="callout def"><div class="t">Définition</div>
+Une adresse IPv4 fait <b>32 bits</b> (4 octets). Elle se décompose en un <b>NetId</b> (partie réseau,
+désignée par le masque) et un <b>HostId</b> (partie machine). L'espace total vaut 2<sup>32</sup> ≈
+<b>4,3 milliards</b> d'adresses.
+</div>
+
+<h3 id="ch11-classes">11.1 Les classes historiques</h3>
+
+<div class="tw"><table>
+<thead><tr><th>Classe</th><th>Premiers bits</th><th>Plage</th><th>Masque par défaut</th><th>Nombre de réseaux</th><th>Adresses par réseau</th></tr></thead>
+<tbody>
+<tr><td><b>A</b></td><td><code>0</code></td><td>0.0.0.0 → 127.255.255.255</td><td>/8</td><td>128</td><td>16 777 216</td></tr>
+<tr><td><b>B</b></td><td><code>10</code></td><td>128.0.0.0 → 191.255.255.255</td><td>/16</td><td>16 384</td><td>65 536</td></tr>
+<tr><td><b>C</b></td><td><code>110</code></td><td>192.0.0.0 → 223.255.255.255</td><td>/24</td><td>≈ 2 millions</td><td>256</td></tr>
+<tr><td><b>D</b></td><td><code>1110</code></td><td>224.0.0.0 → 239.255.255.255 = <b>224.0.0.0/4</b></td><td><b>aucun</b></td><td>—</td><td><b>multicast</b></td></tr>
+<tr><td><b>E</b></td><td><code>1111</code></td><td>240.0.0.0 → 255.255.255.254 = <b>240.0.0.0/4</b></td><td>—</td><td>—</td><td>réservée / tests</td></tr>
+</tbody>
+</table></div>
+
+<div class="exam"><div class="t">Piège d'examen — trois pièges dans une seule notion</div>
+<ol style="margin-bottom:0">
+<li><b>La classe réservée au multicast est la D.</b> Question du quiz du matin. La E est réservée aux
+tests et à un usage futur — ne pas les intervertir.</li>
+<li><b>Les classes n'existent plus depuis 1993</b> (arrivée de CIDR, RFC 1519). Le support l'écrit :
+« <i>address classes → vocabulary only</i> ». Ce qui subsiste réellement, c'est le <b>vocabulaire</b>
+et la <b>classe D</b>, seule encore normative.</li>
+<li><b>La classe D n'a ni NetId, ni HostId, ni masque</b> : une adresse de multicast désigne un
+<b>groupe</b>, pas un réseau.</li>
+</ol>
+</div>
+
+<h3 id="ch11-particulieres">11.2 Adresses particulières et adresses privées</h3>
+
+<div class="tw"><table>
+<thead><tr><th>Plage</th><th>Statut</th><th>Détail</th></tr></thead>
+<tbody>
+<tr><td><b>127.0.0.0/8</b></td><td>bouclage</td><td>Réservée à la pile TCP/IP interne. Un /8 entier pour ça — c'est l'exemple type de gaspillage initial</td></tr>
+<tr><td><b>10.0.0.0/8</b></td><td>privée (RFC 1918)</td><td>1 réseau de classe A</td></tr>
+<tr><td><b>172.16.0.0/12</b></td><td>privée (RFC 1918)</td><td>De 172.16.0.0 à 172.31.255.255 = <b>16 réseaux de classe B</b></td></tr>
+<tr><td><b>192.168.0.0/16</b></td><td>privée (RFC 1918)</td><td><b>256 réseaux de classe C</b></td></tr>
+<tr><td><b>169.254.0.0/16</b></td><td>lien-local (RFC 3927)</td><td><b>APIPA</b> / IPv4LL : auto-attribuée quand il n'y a <b>ni DHCP ni configuration manuelle</b>. Voir cette adresse, c'est voir un échec DHCP</td></tr>
+<tr><td><b>100.64.0.0/10</b></td><td>opérateurs (RFC 6598)</td><td>Plan intermédiaire du <b>CGNAT</b>. Non routable sur Internet, comme les adresses privées</td></tr>
+<tr><td><b>0.0.0.0</b></td><td>spéciale</td><td>« toute destination » dans une table de routage (route par défaut) ; « adresse inconnue » côté client DHCP</td></tr>
+</tbody>
+</table></div>
+
+<div class="exam"><div class="t">Piège d'examen — question du quiz</div>
+« Quel réseau IP n'est <b>pas</b> privé ? » → <b>192.169.0.0/16</b>. La plage privée s'arrête à
+<b>192.168</b>.255.255. <code>192.169.x.x</code> est une adresse <b>publique</b> parfaitement routable,
+appartenant à quelqu'un. Le même piège existe avec <code>172.32.0.0</code> (hors du /12) et
+<code>10.x</code> qui, lui, est bien privé en entier.
+</div>
+
+<h3 id="ch11-attribuables">11.3 Peut-on attribuer cette adresse à un équipement ?</h3>
+<p>Exercice de la planche 26 du support, avec les réponses de la planche 27. La règle : une adresse est
+inattribuable si elle est l'<b>adresse de réseau</b> (HostId tout à 0), l'<b>adresse de broadcast</b>
+(HostId tout à 1), ou si elle appartient à une plage réservée.</p>
+
+<div class="tw"><table>
+<thead><tr><th>Adresse</th><th>Attribuable ?</th><th>Pourquoi</th></tr></thead>
+<tbody>
+<tr><td><code>223.56.3.0</code></td><td><b>Non</b></td><td>Classe C par défaut (/24) → HostId nul = adresse de <b>réseau</b></td></tr>
+<tr><td><code>18.255.255.254</code></td><td><b>Oui</b></td><td>Classe A (/8) : le broadcast serait 18.255.255.255. Le .254 est libre</td></tr>
+<tr><td><code>126.127.127.127</code></td><td><b>Oui</b></td><td>Classe A, HostId ni nul ni plein</td></tr>
+<tr><td><code>127.126.126.1</code></td><td><b>Non</b></td><td>Dans <b>127/8</b> : bouclage et tests</td></tr>
+<tr><td><code>145.145.255.255</code></td><td><b>Non</b></td><td>Classe B (/16) → HostId tout à 1 = <b>broadcast</b></td></tr>
+<tr><td><code>18.254.254.255</code></td><td><b>Oui</b></td><td>Classe A : le dernier octet à 255 n'a rien de spécial ici, le broadcast est 18.255.255.255</td></tr>
+<tr><td><code>0.0.0.0</code></td><td><b>Non</b></td><td>Adresse spéciale</td></tr>
+<tr><td><code>255.0.0.0</code></td><td><b>Non</b></td><td>Dans la plage 240/4 réservée ; par ailleurs c'est un masque, pas une adresse d'hôte</td></tr>
+<tr><td><code>191.255.255.255</code></td><td><b>Non</b></td><td>Classe B → <b>broadcast</b> du réseau 191.255.0.0/16</td></tr>
+<tr><td><code>192.192.0.0</code></td><td><b>Oui</b>, sous condition</td><td>Attribuable <b>seulement si</b> le masque n'est pas celui de la classe par défaut. En /24 ce serait une adresse de réseau ; en /16, c'est un hôte valide</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout"><div class="t">La deuxième question de la planche : ces deux équipements peuvent-ils communiquer ?</div>
+Deux machines se parlent <b>directement</b>, sans routeur, si et seulement si <b>chacune</b> calcule que
+l'autre est dans son propre sous-réseau — donc si <code>@IP ET masque</code> donne le même résultat
+<b>des deux côtés</b>, avec le <b>même masque</b>. Corrigé de la planche 29 :
+<div class="tw" style="margin-top:8px"><table>
+<thead><tr><th>Machine 1</th><th>Masque 1</th><th>Machine 2</th><th>Masque 2</th><th>Communiquent ?</th><th>Pourquoi</th></tr></thead>
+<tbody>
+<tr><td>127.0.127.1</td><td>255.0.0.0</td><td>13.0.0.1</td><td>255.0.0.0</td><td><b>Non</b></td><td>127/8 est du bouclage, jamais émis sur le fil</td></tr>
+<tr><td>192.168.1.2</td><td>255.0.0.0</td><td>127.0.127.2</td><td>255.255.255.0</td><td><b>Non</b></td><td>Bouclage, et masques incohérents</td></tr>
+<tr><td>10.10.10.130</td><td>255.255.0.0</td><td>125.0.0.1</td><td>255.0.0.0</td><td><b>Non</b></td><td>Réseaux différents (10.10.0.0/16 vs 125.0.0.0/8)</td></tr>
+<tr><td>13.0.0.0</td><td>255.255.255.0</td><td>192.168.1.254</td><td>—</td><td><b>Oui</b></td><td>Cas de la planche : même sous-réseau une fois le masque appliqué</td></tr>
+<tr><td>125.3.3.3</td><td>255.255.255.240</td><td>10.10.10.141</td><td>255.255.255.240</td><td><b>Oui</b></td><td>Même masque /28 et même sous-réseau résultant</td></tr>
+</tbody>
+</table></div>
+<b>Le réflexe de méthode :</b> poser le ET binaire, comparer, puis vérifier que le masque est
+<b>identique des deux côtés</b> — un masque différent suffit à casser la communication dans un sens
+même si l'autre sens fonctionne.
+</div>
+
+<h2 id="ch12"><span class="num">12.</span> Gouvernance de l'adressage : RIR, LIR, AS et Anycast</h2>
+
+<h3 id="ch12-chaine">12.1 La chaîne d'attribution</h3>
+
+<div class="steps" id="anim-rir">
+  <div class="step"><b>1 — IANA / ICANN.</b> Détient l'espace global. L'IANA est créée en <b>1988</b>, l'ICANN en <b>1998</b>.</div>
+  <div class="step"><b>2 — Les 5 RIR.</b> L'IANA délègue de gros blocs à cinq <b>Regional Internet Registries</b>, un par plaque géographique.</div>
+  <div class="step"><b>3 — Les LIR.</b> Chaque RIR délègue à des <b>Local Internet Registries</b> : opérateurs, hébergeurs, grandes organisations.</div>
+  <div class="step"><b>4 — Le client final.</b> Le LIR attribue les préfixes aux entreprises et aux particuliers.</div>
+  <div class="step"><b>5 — L'ASN.</b> En parallèle, le RIR attribue un <b>numéro d'AS</b> à qui doit annoncer ses préfixes en BGP.</div>
+</div>
+<div class="qactions" style="margin-top:10px">
+  <button class="btn primary" onclick="playSteps('anim-rir')">▶ Lancer l'animation</button>
+  <button class="btn ghost" onclick="resetSteps('anim-rir')">↻ Réinitialiser</button>
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>RIR</th><th>Nom développé</th><th>Zone</th></tr></thead>
+<tbody>
+<tr><td><b>ARIN</b></td><td><i>American Registry for Internet Numbers</i></td><td>Amérique du Nord</td></tr>
+<tr><td><b>RIPE NCC</b></td><td><i>Réseaux IP Européens – Network Coordination Centre</i></td><td>Europe, Moyen-Orient, Asie centrale</td></tr>
+<tr><td><b>APNIC</b></td><td><i>Asia-Pacific Network Information Centre</i></td><td>Asie-Pacifique</td></tr>
+<tr><td><b>AFRINIC</b></td><td><i>AFRIca Network Information Centre</i></td><td>Afrique</td></tr>
+<tr><td><b>LACNIC</b></td><td><i>Latin America &amp; Caribbean Network Information Centre</i></td><td>Amérique latine et Caraïbes</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="ch12-as">12.2 Le système autonome (AS)</h3>
+
+<div class="callout def"><div class="t">Définition</div>
+Un <b>AS</b> (<i>Autonomous System</i>) est un ensemble de réseaux gérés par une <b>même entité</b> et
+appliquant une politique de routage unique. L'Arcep — le régulateur français des télécoms — le décrit
+comme « la <b>brique élémentaire</b> d'Internet ». L'information est acheminée <b>d'AS en AS</b> (par
+BGP), puis de routeur en routeur <b>à l'intérieur</b> de chaque AS (par OSPF, RIP…). Un ASN est un
+identifiant unique sur <b>32 bits</b> (RFC 4893).
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>Entité</th><th>ASN</th><th>Entité</th><th>ASN</th></tr></thead>
+<tbody>
+<tr><td>Free</td><td>AS12322</td><td>SFR</td><td>AS15557, AS29372</td></tr>
+<tr><td>Free Mobile</td><td>AS51207</td><td>Orange (entreprises France)</td><td>AS3215</td></tr>
+<tr><td>Bouygues Telecom</td><td>AS5410</td><td>Orange mobile</td><td>AS28708</td></tr>
+<tr><td>Bouygues mobile</td><td>AS12844</td><td>Opentransit (dorsale mondiale Orange)</td><td>AS5511</td></tr>
+<tr><td>OVH</td><td>AS16276</td><td><b>Groupe ESIEA</b></td><td><b>AS211850</b> — <code>185.235.207.0/24</code> + <code>2a10:86c0::/29</code></td></tr>
+</tbody>
+</table></div>
+
+<div class="example"><div class="t">Exemple concret — l'OSINT commence là</div>
+Avant tout test d'intrusion, on interroge la base du RIR : quel ASN, quels préfixes annoncés, quels
+contacts. Pour l'ESIEA, l'AS211850 expose un <code>/24</code> IPv4 — 256 adresses, un périmètre
+externe entièrement énumérable en quelques minutes — et un <code>/29</code> IPv6. Cette information est
+<b>publique et légale</b> à consulter : c'est le point de départ de toute cartographie externe.
+</div>
+
+<h3 id="ch12-anycast">12.3 Anycast et CDN</h3>
+
+<div class="tw"><table>
+<thead><tr><th>Mode</th><th>Destinataires</th><th>Qui reçoit</th></tr></thead>
+<tbody>
+<tr><td><b>Unicast</b></td><td>un</td><td>la machine désignée</td></tr>
+<tr><td><b>Broadcast</b></td><td>tous</td><td>toutes les machines du réseau (n'existe <b>pas</b> en IPv6)</td></tr>
+<tr><td><b>Multicast</b></td><td>un groupe</td><td>les machines abonnées au groupe</td></tr>
+<tr><td><b>Anycast</b></td><td>plusieurs candidats, <b>la même adresse annoncée en plusieurs points du globe</b></td><td>le <b>plus proche au sens du routage</b> (le moins de sauts BGP)</td></tr>
+</tbody>
+</table></div>
+
+<ul class="key-points">
+<li><b>L'usage emblématique</b> — les <b>serveurs racines DNS</b> : 13 identités logiques, des centaines d'instances physiques réelles, toutes annonçant la même adresse en Anycast.</li>
+<li><b>Le CDN</b> (<i>Content Delivery Network</i>) fait la même chose pour le contenu : il duplique le service sur les plaques utiles, synchronise les copies (le cours cite <code>rsync</code> à travers des tunnels VPN entre datacentres), et pilote la redirection.</li>
+<li><b>Les copies s'appellent des <i>surrogate servers</i></b> — serveurs mandataires, ou miroirs. L'original peut rester chez le client.</li>
+<li><b>Le critère de redirection</b> est au choix : <b>géographique</b> (le plus proche) ou <b>de charge</b> (le moins occupé). Le CDN pilote cela par son propre <b>DNS</b>.</li>
+<li><b>L'effet sécurité principal</b> — la <b>résistance au déni de service</b> : on ne sature pas cent points de présence comme on sature un serveur unique. C'est pour cela que les CDN sont la parade au DoS DNS du chapitre 18.</li>
+</ul>
+
+<h2 id="ch13"><span class="num">13.</span> Pénurie IPv4 : IPv6, libération de blocs, subnetting</h2>
+
+<h3 id="ch13-ipv6">13.1 IPv6 — et son vrai objectif</h3>
+
+<div class="tw"><table>
+<thead><tr><th></th><th>IPv4</th><th>IPv6</th></tr></thead>
+<tbody>
+<tr><td>Taille</td><td>32 bits — 4 octets</td><td><b>128 bits — 16 octets</b></td></tr>
+<tr><td>Notation</td><td>décimale pointée</td><td><b>hexadécimale</b>, 8 blocs de 16 bits séparés par <code>:</code></td></tr>
+<tr><td>Espace</td><td>2<sup>32</sup> ≈ 4,3 milliards</td><td>2<sup>128</sup> ≈ <b>3,4 × 10<sup>38</sup></b> — 340 sextillions, soit ≈ 6 × 10<sup>23</sup> adresses par m² de Terre</td></tr>
+<tr><td>ARP</td><td>oui</td><td><b>supprimé</b> (remplacé par NDP, en ICMPv6)</td></tr>
+<tr><td>NAT</td><td>indispensable</td><td><b>supprimé</b> par conception</td></tr>
+<tr><td>Broadcast IP</td><td>oui</td><td><b>supprimé</b> — remplacé par du multicast ciblé</td></tr>
+<tr><td>Multicast</td><td>basique</td><td>amélioré, natif</td></tr>
+<tr><td>Sécurité</td><td>IPsec en option</td><td><b>IPsec natif</b> dans la spécification</td></tr>
+<tr><td>Autres apports</td><td>—</td><td><b>Mobile IPv6</b>, <b>QoS</b></td></tr>
+</tbody>
+</table></div>
+
+<div class="callout"><div class="t">Écriture simplifiée — la règle exacte</div>
+Deux simplifications, et deux seulement :
+<ol style="margin-bottom:6px">
+<li>on <b>supprime les zéros de tête</b> de chaque bloc ;</li>
+<li>on remplace <b>une seule</b> suite de blocs entièrement nuls par <code>::</code>.</li>
+</ol>
+<code>2001:0fac:7453:0008:0000:0000:24ab:0af5</code> → <code>2001:fac:7453:8::24ab:af5</code><br>
+<code>21DA:00D3:0000:2F3B:02AA:00FF:FE28:9C5A</code> → <code>21DA:D3:0:2F3B:2AA:FF:FE28:9C5A</code><br>
+<b>Le <code>::</code> ne peut apparaître qu'une fois</b> dans une adresse, sinon on ne saurait plus
+combien de blocs il remplace de chaque côté.
+</div>
+
+<div class="exam"><div class="t">Piège d'examen — le vrai but d'IPv6 n'est pas le nombre d'adresses</div>
+La réponse « IPv6 sert à avoir plus d'adresses » est <b>incomplète</b>, et c'est le point sur lequel
+l'enseignant a insisté. Le gain décisif est le <b>routage hiérarchique et géographique</b> : la
+structure de l'adresse encode la position dans la chaîne d'attribution, donc dans la topologie.
+<div class="tw" style="margin-top:8px"><table>
+<thead><tr><th>Bits</th><th>Portion</th><th>Attribué par</th></tr></thead>
+<tbody>
+<tr><td>3 + 20 bits</td><td>préfixe global</td><td><b>IANA</b> puis <b>RIR</b></td></tr>
+<tr><td>9 + 16 bits</td><td>suite du préfixe</td><td><b>LIR</b> puis <b>utilisateur</b></td></tr>
+<tr><td>48 bits (les 3 premiers blocs)</td><td><b>préfixe de localisation hiérarchique</b></td><td>résultat de la chaîne ci-dessus</td></tr>
+<tr><td>16 bits (4<sup>e</sup> bloc)</td><td>identifiant de <b>sous-réseau local</b></td><td>l'organisation</td></tr>
+<tr><td>64 bits (4 derniers blocs)</td><td><b>identifiant d'interface</b>, unique au monde</td><td>la machine</td></tr>
+</tbody>
+</table></div>
+<b>Conséquence :</b> les tables de routage de dorsale <b>s'agrègent</b>. En IPv4, l'attribution historique
+en ordre dispersé a produit des centaines de milliers de préfixes désordonnés. En IPv6, un opérateur
+annonce <b>un</b> préfixe qui couvre tous ses clients.
+</div>
+
+<h3 id="ch13-migration">13.2 Pourquoi la migration traîne</h3>
+<ul class="key-points">
+<li><b>Les développeurs</b> — beaucoup d'applications ne gèrent toujours pas le format d'adresse IPv6 (champs de saisie trop courts, expressions régulières écrites pour IPv4).</li>
+<li><b>Les équipements de sécurité</b> — antispam, antimalware, réputation : nombre de listes ne sont maintenues qu'en IPv4.</li>
+<li><b>Le parc non modifiable</b> — des équipements IPv4 non évolutifs resteront branchés pendant des années.</li>
+<li><b>Les compétences</b> — techniciens et ingénieurs doivent être reformés à IPv6 et aux protocoles associés.</li>
+<li><b>Le point sécurité majeur</b> — en IPv4, le NAT masque involontairement le parc interne. <b>En IPv6, chaque machine a une adresse publique routable</b> : la « protection » gratuite disparaît, et il faut un vrai pare-feu avec une politique explicite. Beaucoup de réseaux ont été exposés le jour où IPv6 s'est activé tout seul.</li>
+</ul>
+
+<h3 id="ch13-mitigation">13.3 Les trois mesures d'atténuation avant IPv6</h3>
+
+<div class="tw"><table>
+<thead><tr><th>Mesure</th><th>Principe</th><th>Illustration donnée en cours</th></tr></thead>
+<tbody>
+<tr><td><b>1. Libérer des /8</b></td><td>La <b>RFC 1917</b> appelle à restituer les blocs inutilisés</td><td>Stanford rend <code>36.0.0.0/8</code> en <b>2000</b> ; Interop rend <code>45.0.0.0/8</code> en <b>2010</b> ; le noyau <b>Linux</b> traite <code>0.0.0.0/8</code> comme public depuis <b>octobre 2019</b></td></tr>
+<tr><td><b>2. Adresses privées + NAT</b></td><td>RFC 1918 : quatre plages utilisables sans autorisation, traduites en sortie</td><td>voir chapitre 14</td></tr>
+<tr><td><b>3. Subnetting</b></td><td>Adapter le masque au besoin réel plutôt que de prendre une classe entière</td><td>une entreprise n'achète que les adresses publiques dont elle a besoin</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout warn"><div class="t">Pourquoi la classe E n'a jamais été récupérée</div>
+Plusieurs propositions ont visé à rouvrir <code>240.0.0.0/4</code> — 268 millions d'adresses dormantes.
+Toutes ont échoué : <b>libérer un plan ne suffit pas</b>. Il faut que <b>tous</b> les routeurs et
+<b>tous</b> les systèmes d'exploitation de la planète acceptent ces adresses, sinon le trafic est rejeté
+en chemin. Linus Torvalds a montré l'exemple avec <code>0/8</code>, mais l'écosystème complet n'a pas
+suivi pour 240/4.
+</div>
+
+<h3 id="ch13-subnetting">13.4 Subnetting, et le cas des liens point à point</h3>
+
+<p>Découper <code>160.169.0.0/16</code> en <b>/19</b> revient à emprunter 3 bits au HostId : on obtient
+2<sup>3</sup> = <b>8 sous-réseaux</b> — 160.169.0.0, .32.0, .64.0, .96.0, .128.0, .160.0, .192.0, .224.0,
+tous en /19.</p>
+
+<div class="tw"><table>
+<thead><tr><th>Masque</th><th>Adresses totales</th><th>Adresses utilisables</th><th>Usage</th></tr></thead>
+<tbody>
+<tr><td>/24</td><td>256</td><td>254</td><td>LAN classique</td></tr>
+<tr><td>/28</td><td>16</td><td>14</td><td>petit segment, DMZ</td></tr>
+<tr><td><b>/30</b></td><td>4</td><td><b>2</b></td><td>lien inter-routeurs — <b>50 % de gaspillage</b></td></tr>
+<tr><td><b>/31</b></td><td>2</td><td><b>2</b> (RFC 3021)</td><td>lien point à point — <b>zéro gaspillage</b></td></tr>
+<tr><td>/32</td><td>1</td><td>1</td><td>route d'hôte, adresse de bouclage</td></tr>
+</tbody>
+</table></div>
+
+<div class="exam"><div class="t">Piège d'examen — la question du quiz</div>
+« <b>Combien d'adresses IP utilisables dans un /30 ?</b> » → <b>2</b>. Le calcul :
+2<sup>(32−30)</sup> = 4 adresses, moins l'adresse de réseau et l'adresse de broadcast = <b>2 hôtes</b>.
+<br><br>
+La <b>RFC 3021</b> autorise le <b>/31</b> sur un lien point à point : les deux seules adresses y sont
+utilisées comme hôtes, parce que sur un lien à deux extrémités, <b>network</b> et <b>broadcast</b>
+n'ont aucun sens — tout ce qui est émis d'un côté ne peut arriver que de l'autre. Économie :
+<b>50 % des adresses</b> de tous les liens inter-routeurs de la planète.
+</div>
+
+<div class="callout"><div class="t">Convertir un masque en CIDR — la méthode qui ne rate jamais</div>
+Chaque <b>255</b> vaut 8 bits. Pour l'octet intermédiaire, compter les bits à 1 :
+<code>128</code>→1, <code>192</code>→2, <code>224</code>→3, <code>240</code>→4, <code>248</code>→5,
+<code>252</code>→6, <code>254</code>→7.
+<br><b>Question du quiz :</b> <code>255.255.252.0</code> = 8 + 8 + <b>6</b> + 0 = <b>/22</b>.
+<br>Vérification par le nombre d'adresses : /22 → 2<sup>10</sup> = 1024 adresses, soit 4 blocs de 256 —
+ce qui correspond bien à un troisième octet par pas de 4 (0, 4, 8, 12…), donc à 252.
+</div>
+
+<h2 id="ch14"><span class="num">14.</span> NAT44, PAT et CGNAT</h2>
+
+<h3 id="ch14-nat44">14.1 NAT44 : le fonctionnement et sa table</h3>
+
+<div class="callout def"><div class="t">Définition</div>
+Le <b>NAT</b> (<i>Network Address Translation</i>) remplace, dans chaque paquet sortant, l'adresse privée
+de la source par l'adresse publique de la passerelle, et mémorise l'association dans une <b>table de
+NAT</b> pour savoir à qui rendre la réponse. <b>NAT44</b> = IPv4 vers IPv4.
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>@IP privée : port</th><th>@IP dest : port</th><th>@IP publique : port</th><th>@IP dest : port</th></tr></thead>
+<tbody>
+<tr><td><code>192.168.0.1:27005</code></td><td><code>208.67.68.69:443</code></td><td><code>91.160.160.152:8052</code></td><td><code>208.67.68.69:443</code></td></tr>
+<tr><td><code>192.168.0.2:52146</code></td><td><code>112.14.245.1:22</code></td><td><code>91.160.160.152:8053</code></td><td><code>112.14.245.1:22</code></td></tr>
+<tr><td><code>192.168.0.1:32564</code></td><td><code>20.55.61.20:80</code></td><td><code>91.160.160.152:8054</code></td><td><code>20.55.61.20:80</code></td></tr>
+</tbody>
+</table></div>
+
+<ul class="key-points">
+<li><b>C'est le port source qui distingue</b> les conversations : l'adresse publique est la même pour tout le monde, seul le port de sortie réattribué permet de retrouver le client.</li>
+<li><b>Le NAT ajoute de la latence</b> — un traitement supplémentaire dans la box, sur <b>toutes</b> les connexions.</li>
+<li><b>La taille de la table est finie</b> : 2<sup>16</sup> = <b>65 536</b> ports, donc au plus 65 536 connexions TCP/UDP simultanées par adresse publique.</li>
+<li><b>Table pleine = plus aucune connexion sortante.</b> Concrètement, le nouveau SYN reçoit un <b>RST</b> ou n'est jamais traduit : « Internet ne marche plus », alors que le lien est parfaitement disponible.</li>
+</ul>
+
+<div class="example"><div class="t">Exemple concret — le déni de service involontaire</div>
+Une PME derrière une seule adresse publique, avec des postes qui ouvrent chacun des dizaines de
+connexions (onglets, synchronisation cloud, télémétrie) et quelques utilisateurs qui laissent tourner du
+streaming ou du P2P : la table sature. Le symptôme est trompeur — le débit est bon, les connexions
+<b>déjà établies</b> fonctionnent, mais aucune nouvelle ne s'ouvre.
+<b>Les deux remédiations</b> évoquées en cours : <b>acheter des adresses publiques supplémentaires</b>
+(la table est alors multipliée d'autant), ou <b>filtrer</b> les usages qui consomment des milliers
+d'entrées pour rien.
+</div>
+
+<h3 id="ch14-pat">14.2 PAT — la traduction de port, ou redirection</h3>
+<p>Le <b>PAT</b> (<i>Port Address Translation</i>) est l'opération <b>inverse</b> : ouvrir depuis
+l'extérieur un accès vers un serveur interne. On déclare statiquement dans la passerelle :</p>
+
+<div class="tw"><table>
+<thead><tr><th>@IP publique : port</th><th>redirigé vers</th><th>Effet</th></tr></thead>
+<tbody>
+<tr><td><code>88.162.38.132:80</code></td><td><code>192.168.0.5:80</code></td><td>le serveur web interne est publié tel quel</td></tr>
+<tr><td><code>88.162.38.132:11222</code></td><td><code>192.168.0.5:22</code></td><td>SSH publié sur un port non standard — cela réduit le bruit des scans automatiques, ce n'est <b>pas</b> une sécurité</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="ch14-cgnat">14.3 CGNAT / NAT444 (RFC 6598)</h3>
+
+<div class="callout def"><div class="t">Définition</div>
+Le <b>CGNAT</b> (<i>Carrier-Grade NAT</i>), aussi appelé <b>NAT444</b>, ajoute un <b>deuxième niveau de
+NAT chez l'opérateur</b> : le client est en 192.168.x.x derrière sa box, la box reçoit une adresse du
+plan <b>100.64.0.0/10</b> (RFC 6598, non routable sur Internet), et l'opérateur traduit à son tour vers
+une adresse publique <b>partagée entre plusieurs abonnés</b>. Trois traductions IPv4 en cascade — d'où
+« 444 ».
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>Conséquence</th><th>Détail</th></tr></thead>
+<tbody>
+<tr><td><b>Moins de ports par client</b></td><td>Une @IP publique mutualisée sur 4 clients ne laisse que 2<sup>16</sup>/4 = <b>16 384</b> connexions simultanées à chacun. Le découpage est par plage : ports 0–16383 → client 1, 16384–32767 → client 2, etc.</td></tr>
+<tr><td><b>Punition collective</b></td><td>Si un abonné se fait blacklister l'@IP partagée, <b>tous</b> les autres perdent l'accès au service concerné</td></tr>
+<tr><td><b>Enquêtes judiciaires entravées</b></td><td>Une @IP ne désigne plus une personne. Les enquêteurs doivent viser <b>toutes</b> les personnes partageant l'adresse — d'où l'obligation du <b>CPCE</b> de tracer <b>et d'imputer</b> pendant un an (chapitre 20)</td></tr>
+<tr><td><b>Impossible d'exposer un service</b></td><td>Si la plage de ports affectée n'est pas la première, le client n'obtient <b>aucun port &lt; 1024</b> : pas de serveur web sur 80, pas de mail sur 25. Il doit demander une @IP « <b>full stack</b> » non mutualisée — service payant</td></tr>
+</tbody>
+</table></div>
+
+<div class="exam"><div class="t">Piège d'examen — les trois chiffres à ne pas confondre</div>
+<b>100.64.0.0/10</b> = plan CGNAT (RFC 6598) · <b>169.254.0.0/16</b> = APIPA, échec DHCP (RFC 3927) ·
+<b>127.0.0.0/8</b> = bouclage. Ce sont trois plages non routables, pour trois raisons totalement
+différentes. Et attention : le CGNAT n'est <b>pas</b> une plage RFC 1918 — c'est un plan
+<b>réservé aux opérateurs</b>.
+</div>
+
+<div class="callout ok"><div class="t">La question du quiz</div>
+« <b>Quel est le but principal du NAT ?</b> » → <b>Permettre à plusieurs équipements de partager une
+seule adresse IP publique.</b> Attention aux distracteurs : le NAT n'a pas été conçu pour sécuriser
+— la protection qu'il offre (les machines internes ne sont pas joignables spontanément) est un
+<b>effet de bord</b>, pas un objectif, et elle disparaît en IPv6.
+</div>
+
+<h3 id="ch14-box">14.4 La box et l'authentification de l'abonné</h3>
+<ul class="key-points">
+<li>La box s'authentifie auprès de l'opérateur ; l'infrastructure derrière est un serveur <b>RADIUS</b> — le même protocole que le 802.1X d'entreprise.</li>
+<li>L'adresse publique attribuée peut être <b>dynamique</b> (avec un bail à la main de l'opérateur, cf. DHCP) ou <b>fixe</b> sur demande, généralement <b>payante</b>.</li>
+<li>C'est cette authentification qui permet à l'opérateur de savoir, à tout instant, <b>quel abonné</b> portait <b>quelle @IP</b> — et de fournir <b>un an de journaux</b> sur réquisition.</li>
+<li>Le même mécanisme sous-tend l'usage raisonnable (<i>Fair Use</i>) : l'opérateur sait exactement qui consomme quoi.</li>
+</ul>
+
+<h2 id="ch15"><span class="num">15.</span> Routage statique et messages ICMP</h2>
+
+<h3 id="ch15-table">15.1 La table de routage</h3>
+
+<p>Le support impose un format de table à six colonnes — c'est celui à reproduire en copie :</p>
+
+<div class="tw"><table>
+<thead><tr><th>Réseau destinataire</th><th>Masque</th><th>Prochain saut</th><th>Interface</th><th>Métrique</th><th>Apprentissage</th></tr></thead>
+<tbody>
+<tr><td>192.168.1.0</td><td>/24</td><td>192.168.1.2</td><td>eth1</td><td>0</td><td><b>local</b></td></tr>
+<tr><td>8.1.0.4</td><td>/30</td><td>8.1.0.6</td><td>eth0</td><td>0</td><td><b>local</b></td></tr>
+<tr><td>8.1.0.0</td><td>/30</td><td>8.1.0.5</td><td>eth0</td><td>1</td><td>static</td></tr>
+<tr><td>172.16.0.0</td><td>/16</td><td>8.1.0.5</td><td>eth0</td><td>2</td><td>static</td></tr>
+<tr><td>10.0.0.0</td><td>/8</td><td>8.1.0.5</td><td>eth0</td><td>2</td><td>static</td></tr>
+<tr><td><b>0.0.0.0</b></td><td><b>/0</b></td><td>192.168.1.1</td><td>eth1</td><td>1</td><td>static</td></tr>
+</tbody>
+</table></div>
+
+<ul class="key-points">
+<li><b>Métrique 0 = réseau directement connecté</b> — le routeur a une patte dedans, aucun saut à faire. C'est l'apprentissage <b>local</b>.</li>
+<li><b>La métrique compte les sauts</b> à franchir. Entre deux routes vers la même destination, celle de <b>plus faible</b> métrique gagne.</li>
+<li><b>0.0.0.0 /0 est la route par défaut</b> — « tout ce que je ne connais pas part par là ». Elle est toujours la <b>dernière</b> examinée : la décision se prend au <b>préfixe le plus long</b> (<i>longest prefix match</i>), et /0 est le plus court possible.</li>
+<li><b>Apprentissage</b> : <code>local</code> (connecté), <code>static</code> (écrit à la main), ou dynamique (RIP, OSPF, BGP…).</li>
+<li><b>Un routeur ne connaît que le prochain saut</b>, jamais le chemin complet. Chaque routeur reprend la décision à zéro : le routage IP est un relais d'aveugles.</li>
+</ul>
+
+<div class="callout"><div class="t">Les commandes exactes</div>
+<pre><code># Ajouter une route par défaut
+ip r add default via 192.168.1.1
+route add default gw 192.168.1.1        # syntaxe historique
+
+# Ajouter une route vers un réseau précis
+ip r add 172.16.0.0/16 via 8.1.0.5
+route add -net 172.16.0.0/16 gw 8.1.0.5
+
+# Consulter
+ip route          # ou : ip r
+netstat -rn       # historique</code></pre>
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>Protocole de routage</th><th>Type</th><th>Port / n° de protocole</th><th>Portée</th></tr></thead>
+<tbody>
+<tr><td><b>RIP</b></td><td>vecteur de distance</td><td>UDP <b>520</b></td><td>intérieur d'un AS, petits réseaux</td></tr>
+<tr><td><b>OSPF</b></td><td>état de liens</td><td>protocole IP <b>89</b></td><td>intérieur d'un AS</td></tr>
+<tr><td><b>IGRP / EIGRP</b></td><td>propriétaire Cisco</td><td>protocole IP <b>9</b> / 88</td><td>intérieur d'un AS</td></tr>
+<tr><td><b>BGP</b></td><td>vecteur de chemin</td><td>TCP <b>179</b></td><td><b>entre AS</b> — c'est le routage d'Internet</td></tr>
+<tr><td><b>VRRP</b></td><td>redondance de passerelle</td><td>protocole IP <b>112</b></td><td>haute disponibilité du routeur par défaut</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="ch15-icmp">15.2 ICMP — les messages qui trahissent la topologie</h3>
+
+<div class="tw"><table>
+<thead><tr><th>Type / code</th><th>Message</th><th>Émis par</th><th>Ce que l'attaquant en déduit</th></tr></thead>
+<tbody>
+<tr><td><b>3 / 0</b></td><td><i>Network Unreachable</i></td><td>un <b>routeur</b> qui n'a aucune route vers le réseau visé</td><td>ce réseau n'existe pas dans la table — la cible est hors périmètre</td></tr>
+<tr><td><b>3 / 1</b></td><td><i>Host Unreachable</i></td><td>le <b>dernier routeur</b>, qui atteint bien le réseau mais dont l'ARP reste sans réponse</td><td><b>le réseau existe</b> et est routé : seule la machine est absente ou éteinte. Information nettement plus riche</td></tr>
+<tr><td><b>3 / 3</b></td><td><i>Port Unreachable</i></td><td>la <b>machine</b> elle-même</td><td>l'hôte est vivant, mais rien n'écoute sur ce port UDP — base du scan UDP</td></tr>
+<tr><td><b>3 / 4</b></td><td><i>Fragmentation Needed and DF Set</i></td><td>un routeur dont le MTU est trop petit</td><td>message clé du <b>Path MTU Discovery</b> : le bloquer casse le PMTUD</td></tr>
+<tr><td><b>3 / 13</b></td><td><i>Communication Administratively Prohibited</i></td><td>un <b>pare-feu</b></td><td>il y a un filtre, et il l'annonce</td></tr>
+<tr><td><b>11 / 0</b></td><td><i>TTL Exceeded</i></td><td>le routeur où le TTL atteint 0</td><td>base du <code>traceroute</code></td></tr>
+<tr><td><b>8 / 0</b> et <b>0 / 0</b></td><td><i>Echo Request</i> / <i>Echo Reply</i></td><td>—</td><td>le <code>ping</code></td></tr>
+</tbody>
+</table></div>
+
+<div class="exam"><div class="t">Piège d'examen — 3/0 contre 3/1</div>
+La distinction est de <b>qui</b> émet et de <b>ce que ça révèle</b>. <b>Network Unreachable (3/0)</b> :
+un routeur intermédiaire n'a pas de route — il ne sait rien du réseau. <b>Host Unreachable (3/1)</b> :
+le réseau <b>est</b> atteint, le dernier routeur y est connecté, mais aucune machine ne répond en ARP.
+En reconnaissance, 3/1 est une <b>confirmation d'existence du réseau</b> — bien plus utile que 3/0.
+</div>
+
+<div class="callout warn"><div class="t">Faut-il bloquer ICMP ?</div>
+Bloquer <b>tout</b> ICMP est une erreur classique. Cela casse le <b>Path MTU Discovery</b> (type 3/4) :
+les gros paquets disparaissent silencieusement, et l'on obtient des connexions qui s'établissent puis
+se figent — le pire symptôme à diagnostiquer. La bonne pratique est de filtrer <b>par type</b> : laisser
+passer 3/4 et 11/0, restreindre l'echo depuis l'extérieur.
+</div>
+
+<h2 id="ch16"><span class="num">16.</span> Ports, sockets et TCP</h2>
+
+<h3 id="ch16-ports">16.1 Les trois plages de ports</h3>
+
+<div class="tw"><table>
+<thead><tr><th>Plage</th><th>Nom</th><th>Usage</th></tr></thead>
+<tbody>
+<tr><td><b>0 – 1023</b></td><td><i>Well known ports</i> / ports système (RFC 1700)</td><td>Services historiques. Sous Unix, leur ouverture exige les <b>privilèges root</b></td></tr>
+<tr><td><b>1024 – 49151</b></td><td>ports utilisateur / enregistrés</td><td>Applications enregistrées auprès de l'IANA</td></tr>
+<tr><td><b>49152 – 65535</b></td><td>ports dynamiques / <b>éphémères</b></td><td>Ports <b>source</b> choisis par le client à chaque connexion</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout"><div class="t">Où c'est écrit sur la machine</div>
+<pre><code># Linux
+/etc/services
+cat /proc/sys/net/ipv4/ip_local_port_range   # plage éphémère effective
+
+# Windows
+C:\Windows\System32\drivers\etc\services
+# clé TcpEphemeralPorts sous
+# HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters</code></pre>
+<b>Attaque locale sur <code>/etc/services</code> :</b> ce fichier est purement <b>documentaire</b> —
+il ne pilote aucun service. Mais un attaquant qui le modifie fait mentir tous les outils
+d'administration qui s'en servent pour afficher un nom : un <code>netstat</code> montrera « http » là
+où tourne en réalité une porte dérobée. C'est une technique de <b>dissimulation</b>, pas d'intrusion.
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>Service</th><th>Port</th><th>Service</th><th>Port</th></tr></thead>
+<tbody>
+<tr><td>FTP</td><td>TCP <b>20</b> (données) et <b>21</b> (commandes)</td><td>DNS</td><td><b>53</b> UDP (requêtes clients) et TCP (transferts de zone)</td></tr>
+<tr><td>SSH</td><td>TCP <b>22</b></td><td>DHCP / BootP</td><td>UDP <b>67</b> et <b>68</b></td></tr>
+<tr><td>Telnet</td><td>TCP <b>23</b></td><td>TFTP</td><td>UDP <b>69</b></td></tr>
+<tr><td>SMTP</td><td>TCP <b>25</b> · SMTPS <b>465</b></td><td>NTP</td><td>UDP <b>123</b></td></tr>
+<tr><td>HTTP / HTTPS</td><td>TCP <b>80</b> / <b>443</b></td><td>SNMP</td><td>UDP <b>161</b> et <b>162</b></td></tr>
+<tr><td>POP3 / POP3S</td><td>TCP <b>110</b> / <b>995</b></td><td>Syslog</td><td>UDP <b>514</b></td></tr>
+<tr><td>SMB / AD</td><td>TCP <b>445</b>, <b>135-139</b></td><td>DoT / BGP / RIP</td><td>TCP <b>853</b> / TCP <b>179</b> / UDP <b>520</b></td></tr>
+</tbody>
+</table></div>
+
+<div class="callout warn"><div class="t">Point où le support se contredit — FTP</div>
+Les notes de la planche 45 écrivent « FTP : port 20 pour les commandes et port 21 pour le transfert de
+données ». <b>C'est l'inverse de la norme</b> : le <b>21</b> porte les <b>commandes</b> (canal de
+contrôle), le <b>20</b> porte les <b>données</b> en mode actif. Le tableau ci-dessus donne la version
+correcte. Retenir la logique : on se connecte d'abord sur 21 pour dialoguer, le 20 ne s'ouvre que pour
+transférer.
+</div>
+
+<h3 id="ch16-socket">16.2 La socket</h3>
+
+<div class="callout def"><div class="t">Définition (RFC 793)</div>
+Une <b>socket</b> identifie <b>de manière unique, à un instant donné</b>, une conversation entre deux
+applications. Elle est définie par <b>cinq paramètres</b> :
+<ol style="margin-bottom:0">
+<li>l'adresse IP <b>source</b> ;</li>
+<li>le port <b>source</b> ;</li>
+<li>l'adresse IP <b>destination</b> ;</li>
+<li>le port <b>destination</b> ;</li>
+<li>le <b>protocole</b> — TCP ou UDP.</li>
+</ol>
+</div>
+
+<div class="example"><div class="t">Exemple concret</div>
+<code>208.160.135.5:50456 → 10.10.10.1:80 en TCP</code>. Le port serveur est <b>fixe et connu</b> (80),
+le port client est <b>éphémère</b> (50456, dans la plage 49152-65535). C'est le port source qui permet
+le <b>multiplexage</b> : dix onglets vers le même serveur produisent dix sockets distinctes, qui ne
+diffèrent que par ce nombre.
+</div>
+
+<div class="exam"><div class="t">Piège d'examen</div>
+Une socket, c'est <b>5 éléments</b>, pas 4 : oublier le <b>protocole</b> est l'erreur classique. Deux
+conversations peuvent avoir exactement les mêmes IP et ports et rester distinctes si l'une est en TCP
+et l'autre en UDP.
+</div>
+
+<h3 id="ch16-handshake">16.3 L'établissement en trois temps</h3>
+
+<div class="steps" id="anim-tcp">
+  <div class="step"><b>1 — SYN.</b> Le client envoie <code>SYN=1, ACK=0</code> avec un <b>numéro de séquence initial</b> tiré de l'horloge système (donc imprévisible). Il annonce au passage son <b>MSS</b>.</div>
+  <div class="step"><b>2 — SYN+ACK.</b> Le serveur répond <code>SYN=1, ACK=1</code>. Il acquitte en plaçant <b>séquence reçue + 1</b> dans le champ d'acquittement, et génère <b>son propre</b> numéro de séquence. Il annonce son MSS à lui.</div>
+  <div class="step"><b>3 — ACK.</b> Le client acquitte à son tour : <code>ACK=1</code>. La connexion est <b>établie</b>, et c'est seulement à ce moment que l'application serveur est réveillée.</div>
+  <div class="step"><b>Fermeture — FIN.</b> Symétrique et <b>dissymétrique</b> : chaque extrémité ferme son propre sens. Un côté envoie <code>FIN=1</code>, l'autre acquitte et peut continuer d'émettre. La connexion n'est close que quand <b>les deux</b> ont émis et fait acquitter leur FIN.</div>
+</div>
+<div class="qactions" style="margin-top:10px">
+  <button class="btn primary" onclick="playSteps('anim-tcp')">▶ Lancer l'animation</button>
+  <button class="btn ghost" onclick="resetSteps('anim-tcp')">↻ Réinitialiser</button>
+</div>
+
+<ul class="key-points">
+<li><b>La connexion TCP est dissymétrique</b> — chaque extrémité gère ses propres demandes. Une connexion est <b>active</b> (TCP initie) ou <b>passive</b> (TCP attend).</li>
+<li><b>Le numéro de séquence est le rang du premier octet</b> du segment, pas un compteur de segments.</li>
+<li><b>Le numéro d'acquittement désigne l'octet attendu ensuite</b> — donc « j'ai tout reçu jusqu'à N−1 ».</li>
+<li><b>Le premier segment est plafonné à 556 octets</b> (20 d'en-tête + 536 de données) pour s'assurer que le destinataire sait traiter au moins cela.</li>
+<li><b>Le contrôle de flux passe par le champ fenêtre</b> : il annonce le nombre d'octets que le récepteur peut encore encaisser. À <b>0</b>, l'émetteur se tait et sonde périodiquement.</li>
+<li><b>Le RTT</b> (<i>Round Trip Time</i>) est mesuré en continu et pilote la retransmission : trop court, on retransmet pour rien ; trop long, le débit s'effondre. Quelques millisecondes en LAN, jusqu'à plusieurs secondes sur liaison satellite.</li>
+</ul>
+
+<h3 id="ch16-synscan">16.4 Le SYN Stealth Scan</h3>
+
+<div class="callout danger"><div class="t">Pourquoi ce scan est « furtif »</div>
+Un serveur comme Apache ne <b>réveille l'application</b> — ne journalise, ne <code>fork()</code> — qu'une
+fois le <b>troisième paquet</b> (l'ACK) reçu. Le SYN scan s'arrête au deuxième : il envoie
+<code>SYN</code>, lit la réponse, puis envoie <code>RST</code> pour couper. La connexion n'a
+<b>jamais été établie</b> ; l'application n'a rien vu ; <b>rien n'apparaît dans les journaux
+applicatifs</b>.
+<pre><code>nmap -sS 10.0.0.1        # SYN scan — nécessite les privilèges root
+nmap -sT 10.0.0.1        # connect scan — handshake complet, tracé partout</code></pre>
+<b>Ce qui le détecte quand même :</b> le <b>pare-feu</b> et le <b>NIDS</b>, qui travaillent au niveau
+des paquets et non de l'application, voient parfaitement la rafale de SYN suivis de RST.
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>Réponse au SYN</th><th>Interprétation</th></tr></thead>
+<tbody>
+<tr><td><b>SYN+ACK</b></td><td>port <b>ouvert</b></td></tr>
+<tr><td><b>RST</b></td><td>port <b>fermé</b> — mais la machine est vivante</td></tr>
+<tr><td><b>rien du tout</b></td><td>port <b>filtré</b> : un pare-feu jette silencieusement</td></tr>
+<tr><td><b>ICMP 3/13</b></td><td>filtré, et le pare-feu l'annonce</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="ch16-mss">16.5 MTU, MSS et fragmentation</h3>
+
+<div class="tw"><table>
+<thead><tr><th>Grandeur</th><th>Valeur en Ethernet</th><th>Ce qu'elle recouvre</th></tr></thead>
+<tbody>
+<tr><td>Trame</td><td><b>1518</b> octets</td><td>tout, FCS compris</td></tr>
+<tr><td><b>MTU</b></td><td><b>1500</b> octets</td><td>la charge utile de la trame = le paquet IP entier</td></tr>
+<tr><td><b>MSS</b></td><td><b>1460</b> octets</td><td>MTU − 20 (en-tête IP) − 20 (en-tête TCP) = données applicatives</td></tr>
+</tbody>
+</table></div>
+
+<ul class="key-points">
+<li><b>Le MSS se négocie pendant le handshake</b>, dans les options du segment SYN — jamais après. Chaque extrémité annonce ce qu'elle est prête à <b>recevoir</b>.</li>
+<li><b>Le plus petit gagne</b> : si un maillon du chemin a un MTU réduit (tunnel VPN, PPPoE), le MSS effectif descend d'autant.</li>
+<li><b>Fragmenter est le pire scénario</b> — le paquet est découpé, et <b>seul le premier fragment porte les en-têtes TCP</b>. Un pare-feu qui filtre sur les ports ne voit donc rien dans les fragments suivants.</li>
+<li><b>Sur les flux chiffrés</b>, la fragmentation dégrade franchement les performances (VPN, TLS, SSH) : retransmettre un fragment perdu oblige à retransmettre tout le paquet.</li>
+<li><b>La bonne pratique</b> est le <b>MSS clamping</b> sur les routeurs de tunnel : forcer le MSS annoncé à la valeur réellement transportable, plutôt que de subir la fragmentation.</li>
+</ul>
+
+<div class="example"><div class="t">Exemple concret</div>
+Un VPN IPsec ajoute une cinquantaine d'octets d'encapsulation. Le MTU utile tombe à ~1450, le MSS
+à ~1410. Sans clamping, les postes continuent d'annoncer 1460, les gros paquets sont fragmentés — ou
+détruits si le bit <b>DF</b> est positionné et que l'ICMP 3/4 est bloqué. Symptôme caractéristique : la
+session s'ouvre, l'authentification passe, et <b>le transfert de fichier se fige</b>.
+</div>
+
+<h2 id="ch17"><span class="num">17.</span> DNS : architecture, enregistrements et résolution</h2>
+
+<h3 id="ch17-arbre">17.1 L'arbre de nommage</h3>
+
+<div class="callout def"><div class="t">Définition</div>
+Un <b>FQDN</b> (<i>Fully Qualified Domain Name</i>) est un nom pleinement qualifié, lu <b>de droite à
+gauche</b> et terminé par un <b>point</b> qui représente la <b>racine</b> :
+<code>serveur.domaine.com<b>.</b></code> Ce point final, presque toujours omis à la saisie, est la
+véritable origine de l'arbre.
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>Niveau</th><th>Exemple</th><th>Géré par</th></tr></thead>
+<tbody>
+<tr><td><b>Racine</b> <code>.</code></td><td>—</td><td>13 identités logiques de serveurs racines (A à M), démultipliées en <b>Anycast</b></td></tr>
+<tr><td><b>TLD</b> génériques (gTLD)</td><td><code>.com</code>, <code>.org</code>, <code>.net</code>, <code>.info</code></td><td>registres délégués par l'ICANN</td></tr>
+<tr><td><b>TLD</b> nationaux (ccTLD)</td><td><code>.fr</code>, <code>.de</code>, <code>.be</code></td><td>un registre par pays — l'<b>Afnic</b> pour le <code>.fr</code></td></tr>
+<tr><td>Domaine de 2<sup>e</sup> niveau</td><td><code>esiea.fr</code></td><td>le titulaire, via un <b>registrar</b></td></tr>
+<tr><td>Sous-domaines et hôtes</td><td><code>www.esiea.fr</code></td><td>le serveur DNS <b>autorité</b> sur la zone</td></tr>
+</tbody>
+</table></div>
+
+<div class="exam"><div class="t">Piège d'examen — registre contre registrar</div>
+<b>Registre</b> (<i>registry</i>) : l'organisme qui <b>tient la base</b> d'un TLD et l'exploite — l'Afnic
+pour le <code>.fr</code>. <b>Registrar</b> (bureau d'enregistrement) : le <b>revendeur</b> chez qui on
+achète — Gandi, OVH. Le registrar est celui qui est <b>proche du client</b> ; le registre est
+<b>au-dessus</b>. Conséquence directe au chapitre 18 : c'est le <b>registrar</b> qui publie le WHOIS et
+qui peut masquer les données, tandis que le <b>registre</b> les détient sans les publier.
+</div>
+
+<div class="callout"><div class="t">« Je suis autorité sur »</div>
+C'est la formulation exacte à employer. Un serveur DNS est <b>autorité</b> sur une zone : il en détient
+les enregistrements de référence, et ses réponses pour cette zone font foi. Tout autre serveur qui
+répond sur cette zone ne fait que <b>relayer</b> une réponse mise en cache — d'où la mention
+<code>Non-authoritative answer</code>.
+</div>
+
+<h3 id="ch17-enregistrements">17.2 Les types d'enregistrement</h3>
+
+<div class="tw"><table>
+<thead><tr><th>Type</th><th>Nom développé</th><th>Résout</th><th>Exemple</th></tr></thead>
+<tbody>
+<tr><td><b>A</b></td><td><i>Address</i></td><td>nom d'hôte → <b>IPv4</b></td><td><code>serveur.domaine.com → 10.0.1.5</code></td></tr>
+<tr><td><b>AAAA</b></td><td><i>quad-A</i></td><td>nom d'hôte → <b>IPv6</b></td><td><code>serveur.domaine.com → 2a10:86c0::5</code></td></tr>
+<tr><td><b>CNAME</b></td><td><i>Canonical Name</i></td><td><b>alias</b> → nom canonique, puis nouvelle résolution</td><td><code>www → serveur1 → 10.0.1.5</code> — <b>double résolution</b></td></tr>
+<tr><td><b>MX</b></td><td><i>Mail eXchange</i></td><td>domaine → <b>serveur de messagerie</b>, avec une <b>priorité</b></td><td><code>esiea.fr → 10 smtp.esiea.fr</code></td></tr>
+<tr><td><b>SRV</b></td><td><i>Service record</i></td><td><b>service</b> → serveur qui le rend</td><td><code>_ldap._tcp.domaine → ad1.domaine</code></td></tr>
+<tr><td><b>TXT</b></td><td><i>Text</i></td><td>nom → <b>chaîne libre</b> (clé-valeur)</td><td>SPF, DKIM, DMARC, validation de propriété, numéro de version</td></tr>
+<tr><td><b>NS</b></td><td><i>Name Server</i></td><td>zone → serveurs faisant autorité</td><td>c'est le mécanisme de <b>délégation</b></td></tr>
+<tr><td><b>PTR</b></td><td><i>Pointer</i></td><td>IP → nom (résolution <b>inverse</b>)</td><td><code>in-addr.arpa</code></td></tr>
+<tr><td><b>SOA</b></td><td><i>Start Of Authority</i></td><td>paramètres de la zone</td><td>numéro de série, TTL, contacts</td></tr>
+</tbody>
+</table></div>
+
+<div class="example"><div class="t">Exemple concret — la séquence complète d'un envoi de mail</div>
+Vous écrivez à <code>quelqu'un@esiea.fr</code>. Votre serveur SMTP sortant :
+<ol style="margin-bottom:0">
+<li>interroge le DNS d'<code>esiea.fr</code> pour son enregistrement <b>MX</b> ;</li>
+<li>obtient <code>smtp.esiea.fr</code> ;</li>
+<li>résout <code>smtp.esiea.fr</code> — et découvre que c'est un <b>CNAME</b> vers <code>serveur2</code> ;</li>
+<li>résout <code>serveur2</code> en <b>A</b> → <code>10.0.1.6</code> ;</li>
+<li>ouvre une session SMTP vers cette adresse.</li>
+</ol>
+<b>Trois requêtes DNS enchaînées pour un seul message.</b> Et « tout nom de domaine a normalement un
+champ MX » : qui dit domaine dit messagerie.
+</div>
+
+<div class="example"><div class="t">Exemple concret — ce que fait Windows au démarrage</div>
+Mettez Wireshark au boot d'un poste Windows : vous verrez une requête <b>SRV</b> de la forme
+<code>_ldap._tcp.<i>votre_domaine</i></code>. Le poste ne connaît <b>ni le nom ni l'adresse</b> de son
+contrôleur de domaine ; il demande au DNS « qui rend le service LDAP ici ? ». Le DNS lui répond le nom
+de l'AD — et l'AD, dans un environnement Microsoft, <b>est</b> le serveur DNS, donc il se connaît
+lui-même. C'est ce bouclage qui fait que « tout marche tout seul » en environnement full Windows —
+et c'est aussi une <b>fuite d'architecture</b> majeure pour qui écoute le réseau.
+</div>
+
+<div class="callout"><div class="t">SIP, LDAP et la résolution de service</div>
+Le même mécanisme SRV sert à la <b>VoIP</b> : un téléphone IP branché dans une entreprise ne sait pas
+où est son serveur SIP. Il demande <code>_sip._udp.domaine</code>, reçoit un nom, puis résout ce nom en
+adresse. <b>SIP</b> est le protocole de <b>signalisation</b> — il fait sonner le poste, gère les appels
+manqués, les messages — la <b>voix</b>, elle, passe sur un autre flux (RTP) et d'autres ports.
+</div>
+
+<h3 id="ch17-txt">17.3 L'enregistrement TXT, ou le DNS comme base clé-valeur</h3>
+<ul class="key-points">
+<li><b>SPF</b> — liste des serveurs autorisés à émettre du courrier pour le domaine.</li>
+<li><b>DKIM</b> — clé publique servant à vérifier la signature des messages sortants.</li>
+<li><b>DMARC</b> — politique à appliquer quand SPF ou DKIM échouent, et adresse de rapport.</li>
+<li><b>Validation de propriété</b> — un <code>_acme-challenge</code> prouve à une autorité de certification qu'on contrôle bien le domaine avant de délivrer un certificat (c'est le mécanisme de Let's Encrypt).</li>
+<li><b>Diffusion de version</b> — un champ <code>version</code> permet à un parc logiciel déployé partout de savoir s'il est à jour, <b>sans que l'éditeur héberge quoi que ce soit</b> : les clients interrogent l'infrastructure DNS mondiale, l'éditeur n'a pas de serveur qui les attend et ne collecte donc aucune donnée. C'est ainsi qu'Alcasar signale une version obsolète dans son interface d'administration.</li>
+</ul>
+
+<h3 id="ch17-propagation">17.4 Propagation et TTL — deux notions distinctes</h3>
+
+<div class="tw"><table>
+<thead><tr><th></th><th>Temps de propagation</th><th>TTL</th></tr></thead>
+<tbody>
+<tr><td>Concerne</td><td><b>vous</b>, quand vous modifiez un enregistrement chez votre registrar</td><td>les <b>serveurs entre eux</b></td></tr>
+<tr><td>Effet</td><td>délai avant que la planète voie la modification</td><td>durée pendant laquelle un résolveur garde une réponse en cache avant de redemander</td></tr>
+<tr><td>Valeurs (France)</td><td><b>10 secondes</b>, puis <b>1 heure</b>, puis <b>24 heures</b> si l'on modifie plusieurs fois de suite</td><td>défini dans la zone, typiquement de quelques minutes à 24 h</td></tr>
+<tr><td>Pourquoi</td><td>bridage anti-abus : éviter les modifications en rafale</td><td>réduire la charge sur les serveurs autorité</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout danger"><div class="t">Conséquence opérationnelle</div>
+Une erreur de saisie corrigée immédiatement met <b>1 heure</b> à se propager ; une deuxième correction,
+<b>24 heures</b>. En période de bascule d'infrastructure, cela peut coûter une journée d'indisponibilité.
+La parade est de <b>baisser le TTL à l'avance</b> — quelques heures avant la migration — puis de le
+remonter une fois la bascule validée.
+</div>
+
+<h3 id="ch17-resolveurs">17.5 Résolveur récursif, mandataire, et transport</h3>
+
+<div class="tw"><table>
+<thead><tr><th></th><th>Résolveur <b>récursif</b></th><th>Résolveur <b>mandataire</b> (proxy / forwarder)</th></tr></thead>
+<tbody>
+<tr><td>Ce qu'il fait</td><td>Part de la <b>racine</b>, descend TLD par TLD, obtient la réponse d'autorité</td><td>Transmet la question à un autre résolveur et renvoie ce qu'il reçoit</td></tr>
+<tr><td>Signe distinctif</td><td>réponse d'autorité pour ses propres zones</td><td>la mention <b><code>Non-authoritative answer</code></b> dans <code>dig</code> / <code>nslookup</code></td></tr>
+<tr><td>Exemple</td><td>un BIND correctement configuré</td><td><b>dnsmasq</b> dans les box — c'est ce qui a été trouvé au laboratoire sur les box <b>SFR</b> et <b>Orange</b></td></tr>
+<tr><td>Pourquoi</td><td>indépendance, contrôle</td><td>léger, faible empreinte mémoire, très réactif — adapté à un équipement contraint</td></tr>
+</tbody>
+</table></div>
+
+<ul class="key-points">
+<li><b>UDP 53</b> pour les <b>requêtes clientes</b> — rapide, sans établissement de connexion.</li>
+<li><b>TCP 53</b> pour les <b>échanges entre serveurs</b> : transferts de zone (AXFR/IXFR) et réponses trop grosses pour un datagramme UDP.</li>
+<li><b>Un serveur DNS ne répond pas au ping</b> et n'écoute qu'en UDP : le trouver par un scan TCP classique <b>ne donne rien</b>. Il faut un scan UDP, ou passer par les enregistrements <b>NS</b> du domaine.</li>
+<li><b>On met toujours deux serveurs DNS</b> — primaire et secondaire. Si le premier ne répond plus, le client bascule automatiquement sur le second.</li>
+</ul>
+
+<h3 id="ch17-dig">17.6 Diagnostiquer avec <code>dig</code></h3>
+
+<div class="callout">
+<pre><code># Résolution simple par le résolveur configuré dans la pile IP
+dig alcasar.net
+
+# Interroger explicitement un serveur donné
+dig @8.8.8.8 alcasar.net
+
+# Quel serveur DNS gère ce domaine ? (interne ou hébergeur ?)
+dig NS esiea.fr
+
+# Le serveur de messagerie
+dig MX esiea.fr
+
+# Un champ texte
+dig TXT _acme-challenge.exemple.fr
+
+# Résolution inverse
+dig -x 185.235.207.1
+
+# Tenter un transfert de zone (doit échouer sur un serveur bien configuré)
+dig @ns1.exemple.fr exemple.fr AXFR</code></pre>
+<b><code>nslookup</code> n'est pas mort mais est en voie de retrait</b> : c'est <code>dig</code> qui
+prend la main, parce qu'il affiche la réponse brute, section par section.
+</div>
+
+<div class="example"><div class="t">Exemple concret — ce que révèle un <code>dig NS</code></div>
+Interroger les <b>NS</b> d'une entreprise répond à une question d'architecture : a-t-elle son
+<b>propre</b> serveur DNS, ou a-t-elle tout confié à un hébergeur ? Dans le premier cas, ce serveur est
+une <b>cible</b> exposée et probablement moins durcie que l'infrastructure d'un hébergeur ; dans le
+second, la surface se déplace vers le compte d'administration chez cet hébergeur.
+</div>
+
+<h3 id="ch17-doh">17.7 Chiffrer le DNS : DoT et DoH</h3>
+
+<div class="tw"><table>
+<thead><tr><th></th><th><b>DoT</b> — DNS over TLS</th><th><b>DoH</b> — DNS over HTTPS</th></tr></thead>
+<tbody>
+<tr><td>Port</td><td>TCP <b>853</b></td><td>TCP <b>443</b></td></tr>
+<tr><td>Principe</td><td>DNS directement dans un tunnel TLS</td><td>DNS encapsulé dans des requêtes <b>HTTPS</b></td></tr>
+<tr><td>Visibilité réseau</td><td>port dédié, <b>immédiatement identifiable</b></td><td><b>se fond dans le trafic web</b> — beaucoup plus difficile à distinguer</td></tr>
+<tr><td>Blocage en entreprise</td><td>fermer le port 853, c'est fini</td><td>on ne peut pas fermer 443 : on <b>blackliste les adresses IP</b> des résolveurs publics connus</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout warn"><div class="t">Pourquoi le contournement ne tient pas</div>
+Les résolveurs DoH/DoT publics sont, par nature, <b>publics</b> : ils sont « à peine une cinquantaine
+sur la planète » et tous répertoriés. Une entreprise n'a qu'à mettre leurs adresses en liste noire pour
+supprimer entièrement DoH et DoT de son réseau. Un serveur « que personne ne connaît » cesse d'être
+inconnu dès qu'il est utilisé. C'est exactement ce que fait la catégorie <b>DOH</b> des listes noires
+d'Alcasar (chapitre 21).
+</div>
+
+<div class="callout danger"><div class="t">Pourquoi le DNS est une donnée si sensible</div>
+« Le DNS, ça dit votre vie. » Vos requêtes révèlent <b>quand vous dormez</b>, quand vous jouez, quels
+sites vous intéressent, sur quoi vous travaillez, quels services votre entreprise utilise, et quand un
+projet démarre. Le contenu est chiffré par TLS ; <b>le nom que vous demandez ne l'est pas</b>, sauf à
+faire du DoH ou du DoT. Et il reste alors à faire confiance au résolveur qui, lui, voit tout.
+</div>
+
+<div class="callout"><div class="t">Le cas des résolveurs publics — et le cas SFR</div>
+<ul style="margin-bottom:0">
+<li>Certaines box <b>imposent</b> leur résolveur : la box SFR force le DNS vers les serveurs de SFR, sans
+possibilité de choisir. Chez les autres opérateurs, on peut sortir du mandataire de l'opérateur.</li>
+<li>L'Europe propose ses propres résolveurs, en <b>paire</b> (un principal, un de secours), déclinés en
+variantes : sans filtre, avec <b>protection de l'enfance</b>, avec blocage publicitaire. L'argument
+avancé est la maîtrise de l'opérateur plutôt que la performance.</li>
+<li>Les résolveurs associatifs « libertaires » ont un défaut mesurable : peu de serveurs, donc de la
+latence — une <b>demi-seconde</b> par résolution se ressent nettement.</li>
+<li><b>Le résolveur peut mentir</b> — c'est le <i>Lying DNS</i>, base du blocage administratif. Le seul
+moyen d'en être sûr est de <b>devenir soi-même résolveur récursif</b> et d'interroger les racines… ce
+qu'un pare-feu peut interdire.</li>
+</ul>
+</div>
+
+<div class="example"><div class="t">Exemple concret — le DNS « miroir » pour développeurs</div>
+Certains services DNS répondent <b>votre propre adresse IP</b> à n'importe quel nom demandé. Cela permet
+de tester en local une application qui contient en dur un nom de domaine <b>pas encore déposé</b> :
+<code>mabaguette.fr</code> résout vers votre machine, le code fonctionne, et rien n'a été acheté.
+</div>
+
+<div class="callout"><div class="t">Résolution locale : <code>/etc/hosts</code></div>
+Avant toute requête réseau, le système consulte son fichier de résolution locale
+(<code>/etc/hosts</code> sous Linux, <code>C:\Windows\System32\drivers\etc\hosts</code> sous Windows).
+<b>Usage légitime</b> : en <b>DMZ</b>, on supprime souvent le service DNS — il ferait fuir la topologie
+et constituerait une cible — et l'on renseigne les quelques noms nécessaires en dur, complétés par des
+<b>entrées ARP statiques</b>. Moins de services exposés, moins de surface.
+<b>Usage malveillant</b> : modifier ce fichier détourne silencieusement un nom vers un serveur pirate,
+sans toucher au réseau ni au DNS — et aucun DNSSEC n'y peut quoi que ce soit, puisque la requête n'est
+jamais émise.
+</div>
+
+<h2 id="ch18"><span class="num">18.</span> Sécurité du DNS : OSINT, attaques et DNSSEC</h2>
+
+<h3 id="ch18-whois">18.1 WHOIS — l'OSINT commence ici</h3>
+
+<div class="callout def"><div class="t">Définition</div>
+La base <b>WHOIS</b> rassemble les informations administratives des noms de domaine : titulaire, contact
+administratif, contact technique, adresse, téléphone, dates de création et d'expiration. Les
+<b>registres</b> ont l'<b>obligation</b> de détenir ces données. La commande est simplement
+<code>whois nomdedomaine</code>.
+</div>
+
+<ul class="key-points">
+<li><b>Le registrar publie, le registre détient</b> — c'est le registrar qui expose le WHOIS ; le registre, lui, garde l'information sans la publier.</li>
+<li><b>Les lois nationales peuvent bloquer la publication</b> : c'est le cas en <b>France</b>, pas en <b>Suisse</b>. Chez un registrar français, on peut demander l'anonymisation à l'achat, et le WHOIS ne renvoie plus que « information cachée ».</li>
+<li><b>L'anonymisation n'est pas une disparition</b> — un État peut exiger les données, et le registrar doit les fournir. Elle protège de l'OSINT, pas de la justice.</li>
+<li><b>Ce que révèle un WHOIS non masqué</b> : nom du titulaire, adresse physique, téléphone du technicien — c'est-à-dire une <b>cible d'ingénierie sociale</b> nommée et joignable.</li>
+</ul>
+
+<h3 id="ch18-attaques">18.2 Les cinq attaques à connaître</h3>
+
+<div class="tw"><table>
+<thead><tr><th>Attaque</th><th>Principe</th><th>Ce qu'elle produit</th><th>Parade</th></tr></thead>
+<tbody>
+<tr><td><b>Déni de service</b></td><td>Un réseau de bots interroge massivement le même serveur DNS</td><td>Le serveur ne répond plus : le domaine disparaît d'Internet, même si les serveurs web fonctionnent</td><td><b>Duplication / CDN / Anycast</b>, limitation de débit</td></tr>
+<tr><td><b>Amplification</b></td><td>Requête UDP courte (~<b>60 octets</b>) avec <b>@IP source usurpée</b> → réponse volumineuse (~<b>3 000 octets</b>) envoyée à la victime</td><td>Facteur d'amplification ≈ <b>50×</b>. Deux victimes à la fois : le résolveur et la cible</td><td>Interdire la <b>récursivité ouverte</b>, filtrage anti-usurpation en bordure (<b>BCP 38</b>), limitation de débit</td></tr>
+<tr><td><b>Empoisonnement de cache</b></td><td>Pendant que le résolveur attend une réponse, l'attaquant lui en envoie une <b>forgée</b> (Scapy) qui arrive avant la vraie</td><td>Le résolveur met la fausse résolution en cache et la sert à tout le réseau pendant tout le TTL</td><td><b>DNSSEC</b>, aléa du port source et du transaction ID</td></tr>
+<tr><td><b>Transfert de zone illicite</b></td><td>L'attaquant se fait passer pour le <b>serveur secondaire</b> et demande un AXFR au primaire</td><td>Récupération de <b>toute la configuration DNS</b> : cartographie complète du système d'information</td><td><b>DNSSEC</b>, restriction du transfert aux @IP des secondaires, <b>TSIG</b></td></tr>
+<tr><td><b>Homographes / homoglyphes</b></td><td>Nom visuellement identique construit avec des caractères d'un autre alphabet (cyrillique)</td><td>Site de phishing indiscernable à l'œil</td><td>Affichage en <b>Punycode</b> (<code>xn--…</code>) par le navigateur</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="ch18-poisoning">18.3 L'empoisonnement de cache, en détail</h3>
+
+<div class="steps" id="anim-poison">
+  <div class="step"><b>1 — La requête légitime.</b> Un poste demande <code>google.com</code> à son résolveur d'entreprise.</div>
+  <div class="step"><b>2 — Le cache est vide.</b> Le résolveur ne connaît pas la réponse : le TTL de l'entrée précédente vient d'expirer. Il part interroger la racine, puis le TLD, puis l'autorité.</div>
+  <div class="step"><b>3 — La fenêtre s'ouvre.</b> Pendant cette attente, <b>le cache est en écriture</b> : le résolveur attend une réponse et accepte la première qui correspond.</div>
+  <div class="step"><b>4 — L'injection.</b> L'attaquant, sur le réseau, forge une réponse DNS en UDP (Scapy) et se fait passer pour le serveur interrogé : « <code>google.com</code> = 5.5.5.5 ».</div>
+  <div class="step"><b>5 — L'empoisonnement.</b> Le résolveur enregistre, répond au poste, et <b>sert la fausse réponse à tout le réseau</b> jusqu'à expiration du TTL.</div>
+  <div class="step"><b>La difficulté pour l'attaquant</b> — trouver le moment exact où l'entrée n'est plus en cache. La réponse pratique : <b>essayer en permanence</b>. Tôt ou tard, la fenêtre s'ouvre.</div>
+</div>
+<div class="qactions" style="margin-top:10px">
+  <button class="btn primary" onclick="playSteps('anim-poison')">▶ Lancer l'animation</button>
+  <button class="btn ghost" onclick="resetSteps('anim-poison')">↻ Réinitialiser</button>
+</div>
+
+<div class="callout danger"><div class="t">Le défaut de conception : il n'y a aucune authentification dans le DNS</div>
+Le problème n'est <b>pas</b> l'absence de chiffrement — l'attaquant n'a pas besoin d'écouter. Le problème
+est l'<b>authenticité</b> : rien, dans le protocole DNS d'origine, ne permet à un résolveur de vérifier
+<b>d'où vient</b> une réponse. Il a posé une question, il attend une réponse, il prend la première qui
+arrive. « Comme toute la sécurité réseau, rien n'avait été prévu à la base : on est en 1980 quand tout
+cela a été inventé. »
+</div>
+
+<h3 id="ch18-dnssec">18.4 DNSSEC</h3>
+
+<div class="callout def"><div class="t">Définition</div>
+<b>DNSSEC</b> (<i>DNS Security Extensions</i>) ajoute au DNS une <b>signature cryptographique</b> des
+enregistrements, vérifiable par une <b>chaîne de confiance</b> qui remonte jusqu'à la racine. Un
+résolveur validant n'accepte plus que les réponses <b>signées par l'autorité légitime</b> de la zone,
+et jette les autres.
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>Ce que DNSSEC apporte</th><th>Ce que DNSSEC n'apporte pas</th></tr></thead>
+<tbody>
+<tr><td><b>Authenticité</b> de l'origine des données</td><td><b>Aucune confidentialité</b> : les requêtes et les réponses restent <b>en clair</b> — c'est DoH/DoT qui chiffre</td></tr>
+<tr><td><b>Intégrité</b> : la réponse n'a pas été modifiée en chemin</td><td>Aucune protection contre un <b>résolveur malveillant</b> auquel on fait confiance</td></tr>
+<tr><td>Preuve d'<b>inexistence</b> d'un nom (NSEC/NSEC3)</td><td>Aucune protection contre une modification du fichier <code>hosts</code> local</td></tr>
+</tbody>
+</table></div>
+
+<div class="exam"><div class="t">Piège d'examen — l'état réel du déploiement</div>
+<b>DNSSEC est déployé « en haut », pas « en bas ».</b>
+<ul style="margin-bottom:0">
+<li><b>Racines et TLD : réglé depuis longtemps.</b> On ne peut plus usurper un TLD ni la racine.</li>
+<li><b>Serveurs d'entreprise : très peu déployé</b>, parce qu'il faut monter et exploiter une PKI, gérer
+la rotation des clés, et qu'une erreur rend le domaine <b>injoignable</b>. « Si l'administrateur ne met
+pas DNSSEC, il ne met pas DNSSEC. »</li>
+<li><b>Conséquence directe</b> : l'empoisonnement de cache reste <b>parfaitement fonctionnel contre les
+résolveurs internes</b>, y compris celui d'une école. C'est le point que l'enseignant a explicitement
+signalé — en précisant que ça marche, et qu'il ne faut pas le faire.</li>
+</ul>
+</div>
+
+<h3 id="ch18-tunneling">18.5 Le tunneling DNS — Iodine</h3>
+
+<div class="callout danger"><div class="t">Le principe</div>
+Une réponse DNS comporte de nombreux <b>champs optionnels</b> — c'est d'ailleurs pourquoi elle peut peser
+3 000 octets. Ces champs sont <b>quasi libres</b>. On peut donc y encapsuler des données arbitraires, et
+faire circuler un <b>tunnel IP complet</b> à travers ce qui ressemble, pour tout équipement de sécurité,
+à du trafic DNS parfaitement conforme.
+<br><br>
+<b>Iodine</b> est le projet emblématique. Le nom vient du symbole chimique de l'<b>iode</b>, dont le
+numéro atomique est <b>53</b> — comme le port du DNS.
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>Étape</th><th>Ce qui se passe</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>L'attaquant contrôle un domaine et place un <b>serveur Iodine</b> comme autorité dessus, sur Internet</td></tr>
+<tr><td>2</td><td>Depuis la zone verrouillée, le client Iodine émet des <b>requêtes DNS</b> vers ce domaine, en encodant les données dans les <b>sous-domaines</b> demandés</td></tr>
+<tr><td>3</td><td>Le résolveur interne, faisant son travail, relaie la requête jusqu'au serveur autorité — <b>c'est-à-dire l'attaquant</b></td></tr>
+<tr><td>4</td><td>Le serveur répond en encodant les données de retour dans les champs <b>TXT / NULL</b> de la réponse</td></tr>
+<tr><td>5</td><td>Le pare-feu voit passer du DNS conforme, sur le port autorisé, et laisse faire</td></tr>
+</tbody>
+</table></div>
+
+<div class="example"><div class="t">Exemple concret — l'anecdote de l'exercice OTAN</div>
+Lors d'un exercice interarmées, l'équipe française a exfiltré de l'information depuis une zone censément
+étanche pendant que les pare-feu belges, néerlandais et américains n'y voyaient rien. Preuve de concept
+présentée au jury le troisième jour : l'équipe faisait passer le <b>protocole de jeu de Quake 3</b> dans
+les champs texte optionnels des requêtes DNS, et jouait en réseau à travers le cloisonnement. Ce qui
+montre le vrai point : <b>si un tunnel peut porter un jeu temps réel, il peut porter n'importe quoi</b>.
+</div>
+
+<div class="callout ok"><div class="t">Comment on détecte un tunnel DNS</div>
+<ul style="margin-bottom:0">
+<li><b>Volumétrie</b> — un poste qui émet des milliers de requêtes DNS par minute vers un même domaine.</li>
+<li><b>Longueur et entropie des noms</b> — les sous-domaines encodés sont longs et ressemblent à du
+bruit aléatoire, pas à des mots.</li>
+<li><b>Types d'enregistrement inhabituels</b> — un usage massif de <b>TXT</b> ou <b>NULL</b> là où le
+trafic normal fait du A et du AAAA.</li>
+<li><b>Un seul domaine autorité</b> concentre tout le trafic, et il est jeune.</li>
+<li><b>Ratio requêtes/réponses</b> anormalement symétrique et soutenu dans le temps.</li>
+</ul>
+</div>
+
+<h3 id="ch18-homoglyphes">18.6 Homoglyphes et Punycode</h3>
+
+<ul class="key-points">
+<li><b>Homoglyphe</b> — un caractère visuellement identique à un autre : le « а » cyrillique (U+0430) contre le « a » latin (U+0061).</li>
+<li><b>Homographe</b> — le <b>mot</b> composé de tels caractères : <code>аpple.com</code> écrit avec un « а » russe est indiscernable de <code>apple.com</code>.</li>
+<li><b>Punycode</b> — encodage qui ramène un nom internationalisé en <b>ASCII pur</b>, préfixé par <code>xn--</code>. Le DNS ne transporte que de l'ASCII : c'est ce qui circule réellement sur le réseau.</li>
+<li><b>La parade des navigateurs</b> — afficher le nom <b>en Punycode</b> dès qu'il mélange les alphabets. Le nom devient alors visiblement incohérent dans la barre d'adresse.</li>
+<li><b>Chrome va plus loin</b> — en plus du Punycode, il colore <b>toute la barre d'adresse en rouge</b>. Les autres navigateurs se contentent de l'affichage encodé.</li>
+</ul>
+
+<div class="exam"><div class="t">Piège d'examen</div>
+Ne pas confondre les trois mots : <b>homoglyphe</b> = le caractère ; <b>homographe</b> = le nom construit
+avec ; <b>Punycode</b> = la <b>parade</b>, pas l'attaque. Et retenir que le Punycode n'est pas une
+invention de sécurité : c'est le mécanisme normal d'internationalisation des noms de domaine (IDN),
+détourné ici en indicateur visuel.
+</div>
+
+<h2 id="ch19"><span class="num">19.</span> HTTPS, TLS et l'inspection profonde</h2>
+
+<h3 id="ch19-handshake">19.1 Le déroulé de la négociation</h3>
+
+<div class="steps" id="anim-tls">
+  <div class="step"><b>1 — Le client se connecte sur 443.</b> C'est <b>le serveur qui impose</b> HTTPS, pas le client qui le choisit.</div>
+  <div class="step"><b>2 — Le serveur envoie son certificat. En clair.</b> Toute cette phase est lisible dans Wireshark : le certificat, la liste des algorithmes, le nom du site demandé (SNI). Rien n'est encore chiffré.</div>
+  <div class="step"><b>3 — Le client vérifie la signature.</b> Il calcule l'empreinte du certificat et vérifie la signature avec la <b>clé publique</b> de l'autorité de certification qu'il possède déjà dans son magasin. Si cela concorde, le certificat a bien été signé par une autorité reconnue.</div>
+  <div class="step"><b>4 — (Optionnel, et c'est le drame) le certificat client.</b> La RFC le prévoit : le serveur peut exiger que le client présente le sien, pour une <b>authenticité réciproque</b>. Dans le web commercial, cela n'a jamais été imposé.</div>
+  <div class="step"><b>5 — Échange de la clé de session.</b> Le client génère une <b>clé symétrique</b> et la chiffre avec la <b>clé publique</b> extraite du certificat. Seul le détenteur de la <b>clé privée</b> peut la déchiffrer.</div>
+  <div class="step"><b>6 — Bascule en symétrique.</b> Le reste de l'échange est chiffré par un algorithme symétrique, bien moins coûteux. <b>Asymétrique pour échanger les clés, symétrique pour faire le travail.</b></div>
+</div>
+<div class="qactions" style="margin-top:10px">
+  <button class="btn primary" onclick="playSteps('anim-tls')">▶ Lancer l'animation</button>
+  <button class="btn ghost" onclick="resetSteps('anim-tls')">↻ Réinitialiser</button>
+</div>
+
+<h3 id="ch19-clientcert">19.2 Le certificat client abandonné — et ses conséquences</h3>
+
+<div class="callout danger"><div class="t">Le raisonnement à savoir tenir en copie</div>
+La norme TLS prévoit l'authentification <b>mutuelle</b>. Le monde commercial y a renoncé, avec un
+argument d'ergonomie : les utilisateurs ne sauraient pas gérer un certificat — où le ranger, que faire
+quand le PC est perdu, cassé, donné.
+<b>Conséquence en chaîne :</b>
+<ol style="margin-bottom:0">
+<li>Le serveur ne sait pas <b>qui</b> est le client. Vous êtes n'importe qui.</li>
+<li>Il faut donc l'identifier autrement → <b>login / mot de passe</b>.</li>
+<li>Les mots de passe s'oublient, se volent, se rejouent, se cassent par force brute.</li>
+<li>Il faut donc un <b>second facteur</b> → SMS, application bancaire, notification…</li>
+<li>Et l'on aboutit à un empilement de rustines pour un problème que le protocole <b>savait déjà
+résoudre</b>.</li>
+</ol>
+<b>L'ironie soulignée en cours :</b> le certificat client aurait supposé <b>un seul mot de passe</b>,
+celui qui déverrouille le magasin local — exactement la promesse que font aujourd'hui les
+<b>gestionnaires de mots de passe</b>. « On a loupé un truc. »
+</div>
+
+<div class="example"><div class="t">Exemple concret — là où le certificat client survit</div>
+En entreprise, l'authentification par certificat client existe bel et bien, mais pour <b>un seul
+usage</b> : le <b>VPN</b>. La PKI d'entreprise délivre un certificat à chaque collaborateur ; le
+concentrateur VPN refuse toute connexion sans lui. Ce n'est pas une page web qu'on peut cloner : un
+attaquant ne peut pas hameçonner un certificat comme il hameçonne un mot de passe. Dans les boîtiers
+Stormshield, la PKI est <b>embarquée dans l'équipement</b>.
+</div>
+
+<h3 id="ch19-mitm">19.3 L'homme du milieu : pirate ou pare-feu</h3>
+
+<div class="tw"><table>
+<thead><tr><th></th><th>Attaquant (Wi-Fi d'hôtel, etc.)</th><th>Pare-feu d'entreprise (<i>deep inspection</i>)</th></tr></thead>
+<tbody>
+<tr><td>Certificat présenté</td><td><b>faux</b>, auto-signé ou signé par une autorité inconnue</td><td>signé par l'<b>autorité racine interne</b> de l'entreprise</td></tr>
+<tr><td>Cette autorité est-elle dans votre magasin ?</td><td><b>non</b></td><td><b>oui</b> — elle y a été poussée par <b>GPO</b> depuis l'Active Directory</td></tr>
+<tr><td>Ce que voit l'utilisateur</td><td>un <b>avertissement</b>, avec la possibilité de passer outre</td><td><b>le cadenas est vert</b>. Aucun signe. Rien.</td></tr>
+<tr><td>Comment le détecter</td><td>l'avertissement lui-même</td><td>ouvrir le certificat et lire l'émetteur : il porte le nom de <b>votre entreprise</b>, pas celui de la banque</td></tr>
+<tr><td>Qui voit le clair</td><td>l'attaquant</td><td>le pare-feu — qui peut le stocker, l'analyser, l'archiver</td></tr>
+</tbody>
+</table></div>
+
+<div class="exam"><div class="t">Piège d'examen — la question à laquelle il faut savoir répondre</div>
+<b>« Pourquoi le cadenas reste-t-il vert alors qu'un équipement déchiffre le flux ? »</b><br>
+Parce que l'<b>autorité racine du pare-feu a été installée dans le magasin de certificats du poste</b>,
+distribuée par <b>GPO</b> via l'Active Directory. Le navigateur vérifie une chaîne de confiance — et
+cette chaîne est valide : elle remonte à une autorité que le poste reconnaît. TLS fonctionne exactement
+comme prévu ; c'est le <b>magasin de confiance</b> qui a été modifié.
+<br><br>
+<b>Le cadenas est rouge dans un seul cas</b> : lorsque l'autorité qui signe n'est <b>pas</b> reconnue —
+donc face à un attaquant, pas face au pare-feu de l'entreprise.
+</div>
+
+<ul class="key-points">
+<li><b>Deep Inspection</b> — dans un Fortinet ou un Stormshield, c'est littéralement une case à cocher. Une fois activée, tout le HTTPS est déchiffré, analysé (antivirus, DLP, filtrage d'URL) et rechiffré.</li>
+<li><b>Ce que cela permet</b> — le seul moyen pour un antivirus réseau ou un DLP de voir quoi que ce soit dans du trafic chiffré.</li>
+<li><b>Ce que cela coûte</b> — l'employeur détient <b>en clair</b> l'intégralité de la navigation, y compris bancaire et médicale. En France, cela impose une information des salariés et une politique écrite ; techniquement, on exclut du déchiffrement les catégories « banque » et « santé ».</li>
+<li><b>Les EDR ne font plus ça</b> — installés <b>sur</b> la machine, avec un accès à la <b>mémoire vive</b>, ils lisent le clair directement <b>avant</b> chiffrement ou <b>après</b> déchiffrement, dans le processus du navigateur. Plus efficace, et sans casser TLS.</li>
+</ul>
+
+<h3 id="ch19-epinglage">19.4 Pourquoi on ne peut plus toujours passer outre</h3>
+
+<div class="callout"><div class="t">La mémorisation du certificat par le navigateur</div>
+La première fois que vous visitez un site, le navigateur <b>mémorise</b> son certificat et le considère
+comme faisant foi. Aux visites suivantes :
+<ul style="margin-bottom:0">
+<li>certificat <b>différent</b> de celui mémorisé → alerte <b>sans possibilité de contournement</b> ;</li>
+<li><b>première</b> visite et certificat non reconnu → alerte <b>contournable</b>, faute de référence.</li>
+</ul>
+Supprimer le certificat mémorisé dans la liste des exceptions rétablit la possibilité de passer outre.
+</div>
+
+<div class="example"><div class="t">Exemple concret — pourquoi cette porte reste ouverte</div>
+Il faut bien pouvoir administrer un <b>switch</b> en HTTPS. Or un switch présente un certificat
+<b>auto-signé</b> : aucune entreprise ne paye une chaîne de certification pour chacun de ses équipements
+réseau. Si le navigateur interdisait le passage en force, l'administration deviendrait impossible.
+D'où le compromis actuel — et son effet pervers, souligné en cours : « <b>on a habitué les gens à
+accepter des faux certificats</b> ».
+</div>
+
+<h3 id="ch19-checkmyhttps">19.5 CheckMyHTTPS</h3>
+
+<div class="steps" id="anim-cmh">
+  <div class="step"><b>Le problème.</b> Vous ne pouvez pas savoir, depuis l'intérieur du réseau, si le certificat que vous recevez est bien celui du site — puisque tout ce que vous recevez passe par l'équipement suspect.</div>
+  <div class="step"><b>1 — L'agent.</b> Une extension de navigateur (Chrome, Firefox) ou une application Android capture le certificat effectivement reçu et en calcule l'empreinte.</div>
+  <div class="step"><b>2 — Le serveur témoin.</b> L'agent envoie le <b>nom du site</b> à un serveur CheckMyHTTPS situé <b>hors de la zone hostile</b>.</div>
+  <div class="step"><b>3 — La requête de contrôle.</b> Ce serveur interroge lui-même le site, récupère le certificat, en calcule l'empreinte.</div>
+  <div class="step"><b>4 — La comparaison.</b> L'agent compare les deux empreintes. Identiques → <b>vert</b>. Différentes → <b>rouge</b> : quelqu'un s'est intercalé.</div>
+  <div class="step"><b>La contrainte unique.</b> Le serveur témoin ne doit pas être derrière le même équipement d'interception, sinon il se fait tromper de la même façon.</div>
+</div>
+<div class="qactions" style="margin-top:10px">
+  <button class="btn primary" onclick="playSteps('anim-cmh')">▶ Lancer l'animation</button>
+  <button class="btn ghost" onclick="resetSteps('anim-cmh')">↻ Réinitialiser</button>
+</div>
+
+<ul class="key-points">
+<li><b>Le parti pris d'ergonomie</b> — « c'est vert ou ce n'est pas vert ». Aucune explication de PKI à l'utilisateur : la sécurité utilisable est celle qu'on n'a pas besoin d'expliquer.</li>
+<li><b>On peut héberger son propre serveur témoin</b> — le code est public. <b>Thales</b> et <b>quatre ministères français</b> exploitent le leur, pour ne pas avoir à faire confiance à un tiers.</li>
+<li><b>L'usage type</b> — les collaborateurs en déplacement à l'étranger ont l'obligation de faire un contrôle <b>avant</b> d'ouvrir leur VPN ou de consulter un service sensible.</li>
+<li><b>Ce que cela révèle</b> — il existe plusieurs pays, et pas seulement la Chine, où l'interception TLS est systématique en frontière numérique. Le rouge y est la norme, pas l'exception.</li>
+</ul>
+
+<h2 id="ch20"><span class="num">20.</span> Le cadre légal : CPCE, LCEN et obligation d'imputabilité</h2>
+
+<h3 id="ch20-histoire">20.1 Comment on est arrivé au CPCE</h3>
+
+<div class="steps" id="anim-cpce">
+  <div class="step"><b>2004 — LCEN.</b> La <b>Loi pour la Confiance dans l'Économie Numérique</b> impose aux opérateurs de conserver les traces de connexion, dans une logique de lutte antiterroriste.</div>
+  <div class="step"><b>2021 — Premier rappel européen.</b> La Commission européenne juge la France trop restrictive au regard du droit de l'Union.</div>
+  <div class="step"><b>2024 — Sanction.</b> La Commission passe aux amendes, calculées par semaine de retard.</div>
+  <div class="step"><b>2025 — Le transfert.</b> La France déplace le dispositif de la <b>LCEN</b> (une loi, sur laquelle l'Europe a un droit de regard) vers le <b>CPCE</b> — le <b>Code des Postes et des Communications Électroniques</b>, un ensemble codifié sur lequel ce droit de regard ne s'exerce pas de la même façon. Un <b>décret de 2025</b> précise les modalités.</div>
+  <div class="step"><b>Aujourd'hui.</b> L'obligation est <b>maintenue et étendue</b>, et d'autres pays s'y rallient : États-Unis, Suède, et l'Union elle-même.</div>
+</div>
+<div class="qactions" style="margin-top:10px">
+  <button class="btn primary" onclick="playSteps('anim-cpce')">▶ Lancer l'animation</button>
+  <button class="btn ghost" onclick="resetSteps('anim-cpce')">↻ Réinitialiser</button>
+</div>
+
+<div class="callout warn"><div class="t">Point à formuler prudemment</div>
+Les dates exactes et le détail du décret d'application relèvent d'un texte <b>récent et mouvant</b>. La
+formulation robuste en copie : « <b>le CPCE, qui a repris en 2025 les obligations de traçabilité
+auparavant portées par la LCEN, impose la conservation des données techniques de connexion pendant
+un an et des données d'identité pendant cinq ans</b> ». C'est le <b>dispositif</b> qui est demandé, pas
+le numéro d'article.
+</div>
+
+<h3 id="ch20-obligations">20.2 Qui est concerné, et à quoi</h3>
+
+<div class="tw"><table>
+<thead><tr><th>Catégorie</th><th>Qui</th></tr></thead>
+<tbody>
+<tr><td><b>Opérateurs de communications électroniques</b></td><td>Les FAI. Ils tracent déjà tout, et l'ont entièrement automatisé</td></tr>
+<tr><td><b>Hébergeurs</b> <i>(ajoutés par le CPCE — ils n'étaient pas dans la LCEN)</i></td><td><b>Quiconque offre un service sur Internet</b> : un forum, un serveur de fichiers derrière sa box, un petit site perso. « Dès que vous offrez un service sur Internet, vous êtes hébergeur »</td></tr>
+<tr><td><b>Toute personne qui, au titre d'une activité professionnelle ou <i>accessoire</i>, offre au public une connexion en ligne</b></td><td>C'est la clause qui attrape tout le monde : entreprises (pour leurs salariés), <b>hôtels</b>, <b>campings</b>, <b>restaurants</b>, <b>bars</b> avec Wi-Fi ouvert, <b>bibliothèques</b>, <b>universités</b>, et une <b>mairie</b> qui installe un Wi-Fi public dans un jardin municipal</td></tr>
+</tbody>
+</table></div>
+
+<div class="tw"><table>
+<thead><tr><th>Obligation</th><th>Durée</th><th>Contenu</th></tr></thead>
+<tbody>
+<tr><td>Données techniques de connexion</td><td><b>1 an</b></td><td>@IP source et destination, ports, horodatage, identifiant de l'utilisateur, et — nouveauté du décret — <b>géolocalisation</b> de l'utilisateur</td></tr>
+<tr><td>Données d'identité</td><td><b>5 ans</b></td><td>Éléments permettant d'identifier la <b>personne physique</b></td></tr>
+</tbody>
+</table></div>
+
+<div class="exam"><div class="t">Piège d'examen — la définition de « quiconque »</div>
+Le texte impose d'identifier <b>quiconque</b>. Et « quiconque », ce n'est <b>ni une adresse IP, ni une
+adresse MAC</b> : c'est « un nom, un prénom, une personne ». Toute la difficulté technique du chapitre
+21 découle de cette seule phrase — un pare-feu sait tracer des adresses, il ne sait pas tracer des
+personnes.
+</div>
+
+<h3 id="ch20-sanctions">20.3 Les sanctions, et pourquoi elles sont réelles</h3>
+
+<ul class="key-points">
+<li><b>La responsabilité pénale du dirigeant est engagée</b> — pas celle de l'entreprise en tant que personne morale seulement.</li>
+<li><b>Le rappel à la loi</b> — première étape : convocation devant un procureur, obligation de se mettre en conformité. La suite annoncée en cas de récidive est la <b>prison</b>.</li>
+<li><b>La fermeture administrative</b> — des bars parisiens, des campings, des chaînes d'hôtels, des Starbucks ont fermé ainsi : une enquête remonte à leur @IP publique, le gérant ne peut pas dire qui était derrière. « Une fois, pas deux. »</li>
+<li><b>Le cas raconté</b> — l'ANSSI écrit au DSI d'un établissement : « votre adresse publique apparaît dans les journaux d'un serveur compromis, dites-nous qui est derrière ». Aucun dispositif de traçabilité n'existait. Une semaine pour répondre, puis un rappel à la loi.</li>
+<li><b>La parade juridique existe mais est limitée</b> — héberger son site à l'étranger (Allemagne, Suisse) sort du champ. Une entreprise, un hôtel ou un bar <b>physiquement en France</b>, non.</li>
+<li><b>Pédagogie de l'ANSSI</b> — l'agence a publié, sous couvert du Premier ministre, un document de vulgarisation, parce que personne ne lit le code.</li>
+</ul>
+
+<h3 id="ch20-technique">20.4 Comment on trace, techniquement</h3>
+
+<div class="callout danger"><div class="t">Le problème que crée le NAT</div>
+En sortie, <b>tout le monde partage la même adresse publique</b>. La police remonte instantanément à
+l'abonné — les opérateurs ont tout automatisé, ils répondent en quelques secondes et fournissent un an
+de journaux. Mais <b>à l'intérieur</b>, l'@IP publique ne désigne plus personne. « C'est ici qu'il va
+falloir tracer. » Et il y a trois populations à couvrir : les collaborateurs en filaire, ceux en Wi-Fi,
+et les <b>invités</b> qui n'appartiennent pas à l'entreprise.
+</div>
+
+<div class="callout ok"><div class="t">La solution élégante pour les salariés : pare-feu + annuaire</div>
+Le pare-feu journalise déjà tout, mais en <b>@IP et @MAC</b>. On lui ajoute un <b>module</b> (payant) qui,
+pour chaque entrée de journal, interroge l'<b>Active Directory</b> — ou le serveur <b>LDAP</b>, ou le
+serveur <b>RADIUS</b>, ou l'infrastructure <b>802.1X</b>, c'est le même principe — pour savoir <b>quel
+compte</b> détenait ce couple MAC/IP à cet instant. Les journaux sont alors <b>enrichis de
+l'identifiant</b> : on a le « quiconque ».
+<br><br>
+<b>Pourquoi c'est élégant :</b> l'entreprise possède déjà le pare-feu et déjà l'annuaire. Il n'y a qu'un
+module à acheter, et l'utilisateur ne voit aucun changement.
+</div>
+
+<h2 id="ch21"><span class="num">21.</span> NAC et portail captif — le lab Alcasar</h2>
+
+<h3 id="ch21-pourquoi">21.1 Pourquoi l'AD ne suffit pas</h3>
+
+<p>Restent les <b>invités</b> et les <b>postes en libre-service</b>. Le visiteur du Wi-Fi guest n'a pas
+de compte AD. Et beaucoup de salariés n'ont pas de poste de travail — l'exemple donné en cours : un
+boucher, un moniteur de ski. Or <b>la loi française oblige l'entreprise à mettre à leur disposition des
+postes de consultation Internet</b>. Ces machines sont partagées, utilisées successivement par des
+personnes différentes, et rattacher chaque session à quelqu'un est précisément le problème.</p>
+
+<div class="callout def"><div class="t">Définition</div>
+Un <b>NAC</b> (<i>Network Access Control</i> — contrôleur d'accès au réseau) est un équipement de
+sécurité qui <b>intercepte</b> tout nouvel arrivant sur le réseau, l'oblige à <b>s'authentifier</b>
+(portail captif), applique une <b>politique de filtrage</b>, et <b>archive</b> les journaux de connexion
+pendant la durée légale.
+</div>
+
+<div class="tw"><table>
+<thead><tr><th></th><th>Salariés</th><th>Invités et postes partagés</th></tr></thead>
+<tbody>
+<tr><td>Identité</td><td>compte <b>Active Directory</b></td><td>compte créé à l'accueil, sur présentation d'une pièce d'identité</td></tr>
+<tr><td>Authentification réseau</td><td><b>802.1X</b> (Wi-Fi ou filaire)</td><td><b>portail captif</b> : interception HTTP, login/mot de passe</td></tr>
+<tr><td>Qui trace</td><td>le <b>pare-feu</b>, enrichi par l'AD</td><td>le <b>NAC</b></td></tr>
+<tr><td>Réseau</td><td>VLAN et SSID de l'entreprise</td><td><b>VLAN séparé</b>, SSID <i>guest</i> propagé par <i>tagging</i></td></tr>
+<tr><td>Accès au SI interne</td><td>oui, selon les droits</td><td><b>aucun</b> — sortie Internet uniquement</td></tr>
+</tbody>
+</table></div>
+
+<div class="example"><div class="t">Exemple concret — l'architecture de l'école</div>
+La solution retenue est <b>hybride</b>, et c'est celle décrite comme la bonne pratique : les salariés
+sont sur le VLAN/SSID de l'établissement et tracés par le pare-feu adossé à l'AD ; les étudiants et
+visiteurs sont sur un <b>VLAN distinct</b> avec le Wi-Fi <i>guest</i>, ainsi que les postes de
+consultation en libre-service, et tout ce monde passe par le <b>NAC</b> avant de sortir sur Internet.
+Les deux populations sont cloisonnées : un invité ne peut pas atteindre le système d'information.
+Concrètement, un étudiant qui veut le Wi-Fi passe à l'accueil, présente sa carte d'identité, et repart
+avec un identifiant et un mot de passe.
+</div>
+
+<h3 id="ch21-solutions">21.2 Les trois façons de se doter d'un NAC</h3>
+
+<div class="tw"><table>
+<thead><tr><th></th><th>1. Louer à l'opérateur</th><th>2. Acheter un produit</th><th>3. Construire en logiciel libre</th></tr></thead>
+<tbody>
+<tr><td>Principe</td><td>Le NAC est <b>dans la box pro</b> (Livebox Pro, Freebox Pro)</td><td>Boîtier du commerce : <b>Ucopia</b>, <b>Stormshield</b>, <b>Cisco ISE</b></td><td><b>Alcasar</b>, <b>PacketFence</b></td></tr>
+<tr><td>Coût</td><td>abonnement mensuel</td><td>investissement + maintenance</td><td>temps d'ingénierie</td></tr>
+<tr><td>Conformité</td><td>« <b>compatible CPCE</b> » est la formule contractuelle à exiger — et le terme à connaître</td><td><b>À la charge de l'acheteur.</b> Devant le juge, un produit acheté qui ne fournit pas les journaux vous laisse dans la même situation que si vous n'aviez rien mis</td><td>À vérifier soi-même : « qu'est-ce que ça vaut ? est-ce valide au regard de la loi française ? »</td></tr>
+<tr><td>Maîtrise</td><td>aucune</td><td>faible — chez Fortinet par exemple, on active des fonctions sans accès aux scripts</td><td><b>totale</b> : c'est pour cela que le lab se fait sur Alcasar</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="ch21-alcasar">21.3 Alcasar — ce qu'il faut avoir compris pour le lab</h3>
+
+<div class="callout"><div class="t">L'architecture de virtualisation demandée</div>
+Tout en machines virtuelles. Une VM <b>Alcasar</b> (sur base <b>Linux Mageia</b>) avec deux interfaces :
+une côté « Internet » en mode <b>NAT VirtualBox</b>, une côté <b>réseau de consultation</b>. Une seconde
+VM sert de <b>poste de consultation</b>, en DHCP, sur le réseau de consultation.
+<div class="tw" style="margin-top:8px"><table>
+<thead><tr><th>Paramètre du module NAT VirtualBox</th><th>Valeur</th></tr></thead>
+<tbody>
+<tr><td>Réseau</td><td><code>10.0.2.0/24</code></td></tr>
+<tr><td>Passerelle</td><td><code>10.0.2.2</code></td></tr>
+<tr><td>Plage réservée aux <b>@IP statiques</b></td><td><code>10.0.2.4</code> → <code>10.0.2.14</code></td></tr>
+<tr><td>Plage <b>DHCP dynamique</b></td><td><code>10.0.2.15</code> → <code>10.0.2.254</code></td></tr>
+</tbody>
+</table></div>
+<b>Règle à retenir et à justifier :</b> un équipement d'infrastructure (serveur, switch, routeur) ou de
+sécurité (pare-feu, NAC, sonde) <b>ne se configure jamais en DHCP</b>. Alcasar doit donc avoir une
+<b>@IP statique</b> côté NAT, prise dans la plage réservée. Et pour le poste de consultation, préférer
+un <b>Linux léger</b> plutôt qu'un Windows : la mémoire de la machine hôte n'y suffirait pas.
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>Élément</th><th>Adresse / accès</th></tr></thead>
+<tbody>
+<tr><td>Page d'interception et d'authentification</td><td><code>http://alcasar</code> ou <code>http://alcasar.lan</code></td></tr>
+<tr><td><b>ACC</b> — Alcasar Control Center</td><td><code>https://alcasar.lan/acc</code></td></tr>
+<tr><td>Listes noires DNS embarquées</td><td><code>/usr/local/share/unbound-bl</code></td></tr>
+<tr><td>Archive du projet</td><td><code>alcasar-x.y.tar.gz</code>, à vérifier par son <b>empreinte</b> avant installation</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout ok"><div class="t">Les trois niveaux de filtrage — la question centrale du lab</div>
+Le sujet demande explicitement <b>quel composant filtre quoi</b>. La logique est la suivante :
+<div class="tw" style="margin-top:8px"><table>
+<thead><tr><th>Ce qui est filtré</th><th>Niveau</th><th>Composant</th></tr></thead>
+<tbody>
+<tr><td><b>Noms de domaine</b> en liste noire</td><td>résolution</td><td>le <b>résolveur DNS</b> embarqué (<b>unbound</b>), qui refuse de résoudre — d'où le répertoire <code>unbound-bl</code></td></tr>
+<tr><td><b>Adresses IP</b> en liste noire</td><td>réseau</td><td>le <b>pare-feu Netfilter</b> de la machine</td></tr>
+<tr><td><b>URL</b> en liste noire (une page précise d'un site autorisé)</td><td>applicatif</td><td>le <b>reverse proxy filtrant</b>, seul à voir le chemin complet de la requête</td></tr>
+</tbody>
+</table></div>
+<b>Le raisonnement à savoir tenir :</b> bloquer <code>astrolabio.net/casino</code> tout en laissant
+<code>astrolabio.net</code> accessible est <b>impossible</b> au niveau DNS (qui ne connaît que le nom)
+et <b>impossible</b> au niveau IP (les deux pointent la même adresse). Seul un composant qui lit
+l'<b>URL</b> peut faire la distinction. <i>Vérifier les noms exacts des composants dans la documentation
+d'exploitation, qui fait foi.</i>
+</div>
+
+<div class="callout danger"><div class="t">Le contournement à savoir expliquer</div>
+Le sujet pose la question directement : sur <b>certains NAC</b> — pas Alcasar — les requêtes DNS du
+réseau de consultation partent <b>directement vers des résolveurs publics</b>. Il suffit alors de
+<b>changer de serveur DNS</b> sur le poste pour que le filtrage par nom de domaine ne s'applique plus du
+tout.
+<br><br>
+<b>La parade :</b> le NAC doit <b>intercepter le port 53</b> et rediriger de force toute requête DNS vers
+son propre résolveur (redirection <i>DNAT</i>), et bloquer <b>DoH/DoT</b> — d'où la catégorie
+<b>DOH</b> dans les listes noires : sans elle, un navigateur qui active DoH par défaut contourne
+l'ensemble du filtrage par nom.
+</div>
+
+<ul class="key-points">
+<li><b>Catégorie « arjel »</b> — l'ARJEL (aujourd'hui <b>ANJ</b>) est le régulateur français des jeux en ligne. La catégorie regroupe les sites de jeu <b>non agréés</b> : c'est donc une <b>liste noire</b>, et son existence est une obligation légale pour un opérateur de connexion en France.</li>
+<li><b>Listes activées par défaut</b> — <code>tor_nodes</code> et <code>ultrasurf_nodes</code> : nœuds Tor et proxys de contournement, dont le seul usage est d'échapper à la traçabilité.</li>
+<li><b>Exceptions / sites de confiance</b> — accessibles <b>sans authentification</b>. L'usage cité : monter un <b>centre d'examen</b> où seuls les sites autorisés sont joignables.</li>
+<li><b>Attributs de groupe</b> — date d'expiration, plage horaire autorisée, interdiction de sessions simultanées, durée de consultation quotidienne, profil de filtrage. Import d'utilisateurs en masse depuis un fichier texte.</li>
+<li><b>Les mots de passe ne sont pas stockés en clair</b> — la sauvegarde de la base permet de le vérifier soi-même et d'identifier l'algorithme d'empreinte employé. C'est une des questions du lab.</li>
+<li><b>Les journaux de traçabilité</b> sont générés <b>chaque dimanche après minuit</b> (on peut forcer la génération de la semaine en cours depuis l'ACC), et peuvent être <b>chiffrés</b> : l'administrateur ne peut pas les lire, mais peut les remettre aux enquêteurs. C'est exactement la réponse à l'obligation du CPCE, sans donner à l'exploitant un pouvoir de surveillance.</li>
+<li><b>Équipement de confiance</b> — on peut exempter une machine de l'interception (§3.8 de la documentation d'exploitation).</li>
+<li><b>Filtrage protocolaire</b> — n'autoriser que HTTP, par exemple, et bloquer tout le reste.</li>
+</ul>
+
+<div class="callout warn"><div class="t">Le piège technique du lab : le cache DNS local</div>
+Sur les distributions de type Ubuntu, un résolveur local (<code>dnsmasq</code> ou <code>unbound</code>)
+écoute sur <b>127.0.0.53</b> et met en cache les réponses pour les applications. Conséquence :
+<b><code>Ctrl+F5</code> dans le navigateur ne sert à rien</b> — la réponse vient du cache local, pas du
+réseau, et l'on croit que le filtrage ne fonctionne pas. Il faut vider <b>trois</b> caches : celui de
+l'application, celui du résolveur, et celui du serveur DNS local — ou désactiver ce dernier en
+commentant <code>dns=dnsmasq</code> dans
+<code>/etc/NetworkManager/NetworkManager.conf</code>.
+</div>
+
+<div class="callout"><div class="t">Le volet vie privée : le compte kiosque</div>
+Sur un poste partagé, il faut que l'utilisateur suivant ne retrouve <b>rien</b> du précédent. Le paquet
+<b><code>xguest</code></b> crée un compte invité qui repart d'un état vierge à chaque session :
+répertoire personnel temporaire détruit à la déconnexion, confinement SELinux, aucune écriture
+persistante possible. Le lab demande d'expliquer ce mécanisme, de chercher les autres approches sous
+Linux (session en mémoire vive, réinitialisation par instantané de disque, distribution live) et
+l'équivalent sous Windows (compte invité, mode kiosque, Windows To Go, Sandbox).
+</div>
+
+<div class="exam"><div class="t">Piège d'examen — ne pas confondre les trois dispositifs</div>
+<b>Pare-feu</b> : filtre le <b>trafic</b>, ne sait pas qui est derrière une adresse.
+<b>802.1X</b> : authentifie <b>au niveau du port</b>, avant toute adresse IP, pour des comptes connus de
+l'annuaire.
+<b>NAC / portail captif</b> : <b>intercepte au niveau applicatif</b> (HTTP) des utilisateurs
+<b>inconnus de l'annuaire</b>, les authentifie, les filtre et archive. Les trois sont
+<b>complémentaires</b>, pas concurrents — c'est la solution hybride du §21.1.
+</div>
+
+<h3 id="ch21-etranger">21.4 Le volet comparatif du sujet</h3>
+<p>La dernière partie du lab (réservée aux étudiants du master N&amp;IS) demande de comparer le droit
+français au droit d'autres pays. L'intérêt d'examen n'est pas le détail par pays, mais l'axe d'analyse,
+qui se décline en trois questions : <b>y a-t-il une obligation de conservation ?</b> — <b>y a-t-il une
+obligation de blocage de contenus ?</b> — <b>une adresse IP y est-elle juridiquement une personne ?</b>
+Les exemples des rendus antérieurs montrent la dispersion : neutralité forte et protection des données
+aux Pays-Bas où une adresse IP n'a pas été jugée suffisante comme preuve, obligation de remise des clés
+de chiffrement en Inde, blocage imposé aux FAI au Venezuela, quasi-absence de cadre au Mexique.</p>
+
+<h2 id="ch22"><span class="num">22.</span> Le quiz du 1<sup>er</sup> septembre, corrigé</h2>
+
+<p>Les treize questions réellement posées ce matin, avec la réponse cochée comme correcte. Ce sont les
+questions les plus proches de ce qui tombera : elles indiquent le <b>niveau</b> attendu et le
+<b>format</b> — réponse unique, distracteurs voisins.</p>
+
+<div class="tw"><table>
+<thead><tr><th>#</th><th>Question</th><th>Réponse correcte</th><th>Le piège</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>L'adresse MAC est normalisée par…</td><td><b>l'IEEE</b></td><td>Distracteurs : IETF, ISO, ICANN. L'IETF fait IP, pas MAC</td></tr>
+<tr><td>2</td><td>Une adresse MAC s'écrit…</td><td><b><code>08-FA-FF-12-45-47</code> ou <code>08:FA:FF:12:45:47</code></b></td><td>Les <b>deux</b> notations sont valables : la bonne réponse est celle qui les accepte toutes deux</td></tr>
+<tr><td>3</td><td>Longueur maximale d'une trame Ethernet</td><td><b>1518 octets</b></td><td>1514 (hors FCS) est le distracteur principal. Voir §1.1</td></tr>
+<tr><td>4</td><td>Trame de broadcast Ethernet</td><td><b><code>FF:FF:FF:FF:FF:FF</code></b></td><td><code>00:00:00:00:00:00</code> n'est pas un broadcast mais une adresse nulle</td></tr>
+<tr><td>5</td><td>Le champ « Frame type » sert à…</td><td><b>définir le protocole de la couche OSI supérieure</b></td><td>Ne pas le confondre avec un champ de longueur (Ethernet 802.3 historique) ni avec le FCS</td></tr>
+<tr><td>6</td><td>Un commutateur (switch)…</td><td><b>possède une mémoire associant les ports aux adresses MAC</b></td><td>C'est la <b>CAM</b>. Distracteurs : « associe les ports aux adresses IP » (ce serait un routeur), « diffuse à tous » (ce serait un hub)</td></tr>
+<tr><td>7</td><td>Taille d'une adresse IPv4</td><td><b>32 bits</b></td><td>4 octets. Le distracteur naturel est 48 bits (l'adresse MAC) ou 128 (IPv6)</td></tr>
+<tr><td>8</td><td>Classe IPv4 réservée au multicast</td><td><b>Classe D</b></td><td>La classe E est réservée aux tests / usage futur. Ne pas les intervertir</td></tr>
+<tr><td>9</td><td>Nombre d'adresses IP utilisables dans un /30</td><td><b>2</b></td><td>4 adresses au total, moins réseau et broadcast. Répondre 4 est l'erreur type</td></tr>
+<tr><td>10</td><td>Protocole d'attribution automatique d'@IPv4</td><td><b>DHCP</b></td><td>Distracteurs : ARP (résout MAC↔IP), DNS (résout nom↔IP), ICMP</td></tr>
+<tr><td>11</td><td>Notation CIDR de <code>255.255.252.0</code></td><td><b>/22</b></td><td>8 + 8 + 6 = 22. Erreur classique : /23 ou /24. Voir la méthode au §13.4</td></tr>
+<tr><td>12</td><td>Quel réseau IP n'est <b>pas</b> privé ?</td><td><b><code>192.169.0.0/16</code></b></td><td>La plage privée est <code>192.<b>168</b></code>. Un seul chiffre de différence</td></tr>
+<tr><td>13</td><td>But principal du NAT</td><td><b>permettre à plusieurs équipements de partager une seule adresse IP publique</b></td><td>« sécuriser le réseau » est un effet de bord, pas le but</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout ok"><div class="t">Ce que ce quiz apprend sur la méthode d'évaluation</div>
+Les treize questions portent uniquement sur des <b>faits vérifiables</b> : un chiffre, un sigle, une
+notation, une définition en une ligne. Aucune ne demande un raisonnement. Les distracteurs sont
+systématiquement des <b>notions voisines</b> — 1514 contre 1518, classe D contre classe E, 192.168
+contre 192.169, /22 contre /23. La conséquence pour la révision : <b>la précision prime sur la
+compréhension globale</b> pour ce format d'épreuve, et il faut apprendre les couples de confusion
+<b>ensemble</b>, jamais séparément.
+</div>
+
+<h2 id="ch23"><span class="num">23.</span> Glossaire des sigles de la séance</h2>
+
+<p>Sans documents, un sigle non développé est un point perdu. Tous ceux employés dans la journée.</p>
+
+<h3 id="ch23-l2">23.1 Niveau 2 et commutation</h3>
+<div class="tw"><table>
+<tbody>
+<tr><td><b>CAM</b></td><td><i>Content Addressable Memory</i> — mémoire adressable par le contenu : @MAC en entrée, n° de port en sortie</td></tr>
+<tr><td><b>TCAM</b></td><td><i>Ternary CAM</i> — chaque bit vaut 0, 1 ou « indifférent » : comparaison de préfixes (ACL, routage)</td></tr>
+<tr><td><b>MLS</b></td><td><i>Multi-Layer Switch</i> — commute en L2 et route en L3 dans la matrice</td></tr>
+<tr><td><b>FCS</b></td><td><i>Frame Check Sequence</i> — les 4 octets de CRC en fin de trame</td></tr>
+<tr><td><b>SFD</b></td><td><i>Start Frame Delimiter</i> — l'octet <code>10101011</code> qui suit le préambule</td></tr>
+<tr><td><b>OUI</b></td><td><i>Organizational Unit Identifier</i> — les 3 premiers octets d'une @MAC, identifiant le constructeur</td></tr>
+<tr><td><b>NIC</b></td><td><i>Network Interface Card</i> — la carte réseau</td></tr>
+<tr><td><b>LAG</b></td><td><i>Link AGgregation</i> — agrégation de plusieurs liens en un lien logique</td></tr>
+<tr><td><b>LACP</b></td><td><i>Link Aggregation Control Protocol</i> — le protocole du LAG, normalisé IEEE 802.3ad / 802.1AX</td></tr>
+<tr><td><b>PVLAN</b></td><td><i>Private VLAN</i> — subdivision d'un VLAN en ports isolés, communautaires et promiscuous</td></tr>
+<tr><td><b>SPAN / RSPAN</b></td><td><i>(Remote) Switched Port ANalyzer</i> — recopie du trafic vers un port d'observation, local ou distant</td></tr>
+<tr><td><b>TAP</b></td><td><i>Test Access Point</i> — boîtier passif inséré sur le câble pour la capture</td></tr>
+<tr><td><b>STP</b></td><td><i>Spanning Tree Protocol</i> — élimination des boucles de niveau 2</td></tr>
+<tr><td><b>DTP</b></td><td><i>Dynamic Trunking Protocol</i> — négociation automatique de trunk chez Cisco ; à désactiver</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="ch23-arch">23.2 Architecture, supervision, sécurité</h3>
+<div class="tw"><table>
+<tbody>
+<tr><td><b>SDN</b></td><td><i>Software Defined Networking</i> — séparation du plan de contrôle et du plan de données</td></tr>
+<tr><td><b>ONF</b></td><td><i>Open Networking Foundation</i> — l'organisme qui normalise OpenFlow</td></tr>
+<tr><td><b>SNMP</b></td><td><i>Simple Network Management Protocol</i> — supervision, UDP 161 (polling) et 162 (traps)</td></tr>
+<tr><td><b>MIB</b></td><td><i>Management Information Base</i> — l'arbre des variables exposées par un équipement</td></tr>
+<tr><td><b>OID</b></td><td><i>Object IDentifier</i> — l'identifiant pointé d'une variable dans la MIB</td></tr>
+<tr><td><b>NIDS / NIPS</b></td><td><i>Network Intrusion Detection / Prevention System</i> — détection (hors flux) / blocage (en coupure)</td></tr>
+<tr><td><b>HIDS</b></td><td><i>Host Intrusion Detection System</i> — la même chose, sur la machine</td></tr>
+<tr><td><b>EDR</b></td><td><i>Endpoint Detection and Response</i> — agent de détection et de réponse sur le poste, avec accès mémoire</td></tr>
+<tr><td><b>DLP</b></td><td><i>Data Loss Prevention</i> — dispositifs empêchant la sortie de données sensibles</td></tr>
+<tr><td><b>UTM</b></td><td><i>Unified Threat Management</i> — boîtier regroupant pare-feu, IPS, antivirus, proxy et VPN</td></tr>
+<tr><td><b>NAC</b></td><td><i>Network Access Control</i> — contrôleur d'accès au réseau, avec portail captif</td></tr>
+<tr><td><b>ACC</b></td><td><i>Alcasar Control Center</i> — l'interface d'administration d'Alcasar</td></tr>
+<tr><td><b>GPO</b></td><td><i>Group Policy Object</i> — stratégie de groupe Active Directory ; c'est par là qu'arrive l'autorité racine du pare-feu</td></tr>
+<tr><td><b>PKI</b></td><td><i>Public Key Infrastructure</i> — infrastructure de gestion des certificats</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="ch23-ip">23.3 Adressage, routage, gouvernance</h3>
+<div class="tw"><table>
+<tbody>
+<tr><td><b>ISOC</b></td><td><i>Internet SOCiety</i> — association fondatrice, janvier 1992</td></tr>
+<tr><td><b>IAB / IESG / IRTF</b></td><td><i>Internet Architecture Board</i> / <i>Engineering Steering Group</i> / <i>Research Task Force</i></td></tr>
+<tr><td><b>IETF</b></td><td><i>Internet Engineering Task Force</i> — produit les RFC</td></tr>
+<tr><td><b>RFC</b></td><td><i>Request For Comments</i> — le document de normalisation d'Internet</td></tr>
+<tr><td><b>IANA</b></td><td><i>Internet Assigned Numbers Authority</i> — 1988 ; registre des adresses, noms, ports, protocoles</td></tr>
+<tr><td><b>ICANN</b></td><td><i>Internet Corporation for Assigned Names and Numbers</i> — 1998</td></tr>
+<tr><td><b>RIR / LIR</b></td><td><i>Regional / Local Internet Registry</i> — les deux étages de délégation sous l'IANA</td></tr>
+<tr><td><b>ARIN · RIPE NCC · APNIC · AFRINIC · LACNIC</b></td><td>Les cinq RIR : Amérique du Nord · Europe et Moyen-Orient · Asie-Pacifique · Afrique · Amérique latine et Caraïbes</td></tr>
+<tr><td><b>AS / ASN</b></td><td><i>Autonomous System (Number)</i> — ensemble de réseaux sous une même politique de routage ; identifiant sur 32 bits</td></tr>
+<tr><td><b>CIDR</b></td><td><i>Classless Inter-Domain Routing</i> — la notation <code>/n</code>, qui a remplacé les classes en 1993</td></tr>
+<tr><td><b>APIPA / IPv4LL</b></td><td><i>Automatic Private IP Addressing</i> — <code>169.254.0.0/16</code>, auto-attribuée en cas d'échec DHCP</td></tr>
+<tr><td><b>NAT / PAT</b></td><td><i>Network / Port Address Translation</i> — traduction d'adresse en sortie / redirection de port en entrée</td></tr>
+<tr><td><b>CGNAT / NAT444</b></td><td><i>Carrier-Grade NAT</i> — double NAT opérateur, plan <code>100.64.0.0/10</code></td></tr>
+<tr><td><b>MTU / MSS</b></td><td><i>Maximum Transmission Unit</i> (1500) / <i>Maximum Segment Size</i> (1460) en Ethernet</td></tr>
+<tr><td><b>RTT</b></td><td><i>Round Trip Time</i> — temps d'aller-retour mesuré par TCP pour piloter la retransmission</td></tr>
+<tr><td><b>BGP / OSPF / RIP / VRRP</b></td><td>Protocoles de routage : entre AS (TCP 179) / état de liens (IP 89) / vecteur de distance (UDP 520) / redondance de passerelle (IP 112)</td></tr>
+<tr><td><b>ICMP</b></td><td><i>Internet Control Message Protocol</i> — signalisation et diagnostic, RFC 792</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="ch23-app">23.4 Applicatif, DNS, TLS, juridique</h3>
+<div class="tw"><table>
+<tbody>
+<tr><td><b>FQDN</b></td><td><i>Fully Qualified Domain Name</i> — nom pleinement qualifié, terminé par le point racine</td></tr>
+<tr><td><b>TLD / gTLD / ccTLD</b></td><td><i>(generic / country-code) Top Level Domain</i> — domaine de premier niveau</td></tr>
+<tr><td><b>Afnic</b></td><td>Association française pour le nommage Internet en coopération — le registre du <code>.fr</code></td></tr>
+<tr><td><b>SOA / NS / MX / CNAME / SRV / PTR</b></td><td>Types d'enregistrement DNS : zone / serveur de noms / messagerie / alias / service / résolution inverse</td></tr>
+<tr><td><b>SPF / DKIM / DMARC</b></td><td>Mécanismes d'authentification du courrier, publiés en enregistrements <b>TXT</b></td></tr>
+<tr><td><b>TTL</b></td><td><i>Time To Live</i> — durée de mise en cache d'une réponse DNS (et, en IP, le compteur de sauts)</td></tr>
+<tr><td><b>AXFR / IXFR</b></td><td>Transfert de zone complet / incrémental, entre serveur primaire et secondaire, en TCP 53</td></tr>
+<tr><td><b>DNSSEC</b></td><td><i>DNS Security Extensions</i> — signature cryptographique des enregistrements ; authenticité et intégrité, <b>pas</b> confidentialité</td></tr>
+<tr><td><b>DoT / DoH</b></td><td><i>DNS over TLS</i> (TCP 853) / <i>DNS over HTTPS</i> (TCP 443)</td></tr>
+<tr><td><b>WHOIS</b></td><td>Base publique des informations administratives des noms de domaine</td></tr>
+<tr><td><b>OSINT</b></td><td><i>Open Source INTelligence</i> — renseignement en sources ouvertes</td></tr>
+<tr><td><b>Punycode</b></td><td>Encodage ASCII des noms internationalisés, préfixé <code>xn--</code> ; parade aux homographes</td></tr>
+<tr><td><b>TLS</b></td><td><i>Transport Layer Security</i> — successeur de SSL ; HTTPS = HTTP sur TLS, RFC 2818</td></tr>
+<tr><td><b>SNI</b></td><td><i>Server Name Indication</i> — le nom du site demandé, envoyé <b>en clair</b> dans le premier message TLS</td></tr>
+<tr><td><b>SIP / VoIP / ToIP</b></td><td><i>Session Initiation Protocol</i> — signalisation de la téléphonie sur IP ; la voix passe sur un autre flux</td></tr>
+<tr><td><b>LDAP / AD</b></td><td><i>Lightweight Directory Access Protocol</i> — l'annuaire ; l'Active Directory de Microsoft l'intègre</td></tr>
+<tr><td><b>RADIUS</b></td><td><i>Remote Authentication Dial-In User Service</i> — serveur d'authentification, utilisé par 802.1X et par les box opérateur</td></tr>
+<tr><td><b>SMB / CIFS</b></td><td><i>Server Message Block</i> — partage de fichiers Microsoft ; <b>Samba</b> en est l'implémentation libre</td></tr>
+<tr><td><b>CPCE</b></td><td><b>Code des Postes et des Communications Électroniques</b> — le terme à connaître : c'est lui qui porte l'obligation de traçabilité d'un an</td></tr>
+<tr><td><b>LCEN</b></td><td>Loi pour la Confiance dans l'Économie Numérique — le texte d'origine, dont le dispositif a été transféré dans le CPCE</td></tr>
+<tr><td><b>ANSSI</b></td><td>Agence nationale de la sécurité des systèmes d'information</td></tr>
+<tr><td><b>Arcep</b></td><td>Autorité de régulation des communications électroniques, des postes et de la distribution de la presse</td></tr>
+<tr><td><b>ARJEL / ANJ</b></td><td>Régulateur français des jeux en ligne — donne son nom à une catégorie de liste noire dans Alcasar</td></tr>
+</tbody>
+</table></div>
+
+<h2 id="ch24"><span class="num">24.</span> Mémo express</h2>
+
+<h3 id="ch24-chiffres">24.1 Les chiffres à savoir sans réfléchir</h3>
+
+<div class="grid c2">
+<div class="card">
+<h4>Ethernet</h4>
+<ul class="key-points">
+<li><b>1518</b> — trame maximale, FCS compris</li>
+<li><b>1514</b> — trame maximale hors FCS (ce que montre Wireshark)</li>
+<li><b>1500</b> — MTU, la charge utile</li>
+<li><b>1460</b> — MSS en Ethernet (1500 − 20 − 20)</li>
+<li><b>64 / 60</b> — trame minimale, avec / sans FCS</li>
+<li><b>46 / 1500</b> — bornes du champ de données</li>
+<li><b>7 + 1</b> — préambule + SFD, jamais comptés</li>
+<li><b>4</b> — octets de FCS · <b>6</b> — octets par @MAC · <b>3</b> — octets d'OUI</li>
+<li><b>2 × 10<sup>8</sup> m/s</b> — vitesse de propagation dans le cuivre</li>
+</ul>
+</div>
+<div class="card">
+<h4>Adressage</h4>
+<ul class="key-points">
+<li><b>32 bits</b> — IPv4 · <b>128 bits</b> — IPv6 · <b>48 bits</b> — MAC</li>
+<li><b>4,3 milliards</b> — espace IPv4 (2<sup>32</sup>)</li>
+<li><b>3,4 × 10<sup>38</sup></b> — espace IPv6 (2<sup>128</sup>)</li>
+<li><b>/30 → 2</b> hôtes · <b>/31 → 2</b> hôtes (RFC 3021) · <b>/24 → 254</b></li>
+<li><b>255.255.252.0 = /22</b></li>
+<li><b>10/8 · 172.16/12 · 192.168/16</b> — privées (RFC 1918)</li>
+<li><b>169.254/16</b> — APIPA · <b>127/8</b> — bouclage · <b>100.64/10</b> — CGNAT</li>
+<li><b>224.0.0.0/4</b> — classe D, multicast</li>
+<li><b>65 536</b> — ports d'une table de NAT · <b>16 384</b> si mutualisée à 4</li>
+</ul>
+</div>
+<div class="card">
+<h4>Ports</h4>
+<ul class="key-points">
+<li><b>0-1023</b> système · <b>1024-49151</b> utilisateur · <b>49152-65535</b> éphémères</li>
+<li><b>20/21</b> FTP · <b>22</b> SSH · <b>23</b> Telnet · <b>25</b> SMTP</li>
+<li><b>53</b> DNS (UDP clients, TCP serveurs) · <b>67/68</b> DHCP · <b>69</b> TFTP</li>
+<li><b>80/443</b> HTTP/HTTPS · <b>110/995</b> POP3(S) · <b>123</b> NTP</li>
+<li><b>161/162</b> SNMP (polling / traps), UDP</li>
+<li><b>179</b> BGP (TCP) · <b>445</b> SMB · <b>514</b> Syslog · <b>520</b> RIP · <b>853</b> DoT</li>
+<li><b>1</b> ICMP · <b>6</b> TCP · <b>17</b> UDP — numéros de protocole</li>
+<li><b>0x0800</b> IPv4 · <b>0x0806</b> ARP · <b>0x86DD</b> IPv6 — EtherType</li>
+</ul>
+</div>
+<div class="card">
+<h4>Juridique et exploitation</h4>
+<ul class="key-points">
+<li><b>1 an</b> — conservation des données de connexion (CPCE)</li>
+<li><b>5 ans</b> — conservation des données d'identité</li>
+<li><b>10 s / 1 h / 24 h</b> — propagation DNS après modifications successives</li>
+<li><b>≈ 60 → ≈ 3000 octets</b> — amplification DNS, facteur ≈ 50</li>
+<li><b>32 bits</b> — numéro d'AS (RFC 4893)</li>
+<li><b>AS211850</b> — Groupe ESIEA, <code>185.235.207.0/24</code></li>
+<li><b>556</b> octets — taille du premier segment TCP (20 + 536)</li>
+<li><b>Dimanche après minuit</b> — génération des journaux Alcasar</li>
+</ul>
+</div>
+</div>
+
+<h3 id="ch24-parades">24.2 Attaque → parade</h3>
+
+<div class="tw"><table>
+<thead><tr><th>Attaque</th><th>Ce qu'elle exploite</th><th>Parade</th></tr></thead>
+<tbody>
+<tr><td><b>Shadow Ethernet</b></td><td>Le contenu du bourrage n'est pas normalisé</td><td>Sonde L2 contrôlant l'entropie du padding, réécriture en bordure</td></tr>
+<tr><td><b>MAC flooding</b></td><td>La CAM est finie ; pleine, le switch inonde</td><td><b>MAC locking</b> / port security : limiter les @MAC apprises par port</td></tr>
+<tr><td><b>Usurpation d'@MAC</b></td><td>L'@MAC se change en une commande</td><td><b>802.1X</b> — authentifier un compte, pas une étiquette</td></tr>
+<tr><td><b>Rogue AP</b></td><td>Un employé branche son propre point d'accès</td><td>Radar SSID remonté en <b>SNMP</b>, 802.1X sur les prises, désactivation des ports inutilisés</td></tr>
+<tr><td><b>SNMP en lecture</b></td><td>Communauté <code>public</code> par défaut, v1/v2c en clair</td><td><b>SNMP v3</b>, ACL sur les @IP du superviseur, VLAN d'administration</td></tr>
+<tr><td><b>VLAN hopping</b></td><td>DTP, double tag, VLAN natif</td><td>Désactiver DTP, VLAN natif dédié et inutilisé, ports d'accès explicites — <b>ou air-gap</b></td></tr>
+<tr><td><b>SYN stealth scan</b></td><td>L'application n'est réveillée qu'au 3<sup>e</sup> paquet</td><td>Détection au niveau <b>pare-feu / NIDS</b>, pas applicatif</td></tr>
+<tr><td><b>Saturation de table NAT</b></td><td>2<sup>16</sup> ports par @IP publique</td><td>Acheter des @IP publiques supplémentaires, filtrer les usages gourmands</td></tr>
+<tr><td><b>DoS DNS</b></td><td>Un serveur unique, protocole ouvert</td><td><b>Anycast + CDN</b>, duplication, limitation de débit</td></tr>
+<tr><td><b>Amplification DNS</b></td><td>UDP sans état + usurpation d'@IP source</td><td>Interdire la récursivité ouverte, <b>BCP 38</b> en bordure</td></tr>
+<tr><td><b>Empoisonnement de cache DNS</b></td><td>Aucune authentification des réponses</td><td><b>DNSSEC</b> ; aléa du port source et du transaction ID</td></tr>
+<tr><td><b>Transfert de zone illicite</b></td><td>Le primaire ne vérifie pas qui demande</td><td><b>DNSSEC</b>, TSIG, restriction aux @IP des secondaires</td></tr>
+<tr><td><b>Tunneling DNS (Iodine)</b></td><td>Champs optionnels libres, port 53 toujours ouvert</td><td>Analyse volumétrique et d'entropie, restriction des types TXT/NULL, résolveur unique imposé</td></tr>
+<tr><td><b>Homographes</b></td><td>Homoglyphes entre alphabets</td><td>Affichage <b>Punycode</b> par le navigateur</td></tr>
+<tr><td><b>MITM TLS (pirate)</b></td><td>L'utilisateur peut passer outre l'avertissement</td><td>Épinglage / mémorisation du certificat, <b>CheckMyHTTPS</b></td></tr>
+<tr><td><b>Inspection profonde (employeur)</b></td><td>Autorité racine interne poussée par <b>GPO</b></td><td>Techniquement : <b>CheckMyHTTPS</b>. Juridiquement : information des salariés, exclusion des catégories banque et santé</td></tr>
+<tr><td><b>Contournement du filtrage NAC</b></td><td>Le poste change de résolveur DNS / active DoH</td><td>Redirection forcée du port 53 vers le résolveur du NAC, liste noire <b>DOH</b></td></tr>
+<tr><td><b>Absence de traçabilité</b></td><td>Le NAT masque l'auteur interne</td><td>Pare-feu enrichi par l'AD pour les salariés, <b>NAC</b> pour les invités</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="ch24-confusions">24.3 Les couples de confusion — à réviser par paires</h3>
+
+<div class="tw"><table>
+<thead><tr><th>A</th><th>B</th><th>Ce qui les sépare</th></tr></thead>
+<tbody>
+<tr><td><b>1514</b></td><td><b>1518</b></td><td>Le FCS. 1518 est la réponse quand on dit « trame »</td></tr>
+<tr><td><b>60</b></td><td><b>64</b></td><td>Le FCS, encore. 60 est la réponse attendue au minimum</td></tr>
+<tr><td><b>Classe D</b></td><td><b>Classe E</b></td><td>D = multicast (224/4), E = réservée (240/4)</td></tr>
+<tr><td><b>192.168.0.0/16</b></td><td><b>192.169.0.0/16</b></td><td>La seconde est <b>publique</b></td></tr>
+<tr><td><b>SNMP 161</b></td><td><b>SNMP 162</b></td><td>161 = interrogation de l'équipement, 162 = alerte vers le superviseur</td></tr>
+<tr><td><b>ICMP 3/0</b></td><td><b>ICMP 3/1</b></td><td>Réseau inaccessible (aucune route) vs hôte inaccessible (<b>le réseau existe</b>)</td></tr>
+<tr><td><b>NAT</b></td><td><b>PAT</b></td><td>Sortie (plusieurs privées → une publique) vs entrée (un port public → un serveur interne)</td></tr>
+<tr><td><b>NAT44</b></td><td><b>NAT444 / CGNAT</b></td><td>Un niveau de traduction vs deux, avec le plan 100.64/10 au milieu</td></tr>
+<tr><td><b>Registre</b></td><td><b>Registrar</b></td><td>Tient la base du TLD vs revend au client ; le registrar publie le WHOIS</td></tr>
+<tr><td><b>Récursif</b></td><td><b>Mandataire</b></td><td>Descend depuis la racine vs relaie ; le second produit <code>Non-authoritative answer</code></td></tr>
+<tr><td><b>DNSSEC</b></td><td><b>DoH / DoT</b></td><td>Authenticité et intégrité vs <b>confidentialité</b>. Ils ne résolvent pas le même problème</td></tr>
+<tr><td><b>Homoglyphe</b></td><td><b>Homographe</b></td><td>Le caractère vs le nom qu'il compose ; <b>Punycode</b> est la parade</td></tr>
+<tr><td><b>Stacking</b></td><td><b>LAG</b></td><td>Châssis (non normalisé) vs liens (802.3ad / LACP)</td></tr>
+<tr><td><b>Netfilter</b></td><td><b>iptables</b></td><td>Le pare-feu (noyau) vs la commande qui l'administre. <b>Ne jamais répondre iptables</b></td></tr>
+<tr><td><b>ebtables</b></td><td><b>iptables</b></td><td>Niveau 2 (trames, @MAC) vs niveau 3/4 (@IP, ports)</td></tr>
+<tr><td><b>IEEE</b></td><td><b>IETF</b></td><td>Couches 1-2 (MAC, Wi-Fi) vs couches 3+ (IP, TCP, DNS)</td></tr>
+<tr><td><b>IANA</b></td><td><b>ICANN</b></td><td>1988, le registre technique vs 1998, la gouvernance qui l'opère</td></tr>
+<tr><td><b>NIDS</b></td><td><b>NIPS</b></td><td>Hors flux, détecte vs en coupure, bloque. Même logiciel, branchement différent</td></tr>
+<tr><td><b>802.1X</b></td><td><b>Portail captif</b></td><td>Comptes de l'annuaire, au niveau du port vs utilisateurs inconnus, au niveau HTTP</td></tr>
+<tr><td><b>MTU</b></td><td><b>MSS</b></td><td>Charge utile de la trame (1500) vs données applicatives TCP (1460)</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="ch24-plans">24.4 Trois plans de réponse type</h3>
+
+<div class="callout ok"><div class="t">« Comment sécuriser un commutateur d'accès ? »</div>
+<ol style="margin-bottom:0">
+<li><b>Poser le contexte</b> — la menace est majoritairement <b>interne</b> ou physique : accès aux prises.</li>
+<li><b>Réduire la surface</b> — désactiver administrativement tous les ports inutilisés ; désactiver DTP ;
+placer le VLAN natif sur un VLAN dédié et inutilisé.</li>
+<li><b>Contrôler qui se branche</b> — <b>802.1X</b> en cible ; <b>MAC locking</b> à défaut, en sachant que
+c'est contournable et que sa vraie valeur est de limiter le <b>MAC flooding</b> et de tracer.</li>
+<li><b>Cloisonner</b> — VLAN par usage, et <b>PVLAN</b> pour empêcher la latéralité là où les machines
+n'ont aucune raison de se parler.</li>
+<li><b>Durcir l'administration</b> — SNMP v3, VLAN d'administration séparé, pas de Telnet, comptes
+nominatifs.</li>
+<li><b>Observer</b> — port mirroring vers un <b>NIDS</b> ou TAP passif, sonde invisible ; supervision SNMP
+avec détection de rogue AP.</li>
+<li><b>Conclure sur la limite</b> — si le niveau de sensibilité l'exige, aucune de ces mesures ne vaut
+un <b>air-gap</b> avec station blanche.</li>
+</ol>
+</div>
+
+<div class="callout ok"><div class="t">« Le DNS est-il sécurisé ? Que faut-il faire ? »</div>
+<ol style="margin-bottom:0">
+<li><b>Le défaut de conception</b> — conçu vers 1980, le DNS n'authentifie <b>rien</b> : un résolveur
+accepte la première réponse plausible qui arrive.</li>
+<li><b>Les conséquences</b> — empoisonnement de cache, transfert de zone illicite, amplification,
+détournement.</li>
+<li><b>La parade sur l'authenticité</b> — <b>DNSSEC</b>, chaîne de signature depuis la racine.
+<b>Nuancer :</b> déployé sur les racines et les TLD, très peu dans les serveurs d'entreprise, parce
+qu'il faut une PKI et qu'une erreur rend le domaine injoignable.</li>
+<li><b>La parade sur la confidentialité</b> — <b>DoH / DoT</b>, qui répondent à un <b>autre</b> problème.
+Nuancer aussi : facilement bloqués, et il faut faire confiance au résolveur.</li>
+<li><b>La disponibilité</b> — <b>Anycast</b> et <b>CDN</b>, seule réponse réelle au déni de service.</li>
+<li><b>Ce qui reste</b> — le tunneling DNS n'est pas un défaut à corriger mais un <b>usage détourné</b> :
+il se combat par la détection comportementale, pas par le protocole.</li>
+</ol>
+</div>
+
+<div class="callout ok"><div class="t">« Une entreprise peut-elle brancher son réseau à Internet sans rien faire ? »</div>
+<ol style="margin-bottom:0">
+<li><b>Non — et l'obligation est légale avant d'être technique.</b> Le <b>CPCE</b> impose de conserver
+<b>un an</b> les données de connexion et <b>cinq ans</b> les données d'identité.</li>
+<li><b>Le champ est très large</b> — opérateurs, hébergeurs, et « toute personne qui, au titre d'une
+activité professionnelle ou <b>accessoire</b>, offre au public une connexion » : entreprises, hôtels,
+bars, campings, communes.</li>
+<li><b>La sanction est réelle</b> — responsabilité pénale du dirigeant, rappel à la loi, fermeture
+administrative.</li>
+<li><b>L'obstacle technique</b> — le <b>NAT</b> fait que tout le monde sort avec la même @IP publique.
+Or la loi exige d'identifier « quiconque », c'est-à-dire une <b>personne</b>, pas une @IP ni une @MAC.</li>
+<li><b>La solution hybride</b> — pour les salariés : <b>pare-feu + module d'interrogation de l'AD /
+LDAP / RADIUS / 802.1X</b> pour enrichir chaque ligne de journal d'un identifiant. Pour les invités et
+les postes en libre-service : <b>NAC / portail captif</b>, qui intercepte, authentifie, filtre et
+archive.</li>
+<li><b>Le choix de mise en œuvre</b> — louer chez l'opérateur (exiger « compatible CPCE »), acheter
+(Ucopia, Stormshield, Cisco ISE) en assumant la charge de la preuve, ou construire en logiciel libre
+(<b>Alcasar</b>, PacketFence) et vérifier soi-même la conformité.</li>
+</ol>
+</div>
+
+<h2 id="qcm-sec"><span class="num">25.</span> QCM — <span id="count-badge" class="badge acc"></span></h2>
+<p>Vue dédiée : filtres par chapitre et par niveau, ordre des questions et des propositions tiré au
+hasard à chaque lancement, correction expliquée immédiatement, mémorisation des erreurs.</p>
+<div id="qcm"></div>
+
+  </main>
+</div>
+
+<button id="top" title="Haut de page">↑</button>
+<script src="data/qcm-seance02.js?v=15"></script>
+<script src="assets/app.js?v=15"></script>
+<script>initQCM(window.QCM_DATA, window.QCM_CHAPTERS, 'seance02');</script>
+</body>
+</html>
