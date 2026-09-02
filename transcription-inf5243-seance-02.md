@@ -7,7 +7,7 @@
 > Les horodatages sont **relatifs à chaque enregistrement**, pas à la séance entière.
 > Les encadrés 💡 et 🎯 sont ceux des transcriptions d'origine.
 
-**Fiche de révision associée :** [`05-inf5243-cours-seance-02.html`](05-inf5243-cours-seance-02.html)
+**Fiche de révision associée :** [`inf5243-fiche-complete.html`](inf5243-fiche-complete.html)
 
 # Sommaire des 5 parties
 

@@ -9,7 +9,7 @@
 > L'annexe en fin de document rassemble les points où le cours mérite une précision — elle est de moi,
 > pas du cours, et est signalée comme telle.
 
-**Fiche de révision associée :** [`04-inf5243-cours-seance-01.html`](04-inf5243-cours-seance-01.html)
+**Fiche de révision associée :** [`inf5243-fiche-complete.html`](inf5243-fiche-complete.html)
 
 ---
 
