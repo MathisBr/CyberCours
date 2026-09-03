@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sécurisation des réseaux locaux (INF5243) — fiche complète</title>
-<link rel="stylesheet" href="assets/core.css?v=18">
+<link rel="stylesheet" href="assets/core.css?v=23">
 </head>
 <body>
 
@@ -23,10 +23,10 @@
 <h1>Sécurisation des réseaux locaux — la fiche complète</h1>
 <p class="lead">
 Fiche unique de la matière <b>INF5243</b>, construite en croisant <b>toutes les sources disponibles</b> :
-les <b>8 enregistrements</b> des deux séances (7 h 57 de transcription verbatim), les <b>supports
+les <b>12 enregistrements</b> des trois séances (12 h 45 de transcription verbatim), les <b>supports
 officiels de Richard Rey</b> — <code>Network-reminders</code> dans sa version enrichie des notes de
-conférencier, <code>switch</code>, <code>vlan</code> —, le <b>quiz réellement passé en amphi</b> et le
-<b>sujet du lab NAC / Alcasar</b>. Elle ne contient que ce qui a effectivement été traité, avec les
+conférencier, <code>switch</code>, <code>vlan</code>, <code>DNS</code> —, le <b>quiz réellement passé en
+amphi</b> et les <b>sujets des labs NAC / Alcasar et analyse de trames</b>. Elle ne contient que ce qui a effectivement été traité, avec les
 chiffres et les formulations de l'enseignant.
 </p>
 <div class="callout def"><div class="t">L'intention annoncée du cours, dès la première minute</div>
@@ -70,10 +70,11 @@ du sujet.</li>
   <ul>
     <li>Les encadrés <span class="badge b2">Piège d'examen</span> reprennent les questions que l'enseignant a <b>explicitement annoncées</b>, ou les confusions que le quiz a produites.</li>
     <li>Les encadrés <span class="badge b3">Précision</span> signalent les endroits où le cours simplifie, se contredit ou se trompe — on donne alors la réponse attendue <b>et</b> la nuance.</li>
-    <li>Le <b>chapitre 34</b> est le <b>quiz réellement passé en amphi</b>, corrigé question par question : c'est l'indication la plus fiable du niveau et du format attendus.</li>
-    <li>Le <b>chapitre 36</b> développe les <b>sigles</b> — l'examen se déroule sans documents.</li>
-    <li>Le <b>chapitre 37</b> est le <b>mémo express</b> : chiffres, couples de confusion, tableau attaque → parade et plans de réponse type.</li>
-    <li>Le <b>chapitre 38</b> est le <b>QCM</b> : filtres par chapitre et par niveau, ordre des questions et des propositions tiré au hasard, correction expliquée immédiatement.</li>
+    <li>Les <b>scènes animées</b> <span class="scene-kind" style="margin:0">Attaque</span> montrent, étape par étape, <b>ce qui circule entre les acteurs</b> : quel paquet part de qui, ce que l'équipement en fait, et ce que la parade change. Bouton <b>▶ Lancer</b> pour dérouler, <b>◀ ▶</b> pour avancer pas à pas, ou clic direct sur une étape. Dix attaques du programme y sont traitées.</li>
+    <li>Le <b>chapitre 42</b> est le <b>quiz réellement passé en amphi</b>, corrigé question par question : c'est l'indication la plus fiable du niveau et du format attendus.</li>
+    <li>Le <b>chapitre 44</b> développe les <b>sigles</b> — l'examen se déroule sans documents.</li>
+    <li>Le <b>chapitre 45</b> est le <b>mémo express</b> : chiffres, couples de confusion, tableau attaque → parade et plans de réponse type.</li>
+    <li>Le <b>chapitre 46</b> est le <b>QCM</b> : filtres par chapitre et par niveau, ordre des questions et des propositions tiré au hasard, correction expliquée immédiatement.</li>
   </ul>
   <p style="margin-bottom:0"><span class="badge acc">Sources</span>
   <a href="transcription-inf5243-seance-01.html">transcription séance 1</a> ·
@@ -215,8 +216,6 @@ Le cours parlé annonce un alignement « à 1,5 Angström près », ce qui n'est
 une échelle atomique). Le support officiel donne les <b>métriques réellement utilisées</b>, et ce sont
 elles qu'il faut retenir :
 <ul style="margin-bottom:0">
-<li><b>Perte d'insertion</b> (<i>insertion loss</i>) : <b>&lt; 0,1 dB</b>.</li>
-<li><b>Perte de retour</b> (<i>return loss</i>) : <b>&gt; 40 dB</b> côté PC, <b>&gt; 50 dB</b> côté EAR.</li>
 <li>Ces valeurs sont <b>mesurées à la fabrication de chaque câble</b> et indiquées sur l'emballage.</li>
 <li>Il existe <b>6 types de connecteurs</b> optiques.</li>
 </ul>
@@ -228,10 +227,8 @@ elles qu'il faut retenir :
 <b>QSFP</b> (<i>Quad</i>) — <b>4 × 10 Gb/s</b>
 </div>
 
-<h3 id="ch2-vitesse">2.3 Vitesse de propagation et réalité des liaisons longues</h3>
+<h3 id="ch2-vitesse">2.3 La fibre sur les longues distances</h3>
 <ul>
-<li>Le signal électrique se propage à environ <b>200 000 km/s</b> dans le cuivre ; la lumière à
-<b>300 000 km/s</b> dans le vide, environ 200 000 km/s dans la fibre.</li>
 <li><b>99 % de la capillarité d'Internet</b> passe par de la <b>fibre sous-marine</b>. Le satellite ne sert
 plus que de secours.</li>
 <li>Mais <b>en LAN, c'est le cuivre qui fait foi</b>, pour la raison économique du § 2.1.</li>
@@ -970,17 +967,7 @@ par exemple <code>01:00:0c:ac:d3:40</code> ou <code>FF:FF:FF:FF:FF:FF</code>.</s
 
 <h3 id="ch10-attaque">10.4 La CAM comme surface d'attaque</h3>
 
-<div class="steps" id="anim-camflood">
-  <div class="step"><b>Étape 1 — État normal.</b> La CAM associe chaque @MAC connue à son port. Une trame destinée à MAC_A ne sort que sur le port 3.</div>
-  <div class="step"><b>Étape 2 — L'attaquant sature.</b> Il émet des milliers de trames avec des <b>@MAC source aléatoires</b>. Le switch apprend consciencieusement chacune d'elles.</div>
-  <div class="step"><b>Étape 3 — Débordement.</b> La CAM est pleine. Les entrées légitimes sont évincées.</div>
-  <div class="step"><b>Étape 4 — Repli en inondation.</b> Ne sachant plus où est MAC_A, le switch <b>inonde</b> (<i>unknown unicast flooding</i>). L'attaquant reçoit tout le trafic : le switch s'est comporté comme un hub.</div>
-  <div class="step"><b>Parade — MAC locking / port security.</b> On limite le nombre d'@MAC apprises par port, et on ferme ou on alerte au-delà — détail au chapitre 17.</div>
-</div>
-<div class="qactions" style="margin-top:10px">
-  <button class="btn primary" onclick="playSteps('anim-camflood')">▶ Lancer l'animation</button>
-  <button class="btn ghost" onclick="resetSteps('anim-camflood')">↻ Réinitialiser</button>
-</div>
+<div class="scene" data-scene="cam-flooding"></div>
 
 <div class="callout danger"><div class="t">Le lien direct entre le fonctionnement normal et l'attaque</div>
 Le <b>MAC flooding</b> n'exploite aucune faille : il exploite le comportement <b>nominal</b> du
@@ -1266,19 +1253,12 @@ d'accès, journalisation des entrées, voire détection d'ouverture de porte.</p
 <p style="margin-bottom:0">C'est le rappel que la meilleure configuration ne résiste pas à un accès physique.</p></div>
 </div>
 
+<div class="scene" data-scene="vlan-reset"></div>
+
 <h3 id="ch15-dtp">Attaque 2 — Négociation DTP (switch spoofing)</h3>
 <p><b>DTP</b> (<i>Dynamic Trunking Protocol</i>) est un protocole propriétaire Cisco qui permet à deux
 commutateurs de négocier automatiquement l'établissement d'un trunk.</p>
-<div class="steps" id="anim-dtp">
-  <div class="step"><b>1.</b> Un port d'accès a DTP <b>activé par défaut</b> — c'est le cas sur beaucoup d'équipements sortis de carton.</div>
-  <div class="step"><b>2.</b> L'attaquant, branché sur ce port, forge des <b>trames DTP</b> depuis son PC.</div>
-  <div class="step"><b>3.</b> Le commutateur croit dialoguer avec un autre commutateur et <b>bascule le port en trunk</b>.</div>
-  <div class="step"><b>4.</b> L'attaquant reçoit désormais <b>tous les VLANs</b> du commutateur, tagués. La segmentation est contournée.</div>
-</div>
-<div class="qactions" style="margin-top:10px">
-  <button class="btn primary" onclick="playSteps('anim-dtp')">▶ Lancer l'animation</button>
-  <button class="btn ghost" onclick="resetSteps('anim-dtp')">↻ Réinitialiser</button>
-</div>
+<div class="scene" data-scene="vlan-dtp"></div>
 <div class="callout ok"><div class="t">Remédiation</div>
 Désactiver explicitement DTP sur tous les ports d'accès :
 <pre style="margin:8px 0 0"><code>switchport mode access
@@ -1287,16 +1267,7 @@ switchport nonegotiate</code></pre>
 
 <h3 id="ch15-double">Attaque 3 — Double tagging (VLAN hopping)</h3>
 <p>Elle exploite le <b>VLAN natif</b>, celui qui circule sans tag sur le trunk.</p>
-<div class="steps" id="anim-dt">
-  <div class="step"><b>1.</b> L'attaquant forge une trame portant <b>deux tags 802.1Q</b> superposés : tag externe = <b>VLAN 1</b> (le natif), tag interne = <b>VLAN 40</b> (la cible).</div>
-  <div class="step"><b>2.</b> Le <b>premier commutateur</b> reçoit la trame, voit le tag VLAN 1 qui correspond au VLAN natif, <b>retire ce tag</b> et transmet la trame non taguée sur le trunk.</div>
-  <div class="step"><b>3.</b> Le <b>second commutateur</b> reçoit la trame, lit le tag restant — VLAN 40 — et la délivre dans le VLAN cible.</div>
-  <div class="step"><b>4.</b> L'attaquant a injecté dans un VLAN auquel il n'a pas accès. L'attaque est <b>unidirectionnelle</b> : aucune réponse ne lui revient.</div>
-</div>
-<div class="qactions" style="margin-top:10px">
-  <button class="btn primary" onclick="playSteps('anim-dt')">▶ Lancer l'animation</button>
-  <button class="btn ghost" onclick="resetSteps('anim-dt')">↻ Réinitialiser</button>
-</div>
+<div class="scene" data-scene="vlan-double-tag"></div>
 <div class="callout ok"><div class="t">Remédiation — trois mesures cumulatives</div>
 <ol style="margin-bottom:0">
 <li><b>Ne jamais utiliser le VLAN 1</b> pour du trafic de production.</li>
@@ -1647,7 +1618,7 @@ inattribuable si elle est l'<b>adresse de réseau</b> (HostId tout à 0), l'<b>a
 <tr><td><code>0.0.0.0</code></td><td><b>Non</b></td><td>Adresse spéciale</td></tr>
 <tr><td><code>255.0.0.0</code></td><td><b>Non</b></td><td>Dans la plage 240/4 réservée ; par ailleurs c'est un masque, pas une adresse d'hôte</td></tr>
 <tr><td><code>191.255.255.255</code></td><td><b>Non</b></td><td>Classe B → <b>broadcast</b> du réseau 191.255.0.0/16</td></tr>
-<tr><td><code>192.192.0.0</code></td><td><b>Oui</b>, sous condition</td><td>Attribuable <b>seulement si</b> le masque n'est pas celui de la classe par défaut. En /24 ce serait une adresse de réseau ; en /16, c'est un hôte valide</td></tr>
+<tr><td><code>192.192.0.0</code></td><td><b>Non</b></td><td>Adresse de réseau. Avec le <code>/24</code> de sa classe le HostId est nul — et il le reste pour <b>tout préfixe &ge; /10</b>, son dernier bit à 1 étant en position 10. Le corrigé du support répond « <i>No (network IP@)</i> »</td></tr>
 </tbody>
 </table></div>
 
@@ -2151,6 +2122,8 @@ des paquets et non de l'application, voient parfaitement la rafale de SYN suivis
 </tbody>
 </table></div>
 
+<div class="scene" data-scene="syn-scan"></div>
+
 <h3 id="ch27-mss">27.5 MTU, MSS et fragmentation</h3>
 
 <div class="tw"><table>
@@ -2456,6 +2429,37 @@ interroger un serveur précis — <code>dig @8.8.8.8 alcasar.net</code> ou
 <code>dig ns esiea.fr</code> ou <code>host -t ns esiea.fr</code>.
 </div>
 
+<div class="callout def"><div class="t">Ce que contient réellement <code>/etc/resolv.conf</code></div>
+Deux directives&nbsp;: <b><code>nameserver</code></b> — jusqu'à <b>trois</b> serveurs, sur des lignes
+distinctes ; le système interroge le premier, et bascule sur le suivant si la réponse n'arrive pas
+avant le <b>délai de 5 secondes</b>. S'il n'y a aucune entrée, il tente le serveur local
+(<code>127.0.0.x</code>). Et <b><code>search</code></b> — le domaine local, qui permet d'écrire
+<code>ping serveur</code> au lieu de <code>ping serveur.domaine.local</code>.
+</div>
+
+<div class="callout warn"><div class="t">Pourquoi ce fichier ne doit plus être édité à la main</div>
+Plusieurs sources le réécrivent&nbsp;: les baux DHCP, les scripts <code>ifup</code>/<code>ifdown</code>,
+NetworkManager, les clients VPN. D'où <b><code>resolvconf</code></b>, qui concatène ces sources avec
+la configuration statique de <code>/etc/resolvconf/resolv.conf.d/{head,base,tail}</code> et
+<b>génère</b> le fichier final. Éditer <code>/etc/resolv.conf</code> directement, c'est écrire dans un
+fichier qui sera régénéré.
+</div>
+
+<div class="exam"><div class="t">Le piège de diagnostic du lab</div>
+<code>host</code>, <code>nslookup</code> et <code>dig</code> interrogent le résolveur <b>en ignorant
+<code>/etc/hosts</code></b>. Pour tester une entrée de ce fichier, il faut passer par
+<code>ping</code>, <code>wget</code> ou le navigateur. C'est la raison n°1 des « ça marche avec ping
+mais pas avec dig » — et l'inverse.
+</div>
+
+<div class="callout"><div class="t">Vider les caches, dans l'ordre</div>
+Navigateur&nbsp;: <kbd>Ctrl</kbd>+<kbd>F5</kbd> · systemd&nbsp;:
+<code>systemd-resolve --flush-caches</code> · unbound&nbsp;: <code>systemctl restart unbound</code> ·
+dnsmasq&nbsp;: <code>systemctl restart dnsmasq</code>. Et l'ordre de consultation des sources est fixé
+par la directive <code>order</code> de <code>/etc/host.conf</code> — par exemple
+<code>order host,bind</code> : les fichiers d'abord, le DNS ensuite.
+</div>
+
 <h3 id="ch28-tldprives">28.10 Nommer un réseau interne : les TLD privés</h3>
 
 <p>Quand on n'a pas de nom de domaine public, il faut quand même nommer les machines du LAN. La
@@ -2486,6 +2490,41 @@ il répond une adresse différente selon le demandeur.</p>
 
 <p>Les serveurs répliqués (<i>surrogate servers</i>) se synchronisent entre eux avec <code>rsync</code>.
 L'ensemble est particulièrement utile pour la diffusion multimédia en flux.</p>
+
+<div class="exam"><div class="t">Piège d'examen — Anycast n'est pas de la répartition DNS</div>
+Les deux techniques se partagent l'équilibrage de charge sur Internet, à peu près moitié-moitié. Elles
+n'ont rien à voir.
+<div class="tw" style="margin:.6em 0 0"><table>
+<thead><tr><th></th><th>Répartition par le DNS</th><th>Anycast</th></tr></thead>
+<tbody>
+<tr><td><b>Adresses des serveurs</b></td><td><b>différentes</b> pour chacun</td><td><b>rigoureusement la même</b> partout dans le monde</td></tr>
+<tr><td><b>Qui décide</b></td><td>le <b>résolveur DNS</b>, en choisissant l'adresse qu'il renvoie</td><td>le <b>routage BGP</b>, qui achemine vers le nœud le plus proche</td></tr>
+<tr><td><b>Où se joue la bascule</b></td><td>couche applicative</td><td>couche réseau</td></tr>
+</tbody>
+</table></div>
+</div>
+
+<div class="callout def"><div class="t">Le <i>failover</i> par le DNS, en pratique</div>
+Le serveur d'origine n'est <b>pas exposé</b> : l'entreprise seule y écrit. Deux serveurs publient le
+service ; le second est en attente. Un <b>watchdog</b> surveille le premier — et ce n'est <b>pas un
+simple ping</b> : on vérifie que le <b>service</b> répond réellement. Dès qu'il ne répond plus, le DNS
+bascule sur l'adresse du second. Les visiteurs n'y voient que du feu ; seul celui qui arrivait pile à
+l'instant de la bascule a un incident.
+</div>
+
+<p>Les critères de redirection sont les mêmes dans les deux cas : le <b>serveur géographiquement le
+plus proche</b>, le <b>moins chargé</b>, celui qui a encore de la <b>bande passante</b> quand les
+autres saturent, ou simplement celui qui <b>fonctionne</b>. Les résolveurs courants — BIND, Unbound —
+acceptent des modules qui mesurent la charge ou récupèrent l'information réseau <b>en SNMP</b> pour
+arbitrer.</p>
+
+<div class="callout warn"><div class="t">Ce qui reste attaquable, et c'est le cas de l'école</div>
+Les serveurs racine et les TLD implémentent <b>DNSSEC</b> : ils n'acceptent plus que des réponses
+authentifiées, l'empoisonnement y est terminé. Le maillon faible, c'est le <b>serveur DNS
+d'entreprise exposé</b>. S'il n'implémente pas DNSSEC — ce qui suppose une PKI interne reconnue, donc
+c'est lourd — il reste vulnérable à l'empoisonnement de cache
+(<a href="#ch29-poisoning">§ 29.3</a>). C'est le cas du serveur de l'école.
+</div>
 
 <h2 id="ch29"><span class="num">29.</span> Sécurité du DNS : OSINT, attaques et DNSSEC</h2>
 
@@ -2536,18 +2575,7 @@ traces techniques (adresses, certificats, empreintes de serveur) plutôt que sur
 
 <h3 id="ch29-poisoning">29.3 L'empoisonnement de cache, en détail</h3>
 
-<div class="steps" id="anim-poison">
-  <div class="step"><b>1 — La requête légitime.</b> Un poste demande <code>google.com</code> à son résolveur d'entreprise.</div>
-  <div class="step"><b>2 — Le cache est vide.</b> Le résolveur ne connaît pas la réponse : le TTL de l'entrée précédente vient d'expirer. Il part interroger la racine, puis le TLD, puis l'autorité.</div>
-  <div class="step"><b>3 — La fenêtre s'ouvre.</b> Pendant cette attente, <b>le cache est en écriture</b> : le résolveur attend une réponse et accepte la première qui correspond.</div>
-  <div class="step"><b>4 — L'injection.</b> L'attaquant, sur le réseau, forge une réponse DNS en UDP (Scapy) et se fait passer pour le serveur interrogé : « <code>google.com</code> = 5.5.5.5 ».</div>
-  <div class="step"><b>5 — L'empoisonnement.</b> Le résolveur enregistre, répond au poste, et <b>sert la fausse réponse à tout le réseau</b> jusqu'à expiration du TTL.</div>
-  <div class="step"><b>La difficulté pour l'attaquant</b> — trouver le moment exact où l'entrée n'est plus en cache. La réponse pratique : <b>essayer en permanence</b>. Tôt ou tard, la fenêtre s'ouvre.</div>
-</div>
-<div class="qactions" style="margin-top:10px">
-  <button class="btn primary" onclick="playSteps('anim-poison')">▶ Lancer l'animation</button>
-  <button class="btn ghost" onclick="resetSteps('anim-poison')">↻ Réinitialiser</button>
-</div>
+<div class="scene" data-scene="dns-poisoning"></div>
 
 <div class="callout danger"><div class="t">Le défaut de conception : il n'y a aucune authentification dans le DNS</div>
 Le problème n'est <b>pas</b> l'absence de chiffrement — l'attaquant n'a pas besoin d'écouter. Le problème
@@ -2820,6 +2848,8 @@ donc face à un attaquant, pas face au pare-feu de l'entreprise.
 <li><b>Les EDR ne font plus ça</b> — installés <b>sur</b> la machine, avec un accès à la <b>mémoire vive</b>, ils lisent le clair directement <b>avant</b> chiffrement ou <b>après</b> déchiffrement, dans le processus du navigateur. Plus efficace, et sans casser TLS.</li>
 </ul>
 
+<div class="scene" data-scene="tls-mitm"></div>
+
 <h3 id="ch30-epinglage">30.4 Pourquoi on ne peut plus toujours passer outre</h3>
 
 <div class="callout"><div class="t">La mémorisation du certificat par le navigateur</div>
@@ -2842,18 +2872,7 @@ accepter des faux certificats</b> ».
 
 <h3 id="ch30-checkmyhttps">30.5 CheckMyHTTPS</h3>
 
-<div class="steps" id="anim-cmh">
-  <div class="step"><b>Le problème.</b> Vous ne pouvez pas savoir, depuis l'intérieur du réseau, si le certificat que vous recevez est bien celui du site — puisque tout ce que vous recevez passe par l'équipement suspect.</div>
-  <div class="step"><b>1 — L'agent.</b> Une extension de navigateur (Chrome, Firefox) ou une application Android capture le certificat effectivement reçu et en calcule l'empreinte.</div>
-  <div class="step"><b>2 — Le serveur témoin.</b> L'agent envoie le <b>nom du site</b> à un serveur CheckMyHTTPS situé <b>hors de la zone hostile</b>.</div>
-  <div class="step"><b>3 — La requête de contrôle.</b> Ce serveur interroge lui-même le site, récupère le certificat, en calcule l'empreinte.</div>
-  <div class="step"><b>4 — La comparaison.</b> L'agent compare les deux empreintes. Identiques → <b>vert</b>. Différentes → <b>rouge</b> : quelqu'un s'est intercalé.</div>
-  <div class="step"><b>La contrainte unique.</b> Le serveur témoin ne doit pas être derrière le même équipement d'interception, sinon il se fait tromper de la même façon.</div>
-</div>
-<div class="qactions" style="margin-top:10px">
-  <button class="btn primary" onclick="playSteps('anim-cmh')">▶ Lancer l'animation</button>
-  <button class="btn ghost" onclick="resetSteps('anim-cmh')">↻ Réinitialiser</button>
-</div>
+<div class="scene" data-scene="checkmyhttps"></div>
 
 <ul class="key-points">
 <li><b>Le parti pris d'ergonomie</b> — « c'est vert ou ce n'est pas vert ». Aucune explication de PKI à l'utilisateur : la sécurité utilisable est celle qu'on n'a pas besoin d'expliquer.</li>
@@ -2921,6 +2940,14 @@ formulation robuste en copie : « <b>le CPCE, qui a repris en 2025 les obligatio
 auparavant portées par la LCEN, impose la conservation des données techniques de connexion pendant
 un an et des données d'identité pendant cinq ans</b> ». C'est le <b>dispositif</b> qui est demandé, pas
 le numéro d'article.
+</div>
+
+<div class="callout"><div class="t">Les références exactes à citer</div>
+<b>Article L34-1 du CPCE</b>, dans sa version du 31/07/2021 modifiée en 2025, et le
+<b>décret n° 2025-980 du 15 octobre 2025</b> qui couvre les données de trafic <b>et de
+localisation</b>. Côté doctrine, deux guides ANSSI&nbsp;: le chapitre 4 des « recommandations
+relatives à l'interconnexion d'un SI à Internet » et le chapitre D.3 des « recommandations relatives
+au système de journalisation ».
 </div>
 
 <h3 id="ch32-obligations">32.2 Qui est concerné, et à quoi</h3>
@@ -3139,7 +3166,975 @@ Les exemples des rendus antérieurs montrent la dispersion : neutralité forte e
 aux Pays-Bas où une adresse IP n'a pas été jugée suffisante comme preuve, obligation de remise des clés
 de chiffrement en Inde, blocage imposé aux FAI au Venezuela, quasi-absence de cadre au Mexique.</p>
 
-<h2 id="ch34"><span class="num">34.</span> Le quiz du 1<sup>er</sup> septembre, corrigé</h2>
+<h3 id="ch33-briques">33.5 Les briques qui composent Alcasar</h3>
+
+<p>Alcasar n'est pas un logiciel mais un <b>assemblage intégré</b> — c'est ce qui explique qu'il fasse
+d'un coup ce que les autres NAC ne font qu'en partie.</p>
+
+<div class="tw"><table>
+<thead><tr><th>Brique</th><th>Rôle</th></tr></thead>
+<tbody>
+<tr><td><b>CoovaChilli</b></td><td>le contrôleur d'accès et client RADIUS — c'est lui qui intercepte</td></tr>
+<tr><td><b>FreeRADIUS</b></td><td>le serveur d'authentification et d'autorisation (<a href="#ch36">chapitre 36</a>)</td></tr>
+<tr><td><b>MariaDB</b></td><td>les comptes utilisateurs et les compteurs de consommation</td></tr>
+<tr><td><b>Unbound</b></td><td><b>quatre instances</b> de résolveur, pour le filtrage et les listes</td></tr>
+<tr><td><b>Apache / PHP</b></td><td>le portail captif et l'interface d'administration (ACC)</td></tr>
+<tr><td><b>Netfilter</b></td><td>le pare-feu qui applique réellement les blocages</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout"><div class="t">Pourquoi les autres NAC sont incomplets</div>
+Sur IPCop ou une distribution pare-feu comparable, le contrôle d'accès existe, mais il <b>manque la
+base des utilisateurs</b> : il faut adjoindre un annuaire LDAP ou un AD. Et le filtrage par listes y
+reste <b>très contournable</b>. C'est l'intégration de RADIUS qui permet de traiter chaque
+utilisateur individuellement — telle bande passante pour l'un, telle plage horaire pour l'autre.
+</div>
+
+<div class="example"><div class="t">D'où vient le projet</div>
+Alcasar est né d'un <b>besoin militaire</b> : mettre les 20&nbsp;000 sites de l'armée en conformité avec
+la loi française — la LCEN à l'époque, le CPCE aujourd'hui (<a href="#ch32">chapitre 32</a>). Les
+offres des grands industriels de défense étaient surdimensionnées et hors de prix pour ce besoin, d'où
+une solution légère, autonome et souveraine, ensuite libérée. On la retrouve aujourd'hui dans les
+collèges, les hôtels, les commissariats et jusqu'au Mont-Saint-Michel.
+</div>
+
+<h3 id="ch33-listes">33.6 Blacklist, whitelist… et greylist</h3>
+
+<div class="exam"><div class="t">Le piège de la catégorie « arjel »</div>
+« La catégorie <code>arjel</code> est-elle une liste noire ou une liste blanche&nbsp;? » — <b>ni l'une
+ni l'autre : c'est une liste grise.</b> L'ARJEL (aujourd'hui <b>ANJ</b>) recense les sites de jeux
+d'argent <b>légalement autorisés</b> en France. Il faut donc les <b>whitelister pour les majeurs</b>
+qui ont le droit d'y jouer, et les <b>blacklister pour les mineurs</b>. La liste dépend d'un
+<b>second paramètre</b> — l'âge ou le profil — et c'est précisément ce qui la rend grise.
+</div>
+
+<div class="callout warn"><div class="t">Le talon d'Achille des deux types de liste</div>
+Une <b>blacklist</b> repose sur le DNS : le résolveur menteur répond une fausse adresse qui mène à une
+page d'avertissement. Elle se contourne en <b>changeant de résolveur</b>, en <b>tunnelisant</b>
+(Iodine), ou en <b>tapant l'adresse IP par cœur</b> pour ne jamais interroger le DNS. Une
+<b>whitelist</b> — tout est interdit sauf ce qui est autorisé — souffre exactement du même défaut.
+</div>
+
+<h3 id="ch33-ipset">33.7 IPSet : la parade que personne d'autre n'implémente</h3>
+
+<div class="callout def"><div class="t">Le problème à résoudre</div>
+Comment garantir que l'utilisateur <b>A</b>, même s'il connaît par cœur l'adresse IP d'un site
+autorisé, ne puisse pas y accéder <b>tant qu'il n'a pas fait la requête DNS</b> — et que l'utilisateur
+<b>B</b>, assis à côté, ne bénéficie pas de l'ouverture obtenue par A&nbsp;?
+</div>
+
+<p>Une règle de pare-feu classique est <b>figée</b> : on y écrit une liste d'adresses, et c'est tout.
+Un <b>IPSet</b> est autre chose — une <b>zone de mémoire partagée</b> que la règle consulte à
+l'exécution, et qui peut être réécrite <b>toutes les millisecondes</b>.</p>
+
+<ol>
+<li>Tant que l'utilisateur n'a fait <b>aucune requête DNS autorisée</b>, le pare-feu bloque tout flux sortant.</li>
+<li>Il interroge le résolveur pour un domaine de sa liste blanche ; Unbound valide et récupère l'adresse.</li>
+<li>L'adresse résolue est <b>injectée dynamiquement dans l'IPSet</b>, associée à <b>cet utilisateur</b>.</li>
+<li>Le flux passe — vers <b>cette adresse uniquement</b>, et <b>pour lui seul</b>.</li>
+</ol>
+
+<h3 id="ch33-toulouse">33.8 Passer à l'échelle : la liste de Toulouse, Tor et UltraSurf</h3>
+
+<ul class="key-points">
+<li><b>La liste de Toulouse</b> — maintenue par l'université de Toulouse avec le ministère de l'Enseignement supérieur. La seule catégorie « adulte » compte plus de <b>1,2&nbsp;million</b> de domaines. <b>Aucun résolveur standard</b>, BIND ou Unbound d'origine, ne charge cela en mémoire sans s'effondrer. Le projet a donc <b>ré-optimisé Unbound</b> avec une table de hachage prédictive pour absorber ces volumes.</li>
+<li><b>Tor</b> — les adresses des nœuds d'entrée changent en permanence. La parade consiste à récupérer la <b>liste publique</b> des nœuds et relais et à l'injecter en liste noire (<code>tor_nodes</code>).</li>
+<li><b>UltraSurf</b> — un VPN portable très utilisé pour contourner les filtrages scolaires, dont les serveurs de sortie sont <b>obfusqués en dur dans le binaire</b>. Il a fallu du rétro-ingénierie et une observation en bac à sable : un pare-feu dynamique bloquait chaque adresse dès qu'elle était sollicitée, <b>forçant le client à révéler ses adresses de secours jusqu'à épuisement</b> (<code>ultrasurf_nodes</code>).</li>
+</ul>
+
+<h3 id="ch33-comptes">33.9 Mots de passe, adresses MAC et postes partagés</h3>
+
+<div class="callout def"><div class="t">Comment lire un mot de passe stocké</div>
+La base ne conserve jamais le mot de passe, mais une empreinte <b>salée</b>, au format modulaire
+Unix : <code>$id$sel$empreinte</code>. L'identifiant entre dollars donne l'algorithme —
+<code>$1$</code> pour MD5, <code>$5$</code> pour SHA-256, <code>$6$</code> pour SHA-512. C'est
+exactement ce qu'on vous demandera de vérifier lors d'un audit.
+</div>
+
+<div class="callout ok"><div class="t">Les adresses MAC autorisées ne sont pas une exception</div>
+Pour les équipements incapables de saisir un identifiant sur un portail — imprimantes, serveurs de
+mise à jour, automates — on déclare leur <b>adresse MAC</b>. Mais ce n'est <b>pas un contournement</b>
+de la sécurité : chaque adresse déclarée devient un <b>véritable compte RADIUS</b>, auquel s'appliquent
+plages horaires, profil de filtrage et limitation de débit.
+</div>
+
+<p>Enfin, sur les postes en libre-service — mairies, hôtels, bibliothèques — la loi et le RGPD
+imposent qu'un utilisateur ne puisse <b>en aucun cas</b> voir l'historique, les cookies ou les
+téléchargements du précédent. D'où le compte kiosque <b><code>xguest</code></b>, dont la session est
+montée <b>en mémoire vive</b> et libérée à la déconnexion : rien n'est jamais écrit sur le disque.</p>
+
+<!-- ===================================================================== -->
+<h2 id="ch34"><span class="num">34.</span> Le DHCP : ce qu'il fournit vraiment, et ses deux attaques</h2>
+
+<h3 id="ch34-role">34.1 La question posée au quiz — et la réponse à zéro point</h3>
+
+<div class="exam"><div class="t">Piège d'examen</div>
+« À quoi sert le DHCP&nbsp;? » — répondre « <i>ça donne l'adresse IP dynamiquement</i> » vaut
+<b>zéro</b>. Le DHCP ne distribue pas une adresse, il distribue une <b>configuration réseau
+complète</b>. Une machine qui n'aurait que son adresse IP ne pourrait ni sortir de son réseau ni
+résoudre le moindre nom.
+</div>
+
+<div class="callout def"><div class="t">Ce que fournit réellement un bail DHCP</div>
+<ol style="margin-bottom:0">
+<li>L'<b>adresse IP</b> de l'équipement <b>et son masque de sous-réseau</b>.</li>
+<li>L'adresse de la <b>passerelle par défaut</b> — sans elle, la machine est prisonnière de son propre réseau.</li>
+<li>Les adresses des <b>serveurs DNS</b>, primaire et secondaire — sans elles, plus aucun nom ne se résout.</li>
+</ol>
+<p style="margin:.5em 0 0">S'y ajoutent les options : nom de domaine local, serveur NTP, serveur
+TFTP/PXE pour le démarrage réseau.</p>
+</div>
+
+<p>Ce triptyque explique pourquoi le DHCP est une cible de choix : celui qui répond à la place du
+serveur légitime choisit <b>la passerelle</b> et <b>le résolveur DNS</b> de sa victime. C'est-à-dire
+tout.</p>
+
+<h3 id="ch34-spoofing">34.2 DHCP Spoofing — le serveur pirate</h3>
+
+<div class="callout danger"><div class="t">Le mécanisme</div>
+L'attaquant pose sur le LAN un serveur DHCP illégitime (<i>rogue DHCP</i>) — un Raspberry Pi suffit,
+pourvu qu'il soit <b>plus rapide</b> que le serveur légitime. Le matin, les postes émettent leur
+<code>DHCP Discover</code> en diffusion ; le pirate répond <b>avant</b> l'Active Directory. Le client
+retient la première offre reçue.
+</div>
+
+<p>L'attaquant s'annonce alors comme <b>passerelle</b> et comme <b>serveur DNS</b>. Tous les flux
+sortants et toutes les résolutions passent par lui : c'est un <b>Man-in-the-Middle</b> complet, sur
+lequel il peut greffer une interception TLS.</p>
+
+<div class="scene" data-scene="dhcp-spoofing"></div>
+
+<h3 id="ch34-starvation">34.3 DHCP Starvation — l'épuisement du pool</h3>
+
+<p>L'attaquant bombarde le serveur légitime de <code>DHCP Discover</code> en <b>forgeant une adresse
+MAC source différente à chaque paquet</b>. Le serveur réserve un bail pour chacune. Sur un réseau de
+classe C, <b>254 requêtes suffisent</b> à vider le pool : plus aucun client légitime ne peut obtenir
+d'adresse. C'est un déni de service, et il prépare souvent le spoofing — un pool vide laisse le champ
+libre au serveur pirate.</p>
+
+<div class="scene" data-scene="dhcp-starvation"></div>
+
+<h3 id="ch34-snooping">34.4 La parade : le DHCP Snooping</h3>
+
+<div class="callout ok"><div class="t">Une seule question à se poser</div>
+Le <b>DHCP Snooping</b> est une fonction de niveau 2 des commutateurs manageables, et son réglage
+essentiel tient en une question : <b>par quel port physique arrivent les réponses DHCP
+légitimes&nbsp;?</b>
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>Catégorie de port</th><th>Qui s'y trouve</th><th>Comportement du switch</th></tr></thead>
+<tbody>
+<tr><td><b>Approuvé</b> (<i>trusted</i>)</td><td>uniquement le lien montant vers le vrai serveur DHCP (la baie de l'AD)</td><td>les <code>DHCP Offer</code> et <code>DHCP Ack</code> y sont acceptés</td></tr>
+<tr><td><b>Non approuvé</b> (<i>untrusted</i>)</td><td>tous les ports utilisateurs</td><td>toute réponse DHCP entrante est <b>jetée</b>, et le port est <b>désactivé</b></td></tr>
+</tbody>
+</table></div>
+
+<p>La configuration se propage sur l'ensemble des commutateurs en cascade. Une fois en place, le
+spoofing et la starvation sont tous deux neutralisés.</p>
+
+<div class="example"><div class="t">Exemple concret — pourquoi ça casse à l'école</div>
+Le DHCP Snooping n'est pas activé sur les commutateurs de l'établissement. C'est précisément pour cela
+qu'une machine virtuelle de TP dont on a oublié d'éteindre le serveur DHCP <b>met le réseau étudiant
+par terre</b> : elle répond plus vite que l'infrastructure, et distribue sa propre configuration à tout
+le monde.
+</div>
+
+<div class="callout warn"><div class="t">En DMZ, pas de DHCP du tout</div>
+Les serveurs d'une zone démilitarisée (<a href="#ch37">chapitre 37</a>) sont <b>tous en adressage
+statique</b>, et les tables sont verrouillées par des <b>entrées ARP statiques</b> pour couper aussi
+l'empoisonnement ARP. Un équipement d'infrastructure ou de sécurité ne se configure jamais en DHCP —
+c'est la même règle que pour Alcasar.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch35"><span class="num">35.</span> Durcir le commutateur, éradiquer les protocoles domestiques</h2>
+
+<div class="callout ok"><div class="t">Les trois parades, dans l'ordre du support</div>
+<b>1. DHCP snooping</b> — déclarer le port par lequel arrivent les réponses légitimes.
+<b>2. Rate limit</b> — brider le nombre de requêtes DHCP par port et par seconde, ce qui coupe la
+starvation à la racine même sans snooping.
+<b>3. Adressage statique en VLAN sécurisé</b> (DMZ) — pour tout ce qui est serveur ou infrastructure,
+on ne fait tout simplement pas de DHCP.
+</div>
+
+<h3 id="ch35-hardening">35.1 L'agrégat des recommandations</h3>
+
+<p>L'<b>ANSSI</b> et le <b>CIS</b> (<i>Center for Internet Security</i>) publient des guides de
+durcissement des équipements actifs. Le cours en retient la liste suivante, à savoir réciter.</p>
+
+<ul class="key-points">
+<li><b>Désactiver les ports inutilisés</b> — et débrasser physiquement ce qui peut l'être.</li>
+<li><b>VLAN d'administration séparé</b> — la gestion ne partage jamais le réseau des utilisateurs.</li>
+<li><b>SSH uniquement</b>, jamais Telnet ; HTTPS, jamais HTTP.</li>
+<li><b>Port Security / MAC locking</b> — verrouiller un port sur une ou deux adresses MAC.</li>
+<li><b>DHCP Snooping</b> — voir le chapitre précédent.</li>
+<li><b>SNMPv3 exclusivement</b> pour les traps d'alerte : v1 et v2c circulent en clair et ne s'authentifient pas.</li>
+<li><b>Couper les protocoles de découverte automatique</b> (CDP, LLDP) quand ils ne servent pas.</li>
+</ul>
+
+<h3 id="ch35-domestiques">35.2 UPnP et DLNA : le réseau domestique n'est pas un réseau d'entreprise</h3>
+
+<p>Chez un particulier, rien ne doit se configurer : la télévision, la console, l'enceinte et le
+téléphone doivent se trouver tout seuls. Les constructeurs ont donc intégré dans tous les systèmes des
+protocoles d'<b>auto-découverte et d'annonce spontanée</b> — <b>UPnP</b> (<i>Universal Plug and
+Play</i>) et <b>DLNA</b> (<i>Digital Living Network Alliance</i>). Windows les active par défaut.</p>
+
+<div class="callout danger"><div class="t">Pourquoi c'est de l'anti-sécurité en entreprise</div>
+Ces démons <b>diffusent en continu</b> sur le LAN le nom d'hôte, la version du système et les partages
+ouverts — une cartographie offerte à quiconque écoute. Pire, UPnP permet à un équipement d'<b>ouvrir
+lui-même des redirections de ports</b> sur la passerelle, <b>sans aucune authentification</b>. Sur un
+réseau d'entreprise ou industriel, ils doivent être <b>purement et simplement éradiqués</b>.
+</div>
+
+<h3 id="ch35-ssid">35.3 Le SSID caché : pourquoi on a arrêté</h3>
+
+<p>L'idée paraissait bonne : masquer le nom du réseau d'entreprise pour que le voisin ne le voie pas.
+Elle ne résiste à rien.</p>
+
+<ul class="key-points">
+<li><b>Techniquement inefficace</b> — une carte en <b>mode monitor</b> capte les trames de balise
+(<i>beacon</i>) et les sondes (<i>probe request</i>). Un bit y indique explicitement « je suis
+masqué », et le nom apparaît en clair dès la première connexion d'un client légitime.</li>
+<li><b>Contre-productif côté clients</b> — les versions modernes d'<b>Android refusent de se
+reconnecter automatiquement</b> à un SSID masqué : chercher un réseau caché obligerait le téléphone à
+émettre en permanence des sondes actives, donc traçables. Résultat : les collaborateurs doivent
+reconnecter à la main chaque matin, et le support croule sous les tickets.</li>
+</ul>
+
+<h3 id="ch35-physique">35.4 La sécurité physique du câblage</h3>
+
+<div class="tw"><table>
+<thead><tr><th>Mesure</th><th>En quoi ça consiste</th><th>Quand l'employer</th></tr></thead>
+<tbody>
+<tr><td><b>Débrassage</b></td><td>retirer, sur le panneau de brassage, le cordon des prises murales inoccupées</td><td>dès qu'on a accès au local technique — c'est gratuit</td></tr>
+<tr><td><b>Lockout RJ45</b></td><td>obturateur plastique enfoncé dans la prise, retirable seulement avec une clé mécanique — environ 50&nbsp;centimes pièce</td><td>quand le câblage est géré par un prestataire et qu'on ne peut pas débrasser</td></tr>
+<tr><td><b>Lockout sur les ports du switch</b></td><td>le même obturateur, sur les ports libres en armoire</td><td>pour empêcher un intrus qui ouvrirait la baie d'y brancher un câble</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout warn"><div class="t">Le risque concret : l'implant matériel</div>
+Une prise murale active et non surveillée permet de dissimuler un implant — typiquement un
+Raspberry&nbsp;Pi équipé d'un tunnel 4G — qui offre à l'attaquant un <b>accès persistant au réseau
+interne</b>, indépendant du pare-feu périmétrique.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch36"><span class="num">36.</span> AAA, RADIUS et 802.1X</h2>
+
+<p class="lead">C'est le niveau le plus élevé de sécurisation d'un réseau local — présenté en cours
+comme « le Graal ». Il exige que <b>tous</b> les équipements soient compatibles : commutateurs, bornes
+Wi-Fi et postes clients.</p>
+
+<h3 id="ch36-aaa">36.1 Le triptyque AAA</h3>
+
+<div class="tw"><table>
+<thead><tr><th>Lettre</th><th>La question posée</th><th>Ce que ça recouvre</th></tr></thead>
+<tbody>
+<tr><td><b>A</b> — Authentification</td><td>« Qui es-tu&nbsp;? »</td><td>vérifier l'identité du poste et de la personne : identifiants, certificat</td></tr>
+<tr><td><b>A</b> — Autorisation</td><td>« À quoi as-tu droit&nbsp;? »</td><td>être authentifié ne suffit pas. Est-ce un jour ouvré&nbsp;? Dans quel VLAN le placer&nbsp;? Pour combien de temps&nbsp;? À quel débit&nbsp;?</td></tr>
+<tr><td><b>A</b> — <i>Accounting</i></td><td>« Qu'as-tu fait, et combien as-tu consommé&nbsp;? »</td><td>journalisation des volumes, des durées et des sessions — pour la facturation et pour la loi</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout def"><div class="t">Le lien avec le NAC</div>
+L'authentification <b>et</b> l'autorisation prises ensemble portent un nom : le <b>contrôle d'accès au
+réseau</b>, le NAC. Ce n'est pas un hasard si Alcasar embarque un serveur RADIUS
+(<a href="#ch33">chapitre 33</a>) — c'est la seule brique qui sait gérer des profils utilisateur par
+utilisateur.
+</div>
+
+<h3 id="ch36-radius">36.2 RADIUS, et ses deux concurrents</h3>
+
+<p>RADIUS naît chez <b>Lucent Technologies</b> dans les télécoms — racheté par Alcatel, puis Nokia.
+Aujourd'hui, <b>tous les opérateurs de la planète</b> l'utilisent : c'est lui qui contrôle les
+téléphones mobiles un par un et les box une par une. L'informatique en a hérité.</p>
+
+<div class="tw"><table>
+<thead><tr><th>Protocole</th><th>Transport</th><th>Particularité</th></tr></thead>
+<tbody>
+<tr><td><b>RADIUS</b> — <i>Remote Authentication Dial-In User Service</i></td><td><b>UDP 1812</b> (authentification) et <b>1813</b> (accounting)</td><td>le standard historique, universel</td></tr>
+<tr><td><b>Diameter</b></td><td>TCP / SCTP</td><td>le successeur — jeu de mots : le diamètre vaut deux fois le rayon (<i>radius</i>). TLS natif, routage entre pairs. Surtout chez des opérateurs mobiles américains</td></tr>
+<tr><td><b>TACACS+</b></td><td>TCP 49</td><td>propriétaire Cisco, sépare strictement authentification et autorisation</td></tr>
+</tbody>
+</table></div>
+
+<p>L'arrivée de Diameter a surtout eu pour effet de <b>réveiller</b> les développeurs de RADIUS, qui y
+ont intégré les fonctions modernes attendues côté informatique.</p>
+
+<div class="callout"><div class="t">Où trouver un serveur RADIUS</div>
+Sur un <b>Active Directory</b>, en activant le rôle <b>NPS</b> (<i>Network Policy Server</i>) ; chez
+Cisco, c'est <b>ISE</b> (<i>Identity Services Engine</i>) ; chez Fortinet,
+<b>FortiAuthenticator</b> ; et en logiciel libre, la référence mondiale est <b>FreeRADIUS</b>.
+</div>
+
+<h3 id="ch36-port">36.3 Le port contrôlé et les trois rôles</h3>
+
+<div class="callout def"><div class="t">Le port contrôlé (<i>controlled port</i>)</div>
+Sur un commutateur 802.1X, un port n'est ni un port d'accès ordinaire, ni un port tagué : c'est un
+<b>port contrôlé</b>. Tant que l'authentification n'a pas abouti, <b>la paire de réception est bloquée
+par le commutateur</b> : aucune trame — pas même un broadcast ARP — ne redescend vers le client.
+<b>Un pirate qui branche Wireshark sur ce port ne voit strictement rien.</b> Seule l'émission est
+écoutée, et uniquement pour y chercher des trames d'authentification.
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>Rôle dans la norme</th><th>Qui c'est</th><th>Ce qu'il fait</th></tr></thead>
+<tbody>
+<tr><td><b>Supplicant</b></td><td>le poste client</td><td>l'agent logiciel qui parle 802.1X — <code>wpa_supplicant</code> sous Linux, le service intégré sous Windows</td></tr>
+<tr><td><b>Authenticator</b></td><td>le commutateur ou la borne Wi-Fi</td><td><b>il ne décide rien</b> : il relaie, en ré-encapsulant le message vers le serveur</td></tr>
+<tr><td><b>Authentication Server</b></td><td>le serveur RADIUS</td><td>il décide, adossé à MariaDB, à un annuaire LDAP ou à l'AD</td></tr>
+</tbody>
+</table></div>
+
+<div class="exam"><div class="t">La question qui tombe</div>
+« Comment le poste envoie-t-il ses identifiants alors qu'il <b>n'a pas encore d'adresse IP</b>&nbsp;? »
+Au branchement du câble : pas d'IP, pas de passerelle, pas de DNS. Le système ne <i>peut pas</i>
+émettre de paquet IP. La réponse est le chapitre suivant.
+</div>
+
+<h3 id="ch36-eapol">36.4 EAPoL — parler sans couche IP</h3>
+
+<p>Le supplicant détecte que le port est sous contrôle et fabrique des <b>trames Ethernet pures</b>,
+sans rien au-dessus. Le protocole s'appelle <b>EAPoL</b> — <i>EAP over LAN</i>.</p>
+
+<div class="tw"><table>
+<thead><tr><th>Élément</th><th>Valeur</th><th>Pourquoi</th></tr></thead>
+<tbody>
+<tr><td><b>EtherType</b></td><td><code>0x888E</code></td><td>permet au commutateur d'intercepter la trame sans aucune couche IP</td></tr>
+<tr><td><b>MAC destination</b></td><td><code>01:80:C2:00:00:03</code></td><td>adresse multicast réservée par l'IEEE — <b>le client ne connaît pas l'adresse MAC du switch</b></td></tr>
+<tr><td><b>Norme</b></td><td>IEEE 802.1X</td><td>c'est RADIUS normalisé par l'IEEE pour sécuriser la couche 2</td></tr>
+</tbody>
+</table></div>
+
+<p>Le commutateur intercepte cette trame de niveau 2, en extrait le message EAP et le
+<b>ré-encapsule dans un paquet UDP/IP à destination du port 1812</b> du serveur RADIUS — lui possède
+une pile IP et une adresse sur le réseau d'administration. Le serveur interroge la base, puis soumet un
+<b>challenge aléatoire</b> : le client renvoie l'empreinte de son mot de passe concaténé au challenge.
+Le mot de passe ne circule jamais, et le rejeu est impossible.</p>
+
+<h3 id="ch36-eap">36.5 Les méthodes EAP</h3>
+
+<p><b>EAP</b> — <i>Extensible Authentication Protocol</i>, <b>RFC 3748 et 5247</b>. « Extensible »
+parce que ce n'est pas une méthode d'authentification mais un <b>cadre</b> : la vraie question est
+« comment transférer identifiant et mot de passe jusqu'au serveur RADIUS ? », et chaque méthode y
+répond autrement.</p>
+
+<div class="tw"><table>
+<thead><tr><th>Méthode</th><th>Principe</th><th>Verdict</th></tr></thead>
+<tbody>
+<tr><td><b>PAP</b></td><td>mot de passe <b>en clair</b></td><td>à ne jamais employer</td></tr>
+<tr><td><b>EAP-MD5</b><br><span style="color:var(--fg-mute);font-size:.85em">RFC 2284</span></td><td>empreinte MD5 du mot de passe combiné au challenge</td><td><b>non autorisée en Wi-Fi</b> : le canal n'est pas chiffré, le serveur ne s'authentifie pas, sensible aux dictionnaires</td></tr>
+<tr><td><b>GTC</b> — <i>Generic Token Card</i></td><td>jeton à usage unique</td><td>pour l'authentification forte matérielle</td></tr>
+<tr><td><b>LEAP</b></td><td>propriétaire <b>Cisco</b></td><td>historique, dépassée</td></tr>
+<tr><td><b>PEAP</b> — <i>Protected EAP</i><br><span style="color:var(--fg-mute);font-size:.85em">TLS RFC 5216 ou MS-CHAP RFC 2716</span></td><td>le serveur présente son <b>certificat</b> et monte un <b>tunnel TLS</b> ; les identifiants passent dedans</td><td><b>autorisée en Wi-Fi WPAx-entreprise</b>. Co-développée Microsoft – RSA – Cisco. Nécessite une PKI</td></tr>
+<tr><td><b>TTLS</b></td><td>même idée que PEAP, tunnel TLS puis méthode interne</td><td>alternative à PEAP</td></tr>
+<tr><td><b>EAP-TLS</b></td><td>certificat côté serveur <b>et</b> côté client</td><td>le plus sûr — et le plus lourd à déployer</td></tr>
+<tr><td><b>UAM</b> — <i>Universal Access Method</i></td><td>pas d'agent 802.1X : on donne une IP restreinte et on détourne le flux web vers une page d'authentification</td><td>c'est le <b>portail captif</b> — la solution de repli pour les invités et le BYOD</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout def"><div class="t">PEAP, dans le détail — c'est celle qu'on déploie</div>
+<ol style="margin-bottom:0">
+<li>Le serveur RADIUS envoie son <b>certificat serveur</b>, tiré de la PKI d'entreprise.</li>
+<li>Le client répond avec son <b>certificat client</b> et un <b>premaster secret</b>. Le tunnel est monté&nbsp;: à partir d'ici tout est chiffré.</li>
+<li>De là est dérivée la <b>PMK</b> (<i>Pairwise Master Key</i>), puis, en cas de succès, une
+<b>Master Session Key</b> — la clé AAA — qui servira à chiffrer la liaison.</li>
+</ol>
+</div>
+
+<div class="exam"><div class="t">La nuance MS-CHAPv2, qui est une faiblesse</div>
+Avec PEAP, le client peut présenter un <b>mot de passe chiffré MS-CHAPv2</b> au lieu d'un certificat.
+C'est le mode le plus répandu parce qu'il évite de déployer un certificat sur chaque poste — mais il
+ouvre la porte à une <b>attaque par dictionnaire</b>. La version avec certificat client n'a pas ce
+défaut.
+</div>
+
+<div class="callout"><div class="t">Où se configure le supplicant</div>
+Sous Linux, selon le démon&nbsp;: <code>/etc/wpa_supplicant.conf</code> pour
+<code>wpa_supplicant</code>, ou <code>/etc/NetworkManager/conf.d/iwd.conf</code> pour <code>iwd</code>
+avec NetworkManager. Sous Windows, c'est le service <b>« Wired AutoConfig »</b> qu'il faut avoir
+démarré — c'est la cause n°1 d'un poste qui ne s'authentifie pas sur un port contrôlé.
+</div>
+
+<div class="callout warn"><div class="t">Sécuriser la phase web de l'UAM</div>
+Le portail captif présente une page où l'on saisit un mot de passe&nbsp;: ce premier échange doit être
+protégé. Deux options&nbsp;: <b>HTTPS</b> — avec une PKI locale et un certificat auto-signé, un
+certificat officiel, ou Let's Encrypt — ou bien <b>HTTP avec une couche de chiffrement asymétrique</b>
+côté page. Sans cela, l'identifiant part en clair sur le réseau que l'on prétend contrôler.
+</div>
+<h3 id="ch36-attributs">36.6 Ce que le serveur renvoie : les attributs dynamiques</h3>
+
+<p>Quand l'authentification aboutit, le serveur renvoie au commutateur un paquet
+<code>Access-Accept</code> qui ne dit pas seulement « oui » : il porte des <b>attributs de
+configuration</b>.</p>
+
+<ul class="key-points">
+<li><b>Affectation dynamique de VLAN</b> — le port bascule tout seul dans le VLAN correspondant au rôle de l'utilisateur. Attributs RFC 2868 / 3580 : <code>Tunnel-Type = VLAN</code>, <code>Tunnel-Medium-Type = 802</code>, <code>Tunnel-Private-Group-ID = &lt;VLAN_ID&gt;</code>.</li>
+<li><b>Limitation de débit</b> montant et descendant.</li>
+<li><b>Quotas</b> de volume et durée maximale de session (<code>Session-Timeout</code>).</li>
+<li><b>Plages horaires</b> autorisées.</li>
+</ul>
+
+<div class="callout ok"><div class="t">L'ordre exact des opérations</div>
+Le commutateur applique les attributs, <b>ouvre alors la paire de réception</b>, bascule le port dans
+le bon VLAN et arme les compteurs. <b>C'est seulement à cet instant</b> que le poste émet son
+<code>DHCP Discover</code> et obtient une adresse — dans son VLAN dédié. L'authentification précède
+toujours l'adressage.
+</div>
+
+<h3 id="ch36-eduroam">36.7 Eduroam — RADIUS à l'échelle de la planète</h3>
+
+<p><b>Eduroam</b> (<i>Education Roaming</i>) est le réseau Wi-Fi partagé des universités et centres de
+recherche de plus de cent pays. C'est une <b>fédération hiérarchique de serveurs mandataires
+RADIUS</b>.</p>
+
+<div class="example"><div class="t">Exemple concret — un étudiant de l'école en Finlande</div>
+<ol style="margin-bottom:0">
+<li>Il se connecte au SSID Eduroam en 802.1X avec un identifiant en forme de <b>NAI</b> — <code>login@esiea.fr</code>.</li>
+<li>La borne finlandaise transmet à <b>son</b> serveur RADIUS national.</li>
+<li>Celui-ci lit le suffixe <code>@esiea.fr</code>, comprend que le compte n'est pas local, et relaie à travers la fédération européenne (côté français, <b>Renater</b>).</li>
+<li>La requête atteint le serveur RADIUS de l'école, qui valide.</li>
+<li>L'autorisation remonte toute la chaîne et la borne ouvre l'accès.</li>
+</ol>
+<p style="margin:.5em 0 0"><b>À aucun moment l'université d'accueil ne connaît le mot de passe.</b></p>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch37"><span class="num">37.</span> L'architecture de sécurité : DMZ, pare-feux et proxies</h2>
+
+<p class="lead">Le métier visé ici s'appelle <b>architecte cybersécurité</b>. Il ne consiste pas à
+empiler des outils, mais à savoir <b>où</b> chaque brique se place dans une topologie — et pourquoi.</p>
+
+<h3 id="ch37-pssi">37.1 Rien ne se déploie sans PSSI</h3>
+
+<div class="callout danger"><div class="t">L'ordre est non négociable</div>
+Pas de <b>RSSI</b> dans l'entreprise&nbsp;? C'est mal parti. Pas de <b>PSSI</b> — politique de sécurité
+des systèmes d'information&nbsp;? Alors il n'y a rien à faire : on ne met pas en place de la sécurité
+qui ne soit pas décrite dans un document. La PSSI est écrite par le RSSI <b>après</b> une analyse de
+risques formelle (<b>EBIOS RM</b>, ISO&nbsp;27005). L'architecture découle des exigences, jamais
+l'inverse.
+</div>
+
+<h3 id="ch37-dmz">37.2 La DMZ, ou la technique du videur</h3>
+
+<p>Comment un videur écarte-t-il quelqu'un&nbsp;? Pas dans la file d'attente : l'individu prendrait
+tout le monde à témoin et la situation deviendrait ingérable. On <b>extrait l'élément perturbateur du
+dispositif</b> et on règle le problème à l'écart. C'est exactement le raisonnement des CRS — et celui
+d'une DMZ.</p>
+
+<div class="callout def"><div class="t">Zone démilitarisée</div>
+Une DMZ n'est <b>pas</b> une zone sans défense. C'est une <b>zone tampon étanche et totalement
+maîtrisée</b>, intercalée entre le réseau public hostile et le réseau privé sensible. Tout flux
+douteux ou exposé y est isolé et assaini, de sorte qu'<b>aucun paquet venu d'Internet n'atteigne
+directement le cœur du réseau</b>.
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>La DMZ…</th><th>Ce qu'on y met</th><th>Sa contrainte propre</th></tr></thead>
+<tbody>
+<tr><td><b>d'exposition</b> (publique)</td><td>serveurs web, catalogue produits, reverse proxies</td><td>elle <b>attire les mouches</b> — elle se traite comme une zone qui sera attaquée</td></tr>
+<tr><td><b>de transit / assainissement</b></td><td>tout ce qui doit entrer vers l'interne</td><td>vérifier la <b>stricte conformité aux RFC</b> : que du TCP soit vraiment du TCP, que du SSH soit vraiment du SSH non forgé</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout def"><div class="t">Le vocabulaire exact du support : DMZ-1 et DMZ-2</div>
+Le support numérote les deux zones, et c'est cette désignation qu'il attend&nbsp;:
+<b>DMZ-1 = zone de transit</b> — on y met le NAC et les proxies, tout ce qui assainit ce qui entre ;
+<b>DMZ-2 = zone publique</b> — on y met les serveurs exposés et le reverse proxy.
+Le principe qui les fonde&nbsp;: on recense les flux nécessaires, on définit des zones par <b>degré de
+sécurité</b>, et <b>toute donnée qui change de zone traverse un filtre</b>. Un pare-feu est
+exactement cela : une cloison.
+</div>
+
+<div class="callout warn"><div class="t">Durcir une DMZ — les trois règles</div>
+<b>Pas de DHCP</b> (adressage statique et MAC locking) · <b>ARP statique ou semi-statique</b> ·
+<b>administration depuis l'Intranet uniquement</b>, jamais depuis Internet. Et côté pare-feu :
+<b>aucun service interne</b> hébergé dessus — il bloque ou redirige, c'est tout.
+</div>
+
+<div class="callout"><div class="t">L'air gap et la station blanche</div>
+Quand la séparation logique ne suffit pas, on coupe physiquement&nbsp;: c'est l'<b>air gap</b>. Le
+transfert de données entre deux LAN physiquement séparés passe alors par une <b>station blanche</b>
+(<i>white station</i>), qui vérifie les données avant de les faire franchir. C'est le degré au-dessus
+du VLAN.
+</div>
+
+<h3 id="ch37-bastion">37.3 Deux pare-feux : le judoka et le physionomiste</h3>
+
+<div class="tw"><table>
+<thead><tr><th>Rôle</th><th>Métaphore du cours</th><th>Sa mission</th></tr></thead>
+<tbody>
+<tr><td><b>Pare-feu bastion</b><br>(première ligne, face à Internet)</td><td>« peu de neurones, mais ceinture noire »</td><td><b>encaisser</b> : absorber les scans de ports massifs, bloquer les dénis de service volumétriques, interdire en force</td></tr>
+<tr><td><b>Pare-feu de redirection</b><br>(seconde ligne)</td><td>« le physionomiste »</td><td><b>orienter</b> finement les flux déjà nettoyés vers le bon serveur de DMZ ou le bon proxy</td></tr>
+</tbody>
+</table></div>
+
+<div class="exam"><div class="t">Le raisonnement à tenir</div>
+Pourquoi deux et pas un&nbsp;? Parce que <b>réorienter un scan de ports dans une DMZ est une
+aberration</b> : le bastion doit le stopper en frontal, pour que le pare-feu qui oriente ne reçoive
+que des flux sains.
+</div>
+
+<h3 id="ch37-technos">37.4 Le « pare-feu matériel » n'existe pas</h3>
+
+<div class="callout warn"><div class="t">À corriger dans les têtes</div>
+Un pare-feu n'est jamais un composant électronique magique. C'est <b>un système d'exploitation
+complet</b> — noyau Linux durci ou FreeBSD — dont la pile réseau applique des règles de filtrage sur
+sa fonction de routage. Cela commence au <b>niveau 3</b>, puis 4, et jusqu'au <b>niveau 7</b> pour les
+pare-feux applicatifs.
+</div>
+
+<ul class="key-points">
+<li><b>Netfilter</b> — le pare-feu du noyau Linux. On lui donne des ordres depuis l'espace utilisateur (voir <a href="#ch11">chapitre 11</a>).</li>
+<li><b><code>iptables</code></b> — l'outil historique. <b><code>nftables</code></b> — le remplaçant moderne, qui introduit la <b>notion d'objets</b> : on définit <code>LAN1 = 192.168.1.0/24</code> puis on écrit des règles lisibles qui manipulent l'objet.</li>
+<li><b>Distributions dédiées</b> — IPFire, Smoothwall, et sous FreeBSD les références <b>OPNsense</b> et <b>pfSense</b>.</li>
+<li><b>Firewall Builder</b> (<code>fwbuilder</code>) — interface graphique à objets qui <b>compile</b> les règles dessinées vers la cible : <code>iptables</code>, Cisco ASA ou <code>pf</code>.</li>
+</ul>
+
+<div class="callout def"><div class="t">Ce qu'embarque un pare-feu moderne</div>
+Au-delà du filtrage L3/L4, il intègre des fonctions de <b>passerelle applicative</b>&nbsp;: analyse
+<b>L2 à L7</b>, proxy, reverse proxy, <b>NIDS/NIPS</b>, passerelle <b>VPN</b>. C'est ce qui explique
+qu'un seul boîtier puisse jouer bastion, redirecteur et terminateur VPN.
+<br><br>On parle de <b>SOHO firewall</b> (<i>Small Office / Home Office</i>) en dessous de
+<b>50 utilisateurs</b>.
+</div>
+
+<h3 id="ch37-perso">37.5 Pare-feu personnel et EDR</h3>
+
+<p>Un <b>pare-feu personnel</b> ne protège <b>que la machine sur laquelle il tourne</b>. Il ne se met
+jamais en frontal d'un réseau. Sous Linux, chaque distribution a le sien — UFW chez Ubuntu, firewalld
+ou Shorewall chez RedHat et Fedora. En laboratoire, c'est une plaie : ces surcouches génèrent des
+milliers de règles qui bloquent silencieusement les trames de test non conventionnelles. Le premier
+réflexe en TP est de les purger pour maîtriser ses flux.</p>
+
+<div class="callout def"><div class="t">EDR — <i>Endpoint Detection and Response</i></div>
+Ce n'est pas une invention magique, c'est la <b>convergence de trois briques</b> sur le même poste :
+un <b>pare-feu personnel</b>, un <b>HIDS</b> (analyse comportementale en mémoire vive) et un
+<b>moteur antivirus</b>. L'intérêt vient de leur couplage : dès que le détecteur repère un
+comportement anormal en RAM, le pare-feu <b>isole immédiatement la machine</b> du réseau.
+</div>
+
+<h3 id="ch37-ad">37.6 Pourquoi un Active Directory ne va jamais en DMZ</h3>
+
+<div class="exam"><div class="t">Question type de contrôle</div>
+« Pourquoi est-il interdit d'exposer un Active Directory sur Internet ou de le placer en DMZ
+publique&nbsp;? »
+</div>
+
+<ul class="key-points">
+<li><b>La contrainte Microsoft</b> — pour qu'un client dialogue avec un contrôleur de domaine, il faut ouvrir environ <b>5&nbsp;000 ports dynamiques RPC/DCOM</b> (plage 49152–65535), en plus de LDAP 389, Kerberos 88 et SMB 445.</li>
+<li><b>L'aberration</b> — ouvrir 5&nbsp;000 ports sur un pare-feu <b>détruit le principe même du filtrage</b>. Autant ne rien mettre.</li>
+<li><b>La bonne pratique</b> — l'AD reste <b>enfoui au fond du LAN privé</b>. En DMZ, on déploie des <b>relais spécialisés</b> : un résolveur DNS de cache qui porte le domaine public et ne relaie que le nécessaire, et un relais SMTP frontal qui filtre les courriels avant de les passer au serveur interne.</li>
+</ul>
+
+<div class="callout"><div class="t">Le DNS, deux fois dans l'architecture</div>
+C'est ce qui explique la distinction annoncée au chapitre&nbsp;28 : un <b>DNS interne</b> et un
+<b>DNS externe</b>, qui ne contiennent pas les mêmes enregistrements. L'interne connaît toute la
+topologie privée ; l'externe ne publie que ce qui doit l'être.
+</div>
+
+<h3 id="ch37-reverse">37.7 Proxy et reverse proxy — les quatre fonctions</h3>
+
+<p>Un proxy <b>relaie les requêtes des protocoles applicatifs</b>. Le support en donne quatre
+fonctions nommées, et c'est cette liste qu'il faut savoir réciter — pas trois.</p>
+
+<div class="tw"><table>
+<thead><tr><th>Fonction</th><th>Ce qu'elle fait</th><th>Le bénéfice</th></tr></thead>
+<tbody>
+<tr><td><b>Contrôleur</b></td><td>vérifie que le protocole est <b>conforme aux RFC</b> ; il peut le modifier ou le rejeter</td><td>c'est l'assainissement de la zone de transit : du HTTP forgé ou tordu ne passe pas</td></tr>
+<tr><td><b>Filtre</b></td><td>restreint l'usage d'un service selon des critères : authentification, sites interdits, services dangereux, mots ou contenus prohibés</td><td>c'est là que s'appliquent les listes noires et l'imputation des connexions</td></tr>
+<tr><td><b>Anonymiseur</b></td><td>émet les requêtes <b>à la place</b> des vrais clients (proxy) ou les réponses à la place des vrais serveurs (reverse proxy)</td><td>Internet ne sait plus quels navigateurs ni quels OS tournent dans l'entreprise</td></tr>
+<tr><td><b>Accélérateur</b></td><td>garde en cache les réponses précédentes pour les resservir (<i>forward-proxy</i> ou <i>cache-proxy</i>)</td><td>les contenus statiques pèsent <b>80&nbsp;%</b> de la volumétrie web</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout def"><div class="t">Le sens du préfixe</div>
+Un <b>proxy</b> agit pour le compte des <b>clients</b> internes qui sortent. Un <b>reverse proxy</b>
+agit pour le compte des <b>serveurs</b> exposés, devant lesquels il se place. Même machine possible,
+mais deux rôles opposés — et c'est la question qui piège.
+</div>
+
+<div class="callout warn"><div class="t">Le déchargement TLS, et ce qu'il implique</div>
+Le reverse proxy frontal <b>expose le TLS</b> et se connecte aux serveurs publics <b>en clair</b>. Il
+détient donc une <b>copie de la clé privée</b> pour déchiffrer et analyser les flux — c'est ce qui
+permet au WAF et aux sondes de voir quelque chose. Corollaire à assumer : ce boîtier devient la cible
+la plus précieuse de l'architecture.
+</div>
+
+<p>En logiciel libre&nbsp;: <b>Squid</b>, <b>E2guardian</b>, <b>Nginx</b>, <b>HAProxy</b>,
+<b>Caddy</b>.</p>
+<!-- ===================================================================== -->
+<h2 id="ch38"><span class="num">38.</span> WAF, WAAP et la détection d'intrusion</h2>
+
+<h3 id="ch38-waf">38.1 Trois niveaux de filtrage à ne pas confondre</h3>
+
+<div class="tw"><table>
+<thead><tr><th>Équipement</th><th>Ce qu'il lit</th><th>Ce qu'il arrête</th></tr></thead>
+<tbody>
+<tr><td><b>Pare-feu réseau</b></td><td>couches 3 et 4 — adresses, ports, état des connexions</td><td>rien du contenu : il est <b>aveugle à la sémantique HTTP</b></td></tr>
+<tr><td><b>WAF</b> — <i>Web Application Firewall</i></td><td>couche 7, le protocole HTTP/HTTPS en profondeur</td><td>les attaques du <b>Top 10 OWASP</b> : injections SQL, XSS, inclusion de fichiers LFI/RFI</td></tr>
+<tr><td><b>WAAP</b> — <i>Web Application &amp; API Protection</i></td><td>les flux d'<b>API</b> : REST, JSON, GraphQL</td><td>l'abus de requêtes automatisées, le <i>credential stuffing</i>, la manipulation de paramètres d'API</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout"><div class="t">En logiciel libre</div>
+<b>ModSecurity</b> est la référence absolue sous Apache et Nginx. Il existe aussi un projet français,
+<b>BunkerWeb</b>. Pour valider qu'un WAF fait son travail, on le teste avant mise en production avec
+des outils d'injection automatisés — type <b>Dojo OWASP</b> — en vérifiant qu'il bloque bien les dix
+scénarios.
+</div>
+
+<div class="callout def"><div class="t">Les trois niveaux qu'analyse un WAF</div>
+<b>L3</b> — l'adresse IP · <b>L4</b> — le protocole HTTP/HTTPS · <b>L5-7</b> — le contenu lui-même :
+HTML, CSS, JavaScript. C'est cette lecture du contenu qui le distingue d'un pare-feu réseau.
+<br><br>Deux modes de déploiement&nbsp;: <b>en reverse proxy</b> (en coupure, il peut bloquer) ou
+<b>en dérivation</b>, en mode passif (il observe et alerte seulement).
+</div>
+
+<div class="callout"><div class="t">Les attaques applicatives visées, nommées par le support</div>
+Manipulation de champs cachés (<i>hidden field manipulation</i>) · empoisonnement de cookie ·
+altération de paramètres (<i>parameter tampering</i>) · débordement de tampon · <b>XSS</b> ·
+portes dérobées et options de débogage laissées actives · navigation forcée par force brute
+(<i>forced browsing</i>) · mauvaises configurations du serveur ou d'un composant tiers ·
+vulnérabilités connues. C'est la déclinaison concrète du <b>Top 10 OWASP</b>.
+</div>
+
+<p>Solutions&nbsp;: <b>ModSecurity</b> et <b>Open-AppSec</b> en libre ; AWS WAF, Akamai KSD &amp; WAAP,
+Cloudflare WAF, Azure Firewall, Fortinet FortiWeb, Imperva, OGO côté commercial. Pour <b>tester</b> un
+WAF avant mise en production&nbsp;: <b>WAFW00F</b>, <b>GoTestWAF</b>, ou le <b>Web Security Dojo</b>.</p>
+
+<h3 id="ch38-ids">38.2 Détection, prévention, réaction — la grille complète</h3>
+
+<div class="callout def"><div class="t">Les trois degrés, dans l'ordre</div>
+<b>IDS</b> — <i>Intrusion Detection System</i> : il <b>détecte seulement</b>, il alerte.<br>
+<b>IPS</b> — <i>Intrusion Prevention System</i> : c'est un IDS <b>+ une réaction du pare-feu</b>.<br>
+<b>Detection &amp; Response</b> : c'est un IPS <b>+ d'autres réactions</b> — isolement de la machine,
+arrêt d'un processus, mise en quarantaine.
+</div>
+
+<p>Chaque famille se décline ensuite selon l'endroit où l'on écoute. C'est ce croisement qu'il faut
+savoir restituer : <b>le préfixe dit où l'on écoute, le suffixe dit jusqu'où l'on va</b>.</p>
+
+<div class="tw"><table>
+<thead><tr><th>Où l'on écoute</th><th>Détection seule</th><th>+ réaction du pare-feu</th><th>+ autres réactions</th></tr></thead>
+<tbody>
+<tr><td><b>Réseau</b> (<i>Network</i>)</td><td><b>NIDS</b></td><td><b>NIPS</b> = NIDS + FW</td><td><b>NDR</b> = NIPS + autres réactions</td></tr>
+<tr><td><b>Machine</b> (<i>Host</i>)</td><td><b>HIDS</b></td><td><b>HIPS</b> = HIDS + pare-feu personnel</td><td><b>EDR</b> = HIPS + antimalware + autres réactions</td></tr>
+<tr><td><b>Radio</b> (<i>Wireless</i>)</td><td><b>WIDS</b></td><td colspan="2">détecte les points d'accès pirates et les faux réseaux d'entreprise</td></tr>
+</tbody>
+</table></div>
+
+<div class="exam"><div class="t">La définition exacte d'un EDR</div>
+Le support la donne comme une équation : <b>EDR = HIPS + fonctions antimalware + autres
+réactions</b>. Et comme HIPS = HIDS + pare-feu personnel, on retombe bien sur les trois briques —
+détecteur comportemental, pare-feu personnel, antivirus — mais l'ordre du raisonnement compte : c'est
+un <b>HIDS qu'on a armé</b>, pas trois produits juxtaposés.
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>Sonde</th><th>Ce qu'elle surveille</th><th>Référence libre</th></tr></thead>
+<tbody>
+<tr><td><b>NIDS</b></td><td>les signatures dans les trames qui passent</td><td><b>Suricata</b> (fondation OISF)</td></tr>
+<tr><td><b>HIDS</b></td><td>modifications de <code>/etc</code>, de la base de registre, des journaux locaux</td><td><b>Wazuh</b></td></tr>
+</tbody>
+</table></div>
+
+<div class="callout"><div class="t">Comment on branche un NIDS</div>
+Deux moyens, et le vocabulaire compte : un <b>TAP</b> (<i>Test Access Port</i>), boîtier passif inséré
+sur le lien ; ou un <b>port miroir</b> du commutateur — que Cisco appelle <b>SPAN</b>, pour
+<i>Switch Port ANalyser</i>.
+</div>
+<h3 id="ch38-honeynet">38.3 Coupler le NIDS au pare-feu : le honeynet</h3>
+
+<p>Le NIDS repère un scan furtif — un SYN Stealth. Plutôt que de bloquer brutalement l'adresse, le
+pare-feu peut <b>rediriger l'attaquant vers un pot de miel</b> (<i>honeynet</i>) : on lui fait croire
+que le port 80 ou le port Telnet&nbsp;23 est grand ouvert, et on <b>observe ses outils et ses
+techniques</b> dans un bac à sable isolé. On apprend de l'attaquant au lieu de simplement le
+chasser.</p>
+
+<h3 id="ch38-ceinture">38.4 Ceinture et bretelles</h3>
+
+<div class="callout ok"><div class="t">La stratégie des réseaux très sensibles</div>
+Dans la défense et la banque, on superpose <b>deux moteurs d'inspection de constructeurs
+différents</b> — par exemple Stormshield <b>et</b> Suricata. Si la base de signatures du premier a un
+temps de retard sur une faille du jour, le second prend le relais. On ne mise jamais sur un seul
+éditeur.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch39"><span class="num">39.</span> Les VPN : site à site et nomade</h2>
+
+<h3 id="ch39-types">39.1 Deux usages, deux technologies</h3>
+
+<div class="tw"><table>
+<thead><tr><th>Usage</th><th>Technologie</th><th>Authentification</th></tr></thead>
+<tbody>
+<tr><td><b>Interconnexion de sites</b> — siège vers filiales, LAN à LAN</td><td><b>IPsec</b> impérativement : stable, standardisé, chiffrement au niveau de la couche réseau</td><td>secrets partagés ou certificats d'équipement</td></tr>
+<tr><td><b>Télétravailleurs nomades</b> (<i>road warriors</i>)</td><td>clients légers : <b>OpenVPN</b> (SSL) ou <b>WireGuard</b></td><td><b>certificat client nominatif</b>, déverrouillé par un mot de passe saisi par le collaborateur</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout warn"><div class="t">La seule ouverture tolérée en frontal</div>
+Le port VPN entrant est <b>la seule ouverture directe</b> autorisée à traverser les défenses
+périmétriques, vers le terminateur VPN — qui bascule ensuite l'utilisateur dans le VLAN correspondant
+à ses droits. Tout le reste passe par les DMZ.
+</div>
+
+<div class="callout def"><div class="t">Avec un opérateur : le MPLS</div>
+Pour relier le siège et ses agences, l'offre courante est un <b>routeur MPLS</b> fourni par
+l'opérateur, <b>doublé d'IPsec</b>. Le MPLS assure un transport privé et une qualité de service
+garantie ; IPsec assure que l'opérateur lui-même ne lit rien. Les architectures récentes remplacent
+le maillage par un <b>point de présence</b> (POP) qui concentre les accès VPN vers le data center et
+les clouds privé et public.
+</div>
+
+<div class="callout warn"><div class="t">Les trois niveaux de sensibilité — architecture d'ambassade</div>
+<b>Unrestricted</b> (non protégé) · <b>RI</b> — <i>Restricted Information</i>, zone sécurisée ·
+<b>CI</b> — <i>Classified Information</i>, zone protégée. Chaque niveau a ses <b>équipements agréés
+par l'agence nationale</b>, et les flux CI circulent <b>chiffrés dans du chiffré</b> — le double
+tunnel gigogne.
+</div>
+
+<h3 id="ch39-tgv">39.2 RETEX ANSSI — l'ordinateur volé dans le TGV</h3>
+
+<div class="example"><div class="t">Cas réel d'espionnage industriel</div>
+<ol>
+<li>Un cadre d'un groupe du CAC&nbsp;40, travaillant sur les <b>génératrices d'éoliennes</b> françaises, se fait voler son portable dans le TGV. <b>Il ne signale pas le vol immédiatement.</b></li>
+<li>La faille : les identifiants et le certificat VPN étaient <b>enregistrés en dur dans le client</b>, sans mot de passe maître pour les protéger.</li>
+<li>Les attaquants ont utilisé <b>le tunnel VPN légitime</b> pour entrer dans le réseau interne, y déposer des implants et siphonner plans et brevets — <b>pendant deux ans</b> avant que l'intrusion ne soit découverte.</li>
+<li>Résultat : perte de la technologie française des génératrices d'éoliennes au profit de concurrents étrangers.</li>
+</ol>
+<p style="margin:.4em 0 0"><b>La leçon</b> : un VPN n'est pas un périmètre de sécurité, c'est un
+prolongement du LAN. Un certificat non protégé par mot de passe transforme un vol de matériel en
+compromission totale — et le silence de la victime offre le temps nécessaire à l'attaquant.</p>
+</div>
+
+<h3 id="ch39-ambassades">39.3 Le double chiffrement gigogne des ambassades</h3>
+
+<p>Dans les postes diplomatiques situés en pays hostile, les flux sensibles subissent un
+<b>chiffrement en tunnel dans le tunnel</b> :</p>
+
+<ol>
+<li>un premier tunnel <b>IPsec standard</b>, chiffré par des boîtiers Thales ;</li>
+<li><b>à l'intérieur</b>, un second tunnel surchiffré avec des <b>algorithmes souverains</b> développés
+par des mathématiciens français.</li>
+</ol>
+
+<p>La raison est explicite : garantir qu'aucune agence étrangère ne puisse déchiffrer les données
+<b>même en cas de porte dérobée</b> dans les standards internationaux.</p>
+
+<!-- ===================================================================== -->
+<h2 id="ch40"><span class="num">40.</span> Gouvernance, traçabilité et résilience physique</h2>
+
+<h3 id="ch40-itsm">40.1 ITSM, ITAM, CMDB — ce qu'une DSI doit avoir</h3>
+
+<p>Ce que les audits révèlent d'abord, ce n'est pas une faille technique : c'est une DSI mal
+organisée. Pas de ticketing, pas de procédure d'installation ni de mise à jour, pas de
+<i>logbook</i>. « Sans ça aujourd'hui, ce n'est pas une IT. »</p>
+
+<div class="tw"><table>
+<thead><tr><th>Sigle</th><th>Nom développé</th><th>Ce que c'est</th></tr></thead>
+<tbody>
+<tr><td><b>ITSM</b></td><td><i>IT Service Management</i></td><td><b>l'ERP de la DSI</b> — incidents, demandes, changements, ticketing, SLA, patch management, projets. C'est la réponse à donner en entretien</td></tr>
+<tr><td><b>ITAM</b></td><td><i>IT Asset Management</i></td><td>le cycle de vie des actifs : achat, inventaire, licences, amortissement, <b>obsolescence</b></td></tr>
+<tr><td><b>CMDB</b></td><td><i>Configuration Management Database</i></td><td>la cartographie de tous les composants du SI et de leurs <b>dépendances</b></td></tr>
+</tbody>
+</table></div>
+
+<div class="example"><div class="t">Exemple concret — faire de la cyber avec un ITAM</div>
+On déploie <b>GLPI</b> et des agents <b>OCS Inventory</b> sur les postes. Ils remontent logiciels
+installés, version du noyau, firmware du BIOS ou de l'UEFI. On voit alors d'un coup d'œil les deux
+postes non patchés — et les deux postes où de nouveaux logiciels viennent d'apparaître. La question
+suivante est la bonne : <b>comment ces utilisateurs ont-ils les droits d'administrateur local pour
+installer quoi que ce soit&nbsp;?</b>
+</div>
+
+<h3 id="ch40-mtbf">40.2 MTBF et le piège du lot unique</h3>
+
+<div class="callout def"><div class="t">MTBF — <i>Mean Time Between Failures</i></div>
+Le temps moyen avant défaillance annoncé au <i>datasheet</i>. Le constructeur a testé cent disques en
+charge et en tire une moyenne — de l'ordre de 4&nbsp;500 heures pour un disque professionnel. On
+dimensionne la redondance à partir de ce chiffre : typiquement du <b>RAID&nbsp;5</b>, où le contrôleur
+reconstruit à chaud le disque tombé, de façon transparente pour le système.
+</div>
+
+<div class="exam"><div class="t">Le piège, et la parade</div>
+Trois disques de la <b>même série</b> achetés le <b>même jour</b> et mis en service ensemble subissent
+la même usure : ils <b>lâchent ensemble</b>, et la redondance ne sert à rien. La parade est
+contre-intuitive : au bout d'un an, on <b>jette un disque encore bon</b> et on le remplace par un
+neuf ; au bout de deux ans, un deuxième. Les âges sont déphasés, les pannes s'échelonnent, et le RAID
+absorbe.
+</div>
+
+<h3 id="ch40-cidant">40.3 CID, ANT et la non-répudiation</h3>
+
+<div class="tw"><table>
+<thead><tr><th colspan="2">Les six propriétés de la sécurité de l'information</th></tr></thead>
+<tbody>
+<tr><td><b>C</b> — Confidentialité</td><td><b>A</b> — Authenticité</td></tr>
+<tr><td><b>I</b> — Intégrité</td><td><b>N</b> — <b>Non-répudiation</b></td></tr>
+<tr><td><b>D</b> — Disponibilité</td><td><b>T</b> — Traçabilité</td></tr>
+</tbody>
+</table></div>
+
+<div class="exam"><div class="t">La question du prof — la non-répudiation appliquée aux journaux</div>
+Un utilisateur sanctionné conteste : « <i>c'est l'administrateur root qui a falsifié le journal pour
+m'accuser à ma place</i> ». L'objection est recevable — l'administrateur a bien tous les droits. Trois
+parades techniques, à citer ensemble :
+<ol style="margin-bottom:0">
+<li><b>Déport immédiat</b> des journaux vers un serveur distant durci (Syslog-ng) auquel l'administrateur local <b>n'a pas accès en écriture</b>.</li>
+<li><b>Chaînage cryptographique</b> — chaque ligne intègre le condensat de la précédente. Altérer une ligne invalide toute la chaîne.</li>
+<li><b>Chiffrement avec séquestre</b> — seul le <b>RSSI</b> détient la clé de déchiffrement.</li>
+</ol>
+</div>
+
+<h3 id="ch40-authlegale">40.4 Les trois seuls moyens légaux d'identifier une personne</h3>
+
+<div class="callout def"><div class="t">Au sens du CPCE (voir <a href="#ch32">chapitre 32</a>)</div>
+<ol style="margin-bottom:0">
+<li><b>Identité vérifiée physiquement</b> — présentation d'une pièce d'identité et création du compte, ou compte salarié déjà géré dans l'annuaire.</li>
+<li><b>Numéro de téléphone mobile</b> — un code par SMS, sur une ligne dont l'opérateur a <b>déjà</b> vérifié l'identité de l'abonné.</li>
+<li><b>Carte bancaire</b> — paiement ou empreinte, liée à un compte nominatif.</li>
+</ol>
+<p style="margin:.5em 0 0">Une <b>adresse de courriel déclarative n'a aucune valeur juridique</b> :
+elle n'identifie personne.</p>
+</div>
+
+<h3 id="ch40-datacenter">40.5 L'audit physique d'une salle serveur</h3>
+
+<ul class="key-points">
+<li><b>Charge au sol</b> — vérifier que le poids cumulé des baies et des onduleurs ne dépasse pas la portance des dalles de faux plancher sur pilotis. C'est le point le plus souvent oublié.</li>
+<li><b>Interfaçage onduleur / hyperviseur</b> — un onduleur qui ne <b>communique pas</b> ne sert à rien : à 0&nbsp;% de batterie, la coupure est aussi brutale que sans lui. Il doit être relié en <b>SNMP</b> à l'hyperviseur (ESXi, Proxmox, Hyper-V) pour qu'au seuil critique celui-ci ordonne l'extinction propre des VM puis s'éteigne à son tour.</li>
+<li><b>Extinction incendie au gaz inerte</b> — le <b>souffle acoustique</b> des buses à haute pression peut détruire mécaniquement les têtes de lecture des disques magnétiques. Il faut des diffuseurs amortis.</li>
+</ul>
+
+<div class="example"><div class="t">Le groupe électrogène dynamique à volant d'inertie</div>
+Dans certains datacenters, le courant d'Enedis <b>n'alimente pas les systèmes</b> : il fait tourner un
+moteur, qui entraîne un arbre, sur lequel un alternateur produit le courant. Le rendement est
+catastrophique — ce n'est pas le but. Sur le même arbre tourne un <b>bloc de granit de 18 tonnes</b>.
+<br><br>
+À la coupure, l'énergie cinétique du volant continue d'entraîner l'alternateur : <b>aucune
+micro-coupure</b>. Pendant ce temps, un groupe diesel de 500&nbsp;kVA démarre, met deux minutes à
+trouver son régime, puis est <b>embrayé</b> sur l'arbre. Le courant n'a jamais cessé.
+<br><br>
+Une fois par an, il faut <b>décalaminer</b> ce moteur — le faire tourner à pleine puissance pour
+brûler le carbone déposé. On bascule sur la seconde ligne d'arbre, et l'on crée l'appel de charge en
+plongeant une résistance en aluminium dans une réserve d'eau de pluie de 5&nbsp;000&nbsp;m³. L'appel
+d'un mégawatt transforme l'eau en <b>plasma</b>, sans passer par l'état vapeur.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch41"><span class="num">41.</span> Le lab d'analyse de trames — Wireshark</h2>
+
+<p class="lead">Objectif annoncé : sur un réseau local à sécuriser, <b>repérer les protocoles qui n'ont
+rien à y faire</b>, aller les regarder, et comprendre ce qu'ils racontent.</p>
+
+<h3 id="ch41-droits">41.1 Ne jamais lancer Wireshark en root</h3>
+
+<div class="callout warn"><div class="t">Le raisonnement</div>
+Wireshark, c'est plus de <b>cinq millions de lignes</b> de code — donc potentiellement bogué, et il
+lit des données hostiles par construction. On ne lui donne pas les droits <code>root</code>. Lancé en
+utilisateur normal, il n'affiche aucune interface de capture : on ne peut qu'ouvrir des fichiers
+<code>.pcap</code>.
+</div>
+
+<p>La manœuvre correcte tient en quatre gestes : créer le groupe système
+(<code>groupadd -r wireshark</code>), y ajouter son utilisateur
+(<code>usermod -a -G wireshark &lt;user&gt;</code>), basculer dans le groupe
+(<code>newgrp wireshark</code>), puis lancer l'outil. <b>Ouvrir</b> un fichier de capture, en revanche,
+n'a jamais demandé de droits particuliers.</p>
+
+<h3 id="ch41-resolutions">41.2 Les trois résolutions — et celle qui trahit</h3>
+
+<div class="tw"><table>
+<thead><tr><th>Option</th><th>Ce qu'elle traduit</th><th>À partir de quoi</th></tr></thead>
+<tbody>
+<tr><td><i>Resolve MAC addresses</i></td><td>préfixe OUI → nom du constructeur</td><td>un fichier <code>manuf</code> livré dans le paquet</td></tr>
+<tr><td><i>Resolve transport names</i></td><td>numéro de port → nom de service</td><td>le fichier <code>services</code></td></tr>
+<tr><td><i>Resolve network names</i></td><td>adresse IP → nom d'hôte</td><td><b>des requêtes DNS émises par la machine d'analyse</b></td></tr>
+</tbody>
+</table></div>
+
+<div class="exam"><div class="t">La conséquence à savoir énoncer</div>
+Les deux premières résolutions sont <b>hors ligne</b> : elles lisent des fichiers locaux. La
+troisième, non : elle <b>génère du trafic DNS</b>. Sur une analyse discrète, elle <b>trahit la
+présence de l'analyste</b> et pollue la capture avec ses propres requêtes. On la laisse
+désactivée.
+</div>
+
+<h3 id="ch41-filtres">41.3 Filtres de capture et filtres d'affichage</h3>
+
+<p>Deux syntaxes différentes, qu'il ne faut pas confondre. Les <b>filtres de capture</b> (syntaxe
+BPF, celle de <code>tcpdump</code>) décident de ce qui est <b>enregistré</b> — ce qui est écarté est
+perdu. Les <b>filtres d'affichage</b> décident de ce qui est <b>montré</b> parmi ce qui a été
+capturé.</p>
+
+<div class="callout"><div class="t">Ne pas saturer le disque</div>
+Une capture longue se configure avec des <b>déclencheurs</b> : le sujet demande de capturer trois
+minutes en produisant automatiquement <b>trois fichiers d'une minute</b>. C'est le réglage
+d'anneau de fichiers, indispensable dès qu'on laisse tourner une sonde.
+</div>
+
+<h3 id="ch41-questions">41.4 Les points d'analyse du sujet</h3>
+
+<ul class="key-points">
+<li><b>ICMP Linux contre Windows</b> — les charges utiles diffèrent, ce qui permet de <b>reconnaître l'OS</b> distant. Et le bourrage s'impose parce qu'une trame Ethernet a une taille minimale (<a href="#ch6">chapitre 6</a>).</li>
+<li><b>Dépasser le MTU</b> — avec les options de <code>ping</code>, observer la fragmentation, ou le rejet si le bit <i>Don't Fragment</i> est posé.</li>
+<li><b>Données cachées dans un ICMP</b> — le champ de données d'un <i>echo request</i> accepte n'importe quel contenu : c'est un canal d'exfiltration. À forger avec les options de <code>ping</code>, ou avec PackETH, hping3 ou Scapy.</li>
+<li><b>Couper les réponses ICMP</b> — par le paramètre noyau dans <code>/proc</code>, ou par une règle Netfilter.</li>
+<li><b><code>arping</code></b> — contourne un filtrage ICMP en travaillant en couche 2… mais reste <b>cantonné au réseau local</b> : ARP ne franchit pas un routeur.</li>
+<li><b>Le cache ARP</b> — <code>watch arp -na</code>. Sa durée de vie diffère entre Linux et Windows, et c'est exactement ce qu'exploite l'empoisonnement ARP.</li>
+<li><b>Les premières trames d'un Windows qui démarre</b> — capturées depuis l'hôte en filtrant sur la MAC de la VM. Elles en disent long sur le domaine, les partages et les services attendus.</li>
+<li><b>FTP actif contre passif</b> — qui ouvre le canal de données, et pourquoi le <b>mode actif ne fonctionne pas</b> derrière la box d'un particulier : le serveur devrait initier une connexion entrante vers un client caché derrière le NAT.</li>
+</ul>
+
+<h3 id="ch41-captures">41.5 Les neuf captures à analyser</h3>
+
+<div class="tw"><table>
+<thead><tr><th>Fichier</th><th>Ce qu'il faut y reconnaître</th></tr></thead>
+<tbody>
+<tr><td><code>capture1</code></td><td>une commande émise par un hôte, et le rôle des deux premières trames — <b>ARP</b>. Puis comprendre pourquoi elles <b>ne se répètent pas</b> 8 secondes plus tard : le cache. Et ce qui se passe à 22 secondes, quand il expire</td></tr>
+<tr><td><code>capture2</code></td><td>un <b>scan de ports</b> : identifier la cible, puis écrire un filtre d'affichage ne listant que les ports <b>ouverts</b> et les compter</td></tr>
+<tr><td><code>capture3</code></td><td>une session <b>SMTP</b> en clair : nom du serveur, bannière, expéditeur, destinataire, sujet et message. Utiliser <i>follow TCP stream</i> et observer le filtre généré</td></tr>
+<tr><td><code>capture4</code></td><td>une session <b>POP3</b> en clair : compte et mot de passe lisibles, nombre de messages, pièce jointe à extraire. Puis les parades — TLS, et <b>APOP</b></td></tr>
+<tr><td><code>capture5</code></td><td>les quatre trames du <b>DHCP</b> : Discover, Offer, Request, Ack. Trouver la durée du bail et ce que le serveur transmet d'autre (<a href="#ch34">chapitre 34</a>)</td></tr>
+<tr><td><code>capture6</code></td><td>la fonction <b>IO-graph</b> : superposer le trafic total, les flux TCP, les flux SMB et ceux d'un hôte précis, pour déduire ce qu'il fabrique</td></tr>
+<tr><td><code>capture7</code></td><td>à qualifier soi-même</td></tr>
+<tr><td><code>capture8</code></td><td>un <b>exploit</b> : quel service est vulnérable, à quelle trame la vulnérabilité « joue », et ce que veut l'attaquant</td></tr>
+<tr><td><code>capture9</code></td><td>l'analyse complète façon rapport : machines impliquées, localisation de l'attaquant, nombre de sessions TCP, durée, système et service ciblés, actions du shellcode — et se demander si la victime n'était pas un <b>pot de miel</b></td></tr>
+</tbody>
+</table></div>
+
+<h3 id="ch41-tls">41.6 Déchiffrer son propre HTTPS — SSLKEYLOGFILE</h3>
+
+<p>On capture d'abord un échange TLS et l'on explique <b>chaque paquet jusqu'au moment où le trafic
+devient chiffré</b> (<a href="#ch30">chapitre 30</a>). Pour voir au-delà, le navigateur peut écrire les
+<b>secrets de session</b> dans un fichier désigné par la variable d'environnement
+<code>SSLKEYLOGFILE</code>, que Wireshark sait lire.</p>
+
+<div class="callout danger"><div class="t">Le risque, qui est la vraie question du sujet</div>
+Ce fichier contient <b>les clés de session de toutes les connexions TLS</b> du navigateur. Le laisser
+actif durablement, c'est conserver sur le disque de quoi <b>déchiffrer a posteriori l'intégralité du
+trafic chiffré</b> — y compris les sessions bancaires et professionnelles. C'est un outil de
+laboratoire, à désactiver aussitôt après.
+</div>
+
+<h3 id="ch41-netcat">41.7 Rejouer l'exploit avec netcat</h3>
+
+<p>Le sujet demande de reproduire le comportement observé dans <code>capture8</code> : sur l'hôte, deux
+processus en écoute (ports 5001 et 5002), vérifiés avec <code>netstat</code> ; sur la machine invitée,
+la ligne de commande de l'exploit, qui ouvre <b>deux connexions séparées</b> — l'une pour l'entrée,
+l'autre pour la sortie du shell.</p>
+
+<div class="callout"><div class="t">Ce qu'il faut avoir compris</div>
+Le shell distant est reconstitué en <b>séparant les flux</b> : la boucle relance un shell et redirige
+l'erreur standard vers la seconde connexion. C'est le principe du <i>reverse shell</i> — et la raison
+pour laquelle un pare-feu qui n'inspecte que les flux <b>entrants</b> ne le voit jamais partir.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch42"><span class="num">42.</span> Le quiz du 1<sup>er</sup> septembre, corrigé</h2>
 
 <p>Les treize questions réellement posées ce matin, avec la réponse cochée comme correcte. Ce sont les
 questions les plus proches de ce qui tombera : elles indiquent le <b>niveau</b> attendu et le
@@ -3173,7 +4168,7 @@ compréhension globale</b> pour ce format d'épreuve, et il faut apprendre les c
 <b>ensemble</b>, jamais séparément.
 </div>
 
-<h2 id="ch35"><span class="num">35.</span> Précisions à connaître</h2>
+<h2 id="ch43"><span class="num">43.</span> Précisions à connaître</h2>
 <p class="lead">Les points où retenir le cours mot pour mot te coûterait des points ailleurs. Détail
 complet dans l'annexe de <a href="transcription-inf5243-seance-01.html">la transcription</a>.</p>
 
@@ -3198,7 +4193,7 @@ ci-dessous ne conserve que les écarts qui subsistent.
 <tr><td><b>Modes de commutation</b></td><td>Le cours en donne 3. Il existe un 4ᵉ classique, <b>fragment-free</b> (64 octets), qui écarte les trames de collision.</td><td>Citer les 3, mentionner le 4ᵉ en bonus</td></tr>
 </tbody></table></div>
 
-<h3 id="ch35-quizz">35.1 Les questions de révision posées sur les planches</h3>
+<h3 id="ch43-quizz">43.1 Les questions de révision posées sur les planches</h3>
 <p>Le support <code>Network-reminders</code> se termine par une planche de questions ouvertes. Ce sont
 les plus susceptibles de revenir telles quelles :</p>
 <div class="tw"><table>
@@ -3218,12 +4213,12 @@ séparément : elles figurent au support mais n'ont pas été traitées à l'ora
 
 <!-- ===================================================================== -->
 <!-- ===================================================================== -->
-<h2 id="ch36"><span class="num">36.</span> Glossaire des sigles</h2>
+<h2 id="ch44"><span class="num">44.</span> Glossaire des sigles</h2>
 <p class="lead">Tous les sigles employés dans la matière, développés et traduits. L'examen se déroule
 <b>sans documents</b> : un sigle dont on ne sait pas ce qu'il signifie est un point perdu, et un
 développé qu'on ne sait pas abréger aussi.</p>
 
-<h3 id="ch36-support">36.1 Support physique et câblage</h3>
+<h3 id="ch44-support">44.1 Support physique et câblage</h3>
 <div class="tw"><table>
 <thead><tr><th>Sigle</th><th>Développé</th><th>Ce que c'est</th></tr></thead>
 <tbody>
@@ -3243,7 +4238,7 @@ développé qu'on ne sait pas abréger aussi.</p>
 <tr><td><b>MDI / MDI-X</b></td><td><i>Medium Dependent Interface (Crossed)</i></td><td>Brochage droit / croisé ; <b>Auto-MDIX</b> = détection automatique</td></tr>
 </tbody></table></div>
 
-<h3 id="ch36-carte">36.2 Carte réseau, trame et capture</h3>
+<h3 id="ch44-carte">44.2 Carte réseau, trame et capture</h3>
 <div class="tw"><table>
 <thead><tr><th>Sigle</th><th>Développé</th><th>Ce que c'est</th></tr></thead>
 <tbody>
@@ -3264,7 +4259,7 @@ développé qu'on ne sait pas abréger aussi.</p>
 <tr><td><b>CSMA/CA</b></td><td><i>… with Collision Avoidance</i></td><td>Variante du Wi-Fi : on évite, faute de pouvoir détecter</td></tr>
 </tbody></table></div>
 
-<h3 id="ch36-commutation">36.3 Commutation, VLAN et agrégation</h3>
+<h3 id="ch44-commutation">44.3 Commutation, VLAN et agrégation</h3>
 <div class="tw"><table>
 <thead><tr><th>Sigle</th><th>Développé</th><th>Ce que c'est</th></tr></thead>
 <tbody>
@@ -3289,7 +4284,7 @@ développé qu'on ne sait pas abréger aussi.</p>
 <tr><td><b>ACL</b></td><td><i>Access Control List</i></td><td>Règles de filtrage sur un équipement réseau</td></tr>
 </tbody></table></div>
 
-<h3 id="ch36-wifi">36.4 Wi-Fi, IoT et services</h3>
+<h3 id="ch44-wifi">44.4 Wi-Fi, IoT et services</h3>
 <div class="tw"><table>
 <thead><tr><th>Sigle</th><th>Développé</th><th>Ce que c'est</th></tr></thead>
 <tbody>
@@ -3306,7 +4301,7 @@ développé qu'on ne sait pas abréger aussi.</p>
 <tr><td><b>SMB / CIFS</b></td><td><i>Server Message Block / Common Internet File System</i></td><td>Partage de fichiers Microsoft ; <b>Samba</b> en est l'implémentation libre</td></tr>
 </tbody></table></div>
 
-<h3 id="ch36-secu">36.5 Supervision, détection et sécurité</h3>
+<h3 id="ch44-secu">44.5 Supervision, détection et sécurité</h3>
 <div class="tw"><table>
 <thead><tr><th>Sigle</th><th>Développé</th><th>Ce que c'est</th></tr></thead>
 <tbody>
@@ -3330,7 +4325,7 @@ développé qu'on ne sait pas abréger aussi.</p>
 <tr><td><b>RADIUS</b></td><td><i>Remote Authentication Dial-In User Service</i></td><td>Serveur d'authentification, utilisé par 802.1X et par les box opérateur</td></tr>
 </tbody></table></div>
 
-<h3 id="ch36-adressage">36.6 Adressage, routage et gouvernance</h3>
+<h3 id="ch44-adressage">44.6 Adressage, routage et gouvernance</h3>
 <div class="tw"><table>
 <thead><tr><th>Sigle</th><th>Développé</th><th>Ce que c'est</th></tr></thead>
 <tbody>
@@ -3353,7 +4348,7 @@ développé qu'on ne sait pas abréger aussi.</p>
 <tr><td><b>Arcep</b></td><td>Autorité de régulation des communications électroniques, des postes et de la distribution de la presse</td><td>Le régulateur français des télécoms — décrit l'AS comme « la brique élémentaire d'Internet »</td></tr>
 </tbody></table></div>
 
-<h3 id="ch36-applicatif">36.7 Applicatif, DNS, TLS et juridique</h3>
+<h3 id="ch44-applicatif">44.7 Applicatif, DNS, TLS et juridique</h3>
 <div class="tw"><table>
 <thead><tr><th>Sigle</th><th>Développé</th><th>Ce que c'est</th></tr></thead>
 <tbody>
@@ -3397,9 +4392,39 @@ développé qu'on ne sait pas abréger aussi.</p>
 </div>
 
 <!-- ===================================================================== -->
-<h2 id="ch37"><span class="num">37.</span> Mémo express</h2>
+<h3 id="ch44-seance3">44.8 Accès au réseau, architecture et gouvernance</h3>
+<div class="tw"><table>
+<thead><tr><th>Sigle</th><th>Développé</th><th>Ce qu'il faut en dire</th></tr></thead>
+<tbody>
+<tr><td><b>AAA</b></td><td><i>Authentication, Authorization, Accounting</i></td><td>Qui es-tu · à quoi as-tu droit · qu'as-tu consommé. Les deux premiers ensemble = le NAC</td></tr>
+<tr><td><b>EAP</b></td><td><i>Extensible Authentication Protocol</i></td><td>RFC 3748 et 5247. Un cadre, pas une méthode</td></tr>
+<tr><td><b>EAPoL</b></td><td><i>EAP over LAN</i></td><td>EtherType <code>0x888E</code>, vers <code>01:80:C2:00:00:03</code>. Parle sans couche IP</td></tr>
+<tr><td><b>PEAP</b></td><td><i>Protected EAP</i></td><td>Tunnel TLS monté par le certificat serveur. Seule méthode autorisée en Wi-Fi WPAx-entreprise avec EAP-TLS</td></tr>
+<tr><td><b>UAM</b></td><td><i>Universal Access Method</i></td><td>Le portail captif — le repli quand il n'y a pas de supplicant</td></tr>
+<tr><td><b>NAI</b></td><td><i>Network Access Identifier</i></td><td>La forme <code>login@domaine</code> qui permet le relais Eduroam</td></tr>
+<tr><td><b>NPS</b></td><td><i>Network Policy Server</i></td><td>Le rôle qui transforme un AD en serveur RADIUS</td></tr>
+<tr><td><b>TACACS+</b></td><td><i>Terminal Access Controller Access-Control System</i></td><td>Propriétaire Cisco, TCP 49, sépare strictement authentification et autorisation</td></tr>
+<tr><td><b>DMZ</b></td><td>Zone démilitarisée</td><td>DMZ-1 = transit (NAC, proxies), DMZ-2 = publique (serveurs exposés). Pas une zone sans défense</td></tr>
+<tr><td><b>SOHO</b></td><td><i>Small Office / Home Office</i></td><td>Qualifie un pare-feu en dessous de 50 utilisateurs</td></tr>
+<tr><td><b>WAF</b></td><td><i>Web Application Firewall</i></td><td>Couche 7 HTTP, contre le Top 10 OWASP. ModSecurity en libre</td></tr>
+<tr><td><b>WAAP</b></td><td><i>Web Application &amp; API Protection</i></td><td>Le WAF étendu aux API REST, JSON, GraphQL</td></tr>
+<tr><td><b>NIPS / NDR</b></td><td><i>Network IPS</i> / <i>Network Detection &amp; Response</i></td><td>NIDS + pare-feu, puis + autres réactions</td></tr>
+<tr><td><b>HIPS / EDR</b></td><td><i>Host IPS</i> / <i>Endpoint Detection &amp; Response</i></td><td>HIDS + pare-feu personnel, puis + antimalware et autres réactions</td></tr>
+<tr><td><b>TAP</b></td><td><i>Test Access Port</i></td><td>Boîtier passif d'écoute. L'alternative au port miroir, que Cisco appelle SPAN</td></tr>
+<tr><td><b>SPAN</b></td><td><i>Switch Port ANalyser</i></td><td>Le nom Cisco du port miroir</td></tr>
+<tr><td><b>PSSI</b></td><td>Politique de Sécurité des SI</td><td>Écrite par le RSSI après analyse de risques (EBIOS RM). Rien ne se déploie sans elle</td></tr>
+<tr><td><b>ITSM</b></td><td><i>IT Service Management</i></td><td><b>L'ERP de la DSI</b> — la réponse attendue en entretien</td></tr>
+<tr><td><b>ITAM</b></td><td><i>IT Asset Management</i></td><td>Cycle de vie des actifs : achat, licences, obsolescence</td></tr>
+<tr><td><b>CMDB</b></td><td><i>Configuration Management Database</i></td><td>Cartographie des composants du SI et de leurs dépendances</td></tr>
+<tr><td><b>MTBF</b></td><td><i>Mean Time Between Failures</i></td><td>~4 500 h pour un disque pro. Attention au lot unique</td></tr>
+<tr><td><b>MPLS</b></td><td><i>Multiprotocol Label Switching</i></td><td>Le transport opérateur entre sites, doublé d'IPsec</td></tr>
+<tr><td><b>RI / CI</b></td><td><i>Restricted / Classified Information</i></td><td>Les deux niveaux au-dessus d'<i>unrestricted</i>. Équipements agréés, chiffré dans du chiffré</td></tr>
+</tbody>
+</table></div>
 
-<h3 id="ch37-chiffres">37.1 Les chiffres à savoir sans réfléchir</h3>
+<h2 id="ch45"><span class="num">45.</span> Mémo express</h2>
+
+<h3 id="ch45-chiffres">45.1 Les chiffres à savoir sans réfléchir</h3>
 
 <div class="grid c2">
 <div class="card"><h4>Trame Ethernet</h4>
@@ -3472,7 +4497,7 @@ développé qu'on ne sait pas abréger aussi.</p>
 </ul></div>
 </div>
 
-<h3 id="ch37-distinctions">37.2 Notion → distinction</h3>
+<h3 id="ch45-distinctions">45.2 Notion → distinction</h3>
 
 <div class="tw"><table>
 <thead><tr><th>A</th><th>B</th><th>Ce qui les sépare</th></tr></thead>
@@ -3510,7 +4535,7 @@ développé qu'on ne sait pas abréger aussi.</p>
 </tbody>
 </table></div>
 
-<h3 id="ch37-parades">37.3 Attaque → parade</h3>
+<h3 id="ch45-parades">45.3 Attaque → parade</h3>
 
 <div class="callout"><div class="t">Les 3 attaques VLAN en une ligne chacune</div>
 <b>Reset usine</b> → tous les ports en VLAN 1 → <i>sécurité physique de la baie</i>.<br>
@@ -3542,7 +4567,36 @@ développé qu'on ne sait pas abréger aussi.</p>
 </tbody>
 </table></div>
 
-<h3 id="ch37-plans">37.4 Plans de réponse type</h3>
+<div class="callout warn"><div class="t">Séance 3 — accès au réseau, DHCP et ARP</div>
+<div class="tw"><table>
+<thead><tr><th>Attaque</th><th>Ce qu'elle exploite</th><th>Parade</th></tr></thead>
+<tbody>
+<tr><td><b>DHCP spoofing</b> (serveur pirate)</td><td>Le client retient la <b>première</b> offre reçue ; le pirate répond plus vite que l'AD et s'annonce passerelle et DNS</td><td><b>DHCP snooping</b> — seul le port approuvé peut émettre <code>Offer</code>/<code>Ack</code></td></tr>
+<tr><td><b>DHCP starvation</b></td><td>Le pool est fini ; on l'épuise avec des <code>Discover</code> à MAC source forgée (254 suffisent sur un /24)</td><td><b>Rate limit</b> par port, + DHCP snooping, + adressage statique en DMZ</td></tr>
+<tr><td><b>Empoisonnement ARP</b></td><td>ARP n'authentifie rien et le cache expire vite</td><td><b>ARP statique ou semi-statique</b> en DMZ, <code>arptables</code>, inspection ARP dynamique</td></tr>
+<tr><td><b>Contournement du port contrôlé</b></td><td>Un équipement sans supplicant force le repli, ou l'on branche un mini-switch derrière un poste authentifié</td><td><b>802.1X</b> avec repli en <b>VLAN guest restreint</b>, jamais en ouverture totale, + MAC locking</td></tr>
+<tr><td><b>Rogue AP / faux SSID d'entreprise</b></td><td>Un employé branche son point d'accès, ou l'attaquant rejoue le SSID</td><td><b>WIDS</b>, <b>rogue AP detection</b>, WPA3, <b>limitation de puissance et directivité d'antenne</b>, 802.1X sur le SSID corporate</td></tr>
+<tr><td><b>Écoute sur prise murale libre</b></td><td>Une prise active non surveillée accepte n'importe quel implant</td><td><b>Débrassage</b>, <b>lockout RJ45</b> + verrou de câble, désactivation des ports inutilisés</td></tr>
+<tr><td><b>Découverte par protocoles domestiques</b></td><td><b>UPnP/DLNA</b> diffusent nom d'hôte, version d'OS et partages ; UPnP ouvre des redirections sans authentification</td><td>Éradication pure et simple sur un réseau d'entreprise, + coupure de CDP/LLDP si inutiles</td></tr>
+</tbody>
+</table></div>
+</div>
+
+<div class="callout warn"><div class="t">Séance 3 — applicatif, périmètre et poste</div>
+<div class="tw"><table>
+<thead><tr><th>Attaque</th><th>Ce qu'elle exploite</th><th>Parade</th></tr></thead>
+<tbody>
+<tr><td><b>Top 10 OWASP</b> — injection SQL, XSS, <i>parameter tampering</i>, champs cachés, cookie poisoning, <i>forced browsing</i></td><td>Le pare-feu réseau est aveugle à la sémantique HTTP</td><td><b>WAF</b> (L3/L4/L5-7), <b>WAAP</b> pour les API. Validé avant production avec WAFW00F, GoTestWAF, Web Security Dojo</td></tr>
+<tr><td><b>Scan de ports en frontal</b></td><td>Un pare-feu unique doit à la fois encaisser et orienter</td><td><b>Deux pare-feux</b> : bastion en première ligne, redirecteur derrière. Le bastion stoppe le scan, on ne le réoriente jamais en DMZ</td></tr>
+<tr><td><b>Exposition d'un AD</b></td><td>Un contrôleur de domaine exige ~<b>5 000 ports RPC/DCOM</b> (49152-65535)</td><td>L'AD reste enfoui dans le LAN ; en DMZ, des <b>relais</b> — résolveur DNS de cache et relais SMTP frontal</td></tr>
+<tr><td><b>Vol d'un poste nomade</b></td><td>Certificat VPN enregistré en dur, sans mot de passe maître (RETEX TGV : deux ans d'exfiltration)</td><td><b>Certificat client protégé par mot de passe</b>, signalement immédiat, révocation</td></tr>
+<tr><td><b>Falsification des journaux par l'administrateur</b></td><td>L'admin a tous les droits <code>root</code> sur la machine qui journalise</td><td><b>Déport</b> vers un serveur où il n'écrit pas, <b>chaînage</b> par condensat, <b>chiffrement</b> avec clé détenue par le seul RSSI</td></tr>
+<tr><td><b>Panne simultanée d'une grappe RAID</b></td><td>Disques de même série, même date, donc même usure (MTBF)</td><td><b>Déphaser</b> : remplacer un disque à un an, un second à deux ans</td></tr>
+</tbody>
+</table></div>
+</div>
+
+<h3 id="ch45-plans">45.4 Plans de réponse type</h3>
 
 <div class="callout ok"><div class="t">« Expliquez le trajet d'une trame »</div>
 <b>1)</b> Le préambule cale l'horloge sur la vitesse négociée → <b>2)</b> la carte lit la MAC destination et
@@ -3608,9 +4662,57 @@ archive.</li>
 </ol>
 </div>
 
+<h3 id="ch45-recite">45.5 Les mécanismes à savoir raconter</h3>
+
+<p class="lead">Pour une question ouverte — « expliquez RADIUS », « quelles failles sur DHCP et
+comment s'en protéger » — voici le squelette de réponse, dans l'ordre où il faut le dérouler.</p>
+
+<div class="callout def"><div class="t">Expliquer 802.1X et RADIUS en sept temps</div>
+<b>1.</b> Le port du commutateur est un <b>port contrôlé</b> : paire de réception bloquée, rien ne
+passe. <b>2.</b> Le poste n'a <b>pas d'adresse IP</b> — il émet une trame Ethernet pure, <b>EAPoL</b>,
+EtherType <code>0x888E</code>, vers le multicast <code>01:80:C2:00:00:03</code>. <b>3.</b> Le
+commutateur — l'<b>authenticator</b>, qui ne décide rien — ré-encapsule en <b>UDP 1812</b> vers le
+serveur RADIUS. <b>4.</b> Le serveur interroge LDAP/AD/SQL et envoie un <b>challenge</b> ; le mot de
+passe ne circule jamais. <b>5.</b> Selon la méthode EAP, l'échange est protégé par un tunnel TLS
+(<b>PEAP</b>) ou non (<b>EAP-MD5</b>, interdit en Wi-Fi). <b>6.</b> <code>Access-Accept</code> +
+<b>attributs</b> : VLAN, débit, quotas, durée. <b>7.</b> Le switch ouvre la réception, bascule le
+VLAN — <b>et seulement là</b> le poste fait son <code>DHCP Discover</code>. En cas d'échec : port
+fermé, ou ouverture <b>restreinte</b> vers un VLAN invité.
+</div>
+
+<div class="callout def"><div class="t">Expliquer une architecture de sécurité en cinq temps</div>
+<b>1.</b> Rien sans <b>PSSI</b>, écrite par le RSSI après analyse de risques (EBIOS RM). <b>2.</b> On
+recense les flux et on définit des <b>zones par degré de sécurité</b> ; toute donnée qui change de
+zone <b>traverse un filtre</b>. <b>3.</b> Deux pare-feux : <b>bastion</b> qui encaisse,
+<b>redirecteur</b> qui oriente. <b>4.</b> Deux DMZ : <b>DMZ-1 transit</b> (NAC, proxies,
+assainissement RFC) et <b>DMZ-2 publique</b> (serveurs exposés, reverse proxy, WAF). <b>5.</b>
+L'Intranet segmenté en VLAN — admin, collaborateurs, invités, DMZ — avec 802.1X, et le VPN comme
+seule ouverture entrante.
+</div>
+
+<div class="callout def"><div class="t">Les failles DHCP, et les parades</div>
+<b>Deux attaques.</b> Le <b>spoofing</b> : un serveur pirate plus rapide devient passerelle et DNS,
+donc MITM complet. La <b>starvation</b> : des <code>Discover</code> à MAC forgée vident le pool
+(254 sur un /24), déni de service et préparation du spoofing.
+<b>Trois parades.</b> <b>DHCP snooping</b> (ports approuvés / non approuvés), <b>rate limit</b> par
+port, et <b>adressage statique</b> en VLAN sécurisé pour tout ce qui est infrastructure.
+<b>Le rappel qui rapporte des points</b> : le DHCP ne distribue pas une adresse, il distribue une
+<b>configuration complète</b> — IP + masque, passerelle, DNS.
+</div>
+
+<div class="callout def"><div class="t">Les failles DNS, et les parades</div>
+<b>Empoisonnement de cache</b> (Kaminsky 2008, port source prévisible ; fragmentation IP,
+Herzberg &amp; Shulman 2013) → <b>DNSSEC</b>, randomisation du port source.
+<b>Amplification</b> → interdire la récursivité ouverte, <b>BCP 38</b>.
+<b>Transfert de zone illicite</b> → <b>TSIG</b>, restriction aux @IP des secondaires.
+<b>Tunneling</b> (Iodine) → analyse volumétrique et d'entropie, résolveur imposé.
+<b>DNS menteur</b> → être son propre résolveur (unbound), ou DoH/DoT.
+<b>Disponibilité</b> → <b>master caché + slaves</b>, Anycast.
+</div>
+
 <!-- ===================================================================== -->
-<h2 id="qcm-sec"><span class="num">38.</span> QCM — <span id="count-badge" class="badge acc"></span></h2>
-<p>Les QCM des deux séances ont été fusionnés en une seule banque, regroupée sur les 35 chapitres
+<h2 id="qcm-sec"><span class="num">46.</span> QCM — <span id="count-badge" class="badge acc"></span></h2>
+<p>Les QCM des trois séances ont été fusionnés en une seule banque, regroupée sur les 43 chapitres
 de cette fiche&nbsp;: filtres par chapitre et par niveau, ordre des questions et des propositions tiré
 au hasard à chaque lancement, correction expliquée immédiatement, mémorisation des erreurs pour
 pouvoir les rejouer. Le sélecteur « Chapitre » indique le nombre de questions disponibles par
@@ -3620,8 +4722,10 @@ chapitre.</p>
 </div>
 
 <button id="top" title="Haut de page">↑</button>
-<script src="data/qcm-inf5243.js?v=18"></script>
-<script src="assets/app.js?v=18"></script>
+<script src="data/qcm-inf5243.js?v=23"></script>
+<script src="assets/app.js?v=23"></script>
+<script src="data/scenes-inf5243.js?v=23"></script>
+<script src="assets/scenes.js?v=23"></script>
 <script>initQCM(window.QCM_DATA, window.QCM_CHAPTERS, 'inf5243');</script>
 </body>
 </html>

@@ -435,3 +435,158 @@ html[data-theme="dark"] mark { background: #7a5c00; color: #fff; }
   h2 { break-before: page; break-after: avoid; }
   .content > .section-content:first-child h2 { break-before: auto; }
 }
+
+/* ============================================================
+   Scènes d'attaque — schémas animés (assets/scenes.js)
+   Le schéma montre les acteurs et ce qui circule entre eux ;
+   la liste d'étapes en dessous reste du texte lisible seul,
+   et c'est elle qui subsiste à l'impression.
+   ============================================================ */
+.scene {
+  margin: 1.4em 0; border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--bg-soft); box-shadow: var(--shadow); overflow: hidden;
+}
+.scene-title {
+  padding: 11px 16px; border-bottom: 1px solid var(--border-soft);
+  font-weight: 700; font-size: .95rem; background: var(--bg-alt);
+}
+.scene-kind {
+  display: inline-block; font-size: .66rem; font-weight: 800; letter-spacing: .08em;
+  text-transform: uppercase; padding: 2px 8px; border-radius: 999px;
+  background: var(--danger-soft); color: var(--d-red); margin-right: 8px; vertical-align: 1px;
+}
+.scene-stage { padding: 6px 10px 0; overflow-x: auto; }
+.scene-svg { display: block; width: 100%; min-width: 620px; height: auto; }
+.scene-miss { padding: 14px 16px; color: var(--fg-mute); font-size: .9rem; }
+
+/* ---------- Nœuds ---------- */
+.node-box {
+  fill: var(--bg-alt); stroke: var(--border); stroke-width: 1.5;
+  transition: fill .35s, stroke .35s, stroke-width .35s;
+}
+.node-label { fill: var(--fg); font: 700 13px var(--sans); }
+.node-sub   { fill: var(--fg-mute); font: 400 10.5px var(--sans); }
+.ico-body { fill: none; stroke: var(--fg-soft); stroke-width: 1.6; stroke-linejoin: round; transition: stroke .35s; }
+.ico-line { fill: none; stroke: var(--fg-soft); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; transition: stroke .35s; }
+.ico-port { fill: var(--fg-soft); transition: fill .35s; }
+.ico-led  { fill: var(--ok); }
+
+/* L'attaquant est rouge en permanence : on doit savoir d'un coup d'oeil
+   qui, dans le schéma, est l'adversaire. */
+.node.k-attacker .node-box { fill: var(--danger-soft); stroke: var(--danger); }
+.node.k-attacker .ico-body,
+.node.k-attacker .ico-line { stroke: var(--d-red); }
+.node.k-attacker .node-label { fill: var(--d-red); }
+
+.node.s-active .node-box { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 2.4; }
+.node.s-active .ico-body, .node.s-active .ico-line { stroke: var(--d-blue); }
+.node.s-ok     .node-box { fill: var(--ok-soft); stroke: var(--ok); stroke-width: 2.4; }
+.node.s-ok     .ico-body, .node.s-ok .ico-line { stroke: var(--d-green); }
+.node.s-warn   .node-box { fill: var(--warn-soft); stroke: var(--warn); stroke-width: 2.4; }
+.node.s-warn   .ico-body, .node.s-warn .ico-line { stroke: var(--d-amber); }
+.node.s-evil   .node-box { fill: var(--danger-soft); stroke: var(--danger); stroke-width: 2.6; }
+.node.s-evil   .ico-body, .node.s-evil .ico-line { stroke: var(--d-red); }
+.node.s-evil   .node-label { fill: var(--d-red); }
+.node.s-pwn    .node-box { fill: var(--danger-soft); stroke: var(--danger); stroke-width: 3; animation: scenePulse 1.1s ease-in-out infinite; }
+.node.s-pwn    .node-label { fill: var(--d-red); }
+.node.s-dead   { opacity: .38; }
+.node.s-dead   .node-box { stroke-dasharray: 5 4; }
+
+@keyframes scenePulse { 0%, 100% { stroke-opacity: 1; } 50% { stroke-opacity: .3; } }
+
+.node-badge.hidden { display: none; }
+.badge-box { fill: var(--fg); }
+.badge-txt { fill: var(--bg-soft); font: 700 10.5px var(--mono); }
+.node.s-evil .badge-box, .node.s-pwn .badge-box { fill: var(--danger); }
+.node.s-ok   .badge-box { fill: var(--ok); }
+.node.s-warn .badge-box { fill: var(--warn); }
+
+/* ---------- Liens ---------- */
+.link-wire { stroke: var(--border); stroke-width: 3; stroke-linecap: round; transition: stroke .35s, stroke-width .35s; }
+.link.k-trunk .link-wire { stroke-width: 5; stroke: var(--fg-mute); }
+.link.k-wifi  .link-wire { stroke-dasharray: 2 6; }
+.link.k-off   .link-wire { stroke-dasharray: 4 6; opacity: .5; }
+.link-tagbg { fill: var(--bg-soft); stroke: var(--border); stroke-width: 1; }
+.link-tag   { fill: var(--fg-mute); font: 600 10px var(--sans); }
+
+.link.s-on   .link-wire { stroke: var(--accent); stroke-width: 4; }
+.link.s-on   .link-tag  { fill: var(--d-blue); }
+.link.s-ok   .link-wire { stroke: var(--ok); stroke-width: 4; }
+.link.s-ok   .link-tag  { fill: var(--d-green); }
+.link.s-warn .link-wire { stroke: var(--warn); stroke-width: 4; }
+.link.s-warn .link-tag  { fill: var(--d-amber); }
+.link.s-evil .link-wire { stroke: var(--danger); stroke-width: 4.5; stroke-dasharray: 8 6; animation: sceneDash .55s linear infinite; }
+.link.s-evil .link-tag  { fill: var(--d-red); }
+.link.s-cut  .link-wire { stroke: var(--fg-mute); stroke-dasharray: 3 7; opacity: .4; }
+
+@keyframes sceneDash { to { stroke-dashoffset: -14; } }
+
+/* ---------- Paquets en vol ---------- */
+.pkt-box { fill: var(--accent); stroke: none; }
+.pkt-txt { fill: #fff; font: 700 11px var(--mono); }
+.pkt.p-evil .pkt-box { fill: var(--danger); }
+.pkt.p-ok   .pkt-box { fill: var(--ok); }
+.pkt.p-warn .pkt-box { fill: var(--warn); }
+.pkt.p-ctrl .pkt-box { fill: var(--purple); }
+.pkt.p-ghost .pkt-box { fill: var(--fg-mute); }
+html[data-theme="dark"] .pkt-txt { fill: #0d1117; }
+
+/* ---------- Panneau d'état (CAM, cache DNS, bail DHCP…) ---------- */
+.panel-box  { fill: var(--bg); stroke: var(--border); stroke-width: 1.5; }
+.panel-title{ fill: var(--fg-soft); font: 700 10.5px var(--sans); letter-spacing: .05em; text-transform: uppercase; }
+.panel-sep  { stroke: var(--border-soft); stroke-width: 1; }
+.panel-row  { fill: var(--fg-soft); font: 400 11px var(--mono); }
+.panel-row.s-evil { fill: var(--d-red); font-weight: 700; }
+.panel-row.s-ok   { fill: var(--d-green); font-weight: 700; }
+.panel-row.s-warn { fill: var(--d-amber); font-weight: 700; }
+.panel-row.s-gone { fill: var(--fg-mute); opacity: .55; }
+.panel-hl.s-evil { fill: var(--danger-soft); }
+.panel-hl.s-ok   { fill: var(--ok-soft); }
+.panel-hl.s-warn { fill: var(--warn-soft); }
+
+/* ---------- Barre de commande ---------- */
+.scene-bar {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  padding: 10px 14px; border-top: 1px solid var(--border-soft); background: var(--bg-alt);
+}
+.scene-bar .btn.on { background: var(--danger); border-color: var(--danger); }
+.sc-pos { margin-left: auto; font: 700 .8rem var(--mono); color: var(--fg-mute); }
+
+/* ---------- Journal des étapes ---------- */
+.scene-log { list-style: none; margin: 0; padding: 10px 14px 14px; max-height: 268px; overflow-y: auto; }
+.scene-step {
+  padding: 8px 12px; margin: 5px 0; border-radius: 9px; font-size: .9rem;
+  background: transparent; border-left: 3px solid var(--border);
+  color: var(--fg-soft); cursor: pointer; transition: background .25s, border-color .25s, color .25s;
+}
+.scene-step b { color: var(--fg); }
+.scene-step:hover { background: var(--bg-alt); }
+.scene-step.done { opacity: .62; }
+.scene-step.now {
+  background: var(--accent-soft); border-left-color: var(--accent); color: var(--fg);
+}
+.scene-step.now b { color: var(--d-blue); }
+.scene-step.t-evil.now { background: var(--danger-soft); border-left-color: var(--danger); }
+.scene-step.t-evil.now b { color: var(--d-red); }
+.scene-step.t-ok.now { background: var(--ok-soft); border-left-color: var(--ok); }
+.scene-step.t-ok.now b { color: var(--d-green); }
+.scene-step.t-warn.now { background: var(--warn-soft); border-left-color: var(--warn); }
+.scene-step.t-warn.now b { color: var(--d-amber); }
+.scene-step:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .node-box, .ico-body, .ico-line, .link-wire { transition: none; }
+  .node.s-pwn .node-box, .link.s-evil .link-wire { animation: none; }
+}
+@media print {
+  .scene { break-inside: avoid; box-shadow: none; }
+  .scene-bar { display: none; }
+  .scene-log { max-height: none; overflow: visible; }
+  .scene-step { opacity: 1 !important; background: transparent !important; }
+  .scene-svg { min-width: 0; }
+}
+.scene-kind.ctrl { background: var(--ok-soft); color: var(--d-green); }
+/* Un surlignage de ligne sans variante d'état doit rester discret :
+   sans cette règle de base, le rectangle prend le noir par défaut du SVG. */
+.panel-hl { fill: var(--bg-alt); }
+.panel-hl.s-gone { fill: none; }

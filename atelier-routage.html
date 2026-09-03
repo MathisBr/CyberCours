@@ -1,0 +1,1803 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atelier Routage INF5243</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root{
+  --ground:#E7EAED; --surface:#FFFFFF; --surface-2:#F3F5F7; --line:#CBD3DA; --line-soft:#E1E6EA;
+  --ink:#141A20; --ink-2:#3D4852; --muted:#66727D;
+  --signal:#B87A06;         /* cordon jaune : ce qui compte, ce qui matche */
+  --signal-soft:#FBF0D6;
+  --wire-blue:#1A6394;      /* cordon bleu : liens, interfaces */
+  --wire-blue-soft:#DDEAF4;
+  --wire-green:#256E4C;     /* cordon vert : local, juste */
+  --wire-green-soft:#DCEDE4;
+  --alert:#A32F26; --alert-soft:#F7DFDD;
+  --shadow:0 1px 2px rgba(20,26,32,.06),0 8px 24px -12px rgba(20,26,32,.22);
+  --r:4px;
+  color-scheme:light dark;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0E1317; --surface:#161D23; --surface-2:#1D262E; --line:#2E3A44; --line-soft:#232D35;
+    --ink:#E4E9ED; --ink-2:#B4BFC8; --muted:#8695A1;
+    --signal:#E8AE3C; --signal-soft:#33280F;
+    --wire-blue:#5FA6D8; --wire-blue-soft:#132734;
+    --wire-green:#59B587; --wire-green-soft:#12291E;
+    --alert:#E2685C; --alert-soft:#311815;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0E1317; --surface:#161D23; --surface-2:#1D262E; --line:#2E3A44; --line-soft:#232D35;
+  --ink:#E4E9ED; --ink-2:#B4BFC8; --muted:#8695A1;
+  --signal:#E8AE3C; --signal-soft:#33280F;
+  --wire-blue:#5FA6D8; --wire-blue-soft:#132734;
+  --wire-green:#59B587; --wire-green-soft:#12291E;
+  --alert:#E2685C; --alert-soft:#311815;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.7);
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:16px; line-height:1.6;
+}
+code,kbd,.mono,.tbl td,.tbl th{font-family:"JetBrains Mono",ui-monospace,"Cascadia Mono",Consolas,monospace}
+h1,h2,h3,h4,.eyebrow,.stepno{font-family:"Barlow Condensed","Source Sans 3",system-ui,sans-serif}
+h1,h2,h3{text-wrap:balance; margin:0}
+a{color:var(--wire-blue)}
+:focus-visible{outline:2px solid var(--signal); outline-offset:2px; border-radius:2px}
+
+/* ---------- chrome ---------- */
+.topbar{
+  position:sticky; top:0; z-index:50; background:var(--surface); border-bottom:1px solid var(--line);
+  display:flex; align-items:center; gap:14px; padding:9px 18px;
+}
+.mark{display:flex; align-items:center; gap:9px; font-family:"Barlow Condensed",sans-serif; font-weight:700;
+  font-size:1.06rem; letter-spacing:.04em; text-transform:uppercase}
+.mark .plug{width:13px; height:13px; border-radius:2px; background:var(--signal);
+  box-shadow:0 0 0 3px var(--signal-soft)}
+.mark small{font-weight:500; color:var(--muted); letter-spacing:.06em; font-size:.72rem}
+.spacer{flex:1}
+.btn{
+  font:600 .8rem/1 "Source Sans 3",sans-serif; padding:7px 12px; border-radius:var(--r);
+  border:1px solid var(--line); background:var(--surface); color:var(--ink); cursor:pointer;
+}
+.btn:hover{border-color:var(--muted)}
+.btn.go{background:var(--ink); color:var(--surface); border-color:var(--ink)}
+.btn.go:hover{opacity:.88}
+.btn.sm{padding:5px 9px; font-size:.74rem}
+
+.shell{max-width:1240px; margin:0 auto; padding:0 18px; display:grid; grid-template-columns:216px 1fr; gap:34px; align-items:start}
+@media (max-width:960px){ .shell{grid-template-columns:1fr; gap:0} .rail{display:none} }
+
+.rail{position:sticky; top:56px; padding:26px 0; font-size:.85rem}
+.rail h4{font-size:.7rem; text-transform:uppercase; letter-spacing:.12em; color:var(--muted); margin:0 0 9px}
+.rail a{display:block; padding:5px 9px; color:var(--ink-2); text-decoration:none; border-left:2px solid var(--line-soft); line-height:1.35}
+.rail a:hover{color:var(--ink); border-left-color:var(--muted); background:var(--surface-2)}
+.rail a.on{color:var(--ink); border-left-color:var(--signal); background:var(--signal-soft); font-weight:600}
+.rail .grp{margin-bottom:18px}
+
+main{padding:26px 0 90px; min-width:0}
+
+/* ---------- hero ---------- */
+.hero{border:1px solid var(--line); background:var(--surface); border-radius:var(--r); padding:26px 26px 22px; box-shadow:var(--shadow); margin-bottom:30px}
+.eyebrow{font-size:.72rem; text-transform:uppercase; letter-spacing:.16em; color:var(--signal); font-weight:600}
+.hero h1{font-size:clamp(2rem,4.4vw,3rem); font-weight:700; line-height:1.02; letter-spacing:-.01em; margin:8px 0 12px}
+.hero p{margin:0; color:var(--ink-2); max-width:64ch}
+.quote{
+  margin:18px 0 0; padding:12px 16px; border-left:3px solid var(--signal); background:var(--signal-soft);
+  font-style:italic; color:var(--ink); border-radius:0 var(--r) var(--r) 0;
+}
+.quote cite{display:block; font-style:normal; font-size:.76rem; color:var(--muted); margin-top:6px; letter-spacing:.02em}
+
+/* ---------- sections ---------- */
+section{margin-bottom:44px; scroll-margin-top:64px}
+.shead{display:flex; align-items:baseline; gap:12px; margin-bottom:14px; border-bottom:2px solid var(--ink); padding-bottom:7px}
+.shead h2{font-size:1.7rem; font-weight:700; letter-spacing:-.01em}
+.shead .tag{font:500 .7rem/1 "Barlow Condensed",sans-serif; text-transform:uppercase; letter-spacing:.13em; color:var(--muted); margin-left:auto}
+
+.card{border:1px solid var(--line); background:var(--surface); border-radius:var(--r); padding:20px; box-shadow:var(--shadow); margin-bottom:16px}
+.card > h3{font-size:1.14rem; font-weight:600; margin-bottom:9px}
+.card p:last-child{margin-bottom:0}
+.lede{color:var(--ink-2); margin-top:0}
+
+.note{border-left:3px solid var(--wire-blue); background:var(--wire-blue-soft); padding:11px 14px; border-radius:0 var(--r) var(--r) 0; margin:14px 0}
+.note.warn{border-left-color:var(--signal); background:var(--signal-soft)}
+.note.bad{border-left-color:var(--alert); background:var(--alert-soft)}
+.note.good{border-left-color:var(--wire-green); background:var(--wire-green-soft)}
+.note b:first-child{display:block; font-family:"Barlow Condensed",sans-serif; text-transform:uppercase; letter-spacing:.1em; font-size:.76rem; margin-bottom:3px}
+.note :last-child{margin-bottom:0}
+.note p{margin:0 0 8px}
+
+/* ---------- diagram ---------- */
+.diagwrap{overflow-x:auto; border:1px solid var(--line-soft); background:var(--surface-2); border-radius:var(--r); padding:6px}
+svg.topo{display:block; min-width:980px; width:100%; height:auto}
+.topo .lan{fill:var(--wire-blue-soft); stroke:var(--wire-blue); stroke-width:1.5}
+.topo .rtr{fill:var(--surface); stroke:var(--ink); stroke-width:2}
+.topo .rtr.hi{fill:var(--signal-soft); stroke:var(--signal); stroke-width:3}
+.topo .link{stroke:var(--muted); stroke-width:2; fill:none}
+.topo .link.lit{stroke:var(--signal); stroke-width:4}
+.topo text{font-family:"JetBrains Mono",monospace; fill:var(--ink)}
+.topo .nm{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:17px; letter-spacing:.04em}
+.topo .iface{font-size:11.5px; fill:var(--wire-blue)}
+.topo .netlbl{font-size:12px; fill:var(--ink-2)}
+.topo .host{fill:var(--surface); stroke:var(--ink-2); stroke-width:1.5}
+.pkt{fill:var(--signal); stroke:var(--ink); stroke-width:1.5}
+@media (prefers-reduced-motion:reduce){ .pkt{transition:none !important} }
+
+/* ---------- tables ---------- */
+.tblwrap{overflow-x:auto; margin:12px 0}
+table.tbl{border-collapse:collapse; width:100%; font-size:.82rem; font-variant-numeric:tabular-nums; min-width:620px}
+.tbl th{
+  text-align:left; padding:7px 9px; background:var(--surface-2); border-bottom:2px solid var(--line);
+  font-family:"Barlow Condensed",sans-serif; font-size:.78rem; text-transform:uppercase; letter-spacing:.09em; color:var(--ink-2); white-space:nowrap;
+}
+.tbl td{padding:6px 9px; border-bottom:1px solid var(--line-soft); vertical-align:middle}
+.tbl tr.local td{background:var(--wire-green-soft)}
+.tbl tr.dflt td{background:var(--signal-soft)}
+.tbl tr.match td{outline:2px solid var(--signal); outline-offset:-2px}
+.tbl td.num{text-align:right}
+.pill{display:inline-block; padding:1px 7px; border-radius:9px; font-size:.7rem; font-weight:600;
+  font-family:"Source Sans 3",sans-serif; border:1px solid currentColor}
+.pill.loc{color:var(--wire-green)} .pill.sta{color:var(--wire-blue)}
+
+/* ---------- controls ---------- */
+.row{display:flex; flex-wrap:wrap; gap:9px; align-items:center; margin:12px 0}
+label.fld{display:flex; flex-direction:column; gap:3px; font-size:.72rem; color:var(--muted);
+  font-family:"Barlow Condensed",sans-serif; text-transform:uppercase; letter-spacing:.09em; font-weight:600}
+select,input[type=text]{
+  font:400 .82rem/1 "JetBrains Mono",monospace; padding:6px 8px; border:1px solid var(--line);
+  border-radius:var(--r); background:var(--surface); color:var(--ink); min-width:96px;
+}
+select:disabled,input:disabled{opacity:.55}
+td select,td input{width:100%; min-width:0; padding:4px 5px; font-size:.76rem}
+td.ok input,td.ok select{border-color:var(--wire-green); background:var(--wire-green-soft)}
+td.ko input,td.ko select{border-color:var(--alert); background:var(--alert-soft)}
+
+/* ---------- stepper ---------- */
+.steps{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:0}
+.steps li{display:grid; grid-template-columns:38px 1fr; gap:14px; padding:14px 0; border-top:1px solid var(--line-soft)}
+.steps li:first-child{border-top:0}
+.stepno{
+  width:30px; height:30px; border-radius:50%; display:grid; place-items:center; font-weight:700; font-size:1rem;
+  background:var(--ink); color:var(--surface);
+}
+.steps li.dim{opacity:.4}
+.steps li.dim .stepno{background:var(--muted)}
+.steps h4{font-size:1rem; font-weight:600; margin:2px 0 4px}
+.steps p{margin:0 0 6px; color:var(--ink-2); font-size:.93rem}
+
+/* ---------- reveal cards ---------- */
+.qa{border:1px solid var(--line); border-radius:var(--r); background:var(--surface); margin-bottom:10px; overflow:hidden}
+.qa > button{
+  width:100%; text-align:left; background:none; border:0; padding:13px 16px; cursor:pointer; color:var(--ink);
+  display:flex; gap:12px; align-items:flex-start; font:600 1rem/1.4 "Source Sans 3",sans-serif;
+}
+.qa > button:hover{background:var(--surface-2)}
+.qa .ix{font-family:"JetBrains Mono",monospace; font-size:.76rem; color:var(--signal); font-weight:700; padding-top:2px; min-width:26px}
+.qa .chev{margin-left:auto; color:var(--muted); font-size:.8rem; transition:transform .18s}
+.qa[open] .chev{transform:rotate(90deg)}
+.qa .body{padding:0 16px 16px 54px; border-top:1px solid var(--line-soft)}
+.qa .body > :first-child{margin-top:12px}
+
+/* ---------- misc ---------- */
+.grid2{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:14px}
+.kv{display:grid; grid-template-columns:auto 1fr; gap:4px 12px; font-size:.88rem; margin:10px 0}
+.kv dt{font-weight:600; color:var(--ink-2)}
+.kv dd{margin:0; font-family:"JetBrains Mono",monospace; font-size:.83rem}
+.score{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:1.1rem}
+.score.good{color:var(--wire-green)} .score.bad{color:var(--alert)}
+.chips{display:flex; flex-wrap:wrap; gap:6px; margin:10px 0}
+.chip{font-size:.74rem; padding:3px 9px; border-radius:11px; border:1px solid var(--line); background:var(--surface-2); cursor:pointer}
+.chip.on{background:var(--ink); color:var(--surface); border-color:var(--ink)}
+.seq{display:flex; flex-direction:column; gap:7px; margin:12px 0}
+.seq .msg{
+  border:1px solid var(--line); border-radius:var(--r); padding:8px 12px; font-size:.85rem; background:var(--surface-2);
+  opacity:.28; transition:opacity .3s, transform .3s, border-color .3s; transform:translateY(3px);
+}
+.seq .msg.on{opacity:1; transform:none; border-color:var(--signal); background:var(--signal-soft)}
+.seq .msg .who{font-family:"JetBrains Mono",monospace; font-size:.72rem; color:var(--wire-blue); display:block}
+@media (prefers-reduced-motion:reduce){ .seq .msg{transition:none} }
+.frame{display:flex; min-width:660px; font-family:"JetBrains Mono",monospace; font-size:.72rem; text-align:center}
+.frame div{padding:9px 4px; border:1px solid var(--line); border-right:0; background:var(--surface-2)}
+.frame div:last-child{border-right:1px solid var(--line)}
+.frame div.pad{background:var(--signal-soft); border-color:var(--signal)}
+.frame div b{display:block; font-family:"Barlow Condensed",sans-serif; font-size:.8rem; letter-spacing:.05em}
+.frame div span{color:var(--muted)}
+footer{border-top:1px solid var(--line); margin-top:40px; padding:20px 0 0; color:var(--muted); font-size:.82rem}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <span class="mark"><span class="plug"></span> Atelier Routage <small>INF5243</small></span>
+  <span class="spacer"></span>
+  <button class="btn sm" id="theme">Thème</button>
+  <a class="btn sm" href="inf5243-fiche-complete.html">Fiche complète</a>
+</header>
+
+<div class="shell">
+  <nav class="rail" aria-label="Sommaire">
+    <div class="grp">
+      <h4>Prérequis</h4>
+      <a href="#lire">Lire une adresse</a>
+    </div>
+    <div class="grp">
+      <h4>Vendredi</h4>
+      <a href="#topo">La topologie</a>
+      <a href="#methode">La méthode en 4 temps</a>
+      <a href="#trajet">Trajet d'un paquet</a>
+      <a href="#exo">Exercice généré</a>
+      <a href="#masques">Drill masques</a>
+      <a href="#secu">Enlever une route</a>
+    </div>
+    <div class="grp">
+      <h4>Points annoncés</h4>
+      <a href="#trame">Trame Ethernet</a>
+      <a href="#socket">La socket</a>
+      <a href="#dhcp">DHCP</a>
+      <a href="#dot1x">802.1X</a>
+      <a href="#vlan">Attaques VLAN</a>
+      <a href="#flash">Les réponses courtes</a>
+    </div>
+    <div class="grp">
+      <h4>Annexes</h4>
+      <a href="#sigles">Sigles</a>
+      <a href="#rendus">À rendre</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="hero">
+      <div class="eyebrow">Ce qui est annoncé pour vendredi matin</div>
+      <h1>Plan d'adressage,<br>table de routage.</h1>
+      <p>Tout ce que le prof a explicitement annoncé comme question, avec la topologie du support, sa
+      méthode de correction, et de quoi s'entraîner sur des exercices générés à l'infini.</p>
+      <blockquote class="quote">
+        « Je vous fais un schéma comme ça et puis vous répondez aux questions. Et dans les dernières
+        questions, je vous dis : “Ben montrez-moi la table de routage…” <b>Je vous en demanderai
+        qu'une</b> […] donnez-moi la table de routage de R3. »
+        <cite>Séance 2, enregistrement 4, [10:24]</cite>
+      </blockquote>
+      <div class="note warn" style="margin-bottom:0">
+        <b>Et juste avant, à [09:48]</b>
+        « Faites-moi un plan d'adressage LAN 1, LAN 2, définissez les adresses qui vont bien […]
+        <b>Ça c'est un truc que je peux vous donner vendredi.</b> Pour faire de la sécurité réseau, il
+        faut déjà savoir faire du réseau. »
+      </div>
+    </div>
+
+    <!-- ============ PRÉREQUIS ============ -->
+    <section id="lire">
+      <div class="shead"><h2>Lire une adresse en trois secondes</h2><span class="tag">Les prérequis de l'exercice</span></div>
+
+      <div class="card">
+        <h3>L'analyseur</h3>
+        <p class="lede">Tapez n'importe quelle adresse, avec ou sans masque. Tout ce que l'exercice
+        demande de déduire s'affiche — et le raisonnement avec.</p>
+        <div class="row">
+          <label class="fld">Adresse<input type="text" id="anIp" value="172.16.1.16" style="width:160px"></label>
+          <label class="fld">Masque<select id="anCidr"></select></label>
+          <button class="btn sm" data-an="145.145.255.255|16">145.145.255.255 /16</button>
+          <button class="btn sm" data-an="192.192.0.0|16">192.192.0.0 /16</button>
+          <button class="btn sm" data-an="169.254.7.7|16">169.254.7.7</button>
+          <button class="btn sm" data-an="10.3.3.1|8">10.3.3.1 /8</button>
+        </div>
+        <div id="anOut"></div>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <h3>La classe, par le premier octet</h3>
+          <p class="lede" style="font-size:.9rem">Le seul calcul à faire : regarder le <b>premier
+          octet</b>. Les bornes viennent des bits de tête, mais on ne les recalcule jamais.</p>
+          <div class="tblwrap"><table class="tbl">
+            <thead><tr><th>Classe</th><th>1<sup>er</sup> octet</th><th>Bits de tête</th><th>Masque par défaut</th></tr></thead>
+            <tbody>
+              <tr><td><b>A</b></td><td><code>0 – 127</code></td><td><code>0</code></td><td><code>/8</code></td></tr>
+              <tr><td><b>B</b></td><td><code>128 – 191</code></td><td><code>10</code></td><td><code>/16</code></td></tr>
+              <tr><td><b>C</b></td><td><code>192 – 223</code></td><td><code>110</code></td><td><code>/24</code></td></tr>
+              <tr><td><b>D</b></td><td><code>224 – 239</code></td><td><code>1110</code></td><td>aucun — <b>multicast</b></td></tr>
+              <tr><td><b>E</b></td><td><code>240 – 255</code></td><td><code>1111</code></td><td>aucun — réservée / tests</td></tr>
+            </tbody>
+          </table></div>
+          <div class="note warn" style="margin-bottom:0">
+            <b>Le moyen de ne jamais se tromper</b>
+            Les bornes hautes se retiennent seules : <b>127</b>, <b>191</b>, <b>223</b>, <b>239</b>.
+            Chacune vaut la précédente + la moitié de ce qui reste — 128, puis 64, puis 32, puis 16.
+            Et le piège du quiz : c'est la <b>D</b> qui est multicast, la <b>E</b> qui est réservée aux
+            tests. Ne pas les intervertir.
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Public ou privé, d'un coup d'œil</h3>
+          <div class="tblwrap"><table class="tbl">
+            <thead><tr><th>Plage</th><th>Ce que c'est</th></tr></thead>
+            <tbody>
+              <tr><td><code>10.0.0.0/8</code></td><td>privée — 1 réseau de classe A, <b>tout le 10 y passe</b></td></tr>
+              <tr><td><code>172.16.0.0/12</code></td><td>privée — de <code>172.<b>16</b></code> à <code>172.<b>31</b></code>, soit 16 réseaux B</td></tr>
+              <tr><td><code>192.168.0.0/16</code></td><td>privée — 256 réseaux C</td></tr>
+              <tr><td><code>127.0.0.0/8</code></td><td>bouclage — jamais émis sur le fil</td></tr>
+              <tr><td><code>169.254.0.0/16</code></td><td>APIPA — <b>voir cette adresse, c'est voir un échec DHCP</b></td></tr>
+              <tr><td><code>100.64.0.0/10</code></td><td>CGNAT opérateur (RFC 6598) — non routable</td></tr>
+            </tbody>
+          </table></div>
+          <div class="note bad" style="margin-bottom:0">
+            <b>Les trois pièges du quiz</b>
+            <code>192.<b>169</b>.0.0</code> est <b>publique</b> — la plage privée s'arrête à
+            <code>192.168.255.255</code>. Même piège avec <code>172.<b>32</b>.0.0</code>, hors du /12.
+            Et <code>10.<i>quoi que ce soit</i></code> est privé <b>en entier</b>.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Le calcul rapide : la méthode du bloc</h3>
+        <p class="lede">C'est l'astuce qui remplace tout calcul binaire. Elle donne l'adresse de
+        réseau, la diffusion et la plage d'hôtes en deux soustractions.</p>
+
+        <div class="tblwrap"><table class="tbl" style="min-width:520px">
+          <thead><tr><th>Bits ajoutés</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr></thead>
+          <tbody>
+            <tr><td><b>Octet du masque</b></td><td>128</td><td>192</td><td>224</td><td>240</td><td>248</td><td>252</td><td>254</td><td>255</td></tr>
+            <tr><td><b>Taille du bloc</b></td><td>128</td><td>64</td><td>32</td><td>16</td><td>8</td><td>4</td><td>2</td><td>1</td></tr>
+          </tbody>
+        </table></div>
+        <p style="font-size:.92rem">Ces huit valeurs sont les <b>seules</b> qu'un octet de masque puisse
+        prendre. Et la taille de bloc, c'est simplement <b>256 − la valeur de l'octet</b>.</p>
+
+        <ol class="steps" style="margin-top:6px">
+          <li><span class="stepno">1</span><div><h4>Repérer l'octet qui bouge</h4>
+            <p>Celui du masque qui n'est ni 255 ni 0. Pour <code>/26</code> → masque
+            <code>255.255.255.<b>192</b></code>, l'octet qui bouge est le quatrième.</p></div></li>
+          <li><span class="stepno">2</span><div><h4>Calculer le bloc</h4>
+            <p><b>256 − 192 = 64.</b> Les réseaux se succèdent donc de 64 en 64 :
+            <code>.0</code>, <code>.64</code>, <code>.128</code>, <code>.192</code>.</p></div></li>
+          <li><span class="stepno">3</span><div><h4>Encadrer l'adresse</h4>
+            <p>Pour <code>192.168.1.<b>100</b></code> : le multiple de 64 juste en dessous est
+            <b>64</b>. Donc réseau = <code>192.168.1.64</code>, et diffusion = le suivant moins un =
+            <code>192.168.1.<b>127</b></code>.</p></div></li>
+          <li><span class="stepno">4</span><div><h4>En déduire les hôtes</h4>
+            <p>Entre les deux : <code>.65</code> à <code>.126</code>, soit <b>62 hôtes</b> —
+            c'est-à-dire la taille du bloc moins 2.</p></div></li>
+        </ol>
+
+        <div class="note good">
+          <b>Le raccourci pour compter les hôtes</b>
+          Nombre d'adresses = 2<sup>(32 − CIDR)</sup>, et le nombre d'<b>hôtes</b> est toujours
+          <b>ce total moins 2</b> — l'adresse de réseau et celle de diffusion. Les puissances de 2 à
+          connaître par cœur : <b>2, 4, 8, 16, 32, 64, 128, 256, 512, 1024</b>… et
+          <code>/16</code> → 65 536, <code>/8</code> → 16 777 216.
+        </div>
+        <div class="note warn" style="margin-bottom:0">
+          <b>Dans l'autre sens : combien de sous-réseaux ?</b>
+          Découper un <code>/16</code> en <code>/19</code>, c'est ajouter 3 bits : <b>2³ = 8</b>
+          sous-réseaux. C'est l'exemple du support — <code>160.169.0.0/16</code> découpé en huit
+          <code>/19</code> de 8192 adresses, qui commencent à <code>.0</code>, <code>.32</code>,
+          <code>.64</code>, <code>.96</code>, <code>.128</code>, <code>.160</code>, <code>.192</code>,
+          <code>.224</code> — de 32 en 32, puisque 256 − 224 = 32.
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Attribuable, ou pas ?</h3>
+        <p class="lede">L'exercice de la planche 26. La règle tient en trois cas, et le drill vous les
+        fait tourner.</p>
+        <div class="note">
+          <b>Une adresse est inattribuable si…</b>
+          elle a son <b>HostId tout à 0</b> (c'est l'adresse de réseau), ou son <b>HostId tout à 1</b>
+          (c'est la diffusion), ou si elle tombe dans une <b>plage réservée</b> — bouclage, classe D,
+          classe E, <code>0.0.0.0</code>.
+        </div>
+        <div id="attrDrill"></div>
+        <div class="row"><button class="btn go" id="attrNew">Autre adresse</button>
+          <span class="score" id="attrScore"></span></div>
+        <div class="note warn">
+          <b>Le piège qu'il pose : le masque change la réponse</b>
+          <code>18.254.254.255</code> est <b>attribuable</b> — mais le corrigé précise « <i>seulement
+          si le masque est celui de la classe par défaut</i> ». En <code>/8</code>, la diffusion serait
+          <code>18.255.255.255</code>, donc le <code>.255</code> final n'a rien de spécial. Passez en
+          <code>/24</code> et la même adresse devient une <b>diffusion</b>. La question n'a pas de
+          réponse sans le masque.
+        </div>
+        <div class="note bad" style="margin-bottom:0">
+          <b>Le contre-piège, où l'intuition se trompe</b>
+          <code>192.192.0.0</code> ressemble au cas précédent — on se dit « ça dépend du masque ». Non :
+          le corrigé du support répond <b>« No (network IP@) »</b>, sans condition. Son dernier bit à 1 est en
+          position 10 : dès <code>/10</code> la partie hôte est nulle, et elle le reste pour tout masque
+          plus long. Autrement dit, pour <b>tout masque qu'on utilise réellement</b>, c'est une adresse
+          de réseau.
+        </div>
+      </div>
+    </section>
+    <!-- ============ TOPOLOGIE ============ -->
+    <section id="topo">
+      <div class="shead"><h2>La topologie du support</h2><span class="tag">Network-reminders, planche 43</span></div>
+
+      <div class="card">
+        <p class="lede">C'est le schéma exact de l'exercice. Survolez ou cliquez un routeur pour voir
+        sa table de routage complète, telle qu'attendue.</p>
+        <div class="diagwrap"><svg class="topo" id="svgRef" viewBox="0 0 1180 400" role="img"
+          aria-label="Topologie : LAN1 et LAN2 sur R1, liaison vers R2, liaison vers R3, LAN3 avec R4 vers Internet"></svg></div>
+        <div class="row">
+          <span style="font-size:.8rem;color:var(--muted)">Table de&nbsp;:</span>
+          <button class="btn sm" data-rtr="R1">R1</button>
+          <button class="btn sm" data-rtr="R2">R2</button>
+          <button class="btn sm go" data-rtr="R3">R3 — la correction officielle</button>
+        </div>
+        <div id="refTable"></div>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <h3>Les questions posées sur la planche</h3>
+          <ul style="margin:0; padding-left:18px; font-size:.93rem; color:var(--ink-2)">
+            <li>LAN 1, 2 et 3 : combien d'adresses IP disponibles ? @IP de réseau ? <b>Particularité ?</b></li>
+            <li>@IP du routeur par défaut de la station A ? de la station B ?</li>
+            <li>Pour les 2 LAN inter-routeurs : combien d'équipements au maximum ? @IP de réseau ?
+                @IP de R2-ppp0 ? de R2-ppp1 ?</li>
+            <li>Quel est le routeur par défaut de R2 ? de R3 ?</li>
+            <li>Quelles sont les tables de routage de R1, R2 et R3 ?</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Les réponses, sans détour</h3>
+          <dl class="kv" id="answers"></dl>
+          <div class="note" style="margin-bottom:0">
+            <b>La particularité qu'il attend</b>
+            Les trois LAN sont en adressage <b>privé</b> (RFC 1918). Mais les liaisons inter-routeurs
+            utilisent du <code>8.1.0.x</code>, qui est <b>public</b> — du gaspillage d'adresses
+            publiques pour deux équipements.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MÉTHODE ============ -->
+    <section id="methode">
+      <div class="shead"><h2>Sa méthode, en 4 temps</h2><span class="tag">S2 · enr. 4 · [11:37] → [14:32]</span></div>
+      <div class="card">
+        <p class="lede">Il déroule sa correction dans cet ordre. Avancez pas à pas : la table de R3 se
+        construit sous vos yeux, ligne par ligne.</p>
+        <ol class="steps" id="stepList"></ol>
+        <div class="row">
+          <button class="btn" id="stepPrev">Précédent</button>
+          <button class="btn go" id="stepNext">Étape suivante</button>
+          <span class="spacer"></span>
+          <button class="btn sm" id="stepReset">Repartir de zéro</button>
+        </div>
+        <div id="stepTable"></div>
+      </div>
+    </section>
+
+    <!-- ============ TRAJET ============ -->
+    <section id="trajet">
+      <div class="shead"><h2>Le trajet d'un paquet</h2><span class="tag">Simulation réelle</span></div>
+      <div class="card">
+        <p class="lede">Choisissez une source et une destination. Le paquet part, et à chaque routeur
+        on affiche <b>la ligne de la table qui a matché</b> — par le plus long préfixe, comme un vrai
+        routeur.</p>
+        <div class="row">
+          <label class="fld">Source<select id="pkSrc"></select></label>
+          <label class="fld">Destination<select id="pkDst"></select></label>
+          <button class="btn go" id="pkGo">Envoyer le paquet</button>
+        </div>
+        <div class="diagwrap"><svg class="topo" id="svgPkt" viewBox="0 0 1180 400" role="img" aria-label="Simulation du trajet du paquet"></svg></div>
+        <div id="pkLog"></div>
+      </div>
+    </section>
+
+    <!-- ============ EXERCICE ============ -->
+    <section id="exo">
+      <div class="shead"><h2>Exercice généré</h2><span class="tag">Nouveau tirage à volonté</span></div>
+      <div class="card">
+        <p class="lede">Même schéma, adressage retiré au hasard. Remplissez la table demandée, puis
+        corrigez. Chaque case fausse est signalée, et la correction complète s'affiche à la demande.</p>
+        <div class="row">
+          <button class="btn go" id="exNew">Nouveau tirage</button>
+          <span id="exAsk" style="font-weight:600"></span>
+          <span class="spacer"></span>
+          <span class="score" id="exScore"></span>
+        </div>
+        <div class="diagwrap"><svg class="topo" id="svgExo" viewBox="0 0 1180 400" role="img" aria-label="Topologie de l'exercice généré"></svg></div>
+        <div id="exQuestions"></div>
+        <div id="exTable"></div>
+        <div class="row">
+          <button class="btn go" id="exCheck">Corriger</button>
+          <button class="btn" id="exSolve">Afficher la correction</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MASQUES ============ -->
+    <section id="masques">
+      <div class="shead"><h2>Drill masques et CIDR</h2><span class="tag">Le calcul qui ouvre l'exercice</span></div>
+      <div class="grid2">
+        <div class="card">
+          <h3>Convertir, compter</h3>
+          <p class="lede" style="font-size:.9rem">Dix questions tirées au hasard. C'est exactement le
+          premier bloc de l'exercice : « combien d'adresses disponibles », « combien d'équipements ».</p>
+          <div id="drill"></div>
+          <div class="row"><button class="btn go" id="drillNew">Nouvelle question</button>
+            <span class="score" id="drillScore"></span></div>
+        </div>
+        <div class="card">
+          <h3>La méthode de comptage</h3>
+          <p style="font-size:.93rem">Chaque <code>255</code> vaut 8 bits. Pour l'octet intermédiaire, on
+          compte les bits à 1 :</p>
+          <div class="tblwrap"><table class="tbl" style="min-width:0">
+            <tr><td><code>255.255.252.0</code></td><td>8 + 8 + 6 + 0</td><td><b>/22</b></td></tr>
+            <tr><td><code>255.255.224.0</code></td><td>8 + 8 + 3 + 0</td><td><b>/19</b></td></tr>
+            <tr><td><code>255.255.255.252</code></td><td>8 + 8 + 8 + 6</td><td><b>/30</b></td></tr>
+          </table></div>
+          <p style="font-size:.93rem;margin-bottom:0">Vérification par le nombre d'adresses :
+          <code>/22</code> → 2<sup>32−22</sup> = 2<sup>10</sup> = 1024 adresses, soit 4 blocs de 256.
+          Et le nombre d'<b>hôtes</b> est toujours ce total <b>moins 2</b> — l'adresse de réseau et
+          celle de diffusion.</p>
+          <div class="note warn" style="margin-bottom:0">
+            <b>Le cas /30</b>
+            4 adresses, donc <b>2 équipements maximum</b>. C'est la réponse à « combien d'équipements
+            peuvent être connectés sur les LAN inter-routeurs ». La RFC 3021 autorise même le
+            <code>/31</code> — 2 adresses, 0 gaspillée — sur les liaisons point à point.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SÉCU PAR LA ROUTE ============ -->
+    <section id="secu">
+      <div class="shead"><h2>Enlever une route, c'est de la sécurité</h2><span class="tag">S2 · enr. 4 · [14:32]</span></div>
+      <div class="card">
+        <blockquote class="quote" style="margin-top:0">
+          « dans la politique de sécurité de l'organisme, on dit que non, le siège social n'a pas à
+          communiquer avec les machines qui sont là-dedans. Donc dans ce cas-là, la route vers LAN 1
+          […] <b>on ne la rentre pas dans le routeur. Et la sécurité, elle est faite comme ça !</b>
+          Pas besoin de mettre des pare-feux […] On enlève une route et pouf, personne ne peut y aller. »
+          <cite>Séance 2, enregistrement 4, [14:32]</cite>
+        </blockquote>
+        <p>C'est le raisonnement qu'il attend en fin d'exercice, et il repose sur un point technique
+        énoncé juste avant : <b>toutes les routes ne sont pas obligatoires</b>. Un routeur n'a besoin
+        de connaître un réseau que s'il aura effectivement à router vers lui. Dans sa correction, ces
+        lignes-là sont <b>grisées</b> : l'administrateur les met ou ne les met pas.</p>
+        <div class="row">
+          <button class="btn" id="cutToggle">Couper la route de R3 vers LAN1</button>
+          <span id="cutState" style="font-size:.88rem;color:var(--muted)"></span>
+        </div>
+        <div id="cutDemo"></div>
+        <div class="note bad">
+          <b>La limite à connaître quand même</b>
+          Supprimer une route bloque le trafic <b>sortant</b> depuis ce routeur, et c'est gratuit. Mais
+          ce n'est pas un filtrage : ça ne journalise rien, ça ne distingue ni protocole ni utilisateur,
+          et une route par défaut trop large peut rétablir le chemin sans qu'on s'en aperçoive. Le
+          pare-feu reste nécessaire pour tout ce qui est plus fin.
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TRAME ============ -->
+    <section id="trame">
+      <div class="shead"><h2>La trame Ethernet</h2><span class="tag">Annoncé : « si on vous demande un jour dans une interro »</span></div>
+      <div class="card">
+        <blockquote class="quote" style="margin-top:0">
+          « Si on vous demande un jour dans une interro : pourquoi 60 octets minimum et 1500 maximum ?
+          […] Pourquoi 46 minimum ? <b>Et s'il n'y a pas 46, on fait quoi ?</b> »
+          <cite>Séance 1, enregistrement 2, [06:05]</cite>
+        </blockquote>
+        <div class="row">
+          <label class="fld">Données utiles<input type="text" id="payload" value="46" style="width:80px"></label>
+          <button class="btn sm" data-pl="18">ARP (18 o.)</button>
+          <button class="btn sm" data-pl="46">46 o. pile</button>
+          <button class="btn sm" data-pl="1500">1500 o.</button>
+        </div>
+        <div class="diagwrap"><div class="frame" id="frameViz"></div></div>
+        <div id="frameNote"></div>
+        <div class="grid2" style="margin-top:14px">
+          <div class="note good" style="margin:0">
+            <b>Pourquoi 46 minimum</b>
+            Il faut un <b>volume minimal</b> pour que le calcul du code correcteur d'erreur (FCS/CRC-32)
+            ait un sens — « il faut du volume pour faire du calcul » — et pour que la détection de
+            collision CSMA/CD fonctionne sur 100 m de câble. En dessous, on complète : c'est le
+            <b>bourrage</b> (<i>padding</i>).
+          </div>
+          <div class="note" style="margin:0">
+            <b>Pourquoi 1500 maximum</b>
+            Compromis historique de 1980 : ne pas saturer la mémoire tampon des cartes réseau à
+            10 Mb/s. Aujourd'hui les <b>jumbo frames</b> montent à 9000 octets — à condition que
+            <b>tous</b> les équipements du chemin suivent.
+          </div>
+        </div>
+        <div class="note warn">
+          <b>Les quatre chiffres, et lequel donner</b>
+          <b>46</b> = données minimum · <b>1500</b> = données maximum (MTU) · <b>60 / 1514</b> = trame
+          hors FCS · <b>64 / 1518</b> = trame FCS compris. Au quiz, la réponse attendue pour la
+          longueur maximale était <b>1518</b> — 1514 était le distracteur principal.
+        </div>
+        <div class="note bad" style="margin-bottom:0">
+          <b>Le prolongement sécurité : Shadow Ethernet</b>
+          La norme impose de <b>remplir</b> le bourrage, pas d'en imposer le <b>contenu</b>. Une carte
+          destinataire ignore ces octets en se fiant à la taille déclarée. On peut donc y cacher des
+          données : c'est un canal caché, invisible pour qui ne regarde que les champs utiles.
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SOCKET ============ -->
+    <section id="socket">
+      <div class="shead"><h2>Définir une socket</h2><span class="tag">« Si je vous demande de définir une socket »</span></div>
+      <div class="card">
+        <blockquote class="quote" style="margin-top:0">
+          « port source, adresse source, port destination, adresse destination et <b>protocole</b> !
+          Protocole, <b>ne me foutez pas du SSH</b>, rien à foutre, c'est pas ça, c'est le port qui va
+          définir le protocole applicatif. Protocole, <b>c'est TCP ou UDP</b>. »
+          <cite>Séance 2, enregistrement 4, [28:36]</cite>
+        </blockquote>
+        <p>Cinq paramètres, pas quatre. Cliquez pour composer une socket valide :</p>
+        <div id="sockBuild"></div>
+        <div class="note warn" style="margin-bottom:0">
+          <b>Le piège de vocabulaire, qu'il signale pour les entretiens</b>
+          « Citez-moi des protocoles » est ambigu. Au sens du champ <i>Protocol</i> de l'en-tête IP —
+          celui du fichier <code>/etc/protocols</code> — c'est <b>6 = TCP</b>, <b>17 = UDP</b>,
+          <b>1 = ICMP</b>. Au sens courant en entretien, l'interlocuteur pense souvent HTTP ou SSH.
+          Son conseil : ne pas contredire frontalement le recruteur.
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ DHCP ============ -->
+    <section id="dhcp">
+      <div class="shead"><h2>DHCP</h2><span class="tag">Déjà tombé au quiz — et noté zéro</span></div>
+      <div class="card">
+        <blockquote class="quote" style="margin-top:0">
+          « Hier, il y avait une question dans le quiz : à quoi sert le protocole DHCP ? Ceux qui
+          répondent : “Ça donne l'adresse IP dynamiquement”, <b>c'est zéro !</b> Ce n'est pas ça le DHCP. »
+          <cite>Séance 3, enregistrement 2, [28:48]</cite>
+        </blockquote>
+        <p>Il ne distribue pas une adresse, il distribue une <b>configuration réseau complète</b>.
+        Regardez l'échange, et ce que porte réellement le dernier message :</p>
+        <div class="row">
+          <button class="btn go" id="doraGo">Rejouer l'échange</button>
+          <button class="btn" id="doraAtk">Injecter un serveur pirate</button>
+        </div>
+        <div class="seq" id="doraSeq"></div>
+        <div id="doraOut"></div>
+      </div>
+      <div class="grid2">
+        <div class="card">
+          <h3>Les deux attaques</h3>
+          <p style="font-size:.92rem"><b>Spoofing</b> — un serveur pirate <b>plus rapide</b> que le
+          légitime. Le client garde la première offre. Le pirate s'annonce passerelle <i>et</i> DNS :
+          Man-in-the-Middle complet.</p>
+          <p style="font-size:.92rem;margin-bottom:0"><b>Starvation</b> — on inonde le serveur de
+          <code>Discover</code> avec une MAC source différente à chaque paquet. Sur un /24,
+          <b>254 requêtes</b> vident le pool. Souvent le préalable au spoofing.</p>
+        </div>
+        <div class="card">
+          <h3>La parade : DHCP Snooping</h3>
+          <p style="font-size:.92rem">Un seul réglage : <b>par quel port arrivent les réponses
+          légitimes ?</b> Ce port devient <i>approuvé</i>. Sur tout autre port, un <code>Offer</code> ou
+          un <code>Ack</code> entrant est jeté et le port est désactivé.</p>
+          <div class="note bad" style="margin-bottom:0">
+            <b>Ce n'est pas activé à l'école</b>
+            D'où le chaos quand une VM de TP garde son serveur DHCP allumé : elle répond plus vite que
+            l'infrastructure et reconfigure tout le monde.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 802.1X ============ -->
+    <section id="dot1x">
+      <div class="shead"><h2>802.1X, RADIUS et EAPoL</h2><span class="tag">Le « Graal » du LAN</span></div>
+      <div class="card">
+        <p class="lede">La question qui tombe : <b>comment le poste envoie-t-il ses identifiants alors
+        qu'il n'a pas encore d'adresse IP ?</b> Déroulez la séquence.</p>
+        <div class="row"><button class="btn go" id="eapGo">Dérouler l'authentification</button></div>
+        <div class="seq" id="eapSeq"></div>
+        <div class="grid2" style="margin-top:6px">
+          <div class="note" style="margin:0">
+            <b>Les valeurs à citer</b>
+            EtherType <code>0x888E</code> · MAC destination <code>01:80:C2:00:00:03</code> (multicast
+            réservé — le client <b>ne connaît pas</b> la MAC du switch) · RADIUS sur <b>UDP 1812</b>,
+            accounting <b>1813</b>.
+          </div>
+          <div class="note good" style="margin:0">
+            <b>Le port contrôlé</b>
+            Tant que l'authentification n'a pas abouti, <b>la paire de réception est bloquée</b>. Un
+            pirate qui branche Wireshark sur ce port ne voit <b>rien</b> — pas même un broadcast ARP.
+          </div>
+        </div>
+        <div class="note warn" style="margin-bottom:0">
+          <b>L'ordre exact — c'est là qu'on se trompe</b>
+          Authentification EAPoL → <code>Access-Accept</code> avec ses attributs (VLAN, débit, quotas)
+          → ouverture de la paire de réception et bascule de VLAN → <b>et seulement là</b> le
+          <code>DHCP Discover</code>. L'authentification précède toujours l'adressage.
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ VLAN ============ -->
+    <section id="vlan">
+      <div class="shead"><h2>Les 3 attaques VLAN</h2><span class="tag">« Je peux vous poser la question »</span></div>
+      <div class="card">
+        <p class="lede">Il les demande <b>avec leurs remédiations</b>. Cliquez une attaque pour voir son
+        mécanisme se dérouler.</p>
+        <div class="chips" id="vlanChips"></div>
+        <div id="vlanBody"></div>
+      </div>
+    </section>
+
+    <!-- ============ FLASH ============ -->
+    <section id="flash">
+      <div class="shead"><h2>Les réponses courtes</h2><span class="tag">Tout le reste de ce qu'il a annoncé</span></div>
+      <div id="flashList"></div>
+    </section>
+
+    <!-- ============ SIGLES ============ -->
+    <section id="sigles">
+      <div class="shead"><h2>Sigles</h2><span class="tag">Filtrer en tapant</span></div>
+      <div class="card">
+        <div class="row"><input type="text" id="sigFilter" placeholder="RADIUS, DMZ, MTBF…" style="min-width:220px"></div>
+        <div class="tblwrap"><table class="tbl" id="sigTable"><thead><tr><th style="width:110px">Sigle</th><th>Développé</th><th>Ce qu'il faut en dire</th></tr></thead><tbody></tbody></table></div>
+      </div>
+    </section>
+
+    <!-- ============ RENDUS ============ -->
+    <section id="rendus">
+      <div class="shead"><h2>À rendre</h2><span class="tag">Vendredi matin</span></div>
+      <div class="grid2">
+        <div class="card">
+          <h3>Trois diapositives sur le DNS</h3>
+          <ol style="font-size:.93rem; padding-left:18px; margin-top:0">
+            <li>Exigences <b>ANSSI</b> et directive <b>NIS 2</b> pour le DNS</li>
+            <li><b>DNSSEC</b> : schéma de principe, chaîne de confiance</li>
+            <li>Redondance <b>Maître (caché) / Esclave</b></li>
+          </ol>
+          <div class="note bad" style="margin-bottom:0">
+            <b>Son avertissement</b>
+            « si je vous pose une question sur vos propres slides et que vous n'êtes pas capables de me
+            répondre, <b>ça va chier</b>. »
+          </div>
+          <p style="font-size:.9rem;margin-bottom:0"><b>Bonus qu'il recommande « pour la culture et
+          l'examen »</b> : SPF, DKIM, DMARC, BIMI.</p>
+        </div>
+        <div class="card">
+          <h3>Le lab Wireshark</h3>
+          <p style="font-size:.93rem">Analyse de trames : repérer les protocoles qui n'ont rien à faire
+          sur un LAN d'entreprise. 9 captures à analyser.</p>
+          <p style="font-size:.93rem;margin-bottom:0">« Mettez-vous dans la peau d'un 5A, je vous pose
+          des questions, <b>essayez de conscientiser la question</b>. »</p>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Et l'exercice réseau lui-même</h3>
+        <p style="margin-bottom:0">Plan d'adressage + <b>une</b> table de routage, sur un schéma
+        incomplet à compléter. C'est l'objet de toute la première moitié de cette page.</p>
+      </div>
+    </section>
+
+    <footer>
+      Construit à partir des transcriptions des séances 1 à 3 et de <code>Network-reminders.pdf</code>
+      (planches 42-44). Les citations sont verbatim ; la topologie et la table de R3 sont celles du
+      support. Les exercices générés suivent la même convention de métrique — le nombre de routeurs à
+      traverser.
+    </footer>
+  </main>
+</div>
+
+<script>
+/* =========================================================================
+   Outils d'adressage
+   ========================================================================= */
+function ipToInt(s){ return s.split('.').reduce(function(a,o){return (a<<8)+ (parseInt(o,10)&255);},0)>>>0; }
+function intToIp(n){ n=n>>>0; return [n>>>24, (n>>>16)&255, (n>>>8)&255, n&255].join('.'); }
+function maskInt(c){ return c===0 ? 0 : (0xFFFFFFFF << (32-c))>>>0; }
+function maskDotted(c){ return intToIp(maskInt(c)); }
+function netOf(ip,c){ return (ipToInt(ip) & maskInt(c))>>>0; }
+function inNet(ipInt, netInt, c){ return (ipInt & maskInt(c))>>>0 === (netInt>>>0); }
+function totalAddr(c){ return Math.pow(2,32-c); }
+function usableHosts(c){ var t=totalAddr(c); return c>=31 ? (c===31?2:1) : t-2; }
+function esc(s){ return String(s).replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];}); }
+
+/* =========================================================================
+   Topologie — structure commune au schéma de référence et aux tirages
+   R1 : LAN1 (ens1), LAN2 (ens2), liaison A (ens0)
+   R2 : liaison A (ppp0), liaison B (ppp1)
+   R3 : liaison B (eth0), LAN3 (eth1)
+   R4 : LAN3 (eth0) -> Internet
+   ========================================================================= */
+function buildTopo(p){
+  var t = {
+    lan1:{name:'LAN1', net:p.lan1, cidr:p.c1, on:'R1', ifname:'ens1', rip:p.lan1r},
+    lan2:{name:'LAN2', net:p.lan2, cidr:p.c2, on:'R1', ifname:'ens2', rip:p.lan2r},
+    lan3:{name:'LAN3', net:p.lan3, cidr:p.c3, on:'R3', ifname:'eth1', rip:p.lan3r},
+    lkA :{name:'R1-R2', net:p.lkA, cidr:30, r1:p.lkA1, r2:p.lkA2},
+    lkB :{name:'R2-R3', net:p.lkB, cidr:30, r2:p.lkB2, r3:p.lkB3},
+    r4ip:p.r4ip, staA:p.staA, staB:p.staB
+  };
+  t.ifaces = {
+    R1:[{n:'ens1', ip:t.lan1.rip, net:t.lan1.net, cidr:t.lan1.cidr},
+        {n:'ens2', ip:t.lan2.rip, net:t.lan2.net, cidr:t.lan2.cidr},
+        {n:'ens0', ip:t.lkA.r1,  net:t.lkA.net,  cidr:30}],
+    R2:[{n:'ppp0', ip:t.lkA.r2,  net:t.lkA.net,  cidr:30},
+        {n:'ppp1', ip:t.lkB.r2,  net:t.lkB.net,  cidr:30}],
+    /* ordre repris du support : le LAN d'abord, la liaison ensuite */
+    R3:[{n:'eth1', ip:t.lan3.rip,net:t.lan3.net, cidr:t.lan3.cidr},
+        {n:'eth0', ip:t.lkB.r3,  net:t.lkB.net,  cidr:30}],
+    R4:[{n:'eth0', ip:t.r4ip,    net:t.lan3.net, cidr:t.lan3.cidr}]
+  };
+  return t;
+}
+
+/* Réseaux distants vus depuis chaque routeur : {net,cidr,via,iface,metric} */
+function routingTable(t, r){
+  var loc = t.ifaces[r].map(function(i){
+    return {net:i.net, cidr:i.cidr, via:i.ip, iface:i.n, metric:0, learn:'local', optional:false};
+  });
+  var rem = [];
+  function push(net,cidr,via,iface,metric,optional){
+    rem.push({net:net, cidr:cidr, via:via, iface:iface, metric:metric, learn:'static', optional:!!optional});
+  }
+  if(r==='R1'){
+    push(t.lkB.net, 30, t.lkA.r2, 'ens0', 1, true);
+    push(t.lan3.net, t.lan3.cidr, t.lkA.r2, 'ens0', 2, false);
+    push('0.0.0.0', 0, t.lkA.r2, 'ens0', 3, false);
+  } else if(r==='R2'){
+    push(t.lan1.net, t.lan1.cidr, t.lkA.r1, 'ppp0', 1, false);
+    push(t.lan2.net, t.lan2.cidr, t.lkA.r1, 'ppp0', 1, false);
+    push(t.lan3.net, t.lan3.cidr, t.lkB.r3, 'ppp1', 1, false);
+    push('0.0.0.0', 0, t.lkB.r3, 'ppp1', 2, false);
+  } else if(r==='R3'){
+    push(t.lkA.net, 30, t.lkB.r2, 'eth0', 1, true);
+    push(t.lan1.net, t.lan1.cidr, t.lkB.r2, 'eth0', 2, false);
+    push(t.lan2.net, t.lan2.cidr, t.lkB.r2, 'eth0', 2, false);
+    push('0.0.0.0', 0, t.r4ip, 'eth1', 1, false);
+  }
+  return loc.concat(rem);
+}
+
+/* Plus long préfixe */
+function lookup(table, dstIp){
+  var d = ipToInt(dstIp), best = null;
+  table.forEach(function(row){
+    if(inNet(d, ipToInt(row.net), row.cidr)){
+      if(!best || row.cidr > best.cidr) best = row;
+    }
+  });
+  return best;
+}
+
+/* =========================================================================
+   Topologie de référence — celle du support
+   ========================================================================= */
+var REF = buildTopo({
+  lan1:'172.16.0.0', c1:16, lan1r:'172.16.0.1',
+  lan2:'10.0.0.0',   c2:8,  lan2r:'10.3.3.1',
+  lan3:'192.168.1.0',c3:24, lan3r:'192.168.1.2',
+  lkA:'8.1.0.0', lkA1:'8.1.0.1', lkA2:'8.1.0.2',
+  lkB:'8.1.0.4', lkB2:'8.1.0.5', lkB3:'8.1.0.6',
+  r4ip:'192.168.1.1', staA:'172.16.1.16', staB:'192.168.1.10'
+});
+
+/* =========================================================================
+   Rendu du schéma
+   ========================================================================= */
+var NODE = {
+  LAN1:{x:112, y:72},  LAN2:{x:112, y:306}, R1:{x:340, y:189},
+  R2:{x:610, y:189},   R3:{x:870, y:189},   LAN3:{x:905, y:322},
+  R4:{x:1085,y:322},   NET:{x:1085,y:104}
+};
+function svgEl(tag, attrs, txt){
+  var e = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  for(var k in attrs) e.setAttribute(k, attrs[k]);
+  if(txt!=null) e.textContent = txt;
+  return e;
+}
+function drawTopo(svg, t, opts){
+  opts = opts || {};
+  while(svg.firstChild) svg.removeChild(svg.firstChild);
+  var hide = opts.hide || {};
+  function lbl(x,y,txt,cls,anchor){
+    var e = svgEl('text',{x:x, y:y, class:cls||'netlbl', 'text-anchor':anchor||'middle'}, txt);
+    svg.appendChild(e); return e;
+  }
+  function link(a,b,id){
+    var p = svgEl('line',{x1:NODE[a].x, y1:NODE[a].y, x2:NODE[b].x, y2:NODE[b].y, class:'link'});
+    if(id) p.setAttribute('data-lk', id);
+    svg.appendChild(p);
+  }
+  link('LAN1','R1'); link('LAN2','R1'); link('R1','R2','A'); link('R2','R3','B');
+  link('R3','LAN3'); link('LAN3','R4'); link('R4','NET');
+
+  function lanBox(key, node, sub){
+    var n = NODE[node];
+    svg.appendChild(svgEl('rect',{x:n.x-72, y:n.y-26, width:144, height:52, rx:6, class:'lan'}));
+    lbl(n.x, n.y-6, key.name, 'nm');
+    lbl(n.x, n.y+13, hide.nets ? '?' : key.net+'/'+key.cidr);
+    if(sub) lbl(n.x, n.y+40, sub);
+  }
+  lanBox(t.lan1,'LAN1', hide.sta ? 'Station A : ?' : 'Station A : '+t.staA+'/'+t.lan1.cidr);
+  lanBox(t.lan2,'LAN2', null);
+  lanBox(t.lan3,'LAN3', hide.sta ? 'Station B : ?' : 'Station B : '+t.staB+'/'+t.lan3.cidr);
+
+  ['R1','R2','R3','R4'].forEach(function(r){
+    var n = NODE[r];
+    var c = svgEl('circle',{cx:n.x, cy:n.y, r:27, class:'rtr'});
+    c.setAttribute('data-rtr', r);
+    svg.appendChild(c);
+    lbl(n.x, n.y+6, r, 'nm');
+  });
+  var nn = NODE.NET;
+  svg.appendChild(svgEl('rect',{x:nn.x-58, y:nn.y-20, width:116, height:40, rx:20, class:'lan'}));
+  lbl(nn.x, nn.y+6, 'Internet', 'nm');
+
+  /* Étiquettes d'interface : chaque étiquette est ancrée près de SON routeur, jamais au
+     milieu du lien — sinon les deux extrémités se chevauchent. */
+  /* deux lignes par étiquette : le nom d'interface, puis l'adresse. Moitié moins large,
+     donc deux extrémités de liaison tiennent sans se toucher. */
+  function ifl(x,y,name,addr,anchor){
+    lbl(x, y, name, 'iface', anchor||'middle');
+    lbl(x, y+14, addr, 'iface', anchor||'middle');
+  }
+  var q = hide.ifaces ? '?' : null;
+  ifl(246, 118, 'ens1', q||t.lan1.rip+'/'+t.lan1.cidr, 'start');
+  ifl(246, 250, 'ens2', q||t.lan2.rip+'/'+t.lan2.cidr, 'start');
+  ifl(NODE.R1.x+32, 160, 'ens0', q||t.lkA.r1+'/30', 'start');
+  ifl(NODE.R2.x-32, 160, 'ppp0', q||t.lkA.r2+'/30', 'end');
+  ifl(NODE.R2.x+32, 160, 'ppp1', q||t.lkB.r2+'/30', 'start');
+  ifl(NODE.R3.x-32, 160, 'eth0', q||t.lkB.r3+'/30', 'end');
+  ifl(NODE.R3.x+14, 248, 'eth1', q||t.lan3.rip+'/'+t.lan3.cidr, 'start');
+  ifl(NODE.R4.x, 368, 'eth0', q||t.r4ip+'/'+t.lan3.cidr, 'middle');
+  lbl((NODE.R1.x+NODE.R2.x)/2, 213, hide.nets?'?':t.lkA.net+'/30');
+  lbl((NODE.R2.x+NODE.R3.x)/2, 213, hide.nets?'?':t.lkB.net+'/30');
+}
+
+/* =========================================================================
+   Rendu d'une table de routage
+   ========================================================================= */
+function renderTable(rows, opts){
+  opts = opts || {};
+  var h = '<div class="tblwrap"><table class="tbl"><thead><tr>'+
+    '<th>Réseau destinataire</th><th>Masque</th><th>Prochain saut</th><th>Interface</th>'+
+    '<th class="num">Métrique</th><th>Apprentissage</th></tr></thead><tbody>';
+  rows.forEach(function(r, i){
+    var cls = r.cidr===0 ? 'dflt' : (r.learn==='local' ? 'local' : '');
+    if(opts.matchIdx===i) cls += ' match';
+    h += '<tr class="'+cls+'">'+
+      '<td>'+ (r.cidr===0 ? '0.0.0.0' : r.net) + (r.optional?' <span style="color:var(--muted)">(facultative)</span>':'') +'</td>'+
+      '<td>/'+r.cidr+'</td><td>'+r.via+'</td><td>'+r.iface+'</td>'+
+      '<td class="num">'+r.metric+'</td>'+
+      '<td><span class="pill '+(r.learn==='local'?'loc':'sta')+'">'+r.learn+'</span></td></tr>';
+  });
+  return h + '</tbody></table></div>';
+}
+
+/* =========================================================================
+   Prérequis : classe, public/privé, analyse d'adresse, attribuabilité
+   ========================================================================= */
+function classOf(ip){
+  var o = parseInt(ip.split('.')[0],10);
+  if(o<=127) return {c:'A', def:8,  bits:'0'};
+  if(o<=191) return {c:'B', def:16, bits:'10'};
+  if(o<=223) return {c:'C', def:24, bits:'110'};
+  if(o<=239) return {c:'D', def:null, bits:'1110'};
+  return {c:'E', def:null, bits:'1111'};
+}
+var RANGES = [
+  {net:'127.0.0.0',   c:8,  lbl:'bouclage',            kind:'reserved', why:'Réservée à la pile TCP/IP interne : jamais émise sur le fil.'},
+  {net:'10.0.0.0',    c:8,  lbl:'privée (RFC 1918)',   kind:'private',  why:'Un réseau de classe A entier, non routable sur Internet.'},
+  {net:'172.16.0.0',  c:12, lbl:'privée (RFC 1918)',   kind:'private',  why:'De 172.16 à 172.31 seulement — 172.32 est déjà publique.'},
+  {net:'192.168.0.0', c:16, lbl:'privée (RFC 1918)',   kind:'private',  why:'256 réseaux de classe C. Attention : 192.169 est publique.'},
+  {net:'169.254.0.0', c:16, lbl:'lien-local / APIPA',  kind:'reserved', why:'Auto-attribuée en l\'absence de DHCP. La voir, c\'est voir un échec DHCP.'},
+  {net:'100.64.0.0',  c:10, lbl:'CGNAT opérateur',     kind:'reserved', why:'RFC 6598, plan intermédiaire du NAT444. Non routable.'},
+  {net:'224.0.0.0',   c:4,  lbl:'multicast (classe D)',kind:'reserved', why:'Désigne un groupe, pas un réseau : ni NetId, ni HostId, ni masque.'},
+  {net:'240.0.0.0',   c:4,  lbl:'réservée (classe E)', kind:'reserved', why:'Réservée aux tests et à un usage futur.'}
+];
+function rangeOf(ip){
+  var v = ipToInt(ip);
+  for(var i=0;i<RANGES.length;i++){
+    if(inNet(v, ipToInt(RANGES[i].net), RANGES[i].c)) return RANGES[i];
+  }
+  return null;
+}
+function analyse(ip, cidr){
+  var cl = classOf(ip), rg = rangeOf(ip);
+  var c = (cidr===null || cidr===undefined) ? (cl.def===null ? 24 : cl.def) : cidr;
+  var v = ipToInt(ip);
+  var net = (v & maskInt(c))>>>0;
+  var bcast = (net | (~maskInt(c)))>>>0;
+  var isNet = (v===net), isBc = (v===bcast);
+  var r = {
+    classe:cl, cidr:c, defaultMask:cl.def, range:rg,
+    net:intToIp(net), bcast:intToIp(bcast), mask:maskDotted(c),
+    total:totalAddr(c), hosts:usableHosts(c),
+    first: c>=31 ? intToIp(net) : intToIp(net+1),
+    last:  c>=31 ? intToIp(bcast) : intToIp(bcast-1),
+    isNet:isNet, isBc:isBc
+  };
+  if(ip==='0.0.0.0'){ r.ok=false; r.why='Adresse spéciale : « toute destination » dans une table de routage, « adresse inconnue » côté client DHCP.'; }
+  else if(rg && rg.kind==='reserved'){ r.ok=false; r.why='Plage '+rg.lbl+'. '+rg.why; }
+  else if(isNet){ r.ok=false; r.why='HostId entièrement à <b>0</b> : c\'est l\'<b>adresse de réseau</b>.'; }
+  else if(isBc){ r.ok=false; r.why='HostId entièrement à <b>1</b> : c\'est l\'<b>adresse de diffusion</b>.'; }
+  else { r.ok=true; r.why='HostId ni nul ni plein, hors plage réservée.'; }
+  return r;
+}
+/* Plus petit préfixe à partir duquel l'adresse est sa propre adresse de réseau.
+   Pour 192.192.0.0 il vaut 10 : son dernier bit à 1 est en position 10, donc dès /10
+   la partie hôte est nulle — et le reste pour tout masque plus long. */
+function seuilReseau(ip){
+  var v = ipToInt(ip);
+  for(var c=0;c<=32;c++){ if(((v & maskInt(c))>>>0) === v) return c; }
+  return 33;
+}
+
+(function(){
+  var ipIn = document.getElementById('anIp'), cidrIn = document.getElementById('anCidr');
+  var opts = '<option value="">— celui de la classe —</option>';
+  for(var c=1;c<=32;c++) opts += '<option value="'+c+'">/'+c+'</option>';
+  cidrIn.innerHTML = opts;
+
+  function valid(ip){
+    var p = ip.trim().split('.');
+    if(p.length!==4) return false;
+    return p.every(function(o){ return /^\d{1,3}$/.test(o) && +o<=255; });
+  }
+  function draw(){
+    var ip = ipIn.value.trim(), out = document.getElementById('anOut');
+    if(!valid(ip)){ out.innerHTML = '<div class="note bad"><b>Adresse invalide</b>Quatre nombres de 0 à 255, séparés par des points.</div>'; return; }
+    var c = cidrIn.value==='' ? null : +cidrIn.value;
+    var a = analyse(ip, c);
+    var priv = a.range && a.range.kind==='private';
+    var res  = a.range && a.range.kind==='reserved';
+    var statut = priv ? '<span style="color:var(--wire-green)"><b>privée</b> — '+a.range.lbl+'</span>'
+               : res  ? '<span style="color:var(--signal)"><b>réservée</b> — '+a.range.lbl+'</span>'
+               : '<span style="color:var(--wire-blue)"><b>publique</b> — routable sur Internet</span>';
+    var h = '<div class="grid2" style="margin-top:12px">';
+    h += '<div><dl class="kv">'+
+      '<dt>Classe</dt><dd><b>'+a.classe.c+'</b> — premier octet '+ipIn.value.split('.')[0]+', bits de tête <code>'+a.classe.bits+'</code></dd>'+
+      '<dt>Masque par défaut</dt><dd>'+(a.defaultMask===null?'aucun (classe '+a.classe.c+')':'/'+a.defaultMask+' — '+maskDotted(a.defaultMask))+'</dd>'+
+      '<dt>Masque appliqué</dt><dd>/'+a.cidr+' — '+a.mask+'</dd>'+
+      '<dt>Statut</dt><dd>'+statut+'</dd>'+
+      '</dl></div>';
+    h += '<div><dl class="kv">'+
+      '<dt>Adresse de réseau</dt><dd>'+a.net+'</dd>'+
+      '<dt>Diffusion</dt><dd>'+a.bcast+'</dd>'+
+      '<dt>Plage d\'hôtes</dt><dd>'+a.first+' → '+a.last+'</dd>'+
+      '<dt>Adresses / hôtes</dt><dd>'+a.total.toLocaleString('fr-FR')+' / <b>'+a.hosts.toLocaleString('fr-FR')+'</b></dd>'+
+      '</dl></div></div>';
+    h += '<div class="note '+(a.ok?'good':'bad')+'" style="margin-bottom:0"><b>'+
+      (a.ok?'Attribuable à un équipement':'Non attribuable')+'</b>'+a.why;
+    if(!a.ok && a.isNet){
+      var seuil = seuilReseau(ip);
+      if(seuil>0 && seuil<=24){
+        h += ' <b>Et le masque n\'y changera rien en pratique</b> : elle reste une adresse de réseau '+
+             'pour tout préfixe <b>&ge; /'+seuil+'</b>. Il faudrait descendre à /'+(seuil-1)+
+             ' ou moins — ce qu\'on ne fait jamais — pour qu\'elle redevienne un hôte valide.';
+      }
+    }
+    var blocOctet = 0, idx = 0;
+    var mo = a.mask.split('.').map(Number);
+    for(var i=0;i<4;i++){ if(mo[i]!==255 && mo[i]!==0){ blocOctet = mo[i]; idx = i; } }
+    if(blocOctet){
+      h += '<br><br><b>Par la méthode du bloc :</b> l\'octet qui bouge vaut '+blocOctet+
+        ', donc le bloc fait <b>256 − '+blocOctet+' = '+(256-blocOctet)+'</b>. Les réseaux se suivent de '+
+        (256-blocOctet)+' en '+(256-blocOctet)+' sur le '+(idx+1)+'<sup>e</sup> octet.';
+    }
+    h += '</div>';
+    out.innerHTML = h;
+  }
+  ipIn.addEventListener('input', draw);
+  cidrIn.addEventListener('change', draw);
+  document.querySelectorAll('button[data-an]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var p = b.getAttribute('data-an').split('|');
+      ipIn.value = p[0]; cidrIn.value = p[1]||''; draw();
+    });
+  });
+  draw();
+})();
+
+(function(){
+  /* Drill « attribuable ? » — les cas du support, plus des tirages */
+  var FIXES = [
+    {ip:'223.56.3.0',      c:null}, {ip:'18.255.255.254', c:null},
+    {ip:'126.127.127.127', c:null}, {ip:'127.126.126.1',  c:null},
+    {ip:'145.145.255.255', c:null}, {ip:'18.254.254.255', c:null},
+    {ip:'0.0.0.0',         c:null}, {ip:'191.255.255.255',c:null},
+    {ip:'192.192.0.0',     c:null}, {ip:'169.254.10.1',   c:null},
+    {ip:'192.168.1.63',    c:26},   {ip:'10.1.2.64',      c:26},
+    {ip:'172.20.5.9',      c:24},   {ip:'224.0.0.9',      c:null}
+  ];
+  var score={ok:0,n:0}, cur=null;
+  var box = document.getElementById('attrDrill');
+  function make(){
+    cur = FIXES[Math.floor(Math.random()*FIXES.length)];
+    var a = analyse(cur.ip, cur.c);
+    cur.a = a;
+    box.innerHTML = '<p style="margin:10px 0"><b>Peut-on attribuer <code>'+cur.ip+'</code>'+
+      (cur.c?' avec un masque <code>/'+cur.c+'</code>':' (masque de sa classe)')+' à un équipement&nbsp;?</b></p>'+
+      '<div class="chips"><button class="chip" data-v="1">Oui</button><button class="chip" data-v="0">Non</button></div>'+
+      '<p id="attrFb" style="margin:4px 0 0;font-size:.88rem"></p>';
+    box.querySelectorAll('.chip').forEach(function(b){
+      b.addEventListener('click', function(){
+        var rep = b.getAttribute('data-v')==='1';
+        var bon = rep===a.ok;
+        score.n++; if(bon) score.ok++;
+        box.querySelectorAll('.chip').forEach(function(x){x.disabled=true;});
+        b.classList.add('on');
+        document.getElementById('attrFb').innerHTML =
+          (bon?'<span style="color:var(--wire-green)"><b>Juste.</b></span> ':'<span style="color:var(--alert)"><b>Non.</b></span> ')+
+          (a.ok?'Attribuable — ':'Inattribuable — ')+a.why+
+          ' <span style="color:var(--muted)">(classe '+a.classe.c+', /'+a.cidr+
+          ', réseau '+a.net+', diffusion '+a.bcast+')</span>';
+        var s=document.getElementById('attrScore');
+        s.textContent = score.ok+' / '+score.n;
+        s.className = 'score ' + (score.ok===score.n?'good':'');
+      });
+    });
+  }
+  document.getElementById('attrNew').addEventListener('click', make);
+  make();
+})();
+
+/* =========================================================================
+   Section topologie de référence
+   ========================================================================= */
+(function(){
+  var svg = document.getElementById('svgRef');
+  drawTopo(svg, REF, {});
+  var out = document.getElementById('refTable');
+  function show(r){
+    out.innerHTML = '<p style="font-size:.86rem;color:var(--muted);margin:10px 0 0">Table de <b>'+r+
+      '</b> — lignes vertes : réseaux directement connectés (métrique 0, apprentissage local). '+
+      'Ligne ambre : route par défaut.</p>' + renderTable(routingTable(REF, r));
+    svg.querySelectorAll('[data-rtr]').forEach(function(c){
+      c.classList.toggle('hi', c.getAttribute('data-rtr')===r);
+    });
+    document.querySelectorAll('[data-rtr]').forEach(function(b){
+      if(b.tagName==='BUTTON') b.classList.toggle('go', b.getAttribute('data-rtr')===r);
+    });
+  }
+  document.querySelectorAll('button[data-rtr]').forEach(function(b){
+    b.addEventListener('click', function(){ show(b.getAttribute('data-rtr')); });
+  });
+  svg.addEventListener('click', function(e){
+    var r = e.target.getAttribute && e.target.getAttribute('data-rtr');
+    if(r) show(r);
+  });
+  show('R3');
+
+  /* réponses aux questions de la planche */
+  var a = document.getElementById('answers');
+  function row(k,v){ a.innerHTML += '<dt>'+k+'</dt><dd>'+v+'</dd>'; }
+  row('LAN1', REF.lan1.net+'/'+REF.lan1.cidr+' — '+usableHosts(REF.lan1.cidr).toLocaleString('fr-FR')+' hôtes');
+  row('LAN2', REF.lan2.net+'/'+REF.lan2.cidr+' — '+usableHosts(REF.lan2.cidr).toLocaleString('fr-FR')+' hôtes');
+  row('LAN3', REF.lan3.net+'/'+REF.lan3.cidr+' — '+usableHosts(REF.lan3.cidr)+' hôtes');
+  row('Liens /30', '2 équipements maximum');
+  row('GW station A', REF.lan1.rip+' (R1)');
+  row('GW station B', REF.r4ip+' (R4)');
+  row('R2-ppp0', REF.lkA.r2+'/30');
+  row('R2-ppp1', REF.lkB.r2+'/30');
+  row('Défaut de R2', REF.lkB.r3+' (R3)');
+  row('Défaut de R3', REF.r4ip+' (R4)');
+})();
+
+/* =========================================================================
+   Méthode en 4 temps
+   ========================================================================= */
+(function(){
+  var full = routingTable(REF,'R3');
+  var STEPS = [
+    {t:'Les réseaux directement connectés', d:'« vous prenez le routeur pour lequel je vous demande une table de routage et la première chose à laquelle vous vous intéressez, c\'est les lignes des réseaux sur lesquels il est connecté. Commencez par ça ! » — R3 a deux interfaces, donc deux lignes. Métrique 0, apprentissage local : il route lui-même, il n\'a besoin de personne.', n:2},
+    {t:'Les réseaux voisins, un saut plus loin', d:'On sort du routeur. La liaison R1-R2 est derrière R2 : un routeur à traverser, donc métrique 1. Le prochain saut est l\'adresse de R2 sur la liaison partagée. Cette route est facultative — R3 n\'a pas besoin de router vers un lien inter-routeurs.', n:3},
+    {t:'Les réseaux lointains', d:'LAN1 et LAN2 sont sur R1, donc derrière R2 puis R1 : deux routeurs, métrique 2. Le prochain saut reste le même — c\'est toujours par R2 qu\'on sort.', n:5},
+    {t:'La route par défaut', d:'Tout le reste part vers Internet. Ici la sortie n\'est pas du côté de R2 mais de R4, qui est sur LAN3 : prochain saut 192.168.1.1, interface eth1. C\'est la seule ligne où R3 sort par l\'autre côté.', n:6}
+  ];
+  var cur = 0;
+  var list = document.getElementById('stepList');
+  var out = document.getElementById('stepTable');
+  STEPS.forEach(function(s,i){
+    var li = document.createElement('li');
+    li.innerHTML = '<span class="stepno">'+(i+1)+'</span><div><h4>'+s.t+'</h4><p>'+s.d+'</p></div>';
+    list.appendChild(li);
+  });
+  function draw(){
+    Array.prototype.forEach.call(list.children, function(li,i){ li.classList.toggle('dim', i>cur); });
+    out.innerHTML = renderTable(full.slice(0, STEPS[cur].n));
+    document.getElementById('stepPrev').disabled = cur===0;
+    document.getElementById('stepNext').disabled = cur===STEPS.length-1;
+  }
+  document.getElementById('stepNext').addEventListener('click', function(){ if(cur<STEPS.length-1){cur++; draw();} });
+  document.getElementById('stepPrev').addEventListener('click', function(){ if(cur>0){cur--; draw();} });
+  document.getElementById('stepReset').addEventListener('click', function(){ cur=0; draw(); });
+  draw();
+})();
+
+/* =========================================================================
+   Trajet d'un paquet
+   ========================================================================= */
+(function(){
+  var svg = document.getElementById('svgPkt');
+  var ENDPOINTS = [
+    {k:'Station A (LAN1)', ip:REF.staA, at:'LAN1', firstHop:'R1'},
+    {k:'Station B (LAN3)', ip:REF.staB, at:'LAN3', firstHop:'R3'},
+    {k:'Un hôte de LAN2',  ip:'10.9.9.9', at:'LAN2', firstHop:'R1'},
+    {k:'Internet (8.8.8.8)', ip:'8.8.8.8', at:'NET', firstHop:null}
+  ];
+  var src = document.getElementById('pkSrc'), dst = document.getElementById('pkDst');
+  ENDPOINTS.forEach(function(e,i){
+    src.innerHTML += '<option value="'+i+'">'+e.k+'</option>';
+    dst.innerHTML += '<option value="'+i+'">'+e.k+'</option>';
+  });
+  src.value = 0; dst.value = 1;
+
+  function nodeSeq(sIdx, dIdx){
+    /* On simule vraiment : à chaque routeur, on consulte sa table. */
+    var s = ENDPOINTS[sIdx], d = ENDPOINTS[dIdx];
+    var path = [s.at], log = [];
+    if(sIdx===dIdx) return {path:path, log:[{txt:'Même hôte : rien à router.'}]};
+    var cur = s.firstHop;
+    if(!cur){ /* depuis Internet : entre par R4 */ cur = 'R4'; path.push('NET'); }
+    var guard = 0;
+    while(cur && guard++ < 8){
+      path.push(cur);
+      if(cur==='R4'){
+        var reachesNet = (d.at==='NET');
+        log.push({r:'R4', txt: reachesNet ? 'R4 sort vers Internet.' : 'R4 route vers LAN3.'});
+        path.push(reachesNet ? 'NET' : d.at);
+        break;
+      }
+      var tbl = routingTable(REF, cur);
+      var m = lookup(tbl, d.ip);
+      if(!m){ log.push({r:cur, txt:'Aucune route : le paquet est jeté (ICMP Destination Network Unreachable).', bad:true}); break; }
+      var idx = tbl.indexOf(m);
+      log.push({r:cur, row:m, idx:idx, tbl:tbl});
+      if(m.learn==='local'){
+        /* livré directement sur un réseau connecté */
+        var arrive = (m.net===REF.lan1.net) ? 'LAN1' : (m.net===REF.lan2.net) ? 'LAN2' :
+                     (m.net===REF.lan3.net) ? 'LAN3' : null;
+        if(arrive){ path.push(arrive); }
+        break;
+      }
+      /* prochain saut -> quel routeur ? */
+      var nh = m.via, next = null;
+      ['R1','R2','R3','R4'].forEach(function(r){
+        REF.ifaces[r].forEach(function(i){ if(i.ip===nh) next = r; });
+      });
+      if(!next){ break; }
+      cur = next;
+    }
+    return {path:path, log:log};
+  }
+
+  function render(sIdx, dIdx, animate){
+    drawTopo(svg, REF, {});
+    var res = nodeSeq(sIdx, dIdx);
+    var pts = res.path.filter(function(p){ return NODE[p]; });
+    for(var i=0;i<pts.length-1;i++){
+      var a=NODE[pts[i]], b=NODE[pts[i+1]];
+      svg.appendChild(svgEl('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,class:'link lit'}));
+    }
+    var out = document.getElementById('pkLog'), h='';
+    res.log.forEach(function(l){
+      if(l.row){
+        h += '<div class="note'+(l.bad?' bad':'')+'"><b>'+l.r+' consulte sa table</b>'+
+          'Destination <code>'+ENDPOINTS[dIdx].ip+'</code> → la ligne retenue est <code>'+
+          (l.row.cidr===0?'0.0.0.0/0 (route par défaut)':l.row.net+'/'+l.row.cidr)+
+          '</code>, prochain saut <code>'+l.row.via+'</code> par <code>'+l.row.iface+'</code>.'+
+          (l.row.learn==='local' ? ' Réseau <b>directement connecté</b> : livraison directe, pas de saut supplémentaire.' : '')+
+          '</div>' + renderTable(l.tbl, {matchIdx:l.idx});
+      } else {
+        h += '<div class="note'+(l.bad?' bad':'')+'"><b>'+(l.r||'Résultat')+'</b>'+l.txt+'</div>';
+      }
+    });
+    out.innerHTML = h;
+
+    if(animate && pts.length>1 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      var dot = svgEl('circle',{cx:NODE[pts[0]].x, cy:NODE[pts[0]].y, r:7, class:'pkt'});
+      svg.appendChild(dot);
+      var step=0;
+      (function move(){
+        if(step>=pts.length-1){ setTimeout(function(){ if(dot.parentNode) dot.parentNode.removeChild(dot); }, 500); return; }
+        var b=NODE[pts[step+1]];
+        dot.style.transition='cx .55s ease-in-out, cy .55s ease-in-out';
+        dot.setAttribute('cx', b.x); dot.setAttribute('cy', b.y);
+        step++;
+        setTimeout(move, 580);
+      })();
+    }
+  }
+  document.getElementById('pkGo').addEventListener('click', function(){
+    render(+src.value, +dst.value, true);
+  });
+  render(0,1,false);
+})();
+
+/* =========================================================================
+   Exercice généré
+   ========================================================================= */
+(function(){
+  var IFACE_OPTS = {R1:['ens0','ens1','ens2'], R2:['ppp0','ppp1'], R3:['eth0','eth1']};
+  var cur = null, curR = null, curRows = null;
+
+  function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
+  function randInt(a,b){ return a + Math.floor(Math.random()*(b-a+1)); }
+
+  function generate(){
+    var c1 = pick([16,17,20,22,24]), c2 = pick([8,12,16]), c3 = pick([24,25,26,27]);
+    var lan1 = intToIp(netOf('172.'+randInt(16,31)+'.'+randInt(0,255)+'.0', c1));
+    var lan2 = intToIp(netOf('10.'+randInt(0,255)+'.'+randInt(0,255)+'.0', c2));
+    var lan3 = intToIp(netOf('192.168.'+randInt(0,255)+'.0', c3));
+    /* Les deux liaisons sont découpées dans le même bloc, comme dans le support.
+       Premier octet public et jamais 10 : sinon le bloc chevaucherait LAN2 (10.0.0.0/8). */
+    var pub = [2,4,5,6,7,8,9,11,12,13,14,15,16,17,18,19,20,23,29,33,34,35,40,44,45,47,51,52];
+    var base = pick(pub) + '.' + randInt(1,250) + '.0.';
+    var lkAn = intToIp(netOf(base+'0', 30));
+    var lkBn = intToIp(netOf(base+'4', 30));
+    var l1 = ipToInt(lan1), l2 = ipToInt(lan2), l3 = ipToInt(lan3);
+    var A = ipToInt(lkAn), B = ipToInt(lkBn);
+    return buildTopo({
+      lan1:lan1, c1:c1, lan1r:intToIp(l1+1),
+      lan2:lan2, c2:c2, lan2r:intToIp(l2+1),
+      lan3:lan3, c3:c3, lan3r:intToIp(l3+2),
+      lkA:lkAn, lkA1:intToIp(A+1), lkA2:intToIp(A+2),
+      lkB:lkBn, lkB2:intToIp(B+1), lkB3:intToIp(B+2),
+      r4ip:intToIp(l3+1), staA:intToIp(l1+randInt(10,60)), staB:intToIp(l3+randInt(5,20))
+    });
+  }
+
+  /* Les adresses de réseau seules — le masque reste une vraie question — plus des leurres
+     plausibles : première adresse d'hôte, adresse de diffusion, bloc voisin. */
+  function candidateNets(t){
+    var vrais = [t.lan1.net, t.lan2.net, t.lan3.net, t.lkA.net, t.lkB.net, '0.0.0.0'];
+    var l3 = ipToInt(t.lan3.net), lA = ipToInt(t.lkA.net);
+    var leurres = [
+      intToIp(l3 + 1),                                   /* 1re adresse d'hôte de LAN3 */
+      intToIp((ipToInt(t.lan1.net) | (~maskInt(t.lan1.cidr))) >>> 0), /* diffusion de LAN1 */
+      intToIp(lA + 8)                                    /* le /30 voisin, non utilisé */
+    ].filter(function(v){ return vrais.indexOf(v) < 0; });
+    return vrais.concat(leurres).sort(function(a,b){ return ipToInt(a) - ipToInt(b); });
+  }
+  function candidateHops(t){
+    var s = [];
+    ['R1','R2','R3','R4'].forEach(function(r){ t.ifaces[r].forEach(function(i){ s.push(i.ip); }); });
+    return s.filter(function(v,i,a){ return a.indexOf(v)===i; });
+  }
+
+  function build(){
+    cur = generate();
+    curR = pick(['R1','R2','R3']);
+    curRows = routingTable(cur, curR);
+    drawTopo(document.getElementById('svgExo'), cur, {});
+    document.getElementById('exAsk').textContent = 'Donnez la table de routage de ' + curR + '.';
+    document.getElementById('exScore').textContent = '';
+
+    /* questions de plan d'adressage */
+    var q = document.getElementById('exQuestions');
+    q.innerHTML = '<div class="note warn"><b>Avant la table — le plan d\'adressage</b>'+
+      '<div class="tblwrap"><table class="tbl" style="min-width:0"><tbody>'+
+      '<tr><td>Adresses <b>utilisables</b> sur LAN1 (<code>/'+cur.lan1.cidr+'</code>)</td><td><b>'+usableHosts(cur.lan1.cidr).toLocaleString('fr-FR')+'</b></td></tr>'+
+      '<tr><td>Adresses utilisables sur LAN3 (<code>/'+cur.lan3.cidr+'</code>)</td><td><b>'+usableHosts(cur.lan3.cidr).toLocaleString('fr-FR')+'</b></td></tr>'+
+      '<tr><td>Équipements max. sur une liaison <code>/30</code></td><td><b>2</b></td></tr>'+
+      '<tr><td>Passerelle par défaut de la station A</td><td><code>'+cur.lan1.rip+'</code> (R1)</td></tr>'+
+      '<tr><td>Passerelle par défaut de la station B</td><td><code>'+cur.r4ip+'</code> (R4)</td></tr>'+
+      '</tbody></table></div></div>';
+
+    /* table à remplir */
+    var netOpts = candidateNets(cur), hopOpts = candidateHops(cur);
+    var h = '<div class="tblwrap"><table class="tbl"><thead><tr>'+
+      '<th style="min-width:150px">Réseau destinataire</th><th style="min-width:80px">Masque</th>'+
+      '<th style="min-width:130px">Prochain saut</th><th style="min-width:90px">Interface</th>'+
+      '<th style="min-width:80px">Métrique</th><th style="min-width:110px">Apprentissage</th></tr></thead><tbody>';
+    curRows.forEach(function(r,i){
+      h += '<tr data-i="'+i+'">'+
+        '<td><select data-f="net">'+opts(netOpts)+'</select></td>'+
+        '<td><select data-f="cidr">'+opts(['/0','/8','/12','/16','/17','/20','/22','/24','/25','/26','/27','/30'])+'</select></td>'+
+        '<td><select data-f="via">'+opts(hopOpts)+'</select></td>'+
+        '<td><select data-f="iface">'+opts(IFACE_OPTS[curR])+'</select></td>'+
+        '<td><select data-f="metric">'+opts(['0','1','2','3'])+'</select></td>'+
+        '<td><select data-f="learn">'+opts(['local','static'])+'</select></td></tr>';
+    });
+    document.getElementById('exTable').innerHTML = h + '</tbody></table></div>';
+  }
+  function opts(a){ return '<option value=""></option>' + a.map(function(v){return '<option>'+esc(v)+'</option>';}).join(''); }
+
+  function check(reveal){
+    var trs = document.querySelectorAll('#exTable tr[data-i]');
+    var good=0, total=0;
+    trs.forEach(function(tr){
+      var r = curRows[+tr.getAttribute('data-i')];
+      var want = {
+        net: r.cidr===0 ? '0.0.0.0' : r.net,
+        cidr:'/'+r.cidr, via:r.via, iface:r.iface, metric:String(r.metric), learn:r.learn
+      };
+      tr.querySelectorAll('select').forEach(function(sel){
+        var f = sel.getAttribute('data-f');
+        var td = sel.parentNode;
+        total++;
+        var ok = sel.value === want[f];
+        td.classList.toggle('ok', ok);
+        td.classList.toggle('ko', !ok && sel.value!=='');
+        if(ok) good++;
+        if(reveal){ sel.value = want[f]; td.classList.add('ok'); td.classList.remove('ko'); }
+      });
+    });
+    var s = document.getElementById('exScore');
+    if(reveal){ s.textContent = 'Correction affichée'; s.className='score'; }
+    else {
+      s.textContent = good+' / '+total+' cases justes';
+      s.className = 'score ' + (good===total ? 'good' : 'bad');
+    }
+  }
+  document.getElementById('exNew').addEventListener('click', build);
+  document.getElementById('exCheck').addEventListener('click', function(){ check(false); });
+  document.getElementById('exSolve').addEventListener('click', function(){ check(true); });
+  build();
+})();
+
+/* =========================================================================
+   Drill masques
+   ========================================================================= */
+(function(){
+  var score = {ok:0, n:0}, cur=null;
+  var box = document.getElementById('drill');
+  function make(){
+    var c = [8,12,16,19,20,22,24,25,26,27,28,30][Math.floor(Math.random()*12)];
+    var kind = Math.floor(Math.random()*3);
+    if(kind===0) cur = {q:'Notation CIDR de <code>'+maskDotted(c)+'</code> ?', a:'/'+c,
+      opts:['/'+c,'/'+(c+1),'/'+(c-1),'/'+(c+2)]};
+    else if(kind===1) cur = {q:'Combien d\'adresses <b>utilisables</b> dans un <code>/'+c+'</code> ?',
+      a:String(usableHosts(c)), opts:[String(usableHosts(c)), String(totalAddr(c)), String(usableHosts(c)+1), String(usableHosts(c)-1)]};
+    else cur = {q:'Masque décimal d\'un <code>/'+c+'</code> ?', a:maskDotted(c),
+      opts:[maskDotted(c), maskDotted(c+1), maskDotted(c-1), maskDotted(Math.max(1,c-2))]};
+    cur.opts = cur.opts.filter(function(v,i,a){return a.indexOf(v)===i;}).sort(function(){return Math.random()-0.5;});
+    box.innerHTML = '<p style="margin:8px 0"><b>'+cur.q+'</b></p><div class="chips">' +
+      cur.opts.map(function(o){ return '<button class="chip" data-a="'+esc(o)+'">'+esc(o)+'</button>'; }).join('') +
+      '</div><p id="drillFb" style="margin:4px 0 0;font-size:.86rem"></p>';
+    box.querySelectorAll('.chip').forEach(function(b){
+      b.addEventListener('click', function(){
+        var ok = b.getAttribute('data-a')===cur.a;
+        score.n++; if(ok) score.ok++;
+        box.querySelectorAll('.chip').forEach(function(x){ x.disabled=true; });
+        b.classList.add('on');
+        document.getElementById('drillFb').innerHTML = ok
+          ? '<span style="color:var(--wire-green)">Juste.</span>'
+          : '<span style="color:var(--alert)">Non — la réponse est <b>'+esc(cur.a)+'</b>.</span>';
+        document.getElementById('drillScore').textContent = score.ok+' / '+score.n;
+        document.getElementById('drillScore').className = 'score ' + (score.ok===score.n?'good':'');
+      });
+    });
+  }
+  document.getElementById('drillNew').addEventListener('click', make);
+  make();
+})();
+
+/* =========================================================================
+   Couper une route
+   ========================================================================= */
+(function(){
+  var cut = false;
+  var btn = document.getElementById('cutToggle'), st = document.getElementById('cutState'), out = document.getElementById('cutDemo');
+  function draw(){
+    var tbl = routingTable(REF,'R3').filter(function(r){
+      return !(cut && r.net===REF.lan1.net && r.cidr===REF.lan1.cidr);
+    });
+    var m = lookup(tbl, REF.staA);
+    var verdict;
+    if(!m){
+      verdict = '<div class="note bad"><b>Injoignable</b>Aucune ligne ne couvre <code>'+REF.staA+
+        '</code>. R3 jette le paquet et renvoie un ICMP <i>Destination Network Unreachable</i> (type 3, code 0).</div>';
+    } else if(m.cidr===0){
+      verdict = '<div class="note warn"><b>Attention — la route par défaut rattrape</b>'+
+        'La ligne <code>'+REF.lan1.net+'/'+REF.lan1.cidr+'</code> a bien disparu, mais <code>0.0.0.0/0</code> '+
+        'couvre tout : le paquet part quand même vers <code>'+m.via+'</code>. <b>C\'est la limite de la méthode</b> — '+
+        'supprimer une route ne suffit que s\'il n\'y a pas de route par défaut plus large derrière.</div>';
+    } else {
+      verdict = '<div class="note good"><b>Joignable</b>La ligne <code>'+m.net+'/'+m.cidr+
+        '</code> match : le paquet sort par <code>'+m.iface+'</code> vers <code>'+m.via+'</code>.</div>';
+    }
+    out.innerHTML = '<p style="font-size:.88rem;color:var(--muted);margin:10px 0 0">Destination testée : '+
+      '<code>'+REF.staA+'</code> (station A, sur LAN1)</p>' +
+      renderTable(tbl, {matchIdx: m ? tbl.indexOf(m) : -1}) + verdict;
+    st.textContent = cut ? 'Route vers LAN1 supprimée de R3.' : 'Table complète.';
+    btn.textContent = cut ? 'Remettre la route vers LAN1' : 'Couper la route de R3 vers LAN1';
+  }
+  btn.addEventListener('click', function(){ cut = !cut; draw(); });
+  draw();
+})();
+
+/* =========================================================================
+   Trame Ethernet
+   ========================================================================= */
+(function(){
+  var inp = document.getElementById('payload');
+  function draw(){
+    var p = Math.max(0, Math.min(1500, parseInt(inp.value,10) || 0));
+    var pad = Math.max(0, 46 - p);
+    var dataField = Math.max(46, p);
+    var wire = 14 + dataField + 4;
+    var f = document.getElementById('frameViz');
+    f.innerHTML =
+      cell('Préambule','7 o.',9) + cell('SFD','1 o.',5) +
+      cell('MAC dest.','6 o.',11) + cell('MAC source','6 o.',11) + cell('EtherType','2 o.',9) +
+      cell('Données', p+' o.', Math.max(12, Math.round(p/1500*34)+12)) +
+      (pad>0 ? cell('Bourrage', pad+' o.', Math.max(9, Math.round(pad/46*16)+8), true) : '') +
+      cell('FCS','4 o.',7);
+    var n = document.getElementById('frameNote');
+    if(pad>0){
+      n.innerHTML = '<div class="note warn"><b>Bourrage appliqué : '+pad+' octets</b>'+
+        'Les données ne font que '+p+' octets, en dessous des 46 requis. Le système complète jusqu\'à 46. '+
+        'Trame sur le fil : <b>'+wire+' octets</b> ('+(wire-4)+' hors FCS). '+
+        (p===18 ? 'C\'est exactement le cas d\'une requête <b>ARP</b> : 28 octets utiles dans le champ de données, dont 18 de bourrage dans l\'exemple du cours.' : '')+
+        '</div>';
+    } else if(p>1500){
+      n.innerHTML = '<div class="note bad"><b>Au-dessus du MTU</b>Il faut fragmenter, ou le paquet est rejeté si le bit <i>Don\'t Fragment</i> est posé.</div>';
+    } else {
+      n.innerHTML = '<div class="note good"><b>Pas de bourrage</b>Les données atteignent le minimum. '+
+        'Trame sur le fil : <b>'+wire+' octets</b> ('+(wire-4)+' hors FCS).'+
+        (p===1500?' C\'est la trame maximale : <b>1518</b> octets FCS compris, <b>1514</b> sans.':'')+'</div>';
+    }
+  }
+  function cell(t,s,flex,isPad){
+    return '<div class="'+(isPad?'pad':'')+'" style="flex:'+flex+'"><b>'+t+'</b><span>'+s+'</span></div>';
+  }
+  inp.addEventListener('input', draw);
+  document.querySelectorAll('button[data-pl]').forEach(function(b){
+    b.addEventListener('click', function(){ inp.value = b.getAttribute('data-pl'); draw(); });
+  });
+  draw();
+})();
+
+/* =========================================================================
+   Socket
+   ========================================================================= */
+(function(){
+  var parts = [
+    {k:'Adresse source', v:'192.168.1.10'},
+    {k:'Port source', v:'54321', note:'éphémère'},
+    {k:'Adresse destination', v:'93.184.216.34'},
+    {k:'Port destination', v:'443', note:'en écoute'},
+    {k:'Protocole', v:'TCP', note:'6 — pas « HTTPS »'}
+  ];
+  var box = document.getElementById('sockBuild');
+  box.innerHTML = '<div class="chips">' + parts.map(function(p,i){
+    return '<button class="chip" data-i="'+i+'">'+p.k+'</button>';
+  }).join('') + '</div><div id="sockOut"></div>';
+  var on = [];
+  function draw(){
+    var o = document.getElementById('sockOut');
+    if(on.length===0){ o.innerHTML='<p style="font-size:.88rem;color:var(--muted)">Cliquez les cinq éléments.</p>'; return; }
+    var h = '<dl class="kv">';
+    on.forEach(function(i){ h += '<dt>'+parts[i].k+'</dt><dd>'+parts[i].v+
+      (parts[i].note?' <span style="color:var(--muted)">— '+parts[i].note+'</span>':'')+'</dd>'; });
+    h += '</dl>';
+    if(on.length===5) h += '<div class="note good" style="margin-bottom:0"><b>Socket complète</b>Cinq paramètres. C\'est ça qu\'on gère dans un pare-feu — pas des noms d\'applications.</div>';
+    else h += '<div class="note" style="margin-bottom:0"><b>'+on.length+' / 5</b>Il en manque.</div>';
+    o.innerHTML = h;
+  }
+  box.querySelectorAll('.chip').forEach(function(b){
+    b.addEventListener('click', function(){
+      var i = +b.getAttribute('data-i');
+      if(on.indexOf(i)<0){ on.push(i); b.classList.add('on'); }
+      else { on.splice(on.indexOf(i),1); b.classList.remove('on'); }
+      draw();
+    });
+  });
+  draw();
+})();
+
+/* =========================================================================
+   Séquences animées : DORA et EAPoL
+   ========================================================================= */
+function playSeq(container, msgs, done){
+  container.innerHTML = msgs.map(function(m){
+    return '<div class="msg"><span class="who">'+esc(m.who)+'</span>'+m.txt+'</div>';
+  }).join('');
+  var els = container.querySelectorAll('.msg');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){ els.forEach(function(e){e.classList.add('on');}); if(done) done(); return; }
+  var i=0;
+  (function tick(){
+    if(i>=els.length){ if(done) done(); return; }
+    els[i].classList.add('on'); i++;
+    setTimeout(tick, 480);
+  })();
+}
+(function(){
+  var normal = [
+    {who:'Client → diffusion', txt:'<b>DHCP Discover</b> — « y a-t-il un serveur ? » Le poste n\'a aucune adresse.'},
+    {who:'Serveur → client', txt:'<b>DHCP Offer</b> — proposition d\'adresse.'},
+    {who:'Client → diffusion', txt:'<b>DHCP Request</b> — « je prends celle-là » (en diffusion, pour prévenir les autres serveurs).'},
+    {who:'Serveur → client', txt:'<b>DHCP Ack</b> — bail confirmé, <b>avec toute la configuration</b>.'}
+  ];
+  var attack = [
+    {who:'Client → diffusion', txt:'<b>DHCP Discover</b>'},
+    {who:'Pirate → client', txt:'<b>Offer</b> — le Raspberry Pi répond <b>en premier</b>.'},
+    {who:'Serveur légitime → client', txt:'<b>Offer</b> — arrive trop tard, elle est ignorée.'},
+    {who:'Client → pirate', txt:'<b>Request / Ack</b> — passerelle et DNS = l\'adresse du pirate.'}
+  ];
+  var seq = document.getElementById('doraSeq'), out = document.getElementById('doraOut');
+  function run(atk){
+    playSeq(seq, atk?attack:normal, function(){
+      out.innerHTML = atk
+        ? '<div class="note bad"><b>Man-in-the-Middle complet</b>Le client a retenu la <b>première</b> offre. '+
+          'Tous ses flux sortants et toutes ses résolutions passent désormais par l\'attaquant, qui peut y greffer une interception TLS.</div>'
+        : '<div class="note good"><b>Ce que porte le Ack — la vraie réponse</b>'+
+          '<div class="tblwrap"><table class="tbl" style="min-width:0"><tbody>'+
+          '<tr><td><b>1</b></td><td>Adresse IP <b>et masque</b></td></tr>'+
+          '<tr><td><b>2</b></td><td><b>Passerelle par défaut</b> — sans elle, prisonnier de son réseau</td></tr>'+
+          '<tr><td><b>3</b></td><td><b>Serveurs DNS</b> — sans eux, plus aucun nom ne se résout</td></tr>'+
+          '<tr><td>+</td><td>Options : domaine local, NTP, TFTP/PXE…</td></tr>'+
+          '</tbody></table></div></div>';
+    });
+  }
+  document.getElementById('doraGo').addEventListener('click', function(){ run(false); });
+  document.getElementById('doraAtk').addEventListener('click', function(){ run(true); });
+  run(false);
+})();
+(function(){
+  var msgs = [
+    {who:'Poste → switch · EAPoL', txt:'Le câble est branché. <b>Pas d\'adresse IP</b>. Le supplicant émet une trame Ethernet pure : EtherType <code>0x888E</code>, vers <code>01:80:C2:00:00:03</code>.'},
+    {who:'Switch → RADIUS · UDP 1812', txt:'Le commutateur extrait le message EAP et le <b>ré-encapsule en UDP/IP</b> — lui a une pile IP, le client non.'},
+    {who:'RADIUS → poste', txt:'<b>Challenge aléatoire.</b> Le mot de passe ne circulera jamais ; le rejeu est impossible.'},
+    {who:'Poste → RADIUS', txt:'Empreinte du mot de passe <b>concaténé au challenge</b>.'},
+    {who:'RADIUS → switch', txt:'<b>Access-Accept</b> + attributs : VLAN à appliquer, débit, quotas, durée de session.'},
+    {who:'Switch', txt:'Ouverture de <b>la paire de réception</b>, bascule du port dans le VLAN, compteurs armés.'},
+    {who:'Poste → réseau', txt:'<b>Et seulement maintenant</b> : <code>DHCP Discover</code>.'}
+  ];
+  document.getElementById('eapGo').addEventListener('click', function(){
+    playSeq(document.getElementById('eapSeq'), msgs);
+  });
+  playSeq(document.getElementById('eapSeq'), msgs);
+})();
+
+/* =========================================================================
+   Attaques VLAN
+   ========================================================================= */
+(function(){
+  var ATT = [
+    {n:'Reset physique du switch', steps:[
+      {who:'Accès physique', txt:'L\'attaquant atteint la baie et appuie sur le bouton <b>reset</b>.'},
+      {who:'Switch', txt:'Retour en configuration d\'usine : <b>tous les ports dans le VLAN 1</b>.'},
+      {who:'Résultat', txt:'Toute la segmentation a disparu — plus aucun cloisonnement.'}],
+     fix:'Sécurité physique : baies fermées à clé, locaux techniques contrôlés. C\'est la remédiation, et elle n\'est pas informatique.'},
+    {n:'Switch spoofing (DTP)', steps:[
+      {who:'PC attaquant', txt:'Émission de trames <b>DTP</b> forgées — <i>Dynamic Trunking Protocol</i>.'},
+      {who:'Switch', txt:'Il croit dialoguer avec un autre commutateur et bascule le port en <b>trunk</b>.'},
+      {who:'Résultat', txt:'Le port donne accès à <b>tous les VLAN</b> transportés.'}],
+     fix:'Désactiver la négociation sur tous les ports d\'accès : <code>switchport mode access</code> et <code>switchport nonegotiate</code>.'},
+    {n:'Double tagging', steps:[
+      {who:'PC attaquant', txt:'Trame forgée avec <b>deux tags</b> : le premier au VLAN natif, le second au VLAN visé.'},
+      {who:'1<sup>er</sup> switch', txt:'Le VLAN natif n\'étant pas tagué sur le trunk, il <b>retire le tag externe</b> et fait suivre.'},
+      {who:'2<sup>e</sup> switch', txt:'Il lit le tag restant et livre la trame <b>dans le VLAN cible</b>.'},
+      {who:'Résultat', txt:'Injection unidirectionnelle dans un VLAN interdit.'}],
+     fix:'Ne jamais utiliser le VLAN 1, changer l\'ID du VLAN natif pour un VLAN dédié inutilisé, et forcer le taggage du VLAN natif.'}
+  ];
+  var chips = document.getElementById('vlanChips'), body = document.getElementById('vlanBody');
+  chips.innerHTML = ATT.map(function(a,i){ return '<button class="chip" data-i="'+i+'">'+a.n+'</button>'; }).join('');
+  function show(i){
+    chips.querySelectorAll('.chip').forEach(function(c,j){ c.classList.toggle('on', j===i); });
+    body.innerHTML = '<div class="seq" id="vlSeq"></div><div class="note good" style="margin-bottom:0">'+
+      '<b>Remédiation</b>'+ATT[i].fix+'</div>';
+    playSeq(document.getElementById('vlSeq'), ATT[i].steps);
+  }
+  chips.querySelectorAll('.chip').forEach(function(c){
+    c.addEventListener('click', function(){ show(+c.getAttribute('data-i')); });
+  });
+  show(0);
+})();
+
+/* =========================================================================
+   Réponses courtes
+   ========================================================================= */
+(function(){
+  var Q = [
+    {q:'Quels sont les 6 modes du Wi-Fi ?', src:'S1 · enr. 2 · [32:45] — « Il faut me les sortir si un jour on vous le demande »',
+     a:'<b>Master / AP</b> (gère les clients, autorise l\'injection de trames à MAC forgée) · <b>Managed</b> (client, mode par défaut) · <b>Repeater</b> (reçoit sur un canal, réémet sur un autre) · <b>Ad-hoc / IBSS</b> (poste à poste sans AP) · <b>Mesh</b> (802.11s, maillé auto-organisé) · <b>Monitor</b> (écoute passive de toutes les trames radio — l\'équivalent du <i>promiscuous</i> filaire).'},
+    {q:'Qu\'est-ce qu\'un MLS, et en quoi diffère-t-il d\'un routeur ?', src:'S1 · enr. 3 — question d\'entretien d\'embauche',
+     a:'La formulation qu\'il attend : « <b>c\'est un commutateur dont la décision de commutation dépend des couches 1, 2, 3 et 4</b> » — adresses MAC, adresses IP et ports. Deux différences avec un routeur : le MLS <b>ne modifie pas la trame</b> (commutation matérielle), là où le routeur défait et refait l\'en-tête de niveau 2 ; et il <b>n\'exécute pas de protocoles de routage dynamique</b> (OSPF, BGP, RIP) — son rôle est de commuter très vite.'},
+    {q:'Quel est le pare-feu de Linux ?', src:'S2 · enr. 1 · [10:30] — « 9 étudiants sur 10 me disent iptables. Au revoir ! »',
+     a:'<b>Netfilter</b>, le module du noyau. <code>iptables</code> et <code>nftables</code> ne sont que les commandes d\'administration en espace utilisateur. La phrase complète à sortir : « le pare-feu est Netfilter, un sous-système du noyau ; on l\'administre avec nftables (ou iptables) en L3/L4, <b>ebtables</b> en L2 dans un pont, <b>arptables</b> pour l\'ARP ».'},
+    {q:'C\'est quoi un ITSM, en deux mots ?', src:'S3 · enr. 2 · [09:18] — question d\'entretien',
+     a:'<b>L\'ERP de la DSI.</b> Incidents, demandes, changements, ticketing, SLA, patch management, projets. À distinguer de l\'<b>ITAM</b> (cycle de vie des actifs : achat, licences, obsolescence) et de la <b>CMDB</b> (cartographie des composants et de leurs dépendances).'},
+    {q:'La catégorie « arjel » : blacklist ou whitelist ?', src:'S3 · enr. 1 · [41:54] — « c\'est forcément parce qu\'il y a un piège ! »',
+     a:'<b>Ni l\'une ni l\'autre : une liste grise.</b> L\'ARJEL (aujourd\'hui ANJ) recense les sites de jeux d\'argent <b>légalement autorisés</b> en France : à whitelister pour les majeurs, à blacklister pour les mineurs. Elle dépend d\'un second paramètre — l\'âge — et c\'est ce qui la rend grise.'},
+    {q:'Ethernet, et le sens de « IEEE 802 » ?', src:'Fiche Questions Examen — « Faites gaffe hein ! Février 1980 ! Bordel ! »',
+     a:'<b>802 → février 1980</b> : 80 pour l\'année, 2 pour le mois — c\'est la date de lancement du <b>comité IEEE 802</b>. À ne pas confondre avec l\'invention d\'Ethernet, qui date de <b>1973</b> (Metcalfe, Xerox PARC) ; la spécification DIX est de 1980 et la norme IEEE 802.3 de 1983.'},
+    {q:'Comment sont stockés les mots de passe dans la base ?', src:'S3 · enr. 1 · [53:05] — « c\'est peut-être un truc qu\'on vous demandera »',
+     a:'Jamais en clair : une empreinte <b>salée</b> au format modulaire Unix <code>$id$sel$empreinte</code>. L\'identifiant entre dollars donne l\'algorithme — <code>$1$</code> MD5, <code>$5$</code> SHA-256, <code>$6$</code> SHA-512.'},
+    {q:'Que recouvrent C-I-D et A-N-T ?', src:'S3 · enr. 1 · [60:18] — « Vous vous rappelez du cours de 4ème année ? »',
+     a:'<b>C</b>onfidentialité, <b>I</b>ntégrité, <b>D</b>isponibilité, <b>A</b>uthenticité, <b>N</b>on-répudiation, <b>T</b>raçabilité. Et la question qui suit : un utilisateur sanctionné prétend que l\'admin root a falsifié le journal. Trois parades — <b>déport</b> immédiat vers un serveur où l\'admin local n\'écrit pas, <b>chaînage</b> par condensat de la ligne précédente, <b>chiffrement</b> avec une clé détenue par le seul RSSI.'},
+    {q:'Pourquoi ne jamais mettre un Active Directory en DMZ ?', src:'S3 · enr. 4 · [35:00]',
+     a:'Parce qu\'un AD exige l\'ouverture d\'environ <b>5 000 ports dynamiques RPC/DCOM</b> (49152–65535), en plus de LDAP 389, Kerberos 88 et SMB 445. Ouvrir 5 000 ports détruit le principe même du filtrage. L\'AD reste au fond du LAN ; en DMZ on met des <b>relais</b> : un résolveur DNS de cache et un relais SMTP frontal.'},
+    {q:'Les trois seuls moyens légaux d\'identifier une personne ?', src:'S3 · enr. 1 — cadre CPCE',
+     a:'<b>1.</b> Identité vérifiée physiquement sur pièce d\'identité (ou compte salarié dans l\'annuaire). <b>2.</b> Code par SMS sur une ligne mobile dont l\'opérateur a déjà vérifié l\'abonné. <b>3.</b> Carte bancaire liée à un compte nominatif. Une <b>adresse de courriel déclarative n\'a aucune valeur juridique</b>.'},
+    {q:'Le piège du lot unique de disques', src:'S3 · enr. 2 · [12:02] — MTBF',
+     a:'Trois disques de la <b>même série</b> achetés le <b>même jour</b> subissent la même usure et <b>lâchent ensemble</b> : la redondance RAID ne sert plus à rien. La parade est contre-intuitive — remplacer un disque encore bon à un an, un second à deux ans, pour <b>déphaser</b> les âges.'}
+  ];
+  var box = document.getElementById('flashList');
+  box.innerHTML = Q.map(function(o,i){
+    return '<details class="qa"><summary style="list-style:none"><button type="button" tabindex="-1" style="pointer-events:none">'+
+      '<span class="ix">'+String(i+1).padStart(2,'0')+'</span><span>'+o.q+'</span><span class="chev">▸</span></button></summary>'+
+      '<div class="body"><p style="font-size:.75rem;color:var(--muted);margin:0 0 8px;font-family:\'JetBrains Mono\',monospace">'+esc(o.src)+'</p>'+
+      '<p style="margin:0">'+o.a+'</p></div></details>';
+  }).join('');
+})();
+
+/* =========================================================================
+   Sigles
+   ========================================================================= */
+(function(){
+  var S = [
+    ['AAA','Authentication, Authorization, Accounting','Qui es-tu · à quoi as-tu droit · qu\'as-tu consommé. Les deux premiers pris ensemble = le NAC.'],
+    ['ANJ','Autorité Nationale des Jeux','Ex-ARJEL. Sa liste est une greylist.'],
+    ['CMDB','Configuration Management Database','Cartographie des composants du SI et de leurs dépendances.'],
+    ['DHCP','Dynamic Host Configuration Protocol','Distribue une configuration complète : IP + masque, passerelle, DNS.'],
+    ['DMZ','Zone démilitarisée','Zone tampon étanche et maîtrisée, pas une zone sans défense.'],
+    ['DTP','Dynamic Trunking Protocol','Le protocole détourné par le switch spoofing.'],
+    ['EAPoL','EAP over LAN','EtherType 0x888E, vers 01:80:C2:00:00:03. Parle sans couche IP.'],
+    ['EDR','Endpoint Detection and Response','Pare-feu personnel + HIDS + antivirus, couplés.'],
+    ['FCS','Frame Check Sequence','Les 4 octets de CRC-32 en fin de trame. Retirés par la carte : jamais visibles dans Wireshark.'],
+    ['ITAM','IT Asset Management','Cycle de vie des actifs : achat, licences, obsolescence.'],
+    ['ITSM','IT Service Management','L\'ERP de la DSI.'],
+    ['MLS','Multi-Layer Switch','Commute sur les couches 1 à 4. Ne modifie pas la trame, pas de routage dynamique.'],
+    ['MTBF','Mean Time Between Failures','Temps moyen avant défaillance. ~4 500 h pour un disque pro.'],
+    ['MTU','Maximum Transmission Unit','1500 octets en Ethernet. 9000 en jumbo frames.'],
+    ['NAC','Network Access Control','Authentification + autorisation. Alcasar en est un.'],
+    ['NAI','Network Access Identifier','La forme login@domaine qui permet le relais Eduroam.'],
+    ['NPS','Network Policy Server','Le rôle qui transforme un AD en serveur RADIUS.'],
+    ['PSSI','Politique de Sécurité des SI','Écrite par le RSSI après analyse de risques (EBIOS RM). Rien ne se déploie sans elle.'],
+    ['RADIUS','Remote Authentication Dial-In User Service','UDP 1812 auth, 1813 accounting. Né chez Lucent.'],
+    ['TACACS+','Terminal Access Controller Access-Control System','Propriétaire Cisco, TCP 49, sépare auth et autorisation.'],
+    ['UAM','Universal Access Method','La méthode de repli du portail captif, quand il n\'y a pas d\'agent 802.1X.'],
+    ['WAAP','Web Application & API Protection','Le WAF étendu aux API REST, JSON, GraphQL.'],
+    ['WAF','Web Application Firewall','Couche 7 HTTP, contre le Top 10 OWASP. ModSecurity en libre.']
+  ];
+  var tb = document.querySelector('#sigTable tbody');
+  function draw(f){
+    f = (f||'').toLowerCase();
+    tb.innerHTML = S.filter(function(r){
+      return !f || (r[0]+' '+r[1]+' '+r[2]).toLowerCase().indexOf(f)>=0;
+    }).map(function(r){
+      return '<tr><td><b>'+esc(r[0])+'</b></td><td>'+esc(r[1])+'</td><td style="font-family:\'Source Sans 3\',sans-serif">'+esc(r[2])+'</td></tr>';
+    }).join('') || '<tr><td colspan="3" style="color:var(--muted)">Aucun sigle ne correspond.</td></tr>';
+  }
+  document.getElementById('sigFilter').addEventListener('input', function(e){ draw(e.target.value); });
+  draw('');
+})();
+
+/* =========================================================================
+   Thème + rail actif
+   ========================================================================= */
+(function(){
+  var root = document.documentElement;
+  try{ var sv = localStorage.getItem('atelier.theme'); if(sv) root.setAttribute('data-theme', sv); }catch(e){}
+  document.getElementById('theme').addEventListener('click', function(){
+    var isDark = root.getAttribute('data-theme')==='dark' ||
+      (!root.getAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    var next = isDark ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try{ localStorage.setItem('atelier.theme', next); }catch(e){}
+  });
+  var links = Array.prototype.slice.call(document.querySelectorAll('.rail a'));
+  var secs = links.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+  function onScroll(){
+    var y = window.scrollY + 120, best = 0;
+    secs.forEach(function(s,i){ if(s && s.offsetTop <= y) best = i; });
+    links.forEach(function(a,i){ a.classList.toggle('on', i===best); });
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+})();
+</script>
+</body>
+</html>
