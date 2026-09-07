@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sécurisation des réseaux locaux — INF5243</title>
-<link rel="stylesheet" href="assets/core.css?v=23">
+<title>Révisions — Majeure Cybersécurité S9</title>
+<link rel="stylesheet" href="assets/core.css?v=24">
 </head>
 <body>
 
 <header class="topbar">
-  <div class="brand"><span class="dot"></span> INF5243 <small>· Sécurisation des réseaux locaux</small></div>
+  <div class="brand"><span class="dot"></span> Majeure Cybersécurité <small>· S9</small></div>
   <div class="spacer"></div>
   <button class="btn ghost" onclick="toggleTheme()" title="Thème clair / sombre">◐ Thème</button>
 </header>
@@ -17,27 +17,50 @@
 <main class="content" style="max-width:1000px;margin:0 auto">
 
 <div class="hero">
-  <h1>Sécurisation des réseaux locaux</h1>
+  <h1>Révisions — Majeure Cybersécurité</h1>
   <p class="lead">
-    Support de révision construit à partir des <b>enregistrements du cours</b> et des
-    <b>supports officiels de Richard Rey</b>.
+    Supports de révision construits à partir des <b>enregistrements des cours</b> et des
+    <b>supports officiels</b>. Tout fonctionne hors ligne.
   </p>
 </div>
 
-<div class="callout danger" style="margin-top:8px"><div class="t">À rendre</div>
-<b>Lab NAC / Alcasar</b> — sur Moodle, au format <code>LAB-NAC-vos_noms.odt</code>, corrigé le lendemain
-matin. Le <a href="inf5243-fiche-complete.html#ch33">chapitre 33 de la fiche complète</a> couvre
-l'architecture de virtualisation, les trois niveaux de filtrage et les pièges du sujet.
-</div>
+<!-- ===================== INF5244 ===================== -->
+<h2 style="margin-top:30px">INF5244 — Sécurisation des interconnexions</h2>
 
-<a class="course-card" href="inf5243-fiche-complete.html" style="margin-top:26px;display:block">
+<a class="course-card" href="inf5244-fiche-complete.html" style="display:block">
+  <div class="code">Séance 1 · 18 chapitres + 2 annexes</div>
+  <h3>Fiche de révision — filtrage, pare-feu et architectures</h3>
+  <p style="color:var(--fg-soft);font-size:.92rem">Le contenu de la séance 1, plus un QCM de
+  <b>65 questions</b> filtrable chapitre par chapitre.</p>
+  <div class="grid c2" style="margin:.6em 0 0">
+    <ul>
+      <li>Le quintuplet, les 4 missions du pare-feu</li>
+      <li>Les 8 principes fondamentaux de sécurité</li>
+      <li>MAC, passerelle par défaut, RFC 1918</li>
+      <li>TCP, UDP, ICMP et DNS</li>
+    </ul>
+    <ul>
+      <li>Netfilter : INPUT, FORWARD, OUTPUT</li>
+      <li>Syntaxe iptables, maquette et premières règles</li>
+      <li>Critères d'une règle, pare-feu à état, NAT</li>
+      <li>DMZ, bastion, niveaux de sécurité, UTM</li>
+      <li>PSSI → matrice des flux → règles</li>
+      <li>Menaces, Wireshark, diagnostic, glossaire</li>
+      <li><b>Récap « l.essentiel »</b> et <b>annexe des ports</b></li>
+    </ul>
+  </div>
+  <p style="margin-bottom:0"><span class="badge acc">Ouvrir la fiche</span></p>
+</a>
+
+<!-- ===================== INF5243 ===================== -->
+<h2 style="margin-top:34px">INF5243 — Sécurisation des réseaux locaux</h2>
+
+<a class="course-card" href="inf5243-fiche-complete.html" style="display:block">
   <div class="code">Fiche unifiée · séances 1 à 3 · 12 h 45</div>
   <h3>Fiche complète — tout le cours en un seul document</h3>
   <p style="color:var(--fg-soft);font-size:.92rem">La fusion des trois séances&nbsp;: 45 chapitres dans
   l'ordre logique du cours, du câble jusqu'à l'architecture de sécurité, plus un QCM unique de
-  <b>475 questions</b> filtrable chapitre par chapitre. Elle remplace les deux anciennes
-  fiches de séance&nbsp;; les transcriptions ci-dessous restent la source pour retrouver une notion
-  dans son contexte d'origine.</p>
+  <b>475 questions</b> filtrable chapitre par chapitre.</p>
   <div class="grid c2" style="margin:.6em 0 0">
     <ul>
       <li>Support physique, fibre, câblage, PoE</li>
@@ -53,47 +76,11 @@ l'architecture de virtualisation, les trois niveaux de filtrage et les pièges d
       <li>DNS, DNSSEC, TLS et inspection profonde</li>
       <li>CPCE, imputabilité, NAC et lab Alcasar</li>
       <li>DMZ, bastion, reverse proxy, WAF, NIDS, VPN</li>
-      <li>Quiz corrigé, labs Alcasar et Wireshark, glossaire</li>
+      <li>Quiz corrigé, labs, glossaire</li>
     </ul>
   </div>
   <p style="margin-bottom:0"><span class="badge acc">Ouvrir la fiche complète</span></p>
 </a>
-
-<a class="course-card" href="atelier-routage.html" style="margin-top:14px;display:block">
-  <div class="code">Atelier interactif · pour vendredi matin</div>
-  <h3>Atelier Routage — plan d'adressage et table de routage</h3>
-  <p style="color:var(--fg-soft);font-size:.92rem">Ce que le prof a explicitement annoncé comme question, avec la topologie du support, sa méthode de correction en quatre temps, la simulation du trajet d'un paquet et des <b>exercices de table de routage générés à l'infini</b>, corrigés automatiquement.</p>
-  <p style="margin-bottom:0"><span class="badge acc">S'entraîner</span></p>
-</a>
-
-<div class="grid c2" style="margin-top:26px">
-  <a class="course-card" href="transcription-inf5243-seance-02.html">
-    <div class="code">Source · 5 enregistrements</div>
-    <h3>Transcription — séance 2</h3>
-    <p style="color:var(--fg-soft);font-size:.92rem">Le verbatim intégral des 4 h 34 de la journée, dans l'ordre chronologique.</p>
-    <ul>
-      <li>Partie 1 — commutateurs, SDN, SNMP, PVLAN</li>
-      <li>Partie 2 — normalisation, IoT, classes IPv4</li>
-      <li>Partie 3 — IPv6, subnetting, NAT, CGNAT</li>
-      <li>Partie 4 — routage, TCP, scan SYN, DNS</li>
-      <li>Partie 5 — DNSSEC, TLS, CPCE, NAC</li>
-    </ul>
-    <p style="margin-bottom:0"><span class="badge acc">Ouvrir</span></p>
-  </a>
-
-  <a class="course-card" href="transcription-inf5243-seance-01.html">
-    <div class="code">Source · 3 enregistrements</div>
-    <h3>Transcription — séance 1</h3>
-    <p style="color:var(--fg-soft);font-size:.92rem">Le verbatim complet de la séance 1, avec une annexe des points à vérifier.</p>
-    <ul>
-      <li>Partie 1 — câblage, fibre, PoE</li>
-      <li>Partie 2 — trame, Wi-Fi, commutation, VLANs</li>
-      <li>Partie 3 — MLS, CAM, stacking</li>
-      <li>Annexe — écarts entre l'oral et la norme</li>
-    </ul>
-    <p style="margin-bottom:0"><span class="badge acc">Ouvrir</span></p>
-  </a>
-</div>
 
 <p style="text-align:center;color:var(--fg-mute);font-size:.85rem;margin-top:44px">
 Fonctionne hors ligne · Conservez le dossier complet (<code>assets/</code> et <code>data/</code>).
@@ -101,6 +88,6 @@ Fonctionne hors ligne · Conservez le dossier complet (<code>assets/</code> et <
 
 </main>
 
-<script src="assets/app.js?v=23"></script>
+<script src="assets/app.js?v=24"></script>
 </body>
 </html>

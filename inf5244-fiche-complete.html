@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sécurisation des interconnexions (INF5244) — fiche de révision</title>
+<link rel="stylesheet" href="assets/core.css?v=24">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><span class="dot"></span> INF5244 <small>· Sécurisation des interconnexions</small></div>
+  <div class="spacer"></div>
+  <input id="search" type="search" placeholder="Rechercher…  (Ctrl+K)">
+  <a class="home" href="index.html">← Accueil</a>
+  <button class="btn ghost" onclick="toggleTheme()" title="Thème clair / sombre">◐</button>
+  <button class="btn ghost" onclick="window.print()" title="Imprimer / PDF">⎙</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar"><h4>Chapitres</h4><div id="toc"></div></nav>
+  <main class="content">
+<h1>Sécurisation des interconnexions — fiche de révision</h1>
+<p class="lead">
+Sécuriser une interconnexion, c'est décider ce qui a le droit de traverser la frontière entre deux
+zones de confiance différentes. L'outil est le <b>pare-feu</b>, le travail se fait sur les
+<b>couches 3 et 4</b>, et tout ce qui suit en découle&nbsp;: les règles, le suivi de connexion, le NAT,
+puis les architectures qui placent ces équipements au bon endroit.
+</p>
+
+<!-- ===================================================================== -->
+<!-- ===================================================================== -->
+<h2 id="essentiel">★ L'essentiel — à relire la veille</h2>
+
+<p class="lead">Une page. Les erreurs qui coûtent des points, puis les définitions à savoir donner en
+une phrase. Si tu ne relis qu'une chose jeudi soir, c'est ça.</p>
+
+<h3 id="essentiel-pieges">Les 18 pièges</h3>
+<div class="tw"><table>
+<thead><tr><th>#</th><th>Le piège</th><th>Ce qu'il faut répondre</th><th>§</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Les règles sont bonnes, mais <b>rien ne traverse</b></td><td><code>net.ipv4.ip_forward</code> est à <b>0</b>. Ce n'est <b>pas</b> un problème d'<code>iptables</code>, c'est le <b>routage du noyau</b>. → <code>sysctl -w net.ipv4.ip_forward=1</code></td><td><a href="#ch9-forward">9.2</a></td></tr>
+<tr><td>2</td><td>Une règle <b>n'attrape jamais</b> de paquet</td><td><b><i>First match wins</i></b>&nbsp;: elle est masquée par une règle plus large placée <b>avant</b>. L'exception va <b>AVANT</b> la règle générale. Se voit au <b>compteur resté à zéro</b>.</td><td><a href="#ch11-ordre">11.2</a></td></tr>
+<tr><td>3</td><td>« Le DNAT marche, mais rien ne passe »</td><td>Le DNAT s'applique en <code>PREROUTING</code>, <b>avant</b> <code>FORWARD</code>. La règle de filtrage doit porter sur l'<b>adresse interne réelle</b> du serveur, pas sur l'adresse publique.</td><td><a href="#ch12">12</a></td></tr>
+<tr><td>4</td><td>Le flux <b>retour</b> est bloqué</td><td>En stateless, il faut <b>trois inversions</b>&nbsp;: interfaces, adresses, ports. En oublier une seule suffit. En stateful&nbsp;: <code>-m state --state ESTABLISHED,RELATED -j ACCEPT</code>.</td><td><a href="#ch9-regles">9.4</a></td></tr>
+<tr><td>5</td><td>On cherche la panne dans <code>FORWARD</code>… et le flux n'y passe pas</td><td>Un ping émis <b>par le pare-feu lui-même</b> passe par <code>OUTPUT</code> (requête) et <code>INPUT</code> (réponse). <code>FORWARD</code> ne traite que le <b>transit</b>.</td><td><a href="#ch9-regles">9.4</a></td></tr>
+<tr><td>6</td><td>On croit avoir tout fermé</td><td>La politique par défaut se pose sur les <b>trois</b> chaînes&nbsp;: <code>INPUT</code>, <code>FORWARD</code>, <code>OUTPUT</code>. Oublier <code>FORWARD</code> laisse passer tout le trafic traversant.</td><td><a href="#ch11-politique">11.1</a></td></tr>
+<tr><td>7</td><td>On se coupe soi-même l'accès</td><td>Écrire les <b>autorisations d'abord</b>, basculer la politique en <code>DROP</code> <b>en dernier</b>.</td><td><a href="#ch11-politique">11.1</a></td></tr>
+<tr><td>8</td><td>Après un redémarrage, plus aucun filtrage</td><td><code>iptables</code> travaille <b>en mémoire</b>. Il faut un script de démarrage ou <code>iptables-persistent</code>. C'est le principe de <b>panne sans danger</b>.</td><td><a href="#ch3">3</a></td></tr>
+<tr><td>9</td><td>La passerelle par défaut est « injoignable »</td><td>Elle doit être <b>dans le même sous-réseau</b> que la machine&nbsp;: il faut sa <b>MAC</b>, obtenue par <b>ARP</b>, qui ne sort pas du segment local.</td><td><a href="#ch4-gateway">4.2</a></td></tr>
+<tr><td>10</td><td>« Le ping passe mais les gros transferts se figent »</td><td>On a bloqué <b>tout l'ICMP</b>. Il faut laisser <i>fragmentation needed</i> (<b>type 3 code 4</b>, découverte du MTU) et <i>time exceeded</i> (<b>type 11</b>, traceroute).</td><td><a href="#ch6-icmp">6.3</a></td></tr>
+<tr><td>11</td><td>Le DNS marche, sauf pour les grosses réponses</td><td>On n'a ouvert que <b>UDP 53</b>. Il faut <b>UDP <i>et</i> TCP 53</b>&nbsp;: TCP pour les <b>transferts de zone (AXFR/IXFR)</b> et les réponses <b>&gt; 512 octets</b>, notamment DNSSEC.</td><td><a href="#ch6-dns">6.2</a></td></tr>
+<tr><td>12</td><td>La plage privée 172</td><td>C'est <b><code>172.16.0.0/12</code></b>, pas un /16&nbsp;: de <code>172.16</code> à <code>172.31</code>. <code>172.15.x.x</code> et <code>172.32.x.x</code> sont <b>publiques</b>.</td><td><a href="#ch4-rfc1918">4.3</a></td></tr>
+<tr><td>13</td><td>Filtrer sur les adresses MAC depuis Internet</td><td><b>Aucun sens</b>&nbsp;: la MAC s'arrête au premier routeur, tout arrive avec celle de l'opérateur. Utile <b>seulement</b> dans le LAN ou une DMZ.</td><td><a href="#ch4-mac">4.1</a></td></tr>
+<tr><td>14</td><td>Croire que le NAT protège</td><td><b>Le NAT n'est pas une mesure de sécurité.</b> Il masque le plan d'adressage — effet de bord. <b>La protection vient du filtrage.</b></td><td><a href="#ch12">12</a></td></tr>
+<tr><td>15</td><td>Un port source égal au port destination</td><td><b>Anomalie</b>&nbsp;: paquet forgé ou contournement. Le port source d'un client est toujours <b>éphémère, &gt; 1024</b>. À bloquer.</td><td><a href="#ch5-ports">5.1</a></td></tr>
+<tr><td>16</td><td>Le proxy est contourné</td><td>La règle correcte n'est pas « le LAN sort en 80/443 » mais&nbsp;: <b>seul le proxy sort en 80/443</b>, et les postes ne joignent <b>que</b> le proxy.</td><td><a href="#ch2-l7">2.2</a></td></tr>
+<tr><td>17</td><td>Sur un Cisco ASA, on croit le LAN cloisonné</td><td><b>Règle de la diode</b>&nbsp;: du niveau <b>élevé vers le faible</b> (100 → 50 → 0), c'est <b>autorisé par défaut</b>. L'inverse exige une ACL. Une <b>sortie non maîtrisée</b> est le canal d'exfiltration.</td><td><a href="#ch13-asa">13.2</a></td></tr>
+<tr><td>18</td><td>Le joker <code>0.0.0.0/0</code></td><td>Chaque usage doit être <b>justifié formellement</b>. Si le flux concerne deux machines précises, on renseigne <b>leurs adresses</b>.</td><td><a href="#ch8">8</a></td></tr>
+</tbody>
+</table></div>
+
+<h3 id="essentiel-defs">Les définitions à donner en une phrase</h3>
+<div class="tw"><table>
+<thead><tr><th>Notion</th><th>La phrase</th></tr></thead>
+<tbody>
+<tr><td><b>Quintuplet</b></td><td><code>{IP source, IP destination, port source, port destination, protocole}</code> — l'identité d'un flux, et ce que mémorise la table d'état.</td></tr>
+<tr><td><b>Pare-feu à état</b></td><td>Il inscrit le quintuplet à l'aller, <b>inverse</b> adresses et ports au retour, reconnaît <code>ESTABLISHED</code> et laisse passer <b>sans règle d'entrée</b>. Les entrées <b>expirent</b> pour ne pas saturer la mémoire et empêcher l'injection tardive.</td></tr>
+<tr><td><b>Les 3 chaînes</b></td><td><code>INPUT</code> = destiné au pare-feu · <code>OUTPUT</code> = émis par lui · <code>FORWARD</code> = en transit. La <b>décision de routage</b> les sépare&nbsp;: « cette destination est-elle une de mes adresses&nbsp;? »</td></tr>
+<tr><td><b>Décorrélation</b></td><td>On peut mettre <code>INPUT</code>/<code>OUTPUT</code> en <code>DROP</code> total — pare-feu <b>injoignable et furtif</b> — tout en laissant passer des flux en <code>FORWARD</code>.</td></tr>
+<tr><td><b>DMZ</b></td><td>Zone intermédiaire entre deux pare-feu de constructeurs différents. <b>Aucun flux direct Internet ↔ interne</b>&nbsp;: tout se termine sur un service de la DMZ, qui ouvre une <b>seconde connexion</b>. On <b>assume qu'elle sera compromise</b>.</td></tr>
+<tr><td><b>Bastion</b></td><td>Machine <b>fortifiée car exposée</b>, point de passage <b>obligatoire et unique</b> où l'on s'authentifie avant de <b>rebondir</b>. Jamais en frontal direct&nbsp;: derrière un pare-feu, avec géofiltrage et MFA.</td></tr>
+<tr><td><b>Victime sacrificielle / honeypot</b></td><td>La première est une machine <b>réelle et utile</b> dont on assume la compromission (concession)&nbsp;; le second est <b>factice</b> et sert de capteur.</td></tr>
+<tr><td><b>UTM</b> et son paradoxe</td><td>Boîtier tout-en-un. Il simplifie l'exploitation mais <b>augmente la surface d'attaque</b>, crée un <b>SPOF total</b> et viole la <b>diversité des défenses</b>.</td></tr>
+<tr><td><b>Fail-safe</b></td><td>Après panne ou redémarrage, le système se replie sur un <b>état fermé</b>.</td></tr>
+<tr><td><b>Chokepoint</b></td><td>Point de passage obligé&nbsp;: <b>atout en sécurité</b>, <b>SPOF en disponibilité</b>. On veut un <b>nombre maîtrisé et connu</b> de points d'accès, pas un point unique.</td></tr>
+<tr><td><b>Matrice des flux</b></td><td>Le document pivot&nbsp;: zones, IP, protocole, ports, <b>plages horaires</b>, action, journalisation. Elle rend la <b>liste blanche possible</b> et c'est le premier document réclamé en réponse à incident.</td></tr>
+<tr><td><b>SNAT / DNAT</b></td><td><b>SNAT</b> réécrit la <b>source</b>, en <code>POSTROUTING</code>, pour faire sortir un LAN. <b>DNAT</b> réécrit la <b>destination</b>, en <code>PREROUTING</code>, pour exposer un service.</td></tr>
+<tr><td><b>DROP / REJECT</b></td><td><code>DROP</code> = silence, timeout, port vu <b><i>filtered</i></b> → <b>côté Internet</b>. <code>REJECT</code> = <code>RST</code> ou ICMP unreachable, échec immédiat, port <b><i>closed</i></b> → <b>en interne</b>.</td></tr>
+<tr><td><b>APT / cybercriminalité</b></td><td>APT&nbsp;: moyens et <b>temps illimités</b>, furtivité, <b>pré-positionnement</b>, aucune rançon. Cybercriminalité&nbsp;: <b>vite, brutal, bruyant</b>, extorsion.</td></tr>
+<tr><td><b>CERT / CSIRT</b></td><td>Même fonction. <b>CERT</b> est une <b>marque déposée</b> (Carnegie Mellon, après le ver Morris de <b>1988</b>)&nbsp;; <b>CSIRT</b> est la dénomination internationale libre.</td></tr>
+<tr><td><b>Beaconing</b></td><td>Émission à intervalle <b>parfaitement régulier</b> vers un serveur C2. C'est la <b>régularité</b> qui trahit, pas le volume.</td></tr>
+<tr><td><b>Voyage impossible</b></td><td>Deux authentifications géographiquement incompatibles avec le délai écoulé&nbsp;: preuve d'un <b>vol d'identifiants</b>. Parade préventive&nbsp;: le <b>géofiltrage</b>.</td></tr>
+<tr><td><b>WAF</b></td><td>Filtrage web sur <b>L3, L4 et L5-7</b> (le contenu). Deux déploiements&nbsp;: <b>en coupure</b> (reverse proxy, il bloque) ou <b>en dérivation</b> (passif, il alerte).</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout ok"><div class="t">Les 8 principes, dans l'ordre</div>
+<b>Moindre privilège</b> · <b>Défense en profondeur</b> · <b>Goulot d'étranglement</b> ·
+<b>Maillon faible</b> · <b>Panne sans danger</b> · <b>Participation universelle</b> ·
+<b>Diversité des défenses</b> · <b>KISS</b>.
+<p style="margin-bottom:0"><b>Les 5 contraintes qui s'y opposent</b>&nbsp;: coût · continuité métier ·
+ergonomie · conformité · pérennité des compétences.
+<b>Les 4 missions du pare-feu</b>&nbsp;: filtrage · routage filtrant · NAT · inspection L7 déléguée.</p>
+</div>
+
+<h2 id="ch1"><span class="num">1.</span> Le filtrage : sur quoi on décide</h2>
+
+<p>Le filtrage de paquets travaille sur les <b>couches 3 et 4 du modèle OSI</b>. Ce sont les seules
+couches qui fournissent des identifiants exploitables sans lire le contenu.</p>
+
+<div class="tw"><table>
+<thead><tr><th>Couche</th><th>Nom</th><th>Identifiants utilisables</th></tr></thead>
+<tbody>
+<tr><td><b>3</b></td><td>Réseau</td><td>Adresse IP <b>source</b> et <b>destination</b> (IPv4 / IPv6)</td></tr>
+<tr><td><b>4</b></td><td>Transport</td><td><b>Protocole</b> (TCP, UDP, ICMP) et <b>ports</b> source / destination</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout def"><div class="t">Le quintuplet</div>
+Un flux élémentaire est identifié par cinq valeurs&nbsp;:
+<code>{ IP source, IP destination, port source, port destination, protocole }</code>.
+C'est ce que mémorise un pare-feu à état dans sa table de suivi de connexion.
+</div>
+
+<div class="exam"><div class="t">ICMP n'a pas de ports</div>
+ICMP est encapsulé <b>directement dans IP</b> (couche 3) et ne possède <b>ni port source ni port
+destination</b>. On le filtre sur son <b>type</b> et son <b>code</b>&nbsp;: <i>echo-request</i> type 8,
+<i>echo-reply</i> type 0. Pour ICMP, le quintuplet se réduit à un triplet.
+</div>
+
+<h3 id="ch1-ipv4">1.1 Pourquoi IPv4 domine encore</h3>
+<p>L'immense majorité du filtrage en entreprise se traite en <b>IPv4</b>&nbsp;: IPv6 reste largement
+le domaine de l'opérateur et du cloud, et les compétences existantes sont en IPv4.</p>
+<div class="callout warn"><div class="t">Le revers</div>
+En IPv4, le NAT masque involontairement le parc interne. En IPv6, <b>chaque machine a une adresse
+publique routable</b>&nbsp;: cette protection gratuite disparaît. Un réseau qui n'utilise pas IPv6 doit
+le <b>bloquer explicitement</b>, sans quoi il se retrouve exposé le jour où IPv6 s'active tout seul.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch2"><span class="num">2.</span> Les quatre missions d'un pare-feu</h2>
+
+<div class="tw"><table>
+<thead><tr><th>#</th><th>Mission</th><th>Détail</th></tr></thead>
+<tbody>
+<tr><td><b>1</b></td><td><b>Filtrage de paquets</b><br><i>packet filtering</i></td><td>Mission historique. Décision sur les en-têtes L3/L4&nbsp;: <code>ACCEPT</code>, <code>DROP</code>, <code>REJECT</code>.</td></tr>
+<tr><td><b>2</b></td><td><b>Routage filtrant</b></td><td>Il est au carrefour des interfaces et aiguille les flux — <b>à condition que le filtrage l'autorise</b>.</td></tr>
+<tr><td><b>3</b></td><td><b>Translation d'adresses (NAT)</b></td><td>Réécriture des adresses&nbsp;: <b>SNAT</b> pour la source, <b>DNAT</b> pour la destination.</td></tr>
+<tr><td><b>4</b></td><td><b>Inspection applicative (L7)</b></td><td>Ce que le filtrage de paquets ne sait pas faire. Déléguée à des modules spécialisés&nbsp;: proxy, WAF, antivirus de flux, IDS.</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout def"><div class="t">À retenir</div>
+<b>NAT et filtrage sont les deux fonctions naturelles du pare-feu.</b> Le routage en découle
+mécaniquement, et l'inspection L7 est un ajout.
+</div>
+
+<h3 id="ch2-limite">2.1 La limite des couches 3 et 4</h3>
+<p>Un pare-feu L3/L4 qui autorise le port 443 voit <b>exactement la même chose</b> dans une
+consultation légitime, un téléchargement de malware, une exfiltration de base et un tunnel de commande
+et contrôle. Il ne sait rien du contenu&nbsp;: d'où la nécessité de briques applicatives.</p>
+<p>Rien n'oblige à installer ces briques sur le pare-feu lui-même. Le point central reste le filtrage
+de paquets&nbsp;; on y <b>raccorde</b> les autres fonctions, sur la même machine ou ailleurs. On peut
+aussi étendre vers le bas avec <code>ebtables</code>, qui filtre au niveau de la <b>couche 2</b>.</p>
+
+<h3 id="ch2-l7">2.2 Le filtrage applicatif : proxy, passerelle de messagerie, WAF</h3>
+<div class="callout def"><div class="t">Ce que fait une brique L7, et que le pare-feu ne sait pas faire</div>
+Elle <b>décode la syntaxe du protocole applicatif</b> — autrement dit, elle <b>parle</b> ce protocole.
+C'est la seule façon de distinguer une requête légitime d'une attaque sur un port autorisé.
+</div>
+<div class="tw"><table>
+<thead><tr><th>Brique</th><th>Protocoles</th><th>Ce qu'elle analyse</th></tr></thead>
+<tbody>
+<tr><td><b>Proxy web</b></td><td>HTTP, HTTPS</td><td>Les <b>méthodes</b> (<code>GET</code>, <code>POST</code>…), les <b>URL</b> demandées, les <b>en-têtes</b> et le <b>corps</b> de requête</td></tr>
+<tr><td><b>Passerelle de messagerie</b><br>relais SMTP / antispam</td><td>SMTP, POP3, IMAP</td><td>Les <b>expéditeurs</b>, les <b>pièces jointes</b>, les mécanismes d'<b>authentification</b> des courriels</td></tr>
+<tr><td><b>WAF</b><br><i>Web Application Firewall</i></td><td>HTTP, HTTPS</td><td><b>L3</b> (adresse IP) · <b>L4</b> (protocole) · <b>L5-7</b> (le contenu&nbsp;: HTML, CSS, JavaScript). Deux déploiements&nbsp;: <b>en coupure</b> (reverse proxy — il peut bloquer) ou <b>en dérivation</b> (passif — il alerte seulement)</td></tr>
+</tbody>
+</table></div>
+<div class="exam"><div class="t">La règle qui rend un proxy réellement efficace</div>
+La bonne règle de pare-feu n'est <b>pas</b> « le LAN peut sortir en 80/443 ». C'est&nbsp;: <b>seul le
+proxy peut sortir en 80/443</b>, et <b>les postes ne peuvent joindre que le proxy</b>.
+<p style="margin-bottom:0">Sans ce verrou, n'importe quelle application configurée en direct
+<b>contourne</b> le proxy, et toute l'analyse applicative devient facultative. Le montage courant place
+le proxy <b>dans la DMZ de transit</b>, le pare-feu se contentant d'y <b>forcer</b> le trafic.</p>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch3"><span class="num">3.</span> Les principes fondamentaux de sécurité</h2>
+
+<div class="tw"><table>
+<thead><tr><th>Principe</th><th>Anglais</th><th>Définition</th></tr></thead>
+<tbody>
+<tr><td><b>Moindre privilège</b></td><td><i>Least privilege</i></td><td>N'accorder que les droits strictement nécessaires&nbsp;: limite les erreurs et <b>la portée d'une compromission</b>.</td></tr>
+<tr><td><b>Défense en profondeur</b></td><td><i>Defense in depth</i></td><td>Imposer plusieurs passages successifs avant d'atteindre la ressource critique.</td></tr>
+<tr><td><b>Goulot d'étranglement</b></td><td><i>Chokepoint</i></td><td>Canaliser les flux vers un <b>nombre maîtrisé et connu</b> de points de passage.</td></tr>
+<tr><td><b>Maillon faible</b></td><td><i>Weakest link</i></td><td>La sécurité vaut celle du composant le plus fragile — souvent l'humain, y compris l'administrateur.</td></tr>
+<tr><td><b>Panne sans danger</b></td><td><i>Fail-safe</i></td><td>Après panne ou redémarrage, le système se replie sur un <b>état fermé</b> (<code>DROP</code>).</td></tr>
+<tr><td><b>Participation universelle</b></td><td>—</td><td>Une sécurité non expliquée, qui ralentit les utilisateurs, sera contournée.</td></tr>
+<tr><td><b>Diversité des défenses</b></td><td>—</td><td>Des <b>éditeurs différents</b> à chaque couche&nbsp;: une faille zero-day ne touche pas les deux.</td></tr>
+<tr><td><b>KISS</b></td><td><i>Keep It Simple, Stupid</i></td><td>La complexité inutile est une surface d'attaque.</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout warn"><div class="t">Le goulot d'étranglement : atout ou défaut&nbsp;?</div>
+<b>Les deux.</b> En sécurité c'est un atout — un seul point à surveiller et à couper. En
+<b>disponibilité</b> c'est un défaut — c'est un <b>SPOF</b> (<i>Single Point of Failure</i>).
+Ce qu'on veut n'est donc pas un point unique, mais un <b>nombre maîtrisé et connu</b> de points
+d'accès. Le danger réel, c'est le chemin oublié&nbsp;: un VPN non documenté dans une filiale.
+</div>
+
+<div class="exam"><div class="t">Panne sans danger : le piège Linux</div>
+<code>iptables</code> travaille <b>en mémoire</b>. Sans mécanisme de restauration au démarrage, un
+pare-feu Linux redémarre <b>sans aucun filtrage</b>. La politique par défaut doit être appliquée
+<b>avant même</b> l'activation du routage. En pratique&nbsp;: un <b>script de démarrage</b> ou le
+paquet <b><code>iptables-persistent</code></b>.
+</div>
+
+<div class="callout"><div class="t">La limite de la diversité des défenses</div>
+Deux pare-feu de marques différentes coûtent deux formations. Si l'administrateur ne maîtrise pas le
+second, il finit par y écrire une règle <b>« pass-all »</b>. Un deuxième pare-feu mal maîtrisé est
+<b>pire qu'inutile</b>&nbsp;: il donne l'illusion d'une défense en profondeur qui n'existe pas.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch4"><span class="num">4.</span> Rappels réseau : MAC, passerelle, adressage privé</h2>
+
+<h3 id="ch4-mac">4.1 La portée d'une adresse MAC</h3>
+<p>Une adresse MAC n'est visible que sur le <b>réseau local</b>. Dès qu'une trame franchit un routeur,
+l'en-tête Ethernet est réécrit.</p>
+<div class="callout def"><div class="t">À chaque saut de routeur</div>
+Les <b>adresses MAC changent</b> · les <b>adresses IP ne changent pas</b> (sauf NAT) · le <b>TTL est
+décrémenté</b>.
+<p style="margin-bottom:0">Rappel de la trame&nbsp;: <b>MAC destination</b> (6 o) · <b>MAC source</b>
+(6 o) · <b>EtherType</b> (2 o) · <b>données</b> (46 à 1500 o) · <b>FCS</b> (4 o). L'<b>EtherType</b> dit
+ce que la trame transporte&nbsp;: <code>0x0800</code> IPv4, <code>0x0806</code> ARP,
+<code>0x86DD</code> IPv6, <code>0x8100</code> 802.1Q.</p>
+</div>
+<div class="tw"><table>
+<thead><tr><th>Filtrer sur la MAC…</th><th>Verdict</th><th>Pourquoi</th></tr></thead>
+<tbody>
+<tr><td>…du trafic venant d'Internet</td><td class="dimmed"><b>Aucun sens</b></td><td>Toutes les machines du monde arrivent avec la MAC du <b>routeur de l'opérateur</b>.</td></tr>
+<tr><td>…au sein du LAN ou d'une DMZ</td><td><b>Utile</b></td><td>Les serveurs y ont des adresses fixes. Le <b>MAC locking</b> empêche le branchement d'une machine pirate.</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="ch4-gateway">4.2 La décision d'acheminement et la passerelle par défaut</h3>
+<p>Avant d'émettre, une machine applique un <b>ET logique</b> entre l'IP de destination et son masque,
+et compare au résultat du même calcul sur sa propre adresse.</p>
+<div class="tw"><table>
+<thead><tr><th>Cas</th><th>Ce qu'elle fait</th></tr></thead>
+<tbody>
+<tr><td><b>Même réseau</b></td><td><b>Envoi direct.</b> Requête <b>ARP</b> en broadcast pour obtenir la MAC de la cible, puis dialogue direct via le commutateur. <b>La passerelle n'intervient pas.</b></td></tr>
+<tr><td><b>Réseau différent</b></td><td><b>Envoi indirect.</b> Un broadcast ARP ne traverse pas un routeur&nbsp;: elle résout par ARP la MAC de sa <b>passerelle par défaut</b> et lui remet la trame.</td></tr>
+</tbody>
+</table></div>
+<div class="exam"><div class="t">La règle capitale</div>
+<b>L'adresse IP de la passerelle par défaut doit obligatoirement se trouver dans le même sous-réseau
+que la machine.</b>
+<p style="margin-bottom:0"><b>Pourquoi</b>&nbsp;: pour lui envoyer la trame, il faut son <b>adresse
+MAC</b>, obtenue par <b>ARP</b>, qui ne fonctionne que sur le segment local. Une passerelle hors
+sous-réseau est <b>injoignable par construction</b>.</p>
+</div>
+<div class="callout warn"><div class="t">Le ping asymétrique</div>
+Si la machine cible n'a pas de route vers l'émetteur, l'<code>Echo Request</code> <b>peut arriver</b>
+mais l'<code>Echo Reply</code> <b>ne reviendra jamais</b>. Un ping qui échoue ne dit pas où est le
+problème&nbsp;: il faut capturer des deux côtés.
+</div>
+
+<h3 id="ch4-rfc1918">4.3 Adressage privé (RFC 1918)</h3>
+<div class="tw"><table>
+<thead><tr><th>Plage</th><th>Étendue</th><th>Classe d'origine</th></tr></thead>
+<tbody>
+<tr><td><b><code>10.0.0.0/8</code></b></td><td>10.0.0.0 → 10.255.255.255</td><td>A — un bloc</td></tr>
+<tr><td><b><code>172.16.0.0/12</code></b></td><td>172.<b>16</b>.0.0 → 172.<b>31</b>.255.255</td><td>B — 16 blocs</td></tr>
+<tr><td><b><code>192.168.0.0/16</code></b></td><td>192.168.0.0 → 192.168.255.255</td><td>C — 256 blocs</td></tr>
+</tbody>
+</table></div>
+<ul class="key-points">
+<li><b>Non routables sur Internet</b>&nbsp;: le premier routeur d'opérateur qui voit une adresse RFC 1918
+en source ou destination <b>jette le paquet</b>.</li>
+<li><b>Réutilisables à l'infini</b>&nbsp;: elles ne sortent pas du réseau, chacun les emploie de son
+côté de son routeur.</li>
+</ul>
+<div class="exam"><div class="t">Le piège de la plage 172</div>
+C'est un <b><code>/12</code></b>, pas un <code>/16</code>. <code>172.15.x.x</code> et
+<code>172.32.x.x</code> sont <b>publiques</b>.
+</div>
+<div class="callout danger"><div class="t">Utiliser des adresses publiques en interne</div>
+Techniquement possible, opérationnellement désastreux. Deux conséquences&nbsp;:
+<b>(1)</b> on devient <b>incapable de joindre les vrais serveurs</b> qui portent ces adresses sur
+Internet, le routage interne interceptant le trafic&nbsp;;
+<b>(2)</b> les outils de surveillance basés sur la <b>géolocalisation IP</b> interprètent ces machines
+internes comme des systèmes étrangers, et noient les analystes sous de fausses alertes.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch5"><span class="num">5.</span> TCP : ports et drapeaux</h2>
+
+<h3 id="ch5-ports">5.1 Les ports</h3>
+<div class="tw"><table>
+<thead><tr><th>Plage</th><th>Nom</th><th>Usage</th></tr></thead>
+<tbody>
+<tr><td><b>0 – 1023</b></td><td><i>Well-known</i> — réservés</td><td>Les <b>services</b>&nbsp;: 22 SSH, 25 SMTP, 53 DNS, 80 HTTP, 443 HTTPS</td></tr>
+<tr><td><b>1024 – 49151</b></td><td>Enregistrés</td><td>Applications déclarées auprès de l'IANA</td></tr>
+<tr><td><b>49152 – 65535</b></td><td>Dynamiques / éphémères</td><td>Les <b>ports source</b> tirés par le système du client</td></tr>
+</tbody>
+</table></div>
+<p>Dans un flux client → serveur&nbsp;: <b>port destination</b> = le port du service&nbsp;;
+<b>port source</b> = un port éphémère tiré aléatoirement, toujours <b>&gt; 1024</b>. Si l'on connaît la
+plage réellement utilisée par son parc, on peut durcir la règle et jeter tout ce qui arrive d'un port
+source en dessous.</p>
+<div class="exam"><div class="t">Anomalie : port source = port destination</div>
+Un paquet 80 → 80 est la signature d'un paquet <b>forgé</b> ou d'une tentative de contournement.
+Aucune pile TCP/IP normale ne produit cela pour du trafic client. <b>À bloquer.</b>
+</div>
+
+<h3 id="ch5-flags">5.2 Les drapeaux</h3>
+<div class="tw"><table>
+<thead><tr><th>Drapeau</th><th>Nom</th><th>Rôle</th></tr></thead>
+<tbody>
+<tr><td><b>SYN</b></td><td><i>Synchronize</i></td><td><b>Demande d'ouverture.</b> SYN seul = nouvelle connexion&nbsp;: c'est là qu'on décide.</td></tr>
+<tr><td><b>ACK</b></td><td><i>Acknowledgment</i></td><td>Acquittement&nbsp;; présent sur toute session établie.</td></tr>
+<tr><td><b>FIN</b></td><td><i>Finish</i></td><td>Fermeture <b>gracieuse</b> et ordonnée.</td></tr>
+<tr><td><b>RST</b></td><td><i>Reset</i></td><td>Fermeture <b>brutale et unilatérale</b>.</td></tr>
+<tr><td><b>PSH</b></td><td><i>Push</i></td><td>Force l'envoi du tampon sans attendre un segment plein.</td></tr>
+<tr><td><b>URG</b></td><td><i>Urgent</i></td><td>Données prioritaires.</td></tr>
+</tbody>
+</table></div>
+<p><b>Cycle de vie&nbsp;:</b> ouverture <code>SYN</code> → <code>SYN-ACK</code> → <code>ACK</code>,
+données en <code>PSH-ACK</code>, fermeture <code>FIN-ACK</code> → <code>FIN-ACK</code>.</p>
+<div class="callout def"><div class="t"><code>FIN</code> contre <code>RST</code></div>
+<b><code>FIN</code></b> est une fin <b>négociée</b>&nbsp;: les deux parties libèrent leurs ressources.
+<b><code>RST</code></b> est un arrêt <b>brutal, sans réponse</b>. C'est ce que renvoie une machine
+lorsqu'on frappe un port sur lequel <b>aucun service n'écoute</b>.
+</div>
+
+<h3 id="ch5-dropreject">5.3 <code>DROP</code> contre <code>REJECT</code></h3>
+<div class="tw"><table>
+<thead><tr><th></th><th><code>DROP</code></th><th><code>REJECT</code></th></tr></thead>
+<tbody>
+<tr><td>Comportement</td><td>Paquet <b>jeté silencieusement</b></td><td>Réponse explicite&nbsp;: <code>RST</code> (TCP) ou <b>ICMP port unreachable</b></td></tr>
+<tr><td>Vu du client</td><td><b>Timeout</b> long</td><td><b>Échec immédiat</b> — « connection refused »</td></tr>
+<tr><td>Face à un scan</td><td>Port <b><i>filtered</i></b> — ralentit l'attaquant, ne révèle rien</td><td>Port <b><i>closed</i></b> — révèle la présence d'un équipement</td></tr>
+<tr><td>Où l'utiliser</td><td><b>Sur l'interface Internet</b></td><td><b>En interne</b>, pour ne pas faire attendre des applications légitimes</td></tr>
+</tbody>
+</table></div>
+
+<!-- ===================================================================== -->
+<h2 id="ch6"><span class="num">6.</span> UDP, ICMP et DNS</h2>
+
+<h3 id="ch6-udp">6.1 UDP</h3>
+<p>UDP est <b>sans connexion</b> et <b>sans drapeaux</b>&nbsp;: rien dans l'en-tête ne distingue une
+nouvelle session d'une réponse. Un pare-feu ne peut que <b>simuler</b> un état — « j'ai vu partir un
+datagramme vers cette IP et ce port, j'accepte le retour inverse pendant N secondes » — avec un
+timeout court.</p>
+<div class="callout warn"><div class="t">Conséquence sécurité</div>
+Sans handshake à respecter, l'attaquant peut <b>usurper l'adresse source</b> librement. C'est ce qui
+rend les protocoles UDP (DNS, NTP, SNMP) attractifs pour l'<b>amplification</b> et le <b>spoofing</b>.
+</div>
+
+<h3 id="ch6-dns">6.2 Le DNS n'utilise pas que UDP</h3>
+<div class="tw"><table>
+<thead><tr><th>Transport</th><th>Quand</th><th>Pourquoi</th></tr></thead>
+<tbody>
+<tr><td><b>UDP 53</b></td><td>Résolutions courantes</td><td>Rapide, sans session, réponses <b>≤ 512 octets</b></td></tr>
+<tr><td><b>TCP 53</b></td><td><b>1.</b> Transferts de zone <b>AXFR / IXFR</b><br><b>2.</b> Réponses dépassant la taille limite, notamment <b>DNSSEC</b></td><td>Volumineux, intégrité garantie par le séquencement et la retransmission</td></tr>
+</tbody>
+</table></div>
+<div class="exam"><div class="t">La conséquence pour une règle de pare-feu</div>
+Il faut ouvrir le <b>port 53 en UDP <i>et</i> en TCP</b> vers les résolveurs légitimes. Une règle qui
+n'ouvre que l'UDP produit des pannes intermittentes&nbsp;: tout marche, <b>sauf les grosses réponses</b>.
+Le transfert de zone, lui, se restreint <b>aux adresses IP des secondaires</b> — un <code>AXFR</code>
+ouvert livre toute la cartographie interne.
+</div>
+
+<h3 id="ch6-icmp">6.3 ICMP : ne pas bloquer en bloc</h3>
+<div class="callout warn"><div class="t">Deux messages indispensables</div>
+<b>Destination Unreachable — Fragmentation Needed</b> (type 3, code 4)&nbsp;: porte la <b>découverte du
+MTU du chemin</b>. Le bloquer donne le symptôme classique — « le ping passe, les petites pages passent,
+<b>les gros transferts se figent</b> ».
+<b>Time Exceeded</b> (type 11)&nbsp;: fait fonctionner <code>traceroute</code>, donc tout diagnostic.
+<p style="margin-bottom:0"><b>Politique raisonnable</b>&nbsp;: filtrer <b>par type</b>, limiter en débit
+les <i>echo-request</i> entrants, et laisser le suivi de connexion gérer les <code>echo-reply</code>.</p>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch7"><span class="num">7.</span> Netfilter : la décision de routage et les trois chaînes</h2>
+
+<p>Avant toute règle, le pare-feu se pose <b>une seule question</b>, et elle doit aller vite&nbsp;:
+<b>« ce paquet est-il à destination de moi-même&nbsp;? »</b> Il compare l'<b>adresse IP de destination</b>
+aux adresses configurées sur ses propres interfaces — il les connaît, la comparaison est immédiate.</p>
+
+<div class="steps">
+<div class="step"><b>Destination = une de mes adresses → chaîne <code>INPUT</code></b><br>
+Le paquet est destiné aux <b>processus locaux</b> du pare-feu&nbsp;: démon SSH d'administration, agent
+de supervision, client NTP.</div>
+<div class="step"><b>Un processus local émet → chaîne <code>OUTPUT</code></b><br>
+Tout ce que la machine <b>génère elle-même</b>&nbsp;: mise à jour APT, requête DNS du résolveur local.</div>
+<div class="step"><b>Destination = quelqu'un d'autre → chaîne <code>FORWARD</code></b><br>
+Le paquet est <b>en transit pur</b>&nbsp;: il entre par une interface et ressort par une autre. C'est le
+rôle de passerelle filtrante.</div>
+</div>
+
+<div class="exam"><div class="t">Le point d'architecture le plus important du chapitre</div>
+<b>La protection du pare-feu lui-même est totalement décorrélée de sa mission de routage filtrant.</b>
+<p>On peut mettre <code>INPUT</code> et <code>OUTPUT</code> en <code>DROP</code> total&nbsp;: le pare-feu
+devient <b>injoignable et furtif</b> — impossible de le pinguer ou de s'y connecter — <b>tout en
+laissant passer des flux à travers lui</b> via <code>FORWARD</code>.</p>
+<p style="margin-bottom:0"><b>L'exemple à savoir dérouler.</b> Tout interdit en <code>INPUT</code> et
+<code>OUTPUT</code>, seul TCP 80 autorisé dans <code>FORWARD</code>&nbsp;:
+<b>(1)</b> le client affiche la page du serveur web — <b>oui, ça passe</b>&nbsp;;
+<b>(2)</b> le client pingue le pare-feu — <b>non</b>, ça arrive en <code>INPUT</code>, poubelle
+silencieuse&nbsp;;
+<b>(3)</b> le client pingue le serveur d'en face — <b>non plus</b>, seul TCP 80 est autorisé en
+<code>FORWARD</code>, pas l'ICMP.</p>
+</div>
+
+<div class="callout"><div class="t">Comment le paquet est évalué dans une chaîne</div>
+Le système lit la <b>première ligne</b>, compare les caractéristiques du paquet aux critères saisis.
+Si ça correspond, il exécute l'action et <b>s'arrête</b>. Sinon il passe à la ligne suivante, jusqu'à
+la fin. Et à la fin, il applique la <b>politique par défaut</b>&nbsp;: « je ne sais pas quoi faire,
+donc je me réfère à ce qui était prévu ».
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch8"><span class="num">8.</span> Écrire une règle : l'entonnoir de sélection</h2>
+
+<div class="callout"><div class="t">Pourquoi apprendre en ligne de commande</div>
+Une interface graphique propose des <b>cases à cocher</b>&nbsp;; la ligne de commande <b>oblige à prendre
+une décision explicite</b> pour chaque critère. Et surtout, les consoles commerciales contiennent des
+<b>règles pré-écrites ou sous-entendues qu'on ne voit pas</b>&nbsp;: on ne peut pas auditer ce qu'on ne
+voit pas. Une fois le raisonnement acquis sur 4 ou 5 flux, il se transpose sur n'importe quel
+équipement graphique.
+</div>
+
+<p>Une règle se lit comme un <b>entonnoir</b>&nbsp;: on <b>sélectionne</b> progressivement les paquets
+qui nous intéressent, et on ne décide de leur sort <b>qu'à la toute fin</b>, avec la cible.</p>
+
+<div class="tw"><table>
+<thead><tr><th>Niveau</th><th>Option</th><th>Rôle</th></tr></thead>
+<tbody>
+<tr><td><b>1. Interfaces</b></td><td><code>-i eth0</code><br><code>-o eth1</code></td><td>Carte d'<b>entrée</b> (<i>input</i>) · carte de <b>sortie</b> (<i>output</i>)</td></tr>
+<tr><td><b>2. Adresses (L3)</b></td><td><code>-s 192.168.1.100</code><br><code>-d 10.0.0.10</code></td><td>Adresse <b>source</b> · adresse <b>destination</b> (avec masque possible)</td></tr>
+<tr><td><b>3. Protocole (L4)</b></td><td><code>-p tcp</code> · <code>-p udp</code> · <code>-p icmp</code></td><td>Le protocole de transport</td></tr>
+<tr><td><b>4. Ports (L4)</b></td><td><code>--sport 1024:</code><br><code>--dport 22</code></td><td>Port <b>source</b> · port <b>destination</b>. <code>1024:</code> signifie « 1024 et au-delà »</td></tr>
+<tr><td><b>5. Cible</b></td><td><code>-j ACCEPT</code> · <code>-j DROP</code> · <code>-j REJECT</code></td><td><i>Jump target</i>&nbsp;: <b>la décision</b>, prise en dernier</td></tr>
+</tbody>
+</table></div>
+
+<div class="exam"><div class="t">La règle d'ingénierie : justifier chaque joker</div>
+<b>Plus on renseigne de critères, plus on verrouille.</b> Chaque fois qu'on écrit
+<code>0.0.0.0/0</code> — « toutes les adresses » — on doit être capable de le <b>justifier
+formellement</b> (un serveur web public ouvert au monde, par exemple). Si le flux concerne
+<b>deux machines précises</b>, on <b>doit</b> renseigner leurs adresses.
+</div>
+
+<h3 id="ch8-commandes">8.1 Les commandes à connaître</h3>
+<div class="tw"><table>
+<thead><tr><th>Commande</th><th>Effet</th></tr></thead>
+<tbody>
+<tr><td><code>-A &lt;chaîne&gt;</code></td><td><i>Append</i>&nbsp;: ajoute la règle <b>à la fin</b> de la chaîne</td></tr>
+<tr><td><code>-D &lt;chaîne&gt;</code></td><td><i>Delete</i>&nbsp;: supprime, soit en <b>répétant les arguments exacts</b>, soit par <b>numéro de ligne</b></td></tr>
+<tr><td><code>-L &lt;chaîne&gt; --line-numbers</code></td><td>Liste en <b>numérotant</b> les règles, pour pouvoir les supprimer par numéro</td></tr>
+<tr><td><code>-F &lt;chaîne&gt;</code></td><td><i>Flush</i>&nbsp;: vide <b>entièrement</b> la chaîne</td></tr>
+<tr><td><code>-P &lt;chaîne&gt; DROP</code></td><td><i>Policy</i>&nbsp;: fixe la <b>politique par défaut</b> de la chaîne</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="ch8-nvl">8.2 Lire l'état des tables : <code>iptables -nvL</code></h3>
+<div class="tw"><table>
+<thead><tr><th>Option</th><th>Signification</th><th>Pourquoi</th></tr></thead>
+<tbody>
+<tr><td><code>-n</code></td><td><i>numeric</i></td><td>Affiche IP et ports en <b>numérique brut</b>, sans résolution DNS inverse — indispensable pour la <b>rapidité</b></td></tr>
+<tr><td><code>-v</code></td><td><i>verbose</i></td><td>Affiche les <b>interfaces</b> (in, out) et surtout les <b>compteurs de paquets et d'octets</b></td></tr>
+<tr><td><code>-L</code></td><td><i>list</i></td><td>Liste les règles de la table sélectionnée (<code>filter</code> par défaut)</td></tr>
+</tbody>
+</table></div>
+<div class="callout ok"><div class="t">La méthode de travail : <code>watch -d iptables -nvL</code></div>
+<code>watch</code> rafraîchit l'affichage <b>toutes les 2 secondes</b>, et l'option <b><code>-d</code></b>
+(<i>differences</i>) met <b>en surbrillance les compteurs qui viennent de changer</b>.
+<p style="margin-bottom:0">Méthode recommandée&nbsp;: <b>deux terminaux côte à côte</b> — l'un avec
+<code>watch</code> pour <b>voir les flux passer en direct</b>, l'autre pour saisir les règles. C'est
+l'outil de diagnostic n°1&nbsp;: une règle dont le compteur reste à <b>zéro</b> ne sert à rien.</p>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch9"><span class="num">9.</span> Mise en pratique : la maquette et les premières règles</h2>
+
+<h3 id="ch9-maquette">9.1 La topologie de laboratoire</h3>
+<div class="tw"><table>
+<thead><tr><th>Machine</th><th>Adressage</th><th>Rôle</th></tr></thead>
+<tbody>
+<tr><td><b>VM Client</b></td><td><code>192.168.1.100/24</code></td><td>Poste utilisateur, réseau interne 1</td></tr>
+<tr><td><b>VM Pare-feu</b></td><td><code>eth0 : 192.168.1.1/24</code><br><code>eth1 : 10.0.0.1/24</code></td><td>Passerelle à <b>deux interfaces</b>, Netfilter</td></tr>
+<tr><td><b>VM Serveur</b></td><td><code>10.0.0.10/24</code></td><td>Services cibles&nbsp;: SSH, HTTP, DNS</td></tr>
+</tbody>
+</table></div>
+<p>Sous VirtualBox, on utilise des <b>réseaux internes</b> (<i>Internal Network</i>) pour isoler
+strictement les segments et <b>forcer tout le trafic à transiter par le pare-feu</b>.</p>
+
+<h3 id="ch9-forward">9.2 Le piège n°1 : activer le routage dans le noyau</h3>
+<div class="exam"><div class="t">Le piège majeur en TP comme en examen</div>
+Par défaut, <b>une machine Linux à plusieurs interfaces refuse de router les paquets entre elles</b>.
+La variable <code>net.ipv4.ip_forward</code> vaut <b><code>0</code></b>.
+<p><b>Symptôme</b>&nbsp;: même avec des politiques <code>ACCEPT</code> et des règles
+<code>FORWARD</code> explicites, <b>rien ne traverse</b>. Et ce n'est <b>pas</b> un problème
+d'<code>iptables</code>&nbsp;: c'est le <b>routage du noyau</b>.</p>
+<p style="margin-bottom:0"><b>La commande</b>&nbsp;:
+<code>sysctl -w net.ipv4.ip_forward=1</code> — ou de façon <b>persistante</b> en décommentant la ligne
+dans <code>/etc/sysctl.conf</code>.</p>
+</div>
+<p>Une fois le routage activé et la politique encore à <code>ACCEPT</code>, un <code>ping</code> du
+client vers le serveur passe immédiatement&nbsp;: dans <code>watch</code>, le compteur de
+<code>FORWARD</code> monte de <b>2 paquets par seconde</b> — un <i>Echo Request</i> à l'aller, un
+<i>Echo Reply</i> au retour.</p>
+
+<h3 id="ch9-verrou">9.3 Verrouiller : la politique par défaut</h3>
+<div class="callout ok"><div class="t">Les trois lignes de fermeture</div>
+<code>iptables -P FORWARD DROP</code> — plus rien ne traverse<br>
+<code>iptables -P INPUT DROP</code> — la machine n'accepte plus rien<br>
+<code>iptables -P OUTPUT DROP</code> — la machine n'émet plus rien
+<p style="margin-bottom:0">Le ping s'arrête net, la ligne affiche <code>policy DROP</code>, et les
+compteurs de la politique montent à chaque tentative. <b>Le pare-feu est hermétiquement fermé, et on
+cause après.</b></p>
+</div>
+
+<h3 id="ch9-regles">9.4 Les règles miroirs, en stateless</h3>
+<p>Sans module d'état, chaque flux exige <b>deux règles</b>, dont la seconde est l'<b>inversion
+stricte</b> de la première.</p>
+<div class="callout def"><div class="t">SSH du client vers le serveur (TCP 22)</div>
+<b>Aller</b>&nbsp;: <code>iptables -A FORWARD -i eth0 -o eth1 -s 192.168.1.100 -d 10.0.0.10 -p tcp
+--sport 1024: --dport 22 -j ACCEPT</code>
+<br><b>Retour</b>&nbsp;: <code>iptables -A FORWARD -i eth1 -o eth0 -s 10.0.0.10 -d 192.168.1.100 -p tcp
+--sport 22 --dport 1024: -j ACCEPT</code>
+</div>
+<div class="exam"><div class="t">Les trois inversions — en oublier une seule casse tout</div>
+<b>Les interfaces</b>&nbsp;: <code>-i eth0 -o eth1</code> ↔ <code>-i eth1 -o eth0</code><br>
+<b>Les adresses</b>&nbsp;: <code>-s client -d serveur</code> ↔ <code>-s serveur -d client</code><br>
+<b>Les ports</b>&nbsp;: <code>--sport 1024: --dport 22</code> ↔ <code>--sport 22 --dport 1024:</code>
+<p style="margin-bottom:0">Si une seule inversion manque, le paquet retour ne correspond à aucune règle
+et meurt dans la politique <code>DROP</code>. Sur le même modèle&nbsp;: <b>DNS</b> en
+<code>-p udp --dport 53</code>, <b>Web</b> en <code>-p tcp --dport 80</code> et <code>443</code>.</p>
+</div>
+<div class="callout warn"><div class="t">Le ping depuis le pare-feu ne passe pas par <code>FORWARD</code></div>
+Si l'administrateur, connecté sur la console du pare-feu, pingue le serveur, ce <b>n'est pas du
+transit</b>&nbsp;: la requête part par <b><code>OUTPUT</code></b> et la réponse revient par
+<b><code>INPUT</code></b>. Il faut donc deux règles sur ces chaînes-là, pas sur
+<code>FORWARD</code>. C'est l'erreur de diagnostic classique en TP.
+</div>
+<div class="callout"><div class="t">Pourquoi <code>OUTPUT</code> compte des paquets jetés « tout seul »</div>
+Dès qu'on passe <code>OUTPUT</code> en <code>DROP</code>, les compteurs montent <b>sans aucune action de
+l'utilisateur</b>&nbsp;: ce sont les démons système — <b>NTP</b> pour l'heure, le <b>résolveur DNS</b>,
+les vérifications de dépôts <b>APT</b>. Cela confirme qu'un OS moderne <b>communique en permanence vers
+l'extérieur</b> à l'insu de l'administrateur.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch10"><span class="num">10.</span> Le pare-feu à état</h2>
+
+<p>Écrire deux règles par flux devient vite ingérable. Le <b>suivi de connexion</b> remplace toutes les
+règles de retour par une seule.</p>
+
+<div class="steps">
+<div class="step"><b>1. Le client émet un <code>SYN</code> autorisé</b><br>
+Le pare-feu laisse passer et inscrit le <b>quintuplet</b> dans sa <b>table d'état</b> (module
+<b>conntrack</b>).</div>
+<div class="step"><b>2. Le serveur répond <code>SYN-ACK</code></b><br>
+Le pare-feu <b>inverse</b> adresses et ports du paquet entrant et cherche la correspondance.</div>
+<div class="step"><b>3. Correspondance trouvée</b><br>
+C'est la réponse légitime à une connexion initiée de l'intérieur — état <code>ESTABLISHED</code>. Le
+paquet passe <b>sans qu'aucune règle d'entrée n'ait été écrite</b>.</div>
+<div class="step"><b>4. L'entrée expire</b><br>
+Passé un délai sans trafic, l'entrée est purgée.</div>
+</div>
+
+<div class="callout ok"><div class="t">La règle qui remplace tous les retours</div>
+<code>iptables -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT</code>
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>État</th><th>Signification</th></tr></thead>
+<tbody>
+<tr><td><code>NEW</code></td><td>Premier paquet d'un flux — <b>c'est là qu'on décide</b></td></tr>
+<tr><td><code>ESTABLISHED</code></td><td>Le paquet appartient à une session déjà en table</td></tr>
+<tr><td><code>RELATED</code></td><td>Connexion <b>secondaire</b> liée à une session existante</td></tr>
+<tr><td><code>INVALID</code></td><td>Incohérent avec tout état connu — <b>à jeter systématiquement</b></td></tr>
+</tbody>
+</table></div>
+
+<div class="callout def"><div class="t">Les délais, et pourquoi ils existent</div>
+<b>Quelques secondes</b> pour un <code>SYN</code> resté sans réponse (purgé sous 10 à 30 s)&nbsp;;
+<b>quelques minutes</b> pour une session établie.
+Deux raisons&nbsp;: <b>ne pas saturer la mémoire</b> du pare-feu — c'est la cible d'un <b>SYN flood</b>
+— et <b>empêcher l'injection tardive</b> d'un paquet forgé qui respecterait le quintuplet.
+</div>
+
+<div class="callout"><div class="t">Ce que veut dire <code>RELATED</code></div>
+Certains protocoles négocient une <b>seconde connexion dans le contenu</b> de la première. Cas d'école,
+le <b>FTP actif</b>&nbsp;: la commande passe sur le port 21, et le serveur ouvre une connexion de
+<b>données</b> vers un port du client annoncé dans la commande <code>PORT</code>. Un <b>helper</b> de
+conntrack lit cette commande et pré-autorise la connexion attendue. Même mécanisme pour les erreurs
+ICMP liées à un flux existant.
+</div>
+
+<div class="callout ok"><div class="t">Le squelette d'une politique à état</div>
+<ol style="margin-bottom:0">
+<li>Politique par défaut <code>DROP</code> sur les trois chaînes.</li>
+<li>Une règle acceptant <code>ESTABLISHED,RELATED</code> — elle traite <b>tous</b> les retours.</li>
+<li>Une règle jetant <code>INVALID</code>, placée tôt.</li>
+<li>Puis <b>uniquement</b> les règles <code>NEW</code> décrivant les flux qu'on autorise à s'ouvrir.</li>
+</ol>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch11"><span class="num">11.</span> Politique par défaut et ordre des règles</h2>
+
+<h3 id="ch11-politique">11.1 Liste blanche ou liste noire</h3>
+<div class="tw"><table>
+<thead><tr><th></th><th>Liste blanche — <code>DROP</code> par défaut</th><th>Liste noire — <code>ACCEPT</code> par défaut</th></tr></thead>
+<tbody>
+<tr><td>Principe</td><td>Tout est jeté <b>sauf</b> ce qui est explicitement autorisé</td><td>Tout passe, on bloque au fur et à mesure qu'on découvre</td></tr>
+<tr><td>Face à l'inconnu</td><td>Le flux non prévu est <b>bloqué</b>&nbsp;: on le découvre par une panne</td><td>Le flux non prévu <b>passe</b>&nbsp;: on le découvre par une intrusion</td></tr>
+<tr><td>Verdict</td><td><b>La seule approche défendable</b></td><td>Structurellement incapable de traiter une attaque inconnue</td></tr>
+</tbody>
+</table></div>
+<ul class="key-points">
+<li>C'est le <b>moindre privilège</b> appliqué aux flux, et l'application concrète du <b>fail-safe</b>.</li>
+<li><b>Le prix à payer</b>&nbsp;: elle exige une <b>matrice des flux</b>. On ne peut pas autoriser
+explicitement ce qu'on n'a pas recensé — c'est pourquoi tant de réseaux dérivent vers la liste noire.</li>
+<li><b>Les trois chaînes</b> doivent être traitées. Oublier <code>FORWARD</code> est l'erreur classique.</li>
+</ul>
+<div class="callout danger"><div class="t">Piège de mise en œuvre</div>
+Basculer <code>INPUT</code> en <code>DROP</code> <b>avant</b> d'avoir écrit la règle autorisant SSH,
+c'est se couper soi-même l'accès à la machine. On écrit d'abord les autorisations, on bascule la
+politique <b>en dernier</b>.
+</div>
+
+<h3 id="ch11-ordre">11.2 Le premier qui correspond gagne</h3>
+<div class="exam"><div class="t"><i>First match wins</i></div>
+Les règles sont évaluées <b>de haut en bas</b>. Dès qu'un paquet correspond, l'action est exécutée et
+<b>l'évaluation s'arrête</b>. Toute règle <b>spécifique restrictive</b> doit donc être placée
+<b>AVANT</b> la règle générale permissive qui la contiendrait.
+</div>
+<div class="example"><div class="t">Le cas de l'imprimante</div>
+Objectif&nbsp;: autoriser le LAN <code>192.168.1.0/24</code>, <b>sauf</b> l'imprimante
+<code>192.168.1.20</code>.
+<div class="tw" style="margin-top:8px"><table>
+<thead><tr><th></th><th>Ordre</th><th>Résultat</th></tr></thead>
+<tbody>
+<tr><td><b>Correct</b></td><td>1. <code>DROP 192.168.1.20</code><br>2. <code>ACCEPT 192.168.1.0/24</code></td><td>L'imprimante est bloquée, le reste du LAN passe.</td></tr>
+<tr><td><b>Erroné</b></td><td>1. <code>ACCEPT 192.168.1.0/24</code><br>2. <code>DROP 192.168.1.20</code></td><td>L'imprimante fait partie du /24&nbsp;: elle est acceptée par la règle 1. <b>La règle 2 n'est jamais atteinte.</b></td></tr>
+</tbody>
+</table></div>
+</div>
+<div class="callout warn"><div class="t">Pourquoi l'imprimante est un cas à part entière</div>
+<b>1. Un disque dur plein de données sensibles.</b> Les copieurs stockent des copies de tout ce qui a
+été <b>imprimé, scanné ou faxé</b> — contrats, fiches de paie, bilans. En investigation numérique, ce
+sont des mines d'or&nbsp;; et ces disques <b>partent avec la machine</b> en fin de location.
+<b>2. Des systèmes vulnérables et bavards</b>, bourrés de protocoles obsolètes pour rester compatibles
+avec tous les OS, jamais mis à jour, jamais surveillés.
+<b>3. Une télémaintenance sortante.</b> Le constructeur relève les <b>niveaux de toner</b> et les
+<b>compteurs de facturation</b> par Internet. <b>Bloquer brutalement cet accès casse le contrat de
+maintenance.</b> La bonne réponse n'est donc pas « je bloque tout » mais <b>un flux nommé, restreint,
+journalisé et documenté dans la matrice des flux</b> comme obligation contractuelle.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch12"><span class="num">12.</span> La translation d'adresses (NAT)</h2>
+
+<div class="tw"><table>
+<thead><tr><th></th><th><b>SNAT</b> — <i>Source NAT</i></th><th><b>DNAT</b> — <i>Destination NAT</i></th></tr></thead>
+<tbody>
+<tr><td>Ce qui est réécrit</td><td>L'adresse (et le port) <b>source</b></td><td>L'adresse (et le port) <b>destination</b></td></tr>
+<tr><td>Sens</td><td><b>Sortant</b></td><td><b>Entrant</b></td></tr>
+<tr><td>À quoi ça sert</td><td>Faire sortir tout un LAN privé <b>derrière une seule adresse publique</b></td><td><b>Exposer un service</b> sans lui donner d'adresse publique</td></tr>
+<tr><td>Autres noms</td><td><b>Masquerade</b> (adresse prise dynamiquement sur l'interface), <b>PAT</b></td><td><b>Port forwarding</b></td></tr>
+<tr><td>Chaîne</td><td><code>POSTROUTING</code> — <b>après</b> le routage</td><td><code>PREROUTING</code> — <b>avant</b> le routage</td></tr>
+</tbody>
+</table></div>
+<p>Ces deux chaînes appartiennent à la table <b><code>nat</code></b>, distincte de la table
+<b><code>filter</code></b> qui porte <code>INPUT</code>, <code>FORWARD</code> et <code>OUTPUT</code>.</p>
+
+<div class="exam"><div class="t">Le DNAT s'applique AVANT le filtrage</div>
+La destination est réécrite en <code>PREROUTING</code>, donc avant la décision de la chaîne
+<code>FORWARD</code>. <b>La règle de filtrage doit porter sur l'adresse interne réelle du serveur</b>,
+pas sur l'adresse publique demandée par le client. Symptôme d'erreur trompeur&nbsp;: « le DNAT marche,
+mais rien ne passe ».
+</div>
+
+<div class="callout warn"><div class="t">Le NAT n'est pas une mesure de sécurité</div>
+Il masque le plan d'adressage interne&nbsp;: c'est un <b>effet de bord</b>, pas une politique. Un
+pare-feu sans règles avec du NAT ne protège rien — dès qu'une machine interne initie une connexion, le
+retour est autorisé, et c'est exactement par là que passent les tunnels de commande et contrôle.
+<b>La protection vient du filtrage.</b>
+</div>
+
+<div class="callout"><div class="t">Trois effets de bord à connaître</div>
+<b>Il casse la traçabilité</b> — derrière une adresse publique unique, on ne sait plus quel poste a
+fait quoi, sauf à journaliser les tables de translation.
+<b>Il casse les protocoles qui transportent des adresses dans leur charge utile</b> — FTP actif, SIP —
+d'où les helpers de conntrack.
+<b>Il empêche les connexions entrantes spontanées</b>, ce qui est la raison d'être du DNAT.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch13"><span class="num">13.</span> Architectures : DMZ, zones et bastion</h2>
+
+<h3 id="ch13-dmz">13.1 La DMZ à deux pare-feu</h3>
+<div class="callout def"><div class="t">Le montage, conforme aux recommandations <b>ANSSI</b></div>
+<b>Internet</b> → <b>pare-feu externe</b> (filtrage grossier L3/L4, constructeur A) → <b>DMZ</b>
+(serveurs web, reverse proxies, relais SMTP) → <b>pare-feu interne</b> (filtrage strict L3/L4/L7,
+constructeur B) → <b>LAN</b>.
+</div>
+<div class="exam"><div class="t">La règle fondamentale</div>
+<b>Aucun flux direct n'est autorisé entre Internet et le réseau interne.</b> Tout flux externe
+<b>se termine</b> sur un service de la DMZ, qui ouvre ensuite une <b>seconde connexion distincte</b>
+vers l'interne. Deux connexions, jamais une seule qui traverse.
+</div>
+<p>Cette seule architecture applique trois principes&nbsp;: <b>défense en profondeur</b> (deux
+barrières), <b>diversité des défenses</b> (deux constructeurs), <b>chokepoint</b> (points de passage
+identifiés).</p>
+<div class="callout"><div class="t">Vocabulaire et durcissement</div>
+<b>DMZ-1 = zone de transit</b> (NAC, proxies&nbsp;: ce qui <b>assainit</b> ce qui entre) ·
+<b>DMZ-2 = zone publique</b> (serveurs exposés, reverse proxy). Principe fondateur&nbsp;: on définit
+des zones par <b>degré de sécurité</b>, et toute donnée qui change de zone <b>traverse un filtre</b>.
+<p style="margin-bottom:0"><b>Trois règles de durcissement</b>&nbsp;: pas de DHCP (adressage statique
+et MAC locking) · ARP statique ou semi-statique · <b>administration depuis l'Intranet uniquement</b>.
+Et sur le pare-feu&nbsp;: <b>aucun service interne hébergé dessus</b>.</p>
+</div>
+<div class="callout danger"><div class="t">Le principe qui gouverne tout le reste</div>
+Une DMZ est une zone dont on <b>assume qu'elle sera compromise</b>. Tout ce qui s'y trouve doit être
+considéré comme <b>déjà entre les mains de l'attaquant</b>&nbsp;: un annuaire d'authentification, une
+base de production ou un secret de chiffrement n'y ont rien à faire — y compris « juste pour un test ».
+</div>
+
+<h3 id="ch13-asa">13.2 Les niveaux de sécurité (Cisco ASA)</h3>
+<p>Chaque interface reçoit un <i>security level</i> de <b>0 à 100</b>&nbsp;: <b>100 = Inside</b>,
+<b>50 = DMZ</b>, <b>0 = Outside</b>.</p>
+<div class="exam"><div class="t">La « règle de la diode »</div>
+<b>Du niveau élevé vers le niveau faible</b> (100 → 50 → 0)&nbsp;: <b>autorisé par défaut</b>.
+<b>Du faible vers l'élevé</b> (0 → 100)&nbsp;: <b>interdit</b>, sauf ACL explicite.
+<p style="margin-bottom:0">C'est l'inverse d'un Linux en <code>DROP</code> par défaut, où <b>rien</b>
+n'est autorisé tant qu'on ne l'a pas écrit — y compris en sortie. Attention&nbsp;: une <b>sortie non
+maîtrisée</b> est le canal d'exfiltration et de commande et contrôle.</p>
+</div>
+
+<h3 id="ch13-bastion">13.3 Le bastion</h3>
+<div class="callout def"><div class="t">Définition</div>
+Ordinateur ou sous-réseau <b>fortement fortifié</b> (<i>hardened</i>) <b>car directement exposé</b> aux
+attaques extérieures. Il sert de <b>point de passage obligatoire et unique</b> où administrateurs et
+prestataires s'authentifient avant de <b>rebondir</b> vers le réseau interne.
+<p style="margin-bottom:0"><b>Cloisonnement</b>&nbsp;: s'il est compromis, l'attaquant ne doit pas
+obtenir pour autant un accès direct et illimité aux ressources sensibles.</p>
+</div>
+<ul class="key-points">
+<li><b>Positionnement</b>&nbsp;: jamais en frontal direct sur Internet — <b>toujours derrière un premier
+pare-feu</b>, en DMZ dédiée ou VLAN d'administration isolé.</li>
+<li><b>Mesures associées</b>&nbsp;: <b>géofiltrage</b>, <b>authentification forte (MFA)</b>,
+journalisation exhaustive, supervision permanente.</li>
+<li><b>Son intérêt principal</b>&nbsp;: c'est un point de collecte de <b>logs</b> idéal — l'imputabilité,
+savoir qui a fait quoi. Catégorie de produit&nbsp;: <b>PAM</b> (<i>Privileged Access Management</i>),
+dont <b>Wallix</b> est l'exemple le plus courant en entreprise&nbsp;; il permet même de <b>rejouer</b>
+les sessions d'administration à partir des logs.</li>
+</ul>
+<div class="callout"><div class="t">Victime sacrificielle et pot de miel</div>
+Une <b>victime sacrificielle</b> est une machine <b>réelle et utile</b> placée en zone exposée
+(application en développement, service tiers non audité), dont on <b>assume par avance la
+compromission</b>&nbsp;: c'est une concession.
+Un <b>honeypot</b> est une machine <b>factice</b>, sans usage métier, destinée à attirer et observer
+l'attaquant&nbsp;: c'est un capteur.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch14"><span class="num">14.</span> Typologies de pare-feu, durcissement et UTM</h2>
+
+<h3 id="ch14-types">14.1 Personnel, entreprise, SOHO</h3>
+<ul class="key-points">
+<li><b>Pare-feu personnel</b>&nbsp;: son défaut est de <b>conception</b>. Il demande un arbitrage
+technique à un utilisateur qui n'a aucune idée de ce qu'est un port, et qui a un intérêt immédiat à
+cliquer sur « Autoriser » pour que son logiciel fonctionne.</li>
+<li><b>Pare-feu d'entreprise</b>&nbsp;: bien conçu au départ, il <b>dérive</b> faute d'audit régulier.
+Une ouverture « en urgence, je l'enlèverai après » reste en place indéfiniment. Toute exception doit
+être <b>commentée, datée avec une échéance et journalisée</b>.</li>
+<li><b>SOHO</b> (<i>Small Office / Home Office</i>)&nbsp;: le segment des structures d'une cinquantaine
+d'utilisateurs au plus.</li>
+</ul>
+<div class="tw"><table>
+<thead><tr><th>Solution</th><th>À savoir</th></tr></thead>
+<tbody>
+<tr><td><b>Netfilter</b></td><td>Le sous-système de filtrage du <b>noyau Linux</b>. <code>iptables</code> et son successeur <b><code>nftables</code></b> ne sont que ses <b>outils d'administration</b>.</td></tr>
+<tr><td><b>Stormshield</b></td><td>Français&nbsp;: fusion de <b>Netasq</b> et <b>Arkoon</b>, groupe Airbus. Référence des marchés publics français.</td></tr>
+<tr><td><b>Check Point</b></td><td>Israélien&nbsp;: <b>pionnier de l'inspection d'état</b> (<i>stateful inspection</i>).</td></tr>
+<tr><td><b>Cisco ASA</b></td><td><i>Adaptive Security Appliance</i>&nbsp;: fonctionne sur les niveaux de sécurité 0-100.</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="ch14-durcir">14.2 Durcir un pare-feu</h3>
+<ol class="key-points">
+<li><b>Minimiser la surface d'attaque</b>&nbsp;: pas d'interface graphique, <b>pas de compilateur</b>,
+noyau minimal, aucun paquet superflu. Moins de code, moins de failles — et l'attaquant ne peut pas
+construire son outil sur place.</li>
+<li><b>Être un point de coupure incontournable</b>&nbsp;: aucun chemin physique ou logique ne doit
+permettre de le contourner.</li>
+<li><b>Sécuriser l'accès physique</b>&nbsp;: en baie verrouillée, avec contrôle d'accès.</li>
+</ol>
+
+<h3 id="ch14-utm">14.3 Le paradoxe de l'UTM</h3>
+<div class="callout def"><div class="t">UTM — <i>Unified Threat Management</i></div>
+Un boîtier unique empilant pare-feu, proxy web, antivirus de flux, <i>sandboxing</i>, détection
+d'intrusion et VPN sur la même machine.
+</div>
+<div class="tw"><table>
+<thead><tr><th>Pour</th><th>Contre</th></tr></thead>
+<tbody>
+<tr><td>Un seul équipement à acheter, câbler, administrer et superviser · console unique · coût réduit · adapté aux structures sans équipe sécurité dédiée. C'est <b>KISS</b> appliqué à l'exploitation.</td><td><b>Surface d'attaque maximale</b> — ces logiciels analysent du contenu hostile sur l'équipement de frontière · <b>SPOF total</b> — une panne fait tomber filtrage, VPN, proxy et IPS ensemble · performances dégradées · <b>viole la diversité des défenses</b>.</td></tr>
+</tbody>
+</table></div>
+<p><b>Le paradoxe&nbsp;:</b> le durcissement dit « enlevez tout ce qui n'est pas indispensable »,
+l'UTM dit « mettez tout dans la même boîte ». L'arbitrage se fait sur la <b>taille et la criticité</b>
+de l'organisation.</p>
+
+<div class="callout"><div class="t">La passerelle multi-interfaces</div>
+Schéma type et moyen mnémotechnique&nbsp;: <code>eth0</code> = <b>Outside</b> (le <b>O</b> ressemble à
+<b>0</b>) · <code>eth1</code> = <b>Inside</b> (le <b>I</b> ressemble à <b>1</b>) · <code>eth2</code> =
+<b>DMZ</b> · <code>eth3</code> = <b>administration et supervision</b>, séparée pour que l'accès
+d'administration ne soit joignable ni depuis Internet ni depuis le LAN utilisateur, et que les logs
+partent même si la production est saturée.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch15"><span class="num">15.</span> De la politique de sécurité à la règle</h2>
+
+<div class="steps">
+<div class="step"><b>1. La PSSI — politique de haut niveau</b><br>
+Rédigée <b>en langage naturel</b>, compréhensible par les décideurs, <b>validée par la direction</b>.
+<i>Exemple&nbsp;:</i> « la filiale italienne dépose les bilans comptables sur le serveur financier
+chaque début de mois, en heures ouvrées ».</div>
+<div class="step"><b>2. La matrice des flux — le document pivot</b><br>
+La traduction en paramètres réseau&nbsp;: <b>zone / IP source</b> · <b>zone / IP destination</b> ·
+<b>protocole</b> · <b>ports</b> · <b>plages horaires</b> · <b>action</b> · <b>journalisation</b>.</div>
+<div class="step"><b>3. La déclinaison technique</b><br>
+La traduction dans la syntaxe de chaque équipement&nbsp;: règles <code>iptables</code>, règles
+Stormshield, ACL Cisco.</div>
+</div>
+
+<div class="callout def"><div class="t">Pourquoi la matrice est le document central</div>
+<ul style="margin-bottom:0">
+<li>Elle rend la <b>liste blanche possible</b>&nbsp;: on ne peut pas autoriser ce qu'on n'a pas recensé.</li>
+<li>Elle est <b>indépendante du constructeur</b>&nbsp;: elle survit à un changement d'équipement, pas
+les règles.</li>
+<li>Elle permet l'<b>audit</b>&nbsp;: comparer les règles réelles à la matrice, c'est ce qui empêche la
+dérive.</li>
+<li>C'est le <b>premier document réclamé en réponse à incident</b>&nbsp;: sans elle, on ne sait ni par
+où l'attaquant a transité, ni quel câble couper.</li>
+</ul>
+</div>
+
+<div class="callout warn"><div class="t">La plage horaire n'est pas un détail</div>
+Un flux métier qui n'a lieu qu'en heures ouvrées <b>n'a aucune raison d'être autorisé un dimanche à
+3 h du matin</b> — et c'est précisément l'heure à laquelle on exfiltre. Restreindre dans le temps est
+une application directe du <b>moindre privilège</b>.
+</div>
+
+<div class="exam"><div class="t">L'arbitrage sécurité contre production : faire tracer la décision</div>
+Deux postures s'opposent en permanence&nbsp;: l'<b>analyste sécurité</b> veut bloquer tout flux non
+formellement documenté&nbsp;; la <b>production et la direction</b> veulent la fluidité du business,
+quitte à tolérer des règles plus permissives.
+<p style="margin-bottom:0"><b>La règle d'or</b>&nbsp;: si la direction exige l'ouverture d'un flux que
+le RSSI juge risqué — refus du géofiltrage, accès distant direct sans VPN — <b>la décision doit être
+tracée et validée par écrit par le décideur</b> (Direction générale ou DSI). En cas d'incident
+ultérieur, la responsabilité est alors clairement située sur le plan managérial et financier.</p>
+</div>
+
+<div class="callout"><div class="t">Les contraintes qui s'opposent à la doctrine</div>
+Une stratégie de sécurité ne peut pas appliquer aveuglément les recommandations. Cinq contraintes
+pèsent&nbsp;: le <b>coût</b> · la <b>continuité métier</b> (un pare-feu qui paralyse la production sera
+désactivé) · l'<b>ergonomie</b> (mot de passe complexe impossible avec des gants stériles au bloc
+opératoire) · la <b>conformité</b> (le CPCE <b>impose</b> de conserver les logs de connexion un an, le
+RGPD <b>interdit</b> de garder certaines données) · la <b>pérennité des compétences</b> (une techno
+maîtrisée par une seule personne s'effondre le jour de son départ).
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch16"><span class="num">16.</span> Menaces et détection</h2>
+
+<h3 id="ch16-menaces">16.1 Deux profils d'attaquants opposés</h3>
+<div class="tw"><table>
+<thead><tr><th></th><th><b>APT</b> — <i>Advanced Persistent Threat</i></th><th><b>Cybercriminalité</b></th></tr></thead>
+<tbody>
+<tr><td>Objectif</td><td>Espionnage, <b>pré-positionnement</b>, vol de propriété intellectuelle</td><td><b>Extorsion</b> (rançon), revente de bases de données</td></tr>
+<tr><td>Moyens et temps</td><td><b>Illimités</b> — des opérations planifiées sur des années</td><td>Opportunistes et <b>rapides</b></td></tr>
+<tr><td>Comportement</td><td><b>Furtivité extrême</b>, évitement de la détection, <b>aucune rançon</b></td><td><b>Brutal et bruyant</b>&nbsp;: chiffrement, blocage de la production</td></tr>
+<tr><td>Ce qu'on cherche</td><td>Des <b>signaux faibles</b></td><td>Un événement massif — déjà trop tard</td></tr>
+</tbody>
+</table></div>
+<div class="callout"><div class="t">Pourquoi l'APT est le plus difficile à détecter</div>
+<b>Il n'y a rien à voir.</b> Pas de chiffrement, pas de rançon, pas de panne. L'attaquant entre, se
+place, et attend — l'opération peut se déclencher des années plus tard.
+</div>
+
+<h3 id="ch16-orga">16.2 Vocabulaire de la réponse à incident</h3>
+<div class="tw"><table>
+<thead><tr><th>Sigle</th><th>Développé</th><th>Rôle</th></tr></thead>
+<tbody>
+<tr><td><b>CERT</b></td><td><i>Computer Emergency Response Team</i></td><td><b>Marque déposée</b> (Carnegie Mellon, après le <b>ver Morris de 1988</b>).</td></tr>
+<tr><td><b>CSIRT</b></td><td><i>Computer Security Incident Response Team</i></td><td>Dénomination internationale libre&nbsp;: <b>même fonction</b> que CERT.</td></tr>
+<tr><td><b>CTI</b></td><td><i>Cyber Threat Intelligence</i></td><td><b>En amont</b>&nbsp;: veille sur le Darknet, modes opératoires, qualification de la menace avant qu'elle n'arrive.</td></tr>
+<tr><td><b>IR</b></td><td><i>Incident Response</i></td><td><b>Pendant</b>&nbsp;: analyse d'urgence, isolement, pilotage de la remédiation.</td></tr>
+<tr><td><b>IoC</b></td><td><i>Indicator of Compromise</i></td><td>Marqueur technique attestant d'une compromission.</td></tr>
+<tr><td><b>TTP</b></td><td><i>Tactics, Techniques and Procedures</i></td><td>Mode opératoire d'un attaquant&nbsp;: un <b>indice</b> d'attribution, jamais une preuve.</td></tr>
+</tbody>
+</table></div>
+<div class="callout"><div class="t">Typosquatting et takedown</div>
+Le <b>typosquatting</b> est le dépôt d'un domaine imitant celui de la cible pour du phishing —
+<code>cornpany.com</code> pour <code>company.com</code>, le « rn » se lisant comme un « m ». La parade
+est le <b>takedown</b>&nbsp;: un dossier de preuve technique et juridique adressé au <b>registrar</b>
+pour faire suspendre le domaine. Très efficace en Europe et aux États-Unis, difficile ailleurs — la
+défense externe repose ici sur du <b>droit</b>, pas sur de la technique.
+</div>
+
+<h3 id="ch16-detection">16.3 Détection comportementale</h3>
+<div class="tw"><table>
+<thead><tr><th>Mécanisme</th><th>Principe</th></tr></thead>
+<tbody>
+<tr><td><b>Voyage impossible</b><br><i>impossible travel</i></td><td>Deux authentifications réussies géographiquement incompatibles avec le délai écoulé (Londres, puis New York 4 secondes plus tard). Prouve un <b>vol d'identifiants</b>. Produit par un <b>moteur de corrélation</b>, pas par une signature.</td></tr>
+<tr><td><b>Géofiltrage</b><br><i>geo-blocking</i></td><td>Restreindre les accès aux zones où l'entreprise a une activité légitime. <b>Se contourne avec un VPN</b>&nbsp;; sa vraie valeur est d'<b>éliminer le bruit de fond</b> des scans automatisés pour que les alertes restantes soient lisibles.</td></tr>
+<tr><td><b>Beaconing</b></td><td>Machine compromise émettant un paquet à intervalle <b>parfaitement régulier</b> vers son serveur de <b>commande et contrôle (C2)</b>. Ce qui le trahit est la <b>régularité</b>, pas le volume&nbsp;: un humain ne produit jamais un intervalle constant.</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="ch16-erreurs">16.4 Les erreurs classiques de gestion d'incident</h3>
+<ul class="key-points">
+<li><b>La machine oubliée.</b> Les attaquants entrent presque toujours par un serveur vieillissant ou
+de test « qui devait être décommissionné ». Si on ne peut pas la retirer tout de suite, <b>on l'isole
+du réseau</b>.</li>
+<li><b>L'absence de cartographie.</b> Sans schéma réseau ni matrice des flux, on ne sait pas où couper.</li>
+<li><b>Restaurer une sauvegarde sans analyse.</b> Trois dégâts&nbsp;: la faille est toujours là, on
+<b>réinjecte l'implant</b> déjà présent dans le snapshot, et on <b>détruit les preuves</b> — notamment
+la mémoire vive. Le bon ordre&nbsp;: <b>isoler</b>, <b>préserver les preuves</b>, <b>dater la
+compromission</b>, puis restaurer une sauvegarde <b>antérieure</b> à cette date.</li>
+<li><b>Payer la rançon.</b> Cela signale une victime solvable&nbsp;: les attaquants reviennent
+généralement dans les 6 à 12 mois.</li>
+<li><b>Exclure des sources du SIEM.</b> L'ingestion étant <b>facturée au volume</b>, on retire les
+serveurs secondaires et la pré-production — exactement là où passent les attaquants.</li>
+</ul>
+
+<!-- ===================================================================== -->
+<h2 id="ch17"><span class="num">17.</span> Analyse et diagnostic</h2>
+
+<h3 id="ch17-wireshark">17.1 Méthode Wireshark</h3>
+<p><b>On commence toujours par la vue globale</b>, jamais par un paquet isolé.</p>
+<div class="tw"><table>
+<thead><tr><th>Outil</th><th>Usage</th></tr></thead>
+<tbody>
+<tr><td><b>Hiérarchie des protocoles</b><br><code>Statistics → Protocol Hierarchy</code></td><td><b>Le point de départ.</b> Donne la répartition volumétrique. On y repère de l'<b>IPv6 imprévu</b>, du <b>SMB sur le WAN</b>, ou un <b>taux de DNS anormal</b> — le DNS étant le canal d'exfiltration favori parce qu'il est <b>toujours autorisé</b>.</td></tr>
+<tr><td><b>Graphiques E/S</b><br><code>Statistics → I/O Graphs</code></td><td>Analyse <b>temporelle</b>&nbsp;: un mur vertical pour un déni de service, un plateau pour une exfiltration, un <b>peigne régulier</b> pour du beaconing.</td></tr>
+<tr><td><b><i>Follow TCP Stream</i></b></td><td>Réassemble <b>tout le dialogue applicatif</b> sans les en-têtes réseau&nbsp;: on lit la charge utile telle que l'application l'a vue.</td></tr>
+<tr><td><b><i>Decode As…</i></b></td><td>Force un <b>dissecteur</b> sur un flux passant par un port inhabituel. C'est exactement ce que fait un attaquant pour <b>se cacher derrière un port autorisé</b> — la preuve que le numéro de port ne dit rien du protocole réel.</td></tr>
+<tr><td><b>Horodatage absolu</b><br><code>View → Time Display Format</code></td><td>Par défaut Wireshark affiche des <b>secondes relatives</b>, inutilisables pour croiser avec les journaux système. Penser au <b>fuseau</b>&nbsp;: les logs serveurs sont souvent en UTC.</td></tr>
+<tr><td><b>Profils</b></td><td>Environnement d'analyse sur mesure (colonnes, colorisation, boutons), <b>exportable et partageable</b> avec l'équipe.</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="ch17-diag">17.2 « Ça ne marche pas » : la méthode</h3>
+<div class="steps">
+<div class="step"><b>1. Dépasser le <code>ping</code></b><br>
+Le ping teste <b>ICMP</b> — ni les ports TCP/UDP, ni le filtrage applicatif. Tester le <b>vrai
+flux</b>&nbsp;: <code>telnet ip port</code>, <code>nc -vz</code>, <code>curl</code>.</div>
+<div class="step"><b>2. Vérifier le routage du noyau</b><br>
+<code>net.ipv4.ip_forward</code> est-il à <b>1</b>&nbsp;? Sinon rien ne traverse, quelles que soient
+les règles.</div>
+<div class="step"><b>3. Vérifier la passerelle par défaut du client</b><br>
+Est-elle bien <b>dans son sous-réseau</b>&nbsp;?</div>
+<div class="step"><b>4. Capturer à la source, puis sur le pare-feu</b><br>
+Le paquet <b>quitte-t-il la carte réseau</b> du client&nbsp;? <b>Arrive-t-il sur <code>eth1</code></b>&nbsp;?
+Cela sépare un problème local d'un problème de chemin (VLAN, commutateur, câblage).</div>
+<div class="step"><b>5. Lire les compteurs de règles</b><br>
+<code>watch -d iptables -nvL</code>&nbsp;: si la règle reste à <b>zéro paquet</b> alors que le compteur
+<code>DROP</code> par défaut monte, la règle est <b>mal écrite ou mal ordonnée</b>. Vérifier aussi
+qu'on regarde <b>la bonne chaîne</b> — un flux du pare-feu lui-même est en
+<code>INPUT</code>/<code>OUTPUT</code>, pas en <code>FORWARD</code>.</div>
+</div>
+<div class="callout ok"><div class="t">Le résultat attendu</div>
+On ne dit jamais « ça ne marche pas ». On dit&nbsp;: « <b>le paquet part du client, arrive sur
+<code>eth1</code>, et la règle 7 ne l'attrape pas</b> ». Chaque étape coupe le problème en deux et
+désigne un coupable différent.
+</div>
+
+<!-- ===================================================================== -->
+<!-- ===================================================================== -->
+<h2 id="ports">⚓ Annexe — ports et services à connaître</h2>
+
+<p class="lead">Un pare-feu filtre sur des numéros de port&nbsp;: les connaître de mémoire est la
+condition pour écrire une règle sans hésiter. Les <b>ports réservés</b> (<i>well-known</i>) vont de
+<b>0 à 1023</b>&nbsp;; au-delà on trouve les ports <b>enregistrés</b> (1024 – 49151) et les ports
+<b>dynamiques / éphémères</b> (49152 – 65535), qui servent de <b>port source</b> côté client.</p>
+
+<h3 id="ports-web">Web, transfert et accès distant</h3>
+<div class="tw"><table>
+<thead><tr><th>Port</th><th>Transport</th><th>Service</th><th>À savoir</th></tr></thead>
+<tbody>
+<tr><td><b>20</b></td><td>TCP</td><td>FTP — <b>données</b></td><td>Mode <b>actif</b>&nbsp;: c'est le <b>serveur</b> qui ouvre cette connexion vers le client → état <code>RELATED</code> et helper conntrack.</td></tr>
+<tr><td><b>21</b></td><td>TCP</td><td>FTP — <b>commandes</b></td><td>En clair. Le port de données est annoncé <b>dans la commande <code>PORT</code></b>.</td></tr>
+<tr><td><b>22</b></td><td>TCP</td><td><b>SSH</b>, SCP, SFTP</td><td>L'accès d'administration par défaut. À restreindre par <b>géofiltrage</b> et à faire passer par un <b>bastion</b>.</td></tr>
+<tr><td><b>23</b></td><td>TCP</td><td><b>Telnet</b></td><td><b>En clair, à proscrire.</b> Tout se lit dans un <i>Follow TCP Stream</i>, mot de passe compris.</td></tr>
+<tr><td><b>69</b></td><td>UDP</td><td>TFTP</td><td>Sans authentification&nbsp;: sert au démarrage réseau (PXE) et aux sauvegardes de configuration d'équipements.</td></tr>
+<tr><td><b>80</b></td><td>TCP</td><td><b>HTTP</b></td><td>Le port que le pare-feu L3/L4 ne sait pas inspecter → proxy ou WAF.</td></tr>
+<tr><td><b>443</b></td><td>TCP</td><td><b>HTTPS</b></td><td>Idem, chiffré. Aussi le port de <b>DoH</b> (DNS over HTTPS) et de nombreux tunnels C2, parce qu'il est <b>toujours autorisé</b>.</td></tr>
+<tr><td><b>989 / 990</b></td><td>TCP</td><td>FTPS (données / commandes)</td><td>FTP sur TLS implicite.</td></tr>
+<tr><td><b>3389</b></td><td>TCP</td><td><b>RDP</b></td><td><i>Enregistré.</i> Exposé sur Internet, c'est une des premières portes d'entrée des rançongiciels.</td></tr>
+<tr><td><b>5900</b></td><td>TCP</td><td>VNC</td><td><i>Enregistré.</i> Prise de main à distance, souvent mal authentifiée.</td></tr>
+<tr><td><b>8080</b></td><td>TCP</td><td>HTTP alternatif / <b>proxy</b></td><td><i>Enregistré.</i> Port d'écoute habituel d'un proxy web ou d'un serveur applicatif.</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="ports-mail">Messagerie</h3>
+<div class="tw"><table>
+<thead><tr><th>Port</th><th>Transport</th><th>Service</th><th>À savoir</th></tr></thead>
+<tbody>
+<tr><td><b>25</b></td><td>TCP</td><td><b>SMTP</b></td><td><b>Entre serveurs</b> (relais). Souvent bloqué en sortie chez les opérateurs pour limiter le spam.</td></tr>
+<tr><td><b>110</b></td><td>TCP</td><td>POP3</td><td>Relève de courrier, en clair.</td></tr>
+<tr><td><b>143</b></td><td>TCP</td><td>IMAP</td><td>Consultation en clair, boîte conservée sur le serveur.</td></tr>
+<tr><td><b>465</b></td><td>TCP</td><td>SMTPS / <i>submission</i></td><td>TLS <b>implicite</b> (chiffré dès la connexion).</td></tr>
+<tr><td><b>587</b></td><td>TCP</td><td>SMTP <i>submission</i></td><td><b>Client → serveur</b>, avec <b>STARTTLS</b>. C'est le port que doit utiliser un poste, pas le 25.</td></tr>
+<tr><td><b>993</b></td><td>TCP</td><td>IMAPS</td><td>IMAP sur TLS.</td></tr>
+<tr><td><b>995</b></td><td>TCP</td><td>POP3S</td><td>POP3 sur TLS.</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="ports-infra">Nommage, adressage et services d'infrastructure</h3>
+<div class="tw"><table>
+<thead><tr><th>Port</th><th>Transport</th><th>Service</th><th>À savoir</th></tr></thead>
+<tbody>
+<tr><td><b>53</b></td><td><b>UDP <i>et</i> TCP</b></td><td><b>DNS</b></td><td><b>UDP</b> pour les résolutions courantes (≤ 512 o) · <b>TCP</b> pour les <b>transferts de zone AXFR/IXFR</b> et les réponses trop longues (DNSSEC). <b>Ouvrir les deux.</b></td></tr>
+<tr><td><b>853</b></td><td>TCP</td><td><b>DoT</b> — DNS over TLS</td><td>Résolution chiffrée. DoH, lui, se cache dans le <b>443</b>.</td></tr>
+<tr><td><b>67 / 68</b></td><td>UDP</td><td><b>DHCP</b> serveur / client</td><td>67 = serveur, 68 = client. Cible du <b>DHCP spoofing</b> et de la <b>starvation</b>&nbsp;; parades&nbsp;: snooping, rate limit, adressage statique.</td></tr>
+<tr><td><b>546 / 547</b></td><td>UDP</td><td>DHCPv6 client / serveur</td><td>À penser si l'on ne veut pas d'IPv6 sauvage.</td></tr>
+<tr><td><b>123</b></td><td>UDP</td><td><b>NTP</b></td><td>Sans heure juste, <b>les logs ne se corrèlent plus</b>. Protocole d'amplification classique.</td></tr>
+<tr><td><b>514</b></td><td>UDP</td><td><b>syslog</b></td><td>Remontée des journaux vers le collecteur. Sans acquittement&nbsp;: les messages peuvent se perdre.</td></tr>
+<tr><td><b>6514</b></td><td>TCP</td><td>syslog sur TLS</td><td><i>Enregistré.</i> La version fiable et chiffrée.</td></tr>
+<tr><td><b>161 / 162</b></td><td>UDP</td><td><b>SNMP</b> agent / <b>trap</b></td><td>161 = interrogation par le superviseur, 162 = alerte spontanée de l'équipement. v1/v2c circulent <b>en clair</b>.</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="ports-auth">Authentification, annuaire et partage</h3>
+<div class="tw"><table>
+<thead><tr><th>Port</th><th>Transport</th><th>Service</th><th>À savoir</th></tr></thead>
+<tbody>
+<tr><td><b>88</b></td><td>TCP / UDP</td><td><b>Kerberos</b></td><td>L'authentification d'un domaine Active Directory.</td></tr>
+<tr><td><b>389</b></td><td>TCP / UDP</td><td><b>LDAP</b></td><td>Annuaire, <b>en clair</b>.</td></tr>
+<tr><td><b>636</b></td><td>TCP</td><td>LDAPS</td><td>LDAP sur TLS.</td></tr>
+<tr><td><b>137 / 138 / 139</b></td><td>UDP / UDP / TCP</td><td>NetBIOS nom / datagramme / session</td><td>Hérité. <b>N'a rien à faire sur un WAN.</b></td></tr>
+<tr><td><b>445</b></td><td>TCP</td><td><b>SMB / CIFS</b></td><td>Partage de fichiers Windows. Du <b>SMB visible sur le WAN</b> dans une hiérarchie de protocoles est une alerte immédiate.</td></tr>
+<tr><td><b>1812 / 1813</b></td><td>UDP</td><td><b>RADIUS</b> auth / <i>accounting</i></td><td><i>Enregistré.</i> Le cœur du <b>802.1X</b> et du NAC. Anciens ports&nbsp;: 1645 / 1646.</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="ports-vpn">Routage, VPN et bases de données</h3>
+<div class="tw"><table>
+<thead><tr><th>Port</th><th>Transport</th><th>Service</th><th>À savoir</th></tr></thead>
+<tbody>
+<tr><td><b>179</b></td><td>TCP</td><td><b>BGP</b></td><td>Le routage entre systèmes autonomes.</td></tr>
+<tr><td><b>520 / 521</b></td><td>UDP</td><td>RIP / RIPng</td><td>Routage interne, historique.</td></tr>
+<tr><td><b>500</b></td><td>UDP</td><td><b>IKE / ISAKMP</b></td><td>La <b>négociation</b> IPsec.</td></tr>
+<tr><td><b>4500</b></td><td>UDP</td><td>IPsec <b>NAT-T</b></td><td><i>Enregistré.</i> Encapsulation d'IPsec quand il doit traverser un NAT.</td></tr>
+<tr><td><b>1194</b></td><td>UDP</td><td>OpenVPN</td><td><i>Enregistré.</i></td></tr>
+<tr><td><b>1433 / 1521</b></td><td>TCP</td><td>Microsoft SQL Server / Oracle</td><td><i>Enregistrés.</i></td></tr>
+<tr><td><b>3306 / 5432</b></td><td>TCP</td><td>MySQL-MariaDB / PostgreSQL</td><td><i>Enregistrés.</i> Une base de données <b>ne s'expose jamais</b> directement.</td></tr>
+<tr><td><b>5060 / 5061</b></td><td>UDP-TCP / TCP</td><td>SIP / SIP-TLS</td><td><i>Enregistrés.</i> Téléphonie&nbsp;: transporte des adresses <b>dans sa charge utile</b>, donc sensible au NAT.</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="ports-clair">Le tableau qui tombe : clair contre chiffré</h3>
+<div class="exam"><div class="t">Savoir donner l'équivalent sécurisé d'un service en clair</div>
+C'est la question la plus facile à poser sur les ports, et elle recoupe la remédiation.
+<div class="tw" style="margin-top:8px"><table>
+<thead><tr><th>En clair</th><th>Port</th><th>Version sécurisée</th><th>Port</th></tr></thead>
+<tbody>
+<tr><td>Telnet</td><td>23</td><td><b>SSH</b></td><td><b>22</b></td></tr>
+<tr><td>FTP</td><td>21</td><td><b>SFTP</b> (sur SSH) ou <b>FTPS</b></td><td><b>22</b> / 990</td></tr>
+<tr><td>HTTP</td><td>80</td><td><b>HTTPS</b></td><td><b>443</b></td></tr>
+<tr><td>SMTP</td><td>25</td><td><b>SMTPS</b> / <i>submission</i> STARTTLS</td><td>465 / <b>587</b></td></tr>
+<tr><td>POP3</td><td>110</td><td><b>POP3S</b></td><td><b>995</b></td></tr>
+<tr><td>IMAP</td><td>143</td><td><b>IMAPS</b></td><td><b>993</b></td></tr>
+<tr><td>LDAP</td><td>389</td><td><b>LDAPS</b></td><td><b>636</b></td></tr>
+<tr><td>DNS</td><td>53</td><td><b>DoT</b> / DoH</td><td><b>853</b> / 443</td></tr>
+<tr><td>syslog</td><td>514 UDP</td><td>syslog sur <b>TLS</b></td><td><b>6514</b> TCP</td></tr>
+<tr><td>SNMP v1/v2c</td><td>161</td><td><b>SNMP v3</b> (même port, mais authentifié et chiffré)</td><td>161</td></tr>
+</tbody>
+</table></div>
+</div>
+
+<h3 id="ports-sansport">Les protocoles qui n'ont pas de ports</h3>
+<div class="exam"><div class="t">On ne les filtre pas sur un numéro de port</div>
+Une règle « ICMP port 7 » est un <b>non-sens</b>. Ces protocoles s'identifient par leur
+<b>numéro de protocole IP</b>, et se filtrent sur d'autres critères.
+<div class="tw" style="margin-top:8px"><table>
+<thead><tr><th>Protocole</th><th>N° IP</th><th>Comment on le filtre</th></tr></thead>
+<tbody>
+<tr><td><b>ICMP</b></td><td><b>1</b></td><td>Par <b>type</b> et <b>code</b>&nbsp;: echo-request <b>8</b>, echo-reply <b>0</b>, <i>destination unreachable</i> <b>3</b> (dont <b>code 4</b> = fragmentation needed), <i>time exceeded</i> <b>11</b>.</td></tr>
+<tr><td><b>TCP</b></td><td>6</td><td>Ports et drapeaux.</td></tr>
+<tr><td><b>UDP</b></td><td>17</td><td>Ports seulement — pas de drapeaux, d'où un suivi d'état fragile.</td></tr>
+<tr><td><b>GRE</b></td><td>47</td><td>Tunnels&nbsp;: on autorise le protocole entre deux extrémités précises.</td></tr>
+<tr><td><b>ESP</b></td><td><b>50</b></td><td>Le <b>transport chiffré</b> d'IPsec. À autoriser en plus d'UDP 500.</td></tr>
+<tr><td><b>AH</b></td><td>51</td><td>L'authentification IPsec sans chiffrement.</td></tr>
+</tbody>
+</table></div>
+</div>
+
+<div class="callout warn"><div class="t">Deux réflexes à garder</div>
+<b>Un port ne prouve rien.</b> N'importe quel service peut écouter sur n'importe quel port — c'est
+exactement ce que montre <i>Decode As…</i> dans Wireshark, et ce que fait un attaquant pour se cacher
+derrière un port autorisé. Le numéro de port est une <b>convention</b>, pas une garantie.
+<p style="margin-bottom:0"><b>Le port source, lui, n'est jamais un port de service.</b> Côté client
+c'est toujours un port <b>éphémère &gt; 1024</b>&nbsp;; sous Linux, la plage réelle se lit dans
+<code>/proc/sys/net/ipv4/ip_local_port_range</code>.</p>
+</div>
+
+<h2 id="ch18"><span class="num">18.</span> Glossaire</h2>
+
+<div class="tw"><table>
+<thead><tr><th>Terme</th><th>Développé</th><th>En une ligne</th></tr></thead>
+<tbody>
+<tr><td><b>-A / -D / -F / -P</b></td><td>—</td><td>Ajouter / supprimer / vider une chaîne / fixer la politique par défaut.</td></tr>
+<tr><td><b>APT</b></td><td><i>Advanced Persistent Threat</i></td><td>Attaquant à moyens et temps illimités&nbsp;; furtivité, pré-positionnement.</td></tr>
+<tr><td><b>Bastion</b></td><td><i>Bastion host</i></td><td>Machine fortifiée <b>car</b> exposée&nbsp;; point de rebond authentifié unique.</td></tr>
+<tr><td><b>Beaconing</b></td><td>—</td><td>Émission périodique régulière vers un serveur C2.</td></tr>
+<tr><td><b>C2</b></td><td><i>Command and Control</i></td><td>Serveur qui pilote les machines compromises.</td></tr>
+<tr><td><b>Chokepoint</b></td><td>Goulot d'étranglement</td><td>Point de passage obligé&nbsp;: atout en sécurité, <b>SPOF</b> en disponibilité.</td></tr>
+<tr><td><b>Conntrack</b></td><td><i>Connection tracking</i></td><td>Module Netfilter tenant la table d'état.</td></tr>
+<tr><td><b>DMZ</b></td><td><i>DeMilitarized Zone</i></td><td>Zone exposée&nbsp;: aucun flux direct Internet ↔ interne.</td></tr>
+<tr><td><b>DNAT / SNAT</b></td><td><i>Destination / Source NAT</i></td><td>Réécriture de la destination (exposer un service) / de la source (faire sortir un LAN).</td></tr>
+<tr><td><b>DROP / REJECT</b></td><td>—</td><td>Jeter en silence (timeout) / refuser explicitement (<code>RST</code> ou ICMP unreachable).</td></tr>
+<tr><td><b>ebtables</b></td><td>—</td><td>Filtrage Netfilter au niveau <b>couche 2</b>.</td></tr>
+<tr><td><b>EtherType</b></td><td>—</td><td>Champ de 2 octets de la trame&nbsp;: <code>0x0800</code> IPv4, <code>0x0806</code> ARP, <code>0x86DD</code> IPv6.</td></tr>
+<tr><td><b>Fail-safe</b></td><td>Panne sans danger</td><td>Après panne, repli sur un état <b>fermé</b>.</td></tr>
+<tr><td><b>FORWARD</b></td><td>—</td><td>Chaîne des paquets <b>en transit</b> à travers le pare-feu.</td></tr>
+<tr><td><b>Honeypot</b></td><td>Pot de miel</td><td>Machine <b>factice</b> servant de capteur.</td></tr>
+<tr><td><b>INPUT / OUTPUT</b></td><td>—</td><td>Chaînes des paquets <b>destinés au</b> / <b>émis par</b> le pare-feu lui-même.</td></tr>
+<tr><td><b>IoC / TTP</b></td><td>—</td><td>Marqueur de compromission / mode opératoire de l'attaquant.</td></tr>
+<tr><td><b>ip_forward</b></td><td><code>net.ipv4.ip_forward</code></td><td>Variable noyau&nbsp;: à <b>1</b>, sinon aucun paquet ne traverse.</td></tr>
+<tr><td><b>KISS</b></td><td><i>Keep It Simple, Stupid</i></td><td>La complexité inutile est une surface d'attaque.</td></tr>
+<tr><td><b>Masquerade / PAT</b></td><td>—</td><td>SNAT dont l'adresse est prise dynamiquement / multiplexée par port.</td></tr>
+<tr><td><b>Matrice des flux</b></td><td>—</td><td>Zones, IP, protocole, ports, horaires, action, journalisation.</td></tr>
+<tr><td><b>Netfilter</b></td><td>—</td><td>Sous-système de filtrage du noyau Linux&nbsp;; <code>iptables</code> / <code>nftables</code> l'administrent.</td></tr>
+<tr><td><b>PAM</b></td><td><i>Privileged Access Management</i></td><td>Catégorie de produit du bastion (ex.&nbsp;: Wallix).</td></tr>
+<tr><td><b>PSSI</b></td><td>Politique de Sécurité du SI</td><td>Politique de haut niveau validée par la direction.</td></tr>
+<tr><td><b>Quintuplet</b></td><td>—</td><td><code>{IP src, IP dst, port src, port dst, protocole}</code>.</td></tr>
+<tr><td><b>RELATED</b></td><td>—</td><td>Connexion secondaire liée à une session (FTP actif, erreurs ICMP).</td></tr>
+<tr><td><b>RFC 1918</b></td><td>—</td><td>Les trois plages privées non routables.</td></tr>
+<tr><td><b>SOHO</b></td><td><i>Small Office / Home Office</i></td><td>Structures d'une cinquantaine d'utilisateurs au plus.</td></tr>
+<tr><td><b>SPOF</b></td><td><i>Single Point of Failure</i></td><td>Point unique dont la panne fait tout tomber.</td></tr>
+<tr><td><b>Typosquatting</b></td><td>—</td><td>Domaine visuellement proche de la cible, pour du phishing.</td></tr>
+<tr><td><b>UTM</b></td><td><i>Unified Threat Management</i></td><td>Boîtier tout-en-un&nbsp;: simplifie l'exploitation, <b>augmente la surface d'attaque</b>.</td></tr>
+<tr><td><b>WAF</b></td><td><i>Web Application Firewall</i></td><td>Filtrage applicatif web&nbsp;; en coupure ou en dérivation.</td></tr>
+<tr><td><b><code>watch -d</code></b></td><td>—</td><td>Rafraîchit toutes les 2 s et <b>surligne ce qui change</b>&nbsp;: voir les compteurs bouger en direct.</td></tr>
+</tbody>
+</table></div>
+
+<!-- ===================================================================== -->
+<h2 id="qcm-sec"><span class="num">19.</span> QCM — <span id="count-badge" class="badge acc"></span></h2>
+<p>Filtres par chapitre et par niveau, ordre des questions et des propositions tiré au hasard,
+correction expliquée immédiatement, mémorisation des erreurs pour pouvoir les rejouer.</p>
+<div id="qcm"></div>
+  </main>
+</div>
+
+<button id="top" title="Haut de page">↑</button>
+<script src="data/qcm-inf5244.js?v=3"></script>
+<script src="assets/app.js?v=24"></script>
+<script>initQCM(window.QCM_DATA, window.QCM_CHAPTERS, 'inf5244');</script>
+</body>
+</html>
