@@ -156,6 +156,7 @@
     if (history.replaceState) history.replaceState(null, '', '#' + (anchorId || SECTIONS[i].el.id));
 
     revealAllSteps(SECTIONS[i].el);
+    watchViz(SECTIONS[i].el);
 
     if (anchorId) {
       var t = document.getElementById(anchorId);
@@ -298,6 +299,38 @@
     (scope || document).querySelectorAll('.step').forEach(function (s) { s.classList.add('visible'); });
   }
 
+  /* Schémas animés (.viz de viz.css) : on pose .seen quand le schéma entre
+     dans le viewport. Sans IntersectionObserver — ou si l'utilisateur a
+     demandé moins d'animations — tout est affiché immédiatement, le contenu
+     restant lisible en toutes circonstances. */
+  var vizObs = null;
+  if (window.IntersectionObserver && document.querySelector('.viz')) {
+    /* On ne masque les schémas que si on est effectivement capable de les
+       révéler : le marqueur porte l'état initial en CSS (html.viz-anim). */
+    document.documentElement.classList.add('viz-anim');
+  }
+  if (window.IntersectionObserver) {
+    vizObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('seen'); vizObs.unobserve(e.target); }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  }
+  function watchViz(scope) {
+    var list = (scope || document).querySelectorAll('.viz:not(.seen)');
+    if (!vizObs) { list.forEach(function (v) { v.classList.add('seen'); }); return; }
+    list.forEach(function (v) { vizObs.observe(v); });
+    /* Filet de sécurité : si l'observateur n'a rien déclenché au bout de
+       2,5 s (viewport de hauteur nulle, impression, contexte exotique…),
+       on affiche tout. Un schéma ne doit JAMAIS rester invisible. */
+    setTimeout(function () {
+      list.forEach(function (v) {
+        if (!v.classList.contains('seen')) { v.classList.add('seen'); if (vizObs) vizObs.unobserve(v); }
+      });
+    }, 2500);
+  }
+  window.watchViz = watchViz;
+
   /* ================= Retour en haut ================= */
   function setupTop() {
     var b = document.getElementById('top');
@@ -357,6 +390,7 @@
           '</select></label>' +
           '<label>Nombre <input id="q-count" type="number" min="1" max="500" value="20"></label>' +
           '<button class="btn primary" id="q-start">Commencer</button>' +
+          '<button class="btn" id="q-full">Tout enchaîner</button>' +
           '<button class="btn" id="q-wrong">Rejouer mes erreurs (' + h.wrong.length + ')</button>' +
           '<button class="btn ghost" id="q-reset">Réinitialiser les stats</button>' +
         '</div>' +
@@ -366,30 +400,49 @@
         '</div>' +
       '</div>' +
       '<p style="color:var(--fg-mute);font-size:.88rem">L\'ordre des questions et celui des propositions sont ' +
-      'entièrement tirés au hasard à chaque série. Plusieurs réponses peuvent être correctes.</p>';
+      'entièrement tirés au hasard à chaque série. Plusieurs réponses peuvent être correctes. ' +
+      '<b>Tout enchaîner</b> lance d\'un coup toutes les questions qui correspondent aux filtres, sans limite de nombre.</p>';
 
     document.getElementById('q-start').onclick = function () { start(false); };
+    document.getElementById('q-full').onclick = function () { start(false, true); };
     document.getElementById('q-wrong').onclick = function () { start(true); };
     document.getElementById('q-reset').onclick = function () {
       if (confirm('Effacer les statistiques enregistrées pour cette matière ?')) {
         localStorage.removeItem(Q.key); renderSetup();
       }
     };
+    document.getElementById('q-chap').onchange = syncAvail;
+    document.getElementById('q-diff').onchange = syncAvail;
+    syncAvail();
   }
 
-  function start(wrongOnly) {
+  /* Nombre de questions correspondant aux filtres courants. */
+  function filtered() {
+    var cs = document.getElementById('q-chap'), ds = document.getElementById('q-diff');
+    var chap = cs ? cs.value : 'all', diff = ds ? ds.value : '0';
+    return Q.all.filter(function (q) {
+      return (chap === 'all' || String(q.ch) === chap) && (diff === '0' || String(q.d) === diff);
+    });
+  }
+  function syncAvail() {
+    var b = document.getElementById('q-full');
+    if (b) b.textContent = 'Tout enchaîner (' + filtered().length + ')';
+  }
+
+  function start(wrongOnly, takeAll) {
     var pool = Q.all.slice();
     if (wrongOnly) {
       var w = hist().wrong;
       pool = pool.filter(function (q) { return w.indexOf(q.id) !== -1; });
       if (!pool.length) { alert('Aucune erreur enregistrée pour l’instant. Lancez d’abord une série.'); return; }
     } else {
-      var chap = document.getElementById('q-chap').value;
-      var diff = document.getElementById('q-diff').value;
-      if (chap !== 'all') pool = pool.filter(function (q) { return String(q.ch) === chap; });
-      if (diff !== '0') pool = pool.filter(function (q) { return String(q.d) === diff; });
-      var n = parseInt(document.getElementById('q-count').value, 10) || 20;
-      pool = shuffle(pool).slice(0, Math.min(n, pool.length));
+      pool = filtered();
+      if (takeAll) {
+        pool = shuffle(pool);
+      } else {
+        var n = parseInt(document.getElementById('q-count').value, 10) || 20;
+        pool = shuffle(pool).slice(0, Math.min(n, pool.length));
+      }
     }
     if (!pool.length) { alert('Aucune question ne correspond à ce filtre.'); return; }
 

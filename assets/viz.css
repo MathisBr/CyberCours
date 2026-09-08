@@ -1,0 +1,193 @@
+/* ============================================================
+   viz.css — schémas animés de la fiche INF5244
+   Autonome : aucune dépendance, uniquement les variables de core.css.
+   Toutes les animations se déclenchent à l'entrée dans le viewport
+   (classe .seen posée par app.js) et sont désactivées si l'utilisateur
+   a demandé une réduction des animations.
+   ============================================================ */
+
+.viz {
+  margin: 1.4em 0;
+  padding: 20px 16px 16px;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow-x: auto;
+}
+.viz > .t {
+  font-weight: 700;
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--fg-mute);
+  margin-bottom: 14px;
+  text-align: center;
+}
+.viz .legend {
+  margin-top: 14px;
+  font-size: .84rem;
+  color: var(--fg-soft);
+  text-align: center;
+}
+.viz .legend b { color: var(--fg); }
+
+/* ---------- 1. Pyramide 3D des 6 niveaux d'une règle ---------- */
+.pyr { display: flex; flex-direction: column; align-items: center; perspective: 900px; }
+.pyr-row {
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  margin: 0 0 6px;
+  transform: rotateX(28deg);
+  transition: opacity .5s ease, transform .5s cubic-bezier(.22,.9,.3,1.2);
+}
+/* État masqué UNIQUEMENT si le JS d'animation tourne : sans lui, tout est lisible. */
+html.viz-anim .viz:not(.seen) .pyr-row { opacity: 0; transform: translateY(-18px) rotateX(38deg) scale(.96); }
+.viz.seen .pyr-row:nth-child(1) { transition-delay: .05s; }
+.viz.seen .pyr-row:nth-child(2) { transition-delay: .18s; }
+.viz.seen .pyr-row:nth-child(3) { transition-delay: .31s; }
+.viz.seen .pyr-row:nth-child(4) { transition-delay: .44s; }
+.viz.seen .pyr-row:nth-child(5) { transition-delay: .57s; }
+.viz.seen .pyr-row:nth-child(6) { transition-delay: .70s; }
+
+.pyr-slab {
+  position: relative;
+  color: #fff;
+  font-weight: 700;
+  font-size: .84rem;
+  letter-spacing: .02em;
+  text-align: center;
+  padding: 11px 10px 9px;
+  border-radius: 6px;
+  transform-style: preserve-3d;
+  box-shadow: 0 6px 0 rgba(0,0,0,.28), 0 10px 18px rgba(0,0,0,.22);
+  text-shadow: 0 1px 2px rgba(0,0,0,.45);
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+  cursor: default;
+}
+.pyr-slab::after {           /* la tranche : ce qui donne le relief */
+  content: ""; position: absolute; left: 3px; right: 3px; bottom: -6px; height: 6px;
+  background: rgba(0,0,0,.35); border-radius: 0 0 6px 6px;
+}
+.pyr-row:hover .pyr-slab { transform: translateY(-3px) scale(1.03); filter: brightness(1.12); }
+.pyr-row:hover .pyr-code, .pyr-row:hover .pyr-ex { color: var(--fg); }
+
+.pyr-slab small { display: block; font-weight: 500; font-size: .72rem; opacity: .92; margin-top: 2px; }
+
+/* dégradés : du sommet (décision) vers la base (interface) */
+.pyr-6 { width: 190px; background: linear-gradient(160deg, #e05263, #b3243a); }
+.pyr-5 { width: 250px; background: linear-gradient(160deg, #b07ae0, #6f42c1); }
+.pyr-4 { width: 310px; background: linear-gradient(160deg, #4a97e8, #1f5fb8); }
+.pyr-3 { width: 370px; background: linear-gradient(160deg, #3f8fd6, #1a4e96); }
+.pyr-2 { width: 430px; background: linear-gradient(160deg, #35719f, #16405f); }
+.pyr-1 { width: 490px; background: linear-gradient(160deg, #2c5f80, #123043); }
+
+.pyr-code {
+  font-family: var(--mono); font-size: .78rem; color: var(--fg-soft);
+  min-width: 120px; text-align: right; transition: color .18s ease;
+}
+.pyr-ex {
+  font-family: var(--mono); font-size: .78rem; color: var(--fg-mute);
+  min-width: 96px; text-align: left; transition: color .18s ease;
+}
+
+/* ---------- 2. Schémas SVG animés (parcours, LOG, NAT, stateless) ---------- */
+.viz svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+.viz text { font-family: var(--sans); fill: var(--fg); }
+.viz .vz-lbl   { font-size: 11px; font-weight: 600; }
+.viz .vz-sub   { font-size: 9.5px; fill: var(--fg-mute); font-weight: 500; }
+.viz .vz-mono  { font-family: var(--mono); font-size: 10px; }
+.viz .vz-box   { fill: var(--bg-alt); stroke: var(--border); stroke-width: 1.2; }
+.viz .vz-nat   { fill: var(--purple-soft); stroke: var(--d-purple); stroke-width: 1.4; }
+.viz .vz-filt  { fill: var(--accent-soft); stroke: var(--d-blue); stroke-width: 1.4; }
+.viz .vz-dec   { fill: var(--warn-soft); stroke: var(--d-amber); stroke-width: 1.4; }
+.viz .vz-ok    { fill: var(--ok-soft); stroke: var(--d-green); stroke-width: 1.4; }
+.viz .vz-bad   { fill: var(--danger-soft); stroke: var(--d-red); stroke-width: 1.4; }
+.viz .vz-wire  { fill: none; stroke: var(--border); stroke-width: 1.6; }
+.viz .vz-t-nat { fill: var(--d-purple); font-weight: 700; }
+.viz .vz-t-filt{ fill: var(--d-blue); font-weight: 700; }
+.viz .vz-t-ok  { fill: var(--d-green); font-weight: 700; }
+.viz .vz-t-bad { fill: var(--d-red); font-weight: 700; }
+
+/* le paquet qui circule le long d'un chemin */
+.viz.seen .vz-pkt { animation: vzRun 6s linear infinite; }
+@keyframes vzRun { to { offset-distance: 100%; } }
+
+/* apparition en cascade des blocs d'un schéma */
+.vz-step { transition: opacity .45s ease, transform .45s ease; }
+html.viz-anim .viz:not(.seen) .vz-step { opacity: 0; transform: translateY(8px); }
+.viz.seen .vz-step:nth-of-type(1) { transition-delay: .05s; }
+.viz.seen .vz-step:nth-of-type(2) { transition-delay: .17s; }
+.viz.seen .vz-step:nth-of-type(3) { transition-delay: .29s; }
+.viz.seen .vz-step:nth-of-type(4) { transition-delay: .41s; }
+.viz.seen .vz-step:nth-of-type(5) { transition-delay: .53s; }
+.viz.seen .vz-step:nth-of-type(6) { transition-delay: .65s; }
+.viz.seen .vz-step:nth-of-type(7) { transition-delay: .77s; }
+
+/* trait qui se dessine */
+html.viz-anim .vz-draw { stroke-dasharray: 400; stroke-dashoffset: 400; }
+html.viz-anim .viz.seen .vz-draw { animation: vzDraw 1.1s .3s ease forwards; }
+@keyframes vzDraw { to { stroke-dashoffset: 0; } }
+
+/* pulsation d'alerte */
+.viz.seen .vz-pulse { animation: vzPulse 1.8s ease-in-out infinite; transform-origin: center; }
+@keyframes vzPulse { 0%,100% { opacity: 1; } 50% { opacity: .45; } }
+
+/* ---------- 3. Comparateur avant / après (NAT) ---------- */
+.vz-swap { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; align-items: stretch; }
+.vz-card {
+  flex: 1 1 240px; min-width: 230px;
+  border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
+  background: var(--bg-alt);
+}
+.vz-card h5 {
+  margin: 0; padding: 7px 10px; font-size: .74rem; text-transform: uppercase;
+  letter-spacing: .06em; background: var(--bg-soft); border-bottom: 1px solid var(--border);
+  color: var(--fg-mute);
+}
+.vz-card table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: .76rem; }
+.vz-card td { padding: 5px 8px; border-bottom: 1px solid var(--border-soft); }
+.vz-card td:first-child { color: var(--fg-mute); font-family: var(--sans); font-size: .74rem; }
+.vz-card tr:last-child td { border-bottom: 0; }
+.vz-hot { color: var(--danger); font-weight: 700; }
+.viz.seen .vz-hot { animation: vzFlash 2.4s ease-in-out infinite; }
+@keyframes vzFlash { 0%,100% { opacity: 1; } 50% { opacity: .4; } }
+.vz-arrow { display: flex; align-items: center; font-size: 1.5rem; color: var(--accent); font-weight: 700; }
+
+/* ---------- 4. Mini-architectures côte à côte ---------- */
+.vz-archs { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+.vz-arch {
+  border: 1px solid var(--border); border-radius: 10px; padding: 10px 8px 8px;
+  background: var(--bg-alt); text-align: center;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.vz-arch:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--accent); }
+.vz-arch h5 { margin: 0 0 8px; font-size: .8rem; color: var(--fg); }
+.vz-arch .verdict { margin-top: 8px; font-size: .76rem; font-weight: 600; }
+.vz-arch.good .verdict { color: var(--ok); }
+.vz-arch.warn .verdict { color: var(--warn); }
+.vz-arch.bad  .verdict { color: var(--danger); }
+.vz-arch.good { border-left: 3px solid var(--ok); }
+.vz-arch.warn { border-left: 3px solid var(--warn); }
+.vz-arch.bad  { border-left: 3px solid var(--danger); }
+
+@media (max-width: 640px) {
+  .pyr-code, .pyr-ex { display: none; }
+  .pyr-1 { width: 300px; } .pyr-2 { width: 268px; } .pyr-3 { width: 236px; }
+  .pyr-4 { width: 204px; } .pyr-5 { width: 172px; } .pyr-6 { width: 140px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.viz-anim .viz:not(.seen) .pyr-row,
+  html.viz-anim .viz:not(.seen) .vz-step { opacity: 1 !important; transform: none !important; }
+  .pyr-row, .vz-step { opacity: 1 !important; transition: none !important; }
+  .pyr-row { transform: rotateX(28deg) !important; }
+  .vz-pkt, .vz-hot, .vz-pulse { animation: none !important; }
+  .vz-draw { stroke-dashoffset: 0 !important; animation: none !important; }
+}
+
+@media print {
+  html.viz-anim .viz:not(.seen) .pyr-row,
+  html.viz-anim .viz:not(.seen) .vz-step { opacity: 1 !important; transform: none !important; }
+  .vz-draw { stroke-dashoffset: 0 !important; }
+  .viz { break-inside: avoid; }
+}
