@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sécurisation des interconnexions (INF5244) — fiche de révision</title>
 <link rel="stylesheet" href="assets/core.css?v=24">
-<link rel="stylesheet" href="assets/viz.css?v=3">
+<link rel="stylesheet" href="assets/viz.css?v=4">
 </head>
 <body>
 
@@ -13,6 +13,7 @@
   <div class="brand"><span class="dot"></span> INF5244 <small>· Sécurisation des interconnexions</small></div>
   <div class="spacer"></div>
   <input id="search" type="search" placeholder="Rechercher…  (Ctrl+K)">
+  <a class="home" href="atelier-inf5244.html">Atelier</a>
   <a class="home" href="index.html">← Accueil</a>
   <button class="btn ghost" onclick="toggleTheme()" title="Thème clair / sombre">◐</button>
   <button class="btn ghost" onclick="window.print()" title="Imprimer / PDF">⎙</button>
@@ -35,6 +36,15 @@ puis les architectures qui placent ces équipements au bon endroit.
 
 <p class="lead">Une page. Les erreurs qui coûtent des points, puis les définitions à savoir donner en
 une phrase. Si tu ne relis qu'une chose jeudi soir, c'est ça.</p>
+
+<div class="callout ok"><div class="t">Relire ne suffit pas — s'entraîner à produire</div>
+Cette fiche et le QCM entraînent la <b>reconnaissance</b>. L'examen demande de la <b>production</b>&nbsp;:
+écrire une liste de mémoire, produire une règle <code>iptables</code> à partir d'un flux décrit en
+français, diagnostiquer une configuration fautive.
+<p style="margin-bottom:0">L'<a href="atelier-inf5244.html"><b>atelier d'entraînement</b></a> travaille
+ces trois compétences&nbsp;: <b>24 listes à restituer</b>, des <b>exercices de règles générés à
+l'infini</b> avec correction critère par critère, et <b>14 configurations à diagnostiquer</b>.</p>
+</div>
 
 <div class="callout danger"><div class="t">Le plan du module, et l'évaluation</div>
 Le support suit cinq parties&nbsp;: <b>1. Rappels réseau</b> (OSI, TCP/IP) · <b>2. Principe des
@@ -530,7 +540,7 @@ lorsqu'on frappe un port sur lequel <b>aucun service n'écoute</b>.
 <tr><td>Où l'utiliser</td><td><b>Sur l'interface Internet</b></td><td><b>En interne</b>, pour ne pas faire attendre des applications légitimes</td></tr>
 </tbody>
 </table></div>
-<div class="callout def"><div class="t">Choisir la réponse renvoyée : <code>--reject-with</code></div>
+<div class="callout def"><div class="t">Choisir la réponse renvoyée : <code>--reject-with</code> <span class="flag">signalé en cours</span></div>
 <code>iptables -A FORWARD -p tcp --dport 22 -j REJECT --reject-with tcp-reset</code>
 <div class="tw" style="margin-top:8px"><table>
 <thead><tr><th>Valeur</th><th>Ce qui est renvoyé</th><th>Quand</th></tr></thead>
@@ -806,7 +816,7 @@ par défaut. Un script de remise à zéro propre doit écrire&nbsp;:
 <code>iptables -t mangle -F</code> · <code>iptables -t raw -F</code>. C'est la cause n°1 des
 « j'ai tout flushé mais mon NAT est toujours là ».</p>
 </div>
-<div class="callout warn"><div class="t">Le cloisonnement strict des tables</div>
+<div class="callout warn"><div class="t">Le cloisonnement strict des tables <span class="flag">signalé en cours</span></div>
 <b>On ne fait JAMAIS de filtrage dans la table <code>nat</code>, et JAMAIS de translation dans la
 table <code>filter</code>.</b> <code>filter</code> prend une décision binaire (<code>ACCEPT</code>,
 <code>DROP</code>, <code>REJECT</code>)&nbsp;; <code>nat</code> réécrit des adresses et des ports
@@ -1287,7 +1297,7 @@ conntrack lit cette commande et pré-autorise la connexion attendue. Même méca
 ICMP liées à un flux existant.
 </div>
 
-<div class="callout ok"><div class="t">Le squelette d'une politique à état</div>
+<div class="callout ok"><div class="t">Le squelette d'une politique à état <span class="flag">signalé en cours</span></div>
 <ol style="margin-bottom:0">
 <li>Politique par défaut <code>DROP</code> sur les trois chaînes.</li>
 <li>Une règle acceptant <code>ESTABLISHED,RELATED</code> — elle traite <b>tous</b> les retours.</li>
@@ -1559,7 +1569,11 @@ N'oubliez pas le <code>-t nat</code> — sans lui, vous regardez <code>filter</c
 </table></div>
 
 <h3 id="ch12-masq">12.2 <code>SNAT</code> ou <code>MASQUERADE</code> ?</h3>
-<div class="tw"><table>
+<div class="exam"><div class="t">La comparaison à savoir trancher <span class="flag">signalé en cours</span></div>
+La question se pose exactement ainsi&nbsp;: <b>quelle différence entre <code>SNAT --to-source</code> et
+<code>MASQUERADE</code>, et lequel choisir&nbsp;?</b> La réponse tient en trois lignes — le
+fonctionnement, le coût, et le critère de décision.
+<div class="tw" style="margin-top:8px"><table>
 <thead><tr><th></th><th><code>SNAT --to-source</code></th><th><code>MASQUERADE</code></th></tr></thead>
 <tbody>
 <tr><td>Fonctionnement</td><td>L'adresse de sortie est <b>écrite en dur</b></td><td>Le pare-feu <b>interroge la carte réseau</b> à chaque nouveau flux et lit l'adresse du moment</td></tr>
@@ -1567,6 +1581,7 @@ N'oubliez pas le <code>-t nat</code> — sans lui, vous regardez <code>filter</c
 <tr><td>Quand l'utiliser</td><td><b>IP publique fixe</b> — le cas d'un site d'entreprise</td><td><b>IP publique dynamique</b> — box FAI, PPPoE, routeur 4G/5G, liaison nomade</td></tr>
 </tbody>
 </table></div>
+</div>
 <div class="callout warn"><div class="t">Ce qui casse si on se trompe</div>
 Avec un <code>SNAT</code> figé sur une liaison en DHCP&nbsp;: le jour où le bail est renouvelé,
 l'adresse change, la règle continue d'émettre avec <b>l'ancienne adresse devenue invalide</b>, et
@@ -1574,7 +1589,7 @@ l'adresse change, la règle continue d'émettre avec <b>l'ancienne adresse deven
 </div>
 
 <h3 id="ch12-retour">12.3 Pourquoi on n'écrit jamais de règle retour en NAT</h3>
-<div class="callout def"><div class="t">La dé-translation est automatique</div>
+<div class="callout def"><div class="t">La dé-translation est automatique <span class="flag">signalé en cours</span></div>
 Le noyau tient une <b>table de translation dynamique</b>&nbsp;: il mémorise que
 <code>192.168.1.100:1025</code> est sorti sous <code>10.0.0.1:32540</code>. Quand la réponse arrive
 sur ce port, il <b>inverse la translation</b> (<i>un-NAT</i>) et réinjecte le paquet vers l'adresse

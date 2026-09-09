@@ -191,3 +191,24 @@ html.viz-anim .viz.seen .vz-draw { animation: vzDraw 1.1s .3s ease forwards; }
   .vz-draw { stroke-dashoffset: 0 !important; }
   .viz { break-inside: avoid; }
 }
+
+/* ---------- 5. Marqueur « signalé en cours » ---------- */
+/* Distingue les blocs que l'enseignant a explicitement désignés comme
+   points d'examen, sans changer la nature de l'encadré qui les porte. */
+.flag {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 7px 2px;
+  border-radius: 999px;
+  background: var(--warn-soft);
+  border: 1px solid var(--warn);
+  color: var(--warn);
+  font-family: var(--sans);
+  font-size: .64rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: none;
+  vertical-align: 1px;
+  white-space: nowrap;
+}
+.flag::before { content: "◎ "; }
