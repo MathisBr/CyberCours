@@ -366,10 +366,21 @@
   };
 
   function hist() {
-    try { return JSON.parse(localStorage.getItem(Q.key)) || { a: 0, c: 0, wrong: [] }; }
-    catch (e) { return { a: 0, c: 0, wrong: [] }; }
+    var h;
+    try { h = JSON.parse(localStorage.getItem(Q.key)) || {}; } catch (e) { h = {}; }
+    if (typeof h.a !== 'number') h.a = 0;
+    if (typeof h.c !== 'number') h.c = 0;
+    if (!Array.isArray(h.wrong)) h.wrong = [];
+    /* seen : identifiants des questions déjà répondues, toutes sessions confondues. */
+    if (!Array.isArray(h.seen)) h.seen = [];
+    return h;
   }
   function saveHist(h) { localStorage.setItem(Q.key, JSON.stringify(h)); }
+
+  /* Le mode « sans répétition » est une préférence, pas un historique :
+     on la garde à part pour qu'une remise à zéro des stats ne l'efface pas. */
+  function skipSeenOn() { return localStorage.getItem(Q.key + '.skipseen') === '1'; }
+  function setSkipSeen(v) { localStorage.setItem(Q.key + '.skipseen', v ? '1' : '0'); }
 
   function renderSetup() {
     var h = hist();
@@ -394,9 +405,16 @@
           '<button class="btn" id="q-wrong">Rejouer mes erreurs (' + h.wrong.length + ')</button>' +
           '<button class="btn ghost" id="q-reset">Réinitialiser les stats</button>' +
         '</div>' +
+        '<div class="qcm-controls" style="margin-top:2px">' +
+          '<label class="q-skip"><input type="checkbox" id="q-skipseen"' + (skipSeenOn() ? ' checked' : '') + '> ' +
+          '<b>Ne pas reproposer</b> les questions déjà faites</label>' +
+          '<span id="q-seen-info" class="q-seen-info"></span>' +
+          '<button class="btn ghost" id="q-seen-reset">Oublier les questions vues</button>' +
+        '</div>' +
         '<div class="qcm-stats">' +
           '<span>Historique cumulé : <b>' + taux + '</b>' + (h.a ? ' sur ' + h.a + ' réponses' : '') + '</span>' +
           '<span>À revoir : <b>' + h.wrong.length + '</b> question(s)</span>' +
+          '<span>Déjà vues : <b>' + h.seen.length + '</b> / ' + Q.all.length + '</span>' +
         '</div>' +
       '</div>' +
       '<p style="color:var(--fg-mute);font-size:.88rem">L\'ordre des questions et celui des propositions sont ' +
@@ -413,20 +431,42 @@
     };
     document.getElementById('q-chap').onchange = syncAvail;
     document.getElementById('q-diff').onchange = syncAvail;
+    document.getElementById('q-skipseen').onchange = function () {
+      setSkipSeen(this.checked); syncAvail();
+    };
+    document.getElementById('q-seen-reset').onclick = function () {
+      var n = hist().seen.length;
+      if (!n) { alert('Aucune question n’est encore marquée comme vue.'); return; }
+      if (confirm('Oublier les ' + n + ' question(s) déjà vues ?\n\nLes statistiques et les erreurs à revoir sont conservées.')) {
+        var h = hist(); h.seen = []; saveHist(h); renderSetup();
+      }
+    };
     syncAvail();
   }
 
-  /* Nombre de questions correspondant aux filtres courants. */
-  function filtered() {
+  /* Nombre de questions correspondant aux filtres courants.
+     `raw` ignore le mode « sans répétition » (utile pour les compteurs bruts). */
+  function filtered(raw) {
     var cs = document.getElementById('q-chap'), ds = document.getElementById('q-diff');
     var chap = cs ? cs.value : 'all', diff = ds ? ds.value : '0';
-    return Q.all.filter(function (q) {
+    var pool = Q.all.filter(function (q) {
       return (chap === 'all' || String(q.ch) === chap) && (diff === '0' || String(q.d) === diff);
     });
+    if (raw || !skipSeenOn()) return pool;
+    var seen = hist().seen;
+    return pool.filter(function (q) { return seen.indexOf(q.id) === -1; });
   }
   function syncAvail() {
+    var dispo = filtered().length, brut = filtered(true).length;
     var b = document.getElementById('q-full');
-    if (b) b.textContent = 'Tout enchaîner (' + filtered().length + ')';
+    if (b) b.textContent = 'Tout enchaîner (' + dispo + ')';
+    var info = document.getElementById('q-seen-info');
+    if (info) {
+      info.innerHTML = skipSeenOn()
+        ? (dispo ? '<b>' + dispo + '</b> question(s) restante(s) sur ' + brut + ' pour ce filtre'
+                 : '<b class="q-done">Tout ce filtre a été vu.</b> Décoche, change de filtre, ou oublie les questions vues.')
+        : brut + ' question(s) pour ce filtre';
+    }
   }
 
   function start(wrongOnly, takeAll) {
@@ -444,9 +484,18 @@
         pool = shuffle(pool).slice(0, Math.min(n, pool.length));
       }
     }
-    if (!pool.length) { alert('Aucune question ne correspond à ce filtre.'); return; }
+    if (!pool.length) {
+      if (!wrongOnly && skipSeenOn() && filtered(true).length) {
+        alert('Toutes les questions de ce filtre ont déjà été faites.\n\n' +
+              'Change de chapitre ou de niveau, décoche « Ne pas reproposer », ' +
+              'ou utilise « Oublier les questions vues » pour repartir de zéro.');
+      } else {
+        alert('Aucune question ne correspond à ce filtre.');
+      }
+      return;
+    }
 
-    Q.serie = wrongOnly ? shuffle(pool) : shuffle(pool);   // ordre des questions : toujours aléatoire
+    Q.serie = shuffle(pool);   // ordre des questions : toujours aléatoire
     Q.idx = 0; Q.answered = 0; Q.correct = 0; Q.wrongIds = [];
 
     document.getElementById('qcm-setup').classList.add('hidden');
@@ -556,6 +605,9 @@
     var i = h.wrong.indexOf(id);
     if (!ok && i === -1) h.wrong.push(id);
     if (ok && i !== -1) h.wrong.splice(i, 1);
+    /* Une question répondue est « vue », qu'elle soit juste ou fausse : le mode
+       sans répétition sert à balayer la banque, le rejeu des erreurs reste à part. */
+    if (h.seen.indexOf(id) === -1) h.seen.push(id);
     saveHist(h);
   }
 

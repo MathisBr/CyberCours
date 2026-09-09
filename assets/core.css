@@ -590,3 +590,10 @@ html[data-theme="dark"] .pkt-txt { fill: #0d1117; }
    sans cette règle de base, le rectangle prend le noir par défaut du SVG. */
 .panel-hl { fill: var(--bg-alt); }
 .panel-hl.s-gone { fill: none; }
+
+/* --- QCM : mode « sans répétition » --- */
+.q-skip { display: inline-flex; align-items: center; gap: 6px; font-size: .88rem; cursor: pointer; }
+.q-skip input { width: 15px; height: 15px; accent-color: var(--accent); cursor: pointer; }
+.q-seen-info { font-size: .84rem; color: var(--fg-mute); }
+.q-seen-info b { color: var(--fg-soft); }
+.q-seen-info b.q-done { color: var(--ok); }
