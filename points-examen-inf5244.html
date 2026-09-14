@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>INF5244 — Ce que le prof a signalé pour l'examen</title>
+<link rel="stylesheet" href="assets/core.css?v=26">
+<style>
+.px-wrap { max-width: 960px; margin: 0 auto; padding: 0 18px 60px; }
+
+.px-item {
+  background: var(--bg-soft); border: 1px solid var(--border); border-left: 3px solid var(--accent);
+  border-radius: var(--radius); box-shadow: var(--shadow); padding: 18px 22px; margin: 0 0 16px;
+}
+.px-item.fort { border-left-width: 5px; }
+.px-item > .src {
+  font-family: var(--mono); font-size: .73rem; text-transform: uppercase; letter-spacing: .07em;
+  color: var(--fg-mute); margin-bottom: 9px; display: flex; gap: 10px; flex-wrap: wrap;
+  align-items: baseline;
+}
+.px-item > .src .th {
+  text-transform: none; letter-spacing: 0; color: var(--fg-soft); font-family: var(--sans);
+  font-size: .82rem; font-weight: 600;
+}
+.px-item blockquote {
+  margin: 0; padding: 0; border: 0; font-style: normal;
+  font-size: 1.03rem; line-height: 1.63; color: var(--fg);
+}
+.px-item blockquote::before { content: "« "; color: var(--fg-mute); }
+.px-item blockquote::after  { content: " »"; color: var(--fg-mute); }
+.px-item blockquote em { color: var(--fg-mute); font-style: normal; }
+.px-item .rep {
+  margin-top: 14px; padding: 13px 16px; border-radius: 9px;
+  background: var(--bg-alt); border-left: 3px solid var(--ok);
+  font-size: .94rem; line-height: 1.62;
+}
+.px-item .rep > .t {
+  font-weight: 700; font-size: .72rem; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--fg-mute); margin-bottom: 5px;
+}
+.px-item .rep p { margin: 8px 0 0; }
+.px-item .rep .lien { display: block; margin-top: 9px; font-size: .86rem; }
+.px-seance {
+  margin: 34px 0 14px; font-size: .78rem; text-transform: uppercase; letter-spacing: .09em;
+  color: var(--fg-mute); font-weight: 700; border-bottom: 1px solid var(--border); padding-bottom: 6px;
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><span class="dot"></span> INF5244 <small>· signaux d'examen</small></div>
+  <div class="spacer"></div>
+  <a class="home" href="inf5244-fiche-complete.html">← La fiche</a>
+  <a class="home" href="atelier-inf5244.html">Atelier</a>
+  <a class="home" href="index.html">Accueil</a>
+  <button class="btn ghost" onclick="toggleTheme()" title="Thème clair / sombre">◐</button>
+</header>
+
+<main class="px-wrap">
+
+<div class="hero" style="margin-top:22px">
+  <h1>Ce que le prof a signalé pour l'examen</h1>
+  <p class="lead">Relecture intégrale de la <b>parole de l'enseignant</b> dans les 12 enregistrements
+  des trois séances, avec un seul critère de sélection&nbsp;: <b>les passages où il désigne
+  lui-même</b> ce qu'il attend, ce qu'il peut demander, ou ce sur quoi les étudiants se plantent.
+  Sous chaque citation, <b>la réponse à savoir donner</b>.</p>
+</div>
+
+<div class="callout"><div class="t">Le critère retenu, et ce qui a été écarté</div>
+Ne sont retenues que ses <b>formulations explicites</b>&nbsp;: «&nbsp;je peux vous poser une
+question là-dessus&nbsp;», «&nbsp;pour l'examen&nbsp;», «&nbsp;règle capitale&nbsp;», «&nbsp;règle
+d'or&nbsp;», «&nbsp;un truc qu'il faut assimiler&nbsp;», «&nbsp;il faut impérativement&nbsp;»,
+«&nbsp;la bonne réponse c'est&nbsp;», «&nbsp;ne vous jetez pas sur…&nbsp;», «&nbsp;un truc qui pose
+problème systématiquement chez les étudiants&nbsp;».
+<p style="margin-bottom:0"><b>Écarté</b>&nbsp;: les questions qu'il pose au fil du cours pour animer
+la séance, et les étiquettes «&nbsp;point examen&nbsp;» des transcriptions — celles-là ont été
+<b>ajoutées par l'outil de transcription</b>, ce n'est pas lui qui les a prononcées.</p>
+</div>
+
+<div class="callout danger"><div class="t">Les trois signaux les plus forts, s'il n'y avait que ça à retenir</div>
+<b>1.</b> «&nbsp;<b>Je peux vous poser sereinement une question là-dessus</b> et vous allez pouvoir
+m'expliquer <b>en illustrant avec des exemples</b>&nbsp;?&nbsp;» — sur
+<code>ESTABLISHED,RELATED</code>. C'est la seule fois du module où il annonce une question.
+<p><b>2.</b> «&nbsp;<b>Ne vous jetez pas sur le NAT</b> […] vous allez croire que vous avez compris
+un truc, et <b>probablement que c'est faux</b>&nbsp;!&nbsp;» — il désigne à l'avance l'endroit où
+l'on se trompe.</p>
+<p style="margin-bottom:0"><b>3.</b> «&nbsp;Il y a <b>un truc qui pose problème systématiquement chez
+les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Règle capitale</b>…&nbsp;»
+— le seul point qu'il qualifie de difficulté récurrente.</p>
+</div>
+
+<!-- ============================================================== -->
+<h2 id="s1">Séance 1 — filtrage, principes, premières règles</h2>
+
+<div class="px-item">
+  <div class="src">Séance 1 · partie 1 · 10:15 <span class="th">L'objectif de compétence du module</span></div>
+  <blockquote>Une fois qu'on sait faire ça pour 4 ou 5 flux, <b>on saura le faire pour n'importe quel
+  flux dans n'importe quel sens</b>. Et surtout après, <b>vous saurez le faire en graphique</b> sur
+  n'importe quel équipement. Les éditeurs vous font payer la solution, il y a des tas de règles
+  pré-écrites ou sous-entendues que vous ne voyez pas au premier abord.</blockquote>
+  <div class="rep"><div class="t">Ce que ça veut dire pour la révision</div>
+  Ce qu'il évalue, c'est la <b>transposition</b>, pas la mémorisation d'<code>iptables</code>. Le
+  raisonnement à maîtriser est toujours le même quintuplet de questions&nbsp;: <b>quelle source,
+  quelle destination, quel protocole, quels ports, quelle action</b>. La syntaxe n'est qu'un
+  véhicule&nbsp;— c'est pour ça qu'il a choisi le mode texte&nbsp;: «&nbsp;comme vous n'avez pas des
+  cases à cocher, <b>vous êtes obligés de prendre une décision pour écrire la ligne</b>&nbsp;».
+  <a class="lien" href="inf5244-fiche-complete.html#ch8">→ §8, l'entonnoir de sélection</a></div>
+</div>
+
+<div class="px-item fort">
+  <div class="src">Séance 1 · partie 1 · 77:00 puis 86:00 <span class="th">La difficulté qu'il dit voir revenir chaque année</span></div>
+  <blockquote>Il y a <b>un truc qui pose problème systématiquement chez les étudiants</b>&nbsp;: la
+  passerelle par défaut. […] <b>Règle capitale</b>&nbsp;: l'adresse IP de la passerelle que vous
+  saisissez sur votre carte réseau doit être <b>une adresse IP que vous pouvez voir
+  directement</b>, c'est-à-dire une adresse dans le même réseau local que vous. Dire à une machine
+  « pour sortir sur Internet passe par une IP qui n'est pas dans ton réseau », ça n'a aucun sens&nbsp;!
+  <b>Elle ne saura jamais à quelle adresse MAC envoyer la trame.</b></blockquote>
+  <div class="rep"><div class="t">La réponse à savoir donner</div>
+  La passerelle doit être <b>dans le même sous-réseau</b> que la machine, parce que pour lui envoyer
+  une trame il faut son <b>adresse MAC</b>, obtenue par <b>ARP</b> — et l'ARP est un <b>broadcast
+  qui ne sort pas du segment local</b>. Une passerelle hors sous-réseau est donc <b>structurellement
+  injoignable</b>.
+  <p><b>Le raisonnement complet de la machine émettrice</b>, qu'il déroule juste avant&nbsp;:
+  <b>(1)</b> elle compare l'adresse de destination à son propre réseau via son masque&nbsp;;
+  <b>(2)</b> <b>même réseau</b> → envoi direct, broadcast ARP, communication par le
+  commutateur&nbsp;; <b>(3)</b> <b>réseau différent</b> → envoi indirect, elle résout la MAC de sa
+  <b>passerelle par défaut</b> et lui confie la trame.</p>
+  <p><b>Le corollaire qu'il ajoute</b>&nbsp;: sans passerelle, un <code>ping</code> peut arriver à
+  l'aller si une route existe, mais <b>l'<i>echo-reply</i> ne reviendra jamais</b> — la machine cible
+  ne sait pas où renvoyer.</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch4-gateway">→ §4.2, la décision d'acheminement</a></div>
+</div>
+
+<div class="px-item">
+  <div class="src">Séance 1 · partie 2 · 00:23 puis 05:08 <span class="th">Une injonction, répétée deux fois</span></div>
+  <blockquote>On a des classes d'adresses privées <b>qu'il faut utiliser à l'intérieur</b>. Des
+  exemples&nbsp;? […] <b>Respectez les plages privées RFC 1918</b>, ça évite des alertes
+  stupides.</blockquote>
+  <div class="rep"><div class="t">La réponse à savoir donner</div>
+  Les trois plages&nbsp;: <b><code>10.0.0.0/8</code></b> · <b><code>172.16.0.0/12</code></b> —
+  attention, de <code>172.16</code> à <code>172.31</code>, <b>ce n'est pas un /16</b> —
+  · <b><code>192.168.0.0/16</code></b>. Elles sont <b>non routables sur l'Internet public</b>&nbsp;:
+  «&nbsp;le premier routeur qui voit du <code>192.168.x.x</code> qui essaie d'aller vers l'extérieur,
+  elle ne sortira pas&nbsp;».
+  <p><b>Et pourquoi il insiste</b> — sa réponse est en deux temps. <b>Techniquement</b>, rien
+  n'empêche de mettre du public en interne. <b>Opérationnellement</b>, c'est un piège&nbsp;:
+  <b>(1)</b> on devient incapable de joindre les <b>vrais</b> serveurs qui portent ces adresses&nbsp;;
+  <b>(2)</b> en réponse à incident, l'analyste voit «&nbsp;une adresse publique qui tamponne un
+  serveur en root&nbsp;» et croit à une attaque externe. Son exemple vécu&nbsp;: un plan d'adressage
+  calqué sur les numéros de régiment, et des outils de géolocalisation qui affichaient
+  «&nbsp;l'Iran qui discutait avec la Corée&nbsp;» sur un réseau interne coupé d'Internet.</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch4-rfc1918">→ §4.4, RFC 1918</a></div>
+</div>
+
+<div class="px-item">
+  <div class="src">Séance 1 · partie 2 · 24:40 <span class="th">« doit impérativement »</span></div>
+  <blockquote>Est-ce que le DNS n'utilise que l'UDP&nbsp;? Non&nbsp;! […] Un pare-feu d'entreprise
+  <b>doit impérativement autoriser le port 53 en UDP ET en TCP</b> vers les résolveurs
+  légitimes.</blockquote>
+  <div class="rep"><div class="t">La réponse à savoir donner</div>
+  <b>UDP 53</b> pour les résolutions courantes — rapide, sans négociation de session, réponses
+  <b>≤ 512 octets</b>. <b>TCP 53</b> dans deux cas&nbsp;: les <b>transferts de zone</b> (AXFR / IXFR)
+  et les <b>réponses trop longues</b>, notamment avec DNSSEC.
+  <p><b>Le symptôme à reconnaître</b> si on n'a ouvert que l'UDP&nbsp;: «&nbsp;le DNS marche, sauf
+  pour certaines requêtes&nbsp;» — les grosses réponses tombent, le reste passe.</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch6-dns">→ §6.2, DNS</a></div>
+</div>
+
+<div class="px-item">
+  <div class="src">Séance 1 · partie 2 · 50:00 <span class="th">« la seule approche professionnelle »</span></div>
+  <blockquote>Les deux manières d'écrire une politique de filtrage&nbsp;: <b>1.</b> On bloque tout par
+  défaut (<code>DROP</code>), et on autorise au cas par cas. <b>C'est la seule approche
+  professionnelle et rigoureuse.</b> <b>2.</b> On autorise tout par défaut (<code>ACCEPT</code>), et
+  on interdit ce qui semble dangereux. <b>C'est le meilleur moyen de se faire défoncer.</b></blockquote>
+  <div class="rep"><div class="t">La réponse à savoir donner</div>
+  <b>Liste blanche contre liste noire.</b> La liste noire est perdue d'avance parce qu'elle suppose
+  d'<b>énumérer tout ce qui est dangereux</b> — ensemble ouvert et inconnu. La liste blanche énumère
+  <b>ce qui est nécessaire</b>, ensemble fini et connu du métier.
+  <p><b>Les trois conséquences pratiques</b>&nbsp;: la politique se pose sur les <b>trois
+  chaînes</b> (<code>INPUT</code>, <code>FORWARD</code>, <code>OUTPUT</code>) — oublier
+  <code>FORWARD</code> laisse passer tout le transit&nbsp;; on écrit les <b>autorisations
+  d'abord</b> et on bascule en <code>DROP</code> <b>en dernier</b>, sous peine de se couper
+  soi-même&nbsp;; et chaque ouverture devient une <b>exception explicite</b>, donc justifiable et
+  auditable.</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch11-politique">→ §11.1, la politique par défaut</a></div>
+</div>
+
+<div class="px-item">
+  <div class="src">Séance 1 · partie 3 · 10:28 <span class="th">« Vous devez prévoir »</span></div>
+  <blockquote>Quand je formais des officiers, le premier test que je faisais sur leur rack&nbsp;: <b>je
+  coupais le disjoncteur électrique direct dans la salle&nbsp;!</b> C'est ça, la panne sans
+  danger&nbsp;: si j'éteins et que je rallume, dans quel état se retrouvent le pare-feu et les
+  règles&nbsp;? […] <b>Vous devez prévoir que dès le démarrage, le pare-feu applique la politique par
+  défaut avant même d'activer le routage.</b></blockquote>
+  <div class="rep"><div class="t">La réponse à savoir donner</div>
+  <b><code>iptables</code> travaille en mémoire</b>&nbsp;: après un redémarrage, les règles ont
+  disparu et Linux ne filtre plus rien. Il faut donc un <b>script de démarrage</b> ou
+  <code>iptables-persistent</code>.
+  <p><b>Et l'ordre compte</b>&nbsp;: la politique <code>DROP</code> doit être posée <b>avant</b> que
+  <code>net.ipv4.ip_forward</code> ne passe à 1, sinon il existe une fenêtre — même courte — pendant
+  laquelle la machine <b>route sans filtrer</b>.</p>
+  <p>C'est le principe de <b>panne sans danger</b> (<i>fail-safe</i>)&nbsp;: après une défaillance,
+  le système se replie sur un <b>état fermé</b>, jamais ouvert.</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch3">→ §3, les principes fondamentaux</a></div>
+</div>
+
+<div class="px-item">
+  <div class="src">Séance 1 · partie 3 · 41:10 <span class="th">« Le piège classique » + « impérativement »</span></div>
+  <blockquote><b>Le piège classique&nbsp;: et le retour&nbsp;?</b> Si le pare-feu est
+  <i>stateless</i>, le paquet <code>SYN</code> part, mais la réponse <code>SYN-ACK</code> envoyée par
+  le serveur distant vers le client <b>sera bloquée en entrée</b> sur <code>eth0</code>&nbsp;! <b>Il
+  faut donc impérativement définir les critères du flux retour.</b></blockquote>
+  <div class="rep"><div class="t">La réponse à savoir donner</div>
+  Sans état, la règle retour est le <b>miroir strict</b> de la règle aller — <b>trois inversions,
+  et il faut les trois</b>&nbsp;: <b>(1)</b> les <b>interfaces</b> (<code>-i</code> et
+  <code>-o</code> échangées), <b>(2)</b> les <b>adresses</b> (<code>-s</code> et <code>-d</code>
+  échangées), <b>(3)</b> les <b>ports</b> (<code>--sport</code> et <code>--dport</code> échangés).
+  En oublier une seule suffit à tout casser.
+  <p><b>La suite du raisonnement, qu'il enchaîne à 45:15</b>&nbsp;: «&nbsp;gérer chaque flux aller et
+  retour à la main devient <b>ingérable et source d'erreurs</b>&nbsp;» — d'où le passage au suivi de
+  connexion, où <b>une seule règle</b> <code>ESTABLISHED,RELATED</code> remplace toutes les règles
+  retour.</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch9-regles">→ §9.4, les premières règles</a></div>
+</div>
+
+<div class="px-item">
+  <div class="src">Séance 1 · partie 3 · 64:55 <span class="th">Une liste numérotée qu'il énonce en entier</span></div>
+  <blockquote>Une stratégie de sécurité ne se limite pas à appliquer aveuglément les recommandations
+  de l'ANSSI. Elle <b>doit composer avec 5 contraintes de terrain</b>.</blockquote>
+  <div class="rep"><div class="t">La réponse à savoir donner</div>
+  <b>1. Le coût</b> — «&nbsp;l'ANSSI donne des préconisations, mais <b>ne paie pas les
+  factures</b>&nbsp;». <b>2. La continuité du métier</b> — un pare-feu qui paralyse l'activité sera
+  <b>désactivé par la direction</b>. <b>3. L'ergonomie</b> — en bloc opératoire ou en usine, imposer
+  un mot de passe de 16 caractères toutes les 10 minutes est <b>impossible</b>&nbsp;; on accepte un
+  niveau adapté (badge sans contact). <b>4. La conformité</b> — RGPD, conservation obligatoire des
+  logs de connexion <b>pendant un an</b>. <b>5. La pérennité des compétences</b> — déployer une
+  technologie exotique qu'un seul alternant maîtrise est <b>une faute stratégique</b>&nbsp;: le jour
+  où il part, plus personne n'administre.
+  <p>À mettre en regard des <b>8 principes</b> de sécurité&nbsp;: les principes disent ce qu'il
+  faudrait faire, ces cinq contraintes disent <b>pourquoi on ne le fait pas toujours</b>.</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch16">→ §16, de la politique à la règle</a></div>
+</div>
+
+<div class="px-item fort">
+  <div class="src">Séance 1 · partie 4 · 00:00 <span class="th">« un truc qu'il faut assimiler »</span></div>
+  <blockquote>On reprend. Rien de compliqué, au niveau syntaxe c'est simple aussi. <b>Il y a juste un
+  truc qu'il faut assimiler, c'est cette structure-là qui est un peu particulière.</b></blockquote>
+  <div class="rep"><div class="t">La réponse à savoir donner</div>
+  La structure en question, c'est la <b>décision de routage</b> et les <b>trois chaînes</b>. La
+  question que se pose le pare-feu, et il la formule mot pour mot&nbsp;: «&nbsp;<b>Est-ce que les
+  paquets sont à destination de moi-même, ou pas&nbsp;?</b>&nbsp;» — concrètement, il compare
+  l'adresse de destination aux adresses de ses propres cartes, «&nbsp;<b>et ça, ça va vite</b>&nbsp;».
+  <p><b>Si oui</b> → <code>INPUT</code> (processus locaux), et pour ressortir →
+  <code>OUTPUT</code>. <b>Si non</b> → <code>FORWARD</code>.</p>
+  <p><b>Ce qu'il en tire immédiatement — la décorrélation</b>&nbsp;: «&nbsp;je peux <b>tout
+  interdire</b> en <code>INPUT</code> et en <code>OUTPUT</code>, mais <b>laisser quand même des trucs
+  passer au travers</b>&nbsp;». Son exemple&nbsp;: tout fermé sauf TCP 80 en <code>FORWARD</code> — le
+  client affiche sa page web, mais s'il pingue le pare-feu, <b>poubelle silencieuse, le pare-feu est
+  furtif</b>&nbsp;; et s'il pingue le serveur d'en face, ça ne passe pas non plus, parce qu'on n'a
+  autorisé <b>que le TCP 80</b>, pas l'ICMP.</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch7">→ §7, décision de routage et chaînes</a></div>
+</div>
+
+<div class="px-item">
+  <div class="src">Séance 1 · partie 4 · 44:40 <span class="th">Il désigne l'erreur de diagnostic</span></div>
+  <blockquote>Si ça ce n'est pas activé, <b>vous avez beau avoir un pare-feu qui autorise tout, ça ne
+  passera pas d'une carte à l'autre</b>&nbsp;! Et <b>ce n'est pas un problème d'<code>iptables</code>,
+  c'est un problème de routage du noyau</b> de la machine.</blockquote>
+  <div class="rep"><div class="t">La réponse à savoir donner</div>
+  <code>net.ipv4.ip_forward</code> est à <b>0</b> par défaut sous Linux, «&nbsp;pour des raisons
+  évidentes de sécurité&nbsp;»&nbsp;: une machine à plusieurs cartes <b>refuse de router</b>. On
+  l'active avec <code>sysctl -w net.ipv4.ip_forward=1</code>, «&nbsp;ce qui va permettre à votre
+  pare-feu de <b>se comporter comme un routeur</b>&nbsp;».
+  <p><b>Pourquoi c'est un signal fort</b>&nbsp;: c'est le seul cas où <b>toutes les règles sont
+  bonnes et où rien ne passe quand même</b>. Devant un énoncé «&nbsp;la politique est en
+  <code>ACCEPT</code>, les règles existent, et rien ne traverse&nbsp;», la réponse n'est <b>pas</b>
+  dans <code>iptables</code>.</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch9-forward">→ §9.2, activer le routage</a></div>
+</div>
+
+<!-- ============================================================== -->
+<h2 id="s2">Séance 2 — journalisation, chaînes, état et NAT</h2>
+
+<div class="px-item fort">
+  <div class="src">Séance 2 · partie 1 · 00:43 puis 01:17 <span class="th">« je le rappelle » — ce qui est réellement évalué</span></div>
+  <blockquote>Donc le but, <b>je le rappelle, ce n'est pas d'apprendre comment marche
+  Netfilter</b>. C'est de comprendre la philosophie&nbsp;: <b>« Je dois être capable de lire et de
+  comprendre le flux réseau, quel qu'il soit. »</b> […] Donc le principe est toujours le même&nbsp;:
+  <b>c'est votre connaissance du protocole qui va vous permettre de protéger
+  l'architecture.</b></blockquote>
+  <div class="rep"><div class="t">Ce que ça veut dire pour la révision</div>
+  <b>Le par-cœur de la syntaxe ne rapporte pas.</b> Ce qu'il attend, il le formule juste après&nbsp;:
+  identifier un flux, puis se dire «&nbsp;<b>ce flux-là, je l'autorise en toute conscience, ou je
+  l'interdis</b>&nbsp;».
+  <p><b>La conséquence concrète</b>&nbsp;: si tu ne connais pas le protocole, tu ne peux pas le
+  filtrer. C'est pour ça que le module passe du temps sur <b>TCP</b> (les drapeaux, le port source
+  éphémère), <b>UDP</b>, <b>ICMP</b> (types et codes, pas de ports), <b>DNS</b> (UDP <i>et</i> TCP)
+  et <b>DHCP</b> (67/68) — ce ne sont pas des rappels de culture générale, ce sont <b>les
+  identifiants sur lesquels la règle va porter</b>.</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch5">→ §5 et §6, les protocoles</a></div>
+</div>
+
+<div class="px-item fort">
+  <div class="src">Séance 2 · partie 1 · 02:07 <span class="th">« ne vous jetez pas sur le NAT »</span></div>
+  <blockquote>Je vous dis&nbsp;: <b>ne vous jetez pas sur le NAT</b>, parce que c'est quand même assez
+  rapide de tirer des conclusions&nbsp;: <b>vous allez croire que vous avez compris un truc</b>,
+  peut-être que vous avez compris un truc, et <b>probablement que c'est faux</b>&nbsp;! Donc ne vous
+  jetez pas là-dessus tout de suite, on va le voir ensemble dans l'ordre, <b>de façon à ce qu'il n'y
+  ait pas de confusion</b>.</blockquote>
+  <div class="rep"><div class="t">Les quatre confusions qu'il annonce, et les réponses</div>
+  <b>1. «&nbsp;Le NAT protège.&nbsp;»</b> Faux&nbsp;: <b>le NAT n'est pas une mesure de
+  sécurité</b>. Il masque le plan d'adressage — un effet de bord. <b>La protection vient du
+  filtrage.</b>
+  <p><b>2. «&nbsp;Le retour du SNAT, c'est le DNAT.&nbsp;»</b> Faux, et il le corrige explicitement
+  en séance 3 (voir plus bas)&nbsp;: <b>l'opération inverse est automatique</b>, gérée par la table de
+  suivi. On n'écrit <b>jamais</b> de règle NAT retour.</p>
+  <p><b>3. «&nbsp;J'ai écrit le DNAT, donc le flux passe.&nbsp;»</b> Faux&nbsp;: le DNAT
+  <b>autorise rien du tout</b>. Il réécrit. Il faut <b>en plus</b> une règle
+  <code>FORWARD</code> — et elle doit porter sur l'adresse et le port <b>d'après</b> translation.</p>
+  <p><b>4. «&nbsp;<code>MASQUERADE</code> et <code>SNAT</code>, c'est pareil.&nbsp;»</b> Même
+  opération, mais <code>MASQUERADE</code> <b>interroge l'interface à chaque flux</b> — obligatoire
+  en DHCP, plus coûteux&nbsp;; <code>SNAT --to-source</code> écrit une adresse <b>fixe</b>, plus
+  rapide.</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch12">→ §12, la translation d'adresses</a></div>
+</div>
+
+<div class="px-item">
+  <div class="src">Séance 2 · partie 1 · 09:42 <span class="th">« je vous rappelle »</span></div>
+  <blockquote>Adresse source, adresse destination&nbsp;: <b>je vous rappelle, on a intérêt à être le
+  plus précis possible</b>. Si on n'a pas le choix, on va dire&nbsp;: « OK, n'importe quel client de
+  l'extérieur peut entrer à cet endroit-là. » <b>Ça, on n'aime pas en termes de
+  sécurité&nbsp;!</b></blockquote>
+  <div class="rep"><div class="t">La réponse à savoir donner</div>
+  Toute règle contenant <b><code>0.0.0.0/0</code></b> (<i>any</i>) est un <b>point de moindre
+  résistance</b>, et l'administrateur doit pouvoir <b>justifier formellement chaque usage</b> du
+  joker. Le cas légitime existe — un serveur web public mondial&nbsp;; partout ailleurs
+  (administration, flux inter-sites, bases de données) on renseigne <b>l'adresse ou le sous-réseau
+  minimal</b>.
+  <p><b>Et quand on ne peut pas être précis</b>, il donne la solution de repli&nbsp;: <b>réduire le
+  bruit à la racine</b> par des <b>listes noires</b> — les <b>nœuds Tor connus</b>
+  («&nbsp;un client légitime ne passera pas par Tor pour venir faire des affaires chez moi&nbsp;») —
+  et par le <b>géofiltrage</b>&nbsp;: sans activité à l'étranger, on restreint à la France et on gère
+  les exceptions proprement.</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch8">→ §8, écrire une règle</a></div>
+</div>
+
+<div class="px-item fort">
+  <div class="src">Séance 2 · partie 1 · 21:13 <span class="th">« Il faut impérativement »</span></div>
+  <blockquote>Le paquet SSH arrive&nbsp;: il matche la règle 1 (<code>ACCEPT</code>). Il est autorisé
+  et sort directement sur le câble. <b>La règle 2 (<code>LOG</code>) ne sera JAMAIS exécutée&nbsp;!
+  Vous n'aurez strictement aucun log&nbsp;!</b> <b>Il faut impérativement placer la règle de log
+  AVANT la règle d'acceptation.</b></blockquote>
+  <div class="rep"><div class="t">La réponse à savoir donner</div>
+  Il faut distinguer les deux natures de cible. <b><code>ACCEPT</code>, <code>DROP</code>,
+  <code>REJECT</code> sont <i>terminales</i></b>&nbsp;: dès qu'un paquet correspond, l'évaluation
+  <b>s'arrête</b>. <b><code>LOG</code> est <i>non terminale</i></b>&nbsp;: elle écrit dans le journal
+  puis <b>laisse le paquet continuer</b> vers les règles suivantes.
+  <p>Donc l'ordre correct est toujours <b><code>LOG</code> puis l'action</b>. Le symptôme à
+  reconnaître&nbsp;: «&nbsp;le flux passe correctement mais le journal reste vide&nbsp;».</p>
+  <p><b>Les deux compléments qu'il donne</b>&nbsp;: <code>--log-prefix "[SSH] "</code> pour
+  <b>identifier qui a généré quoi</b> quand des dizaines de règles écrivent en vrac&nbsp;; et le
+  module <b><code>limit</code></b> pour <b>ne pas saturer le disque</b> — un scan de ports peut
+  générer des gigaoctets de logs en quelques minutes, c'est une <b>attaque par épuisement de
+  disque</b>. Enfin, on place une règle de log <b>sans critère tout à la fin</b> de la chaîne pour
+  attraper ce qui va tomber dans le <code>DROP</code> par défaut.</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch11-log">→ §11.3, la journalisation</a></div>
+</div>
+
+<div class="px-item">
+  <div class="src">Séance 2 · partie 2 · 00:20 <span class="th">« une bonne fois pour toutes »</span></div>
+  <blockquote>On va <b>clarifier le vocabulaire une bonne fois pour toutes</b> pour que tout le monde
+  ait les idées claires.</blockquote>
+  <div class="rep"><div class="t">La réponse à savoir donner</div>
+  Trois niveaux emboîtés. <b>La table</b> est le conteneur de plus haut niveau&nbsp;:
+  <b><code>filter</code></b> (filtrage, la table par défaut), <b><code>nat</code></b> (translation),
+  <b><code>mangle</code></b> (modification des en-têtes IP&nbsp;: TOS, TTL), <b><code>raw</code></b>
+  (contournement du suivi de connexion). <b>La chaîne</b> est un <b>point d'accroche</b> (<i>hook</i>)
+  dans le cycle de vie du paquet&nbsp;; dans <code>filter</code>&nbsp;: <code>INPUT</code>,
+  <code>FORWARD</code>, <code>OUTPUT</code>. <b>La règle</b> est une ligne&nbsp;: des <b>critères</b>
+  plus une <b>cible</b>, terminale ou non.
+  <p><b>Le cloisonnement à retenir</b>&nbsp;: on ne filtre pas dans <code>nat</code>, on ne translate
+  pas dans <code>filter</code>. Et l'option <b><code>-t</code> est implicite</b>&nbsp;: sans elle,
+  c'est <code>filter</code>.</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch7-vocab">→ §7.2, tables et chaînes</a></div>
+</div>
+
+<div class="px-item">
+  <div class="src">Séance 2 · partie 2 · 03:15 <span class="th">Le piège du flush</span></div>
+  <blockquote>Par défaut, ça ne vide <b>que les règles de la table <code>filter</code></b>&nbsp;! Ça
+  ne touche ni à la table <code>nat</code>, ni à la table <code>mangle</code>, <b>ni aux politiques
+  par défaut</b>.</blockquote>
+  <div class="rep"><div class="t">La réponse à savoir donner</div>
+  <code>iptables -F</code> ne vide que <code>filter</code>. Le symptôme classique&nbsp;: «&nbsp;j'ai
+  tout flushé, <b>mais mon NAT est toujours là</b>&nbsp;». La remise à zéro complète d'un script
+  propre demande <b>les trois tables</b> plus les chaînes utilisateur&nbsp;:
+  <code>-F</code> · <code>-t nat -F</code> · <code>-t mangle -F</code> · <code>-X</code>.
+  <p><b>Et l'ordre compte</b>&nbsp;: <code>-X</code> ne supprime que les chaînes <b>vides et non
+  référencées</b>, donc <b><code>-F</code> d'abord, <code>-X</code> ensuite</b>.</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch7-vocab">→ §7.2</a></div>
+</div>
+
+<div class="px-item">
+  <div class="src">Séance 2 · partie 2 · 30:08 <span class="th">« Règle d'or »</span></div>
+  <blockquote><b>Règle d'or&nbsp;:</b> placer les règles les plus sollicitées statistiquement <b>en
+  tête de liste</b>, et repousser les règles rares (administration d'urgence, flux exceptionnels)
+  vers le bas.</blockquote>
+  <div class="rep"><div class="t">La réponse à savoir donner</div>
+  Son chiffrage&nbsp;: 400 règles, 85&nbsp;% de trafic web. Règles web en <b>ligne 390</b> → chaque
+  paquet web fait tester <b>389 règles</b> avant de matcher. Règles web <b>en tête</b> → match
+  immédiat, aucun cycle CPU gaspillé.
+  <p><b>Attention à ne pas confondre avec l'autre règle d'ordre</b>, qui est une question de
+  <b>justesse</b> et non de performance&nbsp;: <i><b>first match wins</b></i> — l'évaluation
+  s'arrête au premier match, donc <b>l'exception va AVANT la règle générale</b>. Une règle masquée
+  par une règle plus large placée avant <b>n'attrape jamais rien</b>, et ça se voit à son
+  <b>compteur resté à zéro</b>.</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch11-ordre">→ §11.2, l'ordre des règles</a></div>
+</div>
+
+<div class="px-item">
+  <div class="src">Séance 2 · partie 2 · 43:30 <span class="th">« beaucoup d'administrateurs font du laxisme »</span></div>
+  <blockquote>Beaucoup d'administrateurs font du <b>laxisme</b> en écrivant <code>-p icmp</code> […]
+  En écrivant cela, <b>vous autorisez l'intégralité des messages de contrôle ICMP</b>, y compris des
+  types d'erreurs et des redirections qui peuvent être détournés par un attaquant.</blockquote>
+  <div class="rep"><div class="t">La réponse à savoir donner</div>
+  ICMP se filtre sur son <b>type</b>, pas en bloc — il n'a <b>ni port source ni port
+  destination</b>, étant encapsulé directement dans IP.
+  <p><b>Ce qu'on autorise</b>&nbsp;: <b>type 8</b> <i>echo-request</i> et <b>type 0</b>
+  <i>echo-reply</i> pour le ping&nbsp;; <b>type 3 code 4</b> <i>fragmentation needed</i>, sans lequel
+  <b>la découverte du MTU casse et les gros transferts se figent</b>&nbsp;; <b>type 11</b>
+  <i>time exceeded</i> pour le <code>traceroute</code>.</p>
+  <p><b>Ce qu'on refuse</b>&nbsp;: le <b>type 5 <i>redirect</i></b>, qui permet un
+  <b>empoisonnement de route</b>, et les types détournables pour du déni de service
+  (<i>Smurf</i>).</p>
+  <p>Le symptôme d'un blocage total d'ICMP&nbsp;: «&nbsp;<b>le ping passe mais les gros transferts se
+  figent</b>&nbsp;».</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch6-icmp">→ §6.3, ICMP</a></div>
+</div>
+
+<div class="px-item">
+  <div class="src">Séance 2 · partie 2 · 59:30 <span class="th">« sans ces règles explicites »</span></div>
+  <blockquote><b>Sans ces règles explicites ou si les ports sont inversés</b>, une machine configurée
+  en attribution automatique d'adresse <b>reste bloquée en <code>169.254.x.x</code></b> (APIPA) et ne
+  peut jamais rejoindre le réseau.</blockquote>
+  <div class="rep"><div class="t">La réponse à savoir donner</div>
+  <b>Le sens des ports, à ne pas inverser</b>&nbsp;: le client émet <b>depuis UDP 68 vers UDP
+  67</b> (<i>Discover</i> / <i>Request</i>)&nbsp;; le serveur répond <b>depuis UDP 67 vers UDP
+  68</b> (<i>Offer</i> / <i>Ack</i>).
+  <p><b>Pourquoi c'est un casse-tête pour un pare-feu à état</b>&nbsp;: le client n'a <b>pas encore
+  d'adresse</b>. Sa source est <code>0.0.0.0</code> et il diffuse en <b>broadcast</b> — niveau 2
+  <code>FF:FF:FF:FF:FF:FF</code>, niveau 3 <code>255.255.255.255</code>. Rien de tout cela ne
+  ressemble à une session ordinaire.</p>
+  <p><b>Le symptôme à reconnaître</b>&nbsp;: une machine en <code>169.254.x.x</code> n'a
+  <b>joint aucun serveur DHCP</b>.</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch6-dhcp">→ §6.4, DHCP</a></div>
+</div>
+
+<div class="px-item">
+  <div class="src">Séance 2 · partie 3 · 01:07 <span class="th">« obligez-vous à »</span></div>
+  <blockquote>Dès que vous avez une information, <b>obligez-vous à la coder dans le pare-feu</b>.
+  C'est chiant, c'est long à faire, mais c'est le seul moyen d'avoir un truc à peu près propre. De la
+  même manière, <b>documentez tout ce que vous faites</b>.</blockquote>
+  <div class="rep"><div class="t">La réponse à savoir donner</div>
+  Son exemple est l'<b>anti-<i>spoofing</i></b>&nbsp;: on <b>ne suppose pas</b> qu'un paquet arrive
+  par la bonne carte, on le <b>code</b>. Si sur l'interface côté client on voit arriver un flux qui
+  s'annonce du réseau serveur <code>10.0.0.0/24</code>, «&nbsp;<b>ce n'est pas normal</b>&nbsp;» — on
+  l'interdit <b>explicitement</b> et on le <b>logue</b>, même si la politique par défaut l'aurait
+  jeté de toute façon. La valeur est dans la <b>détection</b>, pas seulement dans le blocage.
+  <p>Même logique pour la <b>granularité</b>, qu'il défend à 77:24&nbsp;: plutôt qu'une règle
+  monolithique regroupant plusieurs ports, <b>des lignes distinctes et commentées</b> —
+  «&nbsp;<b>avantage capital</b>&nbsp;», les <b>compteurs de chaque règle</b> isolent immédiatement le
+  protocole en panne (le 80 fonctionne, le 443 reste à zéro).</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch9-antispoof">→ §9.6, l'anti-spoofing</a></div>
+</div>
+
+<div class="px-item fort">
+  <div class="src">Séance 2 · partie 3 · 33:20 <span class="th">« Le constat est sans appel »</span></div>
+  <blockquote><b>Le constat est sans appel&nbsp;: n'importe qui peut franchir le pare-feu dans le
+  sens inverse en utilisant les règles de retour <i>stateless</i>&nbsp;!</b></blockquote>
+  <div class="rep"><div class="t">La réponse à savoir donner</div>
+  <b>L'attaque, en une phrase</b>&nbsp;: la règle retour dit «&nbsp;si ça vient du port 80 du serveur
+  vers un port &gt; 1024 du client, <code>ACCEPT</code>&nbsp;». Un attaquant <b>forge un paquet</b>
+  qui respecte exactement ces critères, <b>alors que le client n'a rien demandé</b> — et il passe.
+  Le pare-feu sans état évalue chaque paquet <b>isolément, sans aucune mémoire</b>.
+  <p><b>La démonstration qu'il fait en séance</b>, avec <code>hping3</code> depuis le serveur&nbsp;:
+  <code>-s 80</code> force le port source, <code>-p 1028</code> vise le client,
+  <code>--keep</code> maintient le port source fixe. Résultat&nbsp;: <b>le compteur de la règle
+  retour s'incrémente</b>, le paquet arrive chez le client, dont le noyau répond
+  <b><code>RST-ACK</code></b> — il ne comprend pas ce segment sur un port où rien n'écoute.</p>
+  <p><b>La parade</b>&nbsp;: <code>ESTABLISHED,RELATED</code>. Rejoué après, le pare-feu consulte sa
+  table <code>conntrack</code>, <b>n'y trouve aucune session correspondante</b>, et le paquet forgé
+  tombe dans le <code>DROP</code> par défaut.</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch10-faille">→ §10.1, la faille du stateless</a></div>
+</div>
+
+<div class="px-item fort">
+  <div class="src">Séance 2 · partie 3 · 45:15 puis partie 4 · 00:00 <span class="th">« TOUT ! »</span></div>
+  <blockquote>Qu'est-ce que cette règle change dans notre vie d'administrateur&nbsp;? <b>TOUT&nbsp;!</b>
+  […] <b>Tous les retours — qu'ils soient dans <code>INPUT</code>, dans <code>OUTPUT</code> ou dans
+  <code>FORWARD</code> — sont gérés avec la clause <code>ESTABLISHED</code></b> du module de suivi de
+  session.</blockquote>
+  <div class="rep"><div class="t">La réponse à savoir donner</div>
+  <b>Les quatre conséquences, dans son ordre</b>&nbsp;: <b>(1)</b> on place
+  <code>ESTABLISHED,RELATED</code> <b>tout au début</b> de <code>FORWARD</code>, et aussi de
+  <code>INPUT</code> et <code>OUTPUT</code>&nbsp;; <b>(2)</b> on <b>supprime totalement toutes les
+  règles de retour</b>&nbsp;; <b>(3)</b> on n'écrit plus que le <b>flux aller</b>
+  (<code>--ctstate NEW</code>)&nbsp;; <b>(4)</b> Netfilter gère les réponses légitimes <b>sans
+  réévaluer toute la table</b>, d'où le gain de performance.
+  <p><b>Le lien avec l'industrie</b>, qu'il fait immédiatement&nbsp;: «&nbsp;c'est ce que font
+  <b>tous les pare-feu graphiques du monde</b>&nbsp;» — sur Check Point, Stormshield, Fortinet ou
+  Palo Alto, <b>on ne saisit que la ligne aller</b>, parce que quelqu'un s'est occupé du retour dans
+  la table de suivi.</p>
+  <p><b>Le piège symétrique</b>&nbsp;: une politique qui n'accepte <b>que</b>
+  <code>ESTABLISHED</code>, <b>sans aucune règle <code>NEW</code></b>, ne laisse <b>rien</b>
+  passer — aucune session ne devient jamais établie.</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch10-principe">→ §10.2, le pare-feu à état</a></div>
+</div>
+
+<div class="px-item">
+  <div class="src">Séance 2 · partie 5 · 40:15 <span class="th">« tous les flux tombent en panne ! »</span></div>
+  <blockquote>Si l'IP change, la règle <code>SNAT</code> continue d'émettre avec l'ancienne IP devenue
+  invalide&nbsp;: <b>tous les flux tombent en panne&nbsp;!</b></blockquote>
+  <div class="rep"><div class="t">La réponse à savoir donner</div>
+  <b>Le critère de choix est unique</b>&nbsp;: l'adresse de sortie est-elle <b>fixe</b> ou
+  <b>dynamique</b>&nbsp;? Adresse fixe et connue → <code>SNAT --to-source</code>. Interface
+  <b>cliente DHCP</b> (box, routeur 4G/5G) → <b><code>MASQUERADE</code></b>, qui <b>lit l'adresse du
+  moment sur la carte</b>.
+  <p><b>Le prix à payer</b>&nbsp;: <code>MASQUERADE</code> interroge l'interface à chaque nouveau
+  flux, donc il <b>consomme du CPU</b>&nbsp;; <code>SNAT</code>, dont l'adresse est figée, est
+  <b>plus rapide</b>.</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch12-masq">→ §12.2, SNAT ou MASQUERADE</a></div>
+</div>
+
+<div class="px-item fort">
+  <div class="src">Séance 2 · partie 5 · 63:00 <span class="th">Il écrit lui-même l'erreur à ne pas faire</span></div>
+  <blockquote><i>Si vous écriviez <code>--dport 80</code> dans la chaîne <code>FORWARD</code>, le
+  paquet (qui est désormais étiqueté port 8080) <b>ne matcherait pas et serait immédiatement bloqué
+  par la politique par défaut <code>DROP</code></b>&nbsp;!</i></blockquote>
+  <div class="rep"><div class="t">La réponse à savoir donner</div>
+  <b>L'ordre d'exécution est la clé</b>&nbsp;: <code>PREROUTING</code> de la table <code>nat</code>
+  s'exécute <b>avant</b> la décision de routage, donc <b>avant</b> <code>FORWARD</code> de la table
+  <code>filter</code>. Quand la règle de filtrage examine le paquet, <b>il porte déjà l'adresse et le
+  port internes</b>.
+  <p>Donc en PAT <code>80 → 10.0.0.100:8080</code>, la règle <code>FORWARD</code> doit viser
+  <b><code>-d 10.0.0.100 --dport 8080</code></b>, jamais l'adresse publique ni le port 80.</p>
+  <p><b>Le symptôme</b>&nbsp;: «&nbsp;le DNAT marche — son compteur monte — mais rien ne passe&nbsp;».
+  C'est le piège qu'il signale <b>trois fois</b> dans le module.</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch12">→ §12, le NAT</a></div>
+</div>
+
+<div class="px-item">
+  <div class="src">Séance 2 · partie 1 · 76:24 <span class="th">« la règle d'or de l'ingénieur »</span></div>
+  <blockquote>Un étudiant qui utilisait une IA générative pour générer ses commandes <b>sans les
+  relire</b> a vu l'IA exécuter un script destructeur supprimant ses machines virtuelles de
+  travail&nbsp;! […] <b>toujours comprendre et valider intellectuellement chaque ligne avant de
+  l'exécuter</b>.</blockquote>
+  <div class="rep"><div class="t">Ce que ça veut dire pour la révision</div>
+  C'est la même idée que sa mise en garde de séance 3 sur les <b>consoles graphiques</b>&nbsp;: dans
+  un script, <b>chaque ligne oblige à assumer un choix</b>&nbsp;; dès qu'on délègue — à une interface
+  ou à un générateur — on perd cette rigueur. C'est aussi la raison qu'il donne d'avoir choisi le
+  mode texte pour le module.
+  <p>Traduction pour l'examen&nbsp;: face à un script, <b>on justifie ligne par ligne</b>. C'est
+  exactement l'exercice qu'il annonce.</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch15-fwb">→ §15.6, les consoles graphiques</a></div>
+</div>
+
+<!-- ============================================================== -->
+<h2 id="s3">Séance 3 — état, NAT, proxy et exploitation</h2>
+
+<div class="px-item fort">
+  <div class="src">Séance 3 · partie 1 · 15:36 <span class="th">★ Le seul endroit du module où il annonce une question</span></div>
+  <blockquote>Est-ce que c'est bon pour cette histoire de <code>ESTABLISHED,RELATED</code>&nbsp;?
+  C'est bon&nbsp;? <b>Je peux vous poser sereinement une question là-dessus et vous allez pouvoir
+  m'expliquer en illustrant avec des exemples&nbsp;?</b> Ouais.</blockquote>
+  <div class="rep"><div class="t">La réponse à savoir donner — et le format qu'il demande</div>
+  Il ne demande pas une définition, il demande une <b>explication illustrée</b>. Donc prépare
+  <b>les quatre états et un exemple pour chacun</b>&nbsp;:
+  <p><b><code>NEW</code></b> — le <b>premier paquet d'une série</b>&nbsp;: un <code>SYN</code> seul,
+  ou la première requête DNS. Son exemple d'usage&nbsp;: si quelqu'un envoie une <b>rafale de
+  <code>SYN</code></b>, «&nbsp;le premier va être <code>NEW</code>, <b>les autres vont dégager comme
+  anomalies</b>&nbsp;».</p>
+  <p><b><code>ESTABLISHED</code></b> — la connexion suivie&nbsp;: «&nbsp;j'ai vu passer un
+  <code>SYN</code>, je vois le <code>SYN-ACK</code>, ça discute, j'ai les numéros de séquence,
+  j'arrive à les suivre&nbsp;». Elle le reste jusqu'au <code>FIN-ACK</code> ou au
+  <code>RST</code>.</p>
+  <p><b><code>RELATED</code></b> — <b>deux cas, et il faut les deux</b>. <b>(1) FTP</b>&nbsp;: le
+  canal de commande est sur <b>TCP 21</b>, mais le transfert de fichier se fait sur un <b>port
+  dynamique négocié dans l'échange</b> (visible encodé dans Wireshark). Ce nouveau flux n'est pas
+  <code>ESTABLISHED</code> — c'est un autre port — mais il est <b>lié</b> à la session de commande, et
+  le helper <code>nf_conntrack_ftp</code> l'anticipe. <b>(2) Les messages d'erreur ICMP</b>&nbsp;: on
+  tape vers un serveur en 80, et c'est un <b>équipement intermédiaire</b> qui répond
+  <i>unreachable</i> ou <i>TTL expired</i>. Ce paquet <b>n'a pas été initié par le client</b> mais il
+  est <b>causé par la session en cours</b>.</p>
+  <p><b><code>INVALID</code></b> — ce qui ne correspond à aucune session connue&nbsp;: le paquet
+  forgé, le fragment orphelin. On le jette, et on peut le journaliser.</p>
+  <p><b>Le point de bascule à savoir formuler</b>&nbsp;: sans état, il faut écrire une règle retour
+  par flux, avec <b>trois inversions</b> — et cette règle est <b>exploitable par un paquet
+  forgé</b>. Avec l'état, <b>une seule règle</b> gère tous les retours sur les trois chaînes, et le
+  paquet forgé ne trouve <b>aucune session</b> dans la table.</p>
+  <p><b>Le piège symétrique</b>, qu'un étudiant lui pose juste après&nbsp;: une politique qui
+  n'accepte <b>que</b> <code>ESTABLISHED</code> ne laisse <b>rien</b> passer, faute de règle
+  <code>NEW</code> pour l'aller.</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch10">→ §10, le pare-feu à état</a></div>
+</div>
+
+<div class="px-item">
+  <div class="src">Séance 3 · partie 2 · 02:00 <span class="th">« Je rappelle que… »</span></div>
+  <blockquote>L'opération inverse du SNAT se fait de façon transparente. <b>Je rappelle que le retour
+  du SNAT, ce n'est pas le DNAT&nbsp;!</b> Le retour du SNAT, vous vous souvenez, on avait mis en
+  place du SNAT, on n'avait pas encore parlé de DNAT et ça marchait.</blockquote>
+  <div class="rep"><div class="t">La réponse à savoir donner</div>
+  <b>SNAT et DNAT ne sont pas l'aller et le retour l'un de l'autre</b>&nbsp;: ce sont <b>deux
+  intentions différentes</b>. <b>SNAT</b> réécrit la <b>source</b>, en <code>POSTROUTING</code>, pour
+  <b>faire sortir</b> un réseau interne. <b>DNAT</b> réécrit la <b>destination</b>, en
+  <code>PREROUTING</code>, pour <b>exposer</b> un service.
+  <p><b>Le retour de chacun est automatique.</b> Netfilter mémorise la translation dans la table de
+  suivi et <b>défait l'opération</b> sur les paquets retour, tout seul. On n'écrit <b>jamais</b> de
+  règle NAT retour — et sa preuve est historique&nbsp;: le SNAT fonctionnait <b>avant</b> qu'il ait
+  parlé de DNAT.</p>
+  <p><b>Le moyen mnémotechnique</b> qu'il donne pour l'emplacement&nbsp;: <b>S</b>NAT →
+  po<b>S</b>trouting · <b>D</b>NAT → prerouting, la <b>D</b>estination se décide <b>avant</b> le
+  routage.</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch12-retour">→ §12.3, pourquoi pas de règle retour</a></div>
+</div>
+
+<div class="px-item">
+  <div class="src">Séance 3 · partie 1 · 25:42 <span class="th">« C'est pour ça que je vous dis »</span></div>
+  <blockquote>Le DNAT je change <b>AVANT</b> le filtrage. Résultat&nbsp;: maintenant, il faut que
+  j'aie une règle qui laisse passer <b>à destination du port 8080</b>&nbsp;! Sinon, ça ne passe pas.
+  <b>C'est pour ça que je vous dis</b>&nbsp;: pour expérimenter, comprendre, quand on est dans un
+  environnement protégé…</blockquote>
+  <div class="rep"><div class="t">La méthode qu'il prescrit, en quatre temps</div>
+  <b>1.</b> On met le filtrage en <b>laxiste</b> (<code>iptables -P FORWARD ACCEPT</code>).
+  <b>2.</b> On pose le <b>NAT</b> seul et on vérifie qu'il fonctionne. <b>3.</b> On s'assure que le
+  serveur répond bien sur son <b>port réel</b> (8080). <b>4.</b> On <b>remet le filtrage</b> par
+  dessus — et si ça ne passe plus, on <b>lit les compteurs</b> («&nbsp;on s'aperçoit que c'est
+  <code>DROP</code>, <code>DROP</code>, <code>DROP</code>&nbsp;») puis les <b>logs</b> ou
+  <b>Wireshark</b>.
+  <p><b>Ce que ça vaut à l'examen</b>&nbsp;: c'est une <b>méthode de diagnostic</b> présentable telle
+  quelle. On isole la couche fautive en la <b>neutralisant temporairement</b>, au lieu de deviner.</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch18-diag">→ §18.2, « ça ne marche pas »</a></div>
+</div>
+
+<div class="px-item fort">
+  <div class="src">Séance 3 · partie 1 · 31:13 <span class="th">« Donc la bonne réponse c'est : »</span></div>
+  <blockquote>Votre <b>feignantise naturelle</b> vous amène vers « Je vais mettre
+  <code>MASQUERADE</code>, ça marchera dans tous les cas donc on ne m'emmerdera pas avec l'adresse IP
+  source&nbsp;! » Mais effectivement, ça consomme de la ressource. <b>Donc la bonne réponse
+  c'est&nbsp;:</b></blockquote>
+  <div class="rep"><div class="t">Sa réponse, mot pour mot, en trois points</div>
+  <b>1.</b> <code>MASQUERADE</code> est <b>indispensable quand il y a du DHCP</b> — «&nbsp;je ne peux
+  pas prévoir à l'avance l'adresse IP du moment&nbsp;». Il précise que c'est la <b>patte de
+  sortie</b> qui doit être cliente DHCP, pas la machine en général. <b>Le prix à payer&nbsp;: ça va
+  regarder l'adresse IP du moment pour chaque paquet ou nouvelle session.</b>
+  <p><b>2.</b> Si l'adresse est <b>connue et fixe</b>&nbsp;: «&nbsp;<b>je force, même si c'est chiant
+  à mettre dans un script, j'utilise <code>--to-source</code></b>&nbsp;».</p>
+  <p><b>3.</b> Et l'argument qu'on oublie&nbsp;: <code>--to-source</code> a un <b>avantage
+  supplémentaire</b> — «&nbsp;si jamais l'adresse IP changeait parce qu'il y a eu une connerie, on a
+  un <b>moyen supplémentaire de détecter ce problème</b>&nbsp;». L'adresse figée agit comme un
+  <b>détecteur d'anomalie</b>.</p>
+  <p><b>À noter</b>&nbsp;: c'est le seul moment du module où il annonce «&nbsp;la bonne
+  réponse&nbsp;» avant de l'énoncer. Le mélange délibéré des deux formes dans l'exercice d'audit
+  (§15.5) confirme qu'il tient à cette nuance.</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch12-masq">→ §12.2, SNAT ou MASQUERADE</a></div>
+</div>
+
+<div class="px-item fort">
+  <div class="src">Séance 3 · partie 2 · 38:43 <span class="th">Un avertissement, et l'annonce du format d'exercice</span></div>
+  <blockquote><b>Vous pouvez écrire toutes les règles de <code>FORWARD</code> que vous voulez&nbsp;:
+  ça ne passera plus par <code>FORWARD</code>&nbsp;!</b> Parce qu'on a changé la destination avant le
+  routage. […] Une fois que vous aurez fait fonctionner Squid en mode explicite puis en mode
+  transparent, on fera un autre exercice&nbsp;: <b>l'audit et la lecture critique de scripts de
+  pare-feu <code>iptables</code> réels</b>. Là vous avez fait de la conception propre&nbsp;; en
+  entreprise, vous arriverez sur des scripts de 500 lignes écrits par d'autres que vous devrez
+  <b>comprendre, commenter et sécuriser sans tout casser</b>.</blockquote>
+  <div class="rep"><div class="t">Deux choses à en tirer</div>
+  <b>1. Le piège du proxy transparent local.</b> Un <code>REDIRECT --to-ports 3128</code> envoie le
+  trafic vers Squid <b>installé sur le pare-feu</b>. Après réécriture, la destination <b>est le
+  pare-feu lui-même</b>&nbsp;: la décision de routage envoie donc le paquet en
+  <b><code>INPUT</code></b>, pas en <code>FORWARD</code>. Il faut autoriser le <b>3128 en
+  <code>INPUT</code></b>. Si le proxy est sur une <b>autre machine</b>, c'est bien
+  <code>FORWARD</code>.
+  <p><b>2. Le format de l'épreuve.</b> Les trois verbes sont dans sa phrase&nbsp;:
+  <b>comprendre, commenter, sécuriser</b>. On ne demande pas d'écrire un script depuis une page
+  blanche&nbsp;: on donne un script et on demande de l'analyser. C'est le TD du §15.5, dont la
+  <b>correction officielle est fournie</b> — script commenté et trois schémas de flux.</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch13-piege">→ §13.7, le piège du proxy transparent</a></div>
+</div>
+
+<div class="px-item">
+  <div class="src">Séance 3 · partie 1 · 89:12 <span class="th">Sa vérification de fin de séance</span></div>
+  <blockquote>Est-ce que c'est bon pour ça&nbsp;?</blockquote>
+  <div class="rep"><div class="t">Le point sur lequel il ferme la séance</div>
+  Il pose la question juste après avoir écrit les règles qui <b>empêchent de contourner le
+  proxy</b> — c'est là qu'il voulait que tout le monde soit au clair.
+  <p><b>La règle correcte n'est pas «&nbsp;le LAN sort en 80/443&nbsp;»</b>, c'est&nbsp;:
+  <b>(1)</b> <code>REJECT</code> du 80 et du 443 <b>en direct</b> depuis le LAN&nbsp;; <b>(2)</b>
+  <b>seul le proxy</b> est autorisé à sortir en 80/443. <code>REJECT</code> et non
+  <code>DROP</code>, parce qu'en interne on veut une <b>erreur immédiate</b> plutôt qu'un
+  timeout.</p>
+  <p><b>La phrase qui résume</b>, et qu'il répète&nbsp;: «&nbsp;<b>ça ne dépend pas du proxy, ça
+  dépend des règles du pare-feu&nbsp;!</b>&nbsp;» Configurer le navigateur ne fait que <b>baliser la
+  route</b>&nbsp;; sans le filtrage cohérent derrière, l'utilisateur décoche la case et sort en
+  direct.</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch13-transparent">→ §13.6, proxy explicite ou transparent</a></div>
+</div>
+
+<div class="px-item">
+  <div class="src">Séance 3 · partie 1 · 44:40 <span class="th">« ne cherchez pas à torturer… »</span></div>
+  <blockquote>Que ce soit Cisco, que ce soit Stormshield, quand vous passez une certif, <b>c'est une
+  certif produit</b>. Donc ne vous occupez pas de savoir si ce truc-là est mieux ou moins bien que
+  Netfilter, <b>ne cherchez pas à torturer les cours Cisco pour les faire rentrer dans
+  Netfilter&nbsp;!</b> <b>Mettez-vous dans la philosophie du produit.</b></blockquote>
+  <div class="rep"><div class="t">La réponse à savoir donner</div>
+  Le <b>vocabulaire change, le modèle « critères → action » ne change pas</b>. Il faut savoir passer
+  d'une taxonomie à l'autre&nbsp;: Netfilter raisonne en <b>SNAT / DNAT</b> (quel champ je
+  réécris), les constructeurs en <b>statique / dynamique / PAT</b> (comment j'associe les adresses).
+  <p><b>Les correspondances à connaître</b>&nbsp;: <b>NAT statique</b> = un SNAT <i>et</i> un DNAT
+  pour la même machine · <b>NAT dynamique</b> = <code>SNAT --to-source</code> sur une <b>plage</b> ·
+  <b>PAT statique</b> = <b>DNAT avec port</b>, le <i>port forwarding</i> · <b>PAT dynamique</b>,
+  aussi appelé <b><i>NAT overload</i></b>, = <b><code>MASQUERADE</code></b>, exactement le même
+  mécanisme.</p>
+  <p>Il redit la même chose en séance 3 partie 3 à propos de <b>Firewall Builder</b>&nbsp;:
+  «&nbsp;<b>n'essayez pas à tout prix de faire rentrer de l'iptables dedans</b>&nbsp;».</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch15-exploit">→ §15.4, l'autre taxonomie du NAT</a></div>
+</div>
+
+<div class="px-item">
+  <div class="src">Séance 3 · partie 3 · 00:20 <span class="th">Dit en riant, mais dit quand même</span></div>
+  <blockquote>— <i>[Étudiant]</i>&nbsp;: Avec le partiel du coup&nbsp;! <i>(rires)</i><br>
+  — <i>[Enseignant]</i>&nbsp;: <b>Oui, c'est ça, pour les partiels&nbsp;!</b></blockquote>
+  <div class="rep"><div class="t">Ce qu'il montre juste après, et qu'il faut donc savoir</div>
+  <b>Firewall Builder</b>&nbsp;: le <b>choix de la cible</b> de compilation (Cisco ASA,
+  <code>iptables</code>, <code>nftables</code>, <code>pf</code>, <code>ipfilter</code>) · les
+  <b>modèles</b> (2 interfaces LAN/WAN, périmétrique 3 interfaces avec DMZ, hôte autonome,
+  multi-zones <b>IPCop</b> — <b>rouge = Internet, orange = DMZ, vert = zone saine</b>) ·
+  l'<b>abstraction par objets</b> réutilisables · la <b>règle de nettoyage</b> finale
+  <code>Any/Any/Any → Deny + Log</code> · la <b>compilation</b> en script <code>iptables</code> et
+  son <b>déploiement en SSH</b>.
+  <p><b>Et la mise en garde qui va avec</b>&nbsp;: la <b>perte de rigueur intellectuelle</b>. Dans un
+  script, chaque ligne oblige à un choix&nbsp;; devant une console, on glisse à «&nbsp;<i>ça ne
+  marchait pas&nbsp;? J'inverse ces deux lignes à la souris et je recompile</i>&nbsp;».</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch15-fwb">→ §15.6, Firewall Builder</a></div>
+</div>
+
+<div class="px-item">
+  <div class="src">Séance 3 · partie 3 · 11:40 <span class="th">Il publie une correction avant l'examen</span></div>
+  <blockquote>Je vais mettre en ligne la correction, je peux vous la montrer tout de suite pour que
+  vous regardiez ça <b>à tête reposée</b>.</blockquote>
+  <div class="rep"><div class="t">Les cinq points de cette correction</div>
+  <b>1.</b> Les <b>deux formes de SNAT mélangées volontairement</b> — «&nbsp;une aberration technique
+  en production, mais le but c'était que vous ayez les deux pour <b>vérifier que vous comprenez la
+  nuance</b>&nbsp;». <b>2.</b> Deux <b>DNAT</b>&nbsp;: le 25 vers <code>10.0.0.25:25</code>, un
+  <b>relais de messagerie</b>&nbsp;; le 80 vers <code>10.0.0.10:8080</code>, un <b>serveur web
+  déporté</b>. <b>3.</b> La déduction demandée&nbsp;: <b>c'est une DMZ</b>, aucun flux Internet ne
+  descend jusqu'au LAN. <b>4.</b> Le <b>SSH réservé au poste d'administration</b>
+  (<code>192.168.1.100</code>)&nbsp;: les clients ordinaires <b>n'y ont pas accès</b>. <b>5.</b>
+  <code>-P OUTPUT ACCEPT</code>, contrairement au TD précédent&nbsp;: choix assumé, plus simple mais
+  <b>moins strict</b>.
+  <a class="lien" href="inf5244-fiche-complete.html#ch15-td">→ §15.5, la correction officielle du TD</a></div>
+</div>
+
+<div class="px-item fort">
+  <div class="src">Séance 3 · partie 3 · 14:00 <span class="th">La seule indication logistique sur l'épreuve</span></div>
+  <blockquote>Moi j'ai tendance à faire des schémas avant pour être sûr de ce que je veux faire.
+  <b>Pour l'examen, vous aurez la possibilité de faire des schémas au brouillon pour poser vos
+  flux.</b> Et comme je disais à certains d'entre vous&nbsp;: <b>le fait d'avoir le schéma et de poser
+  le crayon en se disant « J'ai un flux qui va de là à là, qu'est-ce qu'il traverse&nbsp;? »</b>, ça
+  vous permet de <b>ne pas faire d'erreur d'aiguillage</b>&nbsp;!</blockquote>
+  <div class="rep"><div class="t">La méthode, en cinq gestes</div>
+  <b>1.</b> Poser les <b>zones et les pattes</b>&nbsp;: un rectangle par zone, et sur chaque trait le
+  nom de l'interface et le réseau. <b>2.</b> Une <b>flèche par flux</b>, dans le sens de l'aller,
+  annotée du service et du port — le retour ne se dessine pas, il est couvert par
+  <code>ESTABLISHED,RELATED</code>. <b>3.</b> Sur chaque flèche, la <b>chaîne traversée</b>&nbsp;:
+  <code>FORWARD</code> si transit, <code>INPUT</code> si destiné au pare-feu, <code>OUTPUT</code> s'il
+  en part. <b>4.</b> Les <b>translations et leur emplacement</b>&nbsp;: DNAT <b>avant</b>
+  (<code>PREROUTING</code>), SNAT <b>après</b> (<code>POSTROUTING</code>), en notant les valeurs
+  <b>telles que la table <code>filter</code> les verra</b>. <b>5.</b> <b>Ensuite seulement</b>, les
+  règles&nbsp;: une flèche = une ligne, et le schéma sert de <b>liste de contrôle</b> — une flèche
+  sans règle est un flux oublié, une règle sans flèche une ouverture injustifiée.
+  <p><b>Pourquoi ça marche</b>&nbsp;: le schéma externalise les trois informations qu'on perd de vue
+  en écrivant directement — <b>le sens</b> du flux, <b>la chaîne</b> concernée, et <b>l'état des
+  adresses</b> à l'endroit du filtrage.</p>
+  <a class="lien" href="inf5244-fiche-complete.html#ch18-schema">→ §18.3, faire le schéma avant</a></div>
+</div>
+
+<!-- ============================================================== -->
+<h2 id="synthese">⚡ Ce que ces signaux disent, mis bout à bout</h2>
+
+<div class="callout ok"><div class="t">Quatre conclusions</div>
+<b>1. Le format est de l'analyse.</b> Il annonce «&nbsp;l'audit et la lecture critique de scripts
+réels&nbsp;», il publie une correction d'audit avant l'examen, et il autorise le brouillon pour
+«&nbsp;poser vos flux&nbsp;». On donnera un script ou une topologie à comprendre, commenter et
+critiquer.
+<p><b>2. Ce n'est pas de la syntaxe.</b> «&nbsp;Le but, je le rappelle, ce n'est pas d'apprendre
+comment marche Netfilter.&nbsp;» Savoir <b>justifier</b> une règle vaut mieux que réciter l'ordre des
+options.</p>
+<p><b>3. Il désigne trois endroits où l'on se plante</b>, et ce sont les trois seuls qu'il qualifie
+ainsi&nbsp;: la <b>passerelle par défaut</b> («&nbsp;pose problème systématiquement chez les
+étudiants&nbsp;»), le <b>NAT</b> («&nbsp;vous allez croire que vous avez compris… probablement que
+c'est faux&nbsp;»), et la <b>structure des chaînes</b> («&nbsp;un truc qu'il faut assimiler&nbsp;»).</p>
+<p style="margin-bottom:0"><b>4. Un seul sujet est annoncé comme interrogeable</b>&nbsp;:
+<code>ESTABLISHED,RELATED</code> — et pas en récitation, <b>en expliquant avec des exemples</b>.</p>
+</div>
+
+<p style="text-align:center;color:var(--fg-mute);font-size:.85rem;margin-top:40px">
+Relecture intégrale de la parole de l'enseignant · 12 enregistrements, séances 1 à 3 · hors ligne
+</p>
+
+</main>
+
+<script src="assets/app.js?v=31"></script>
+</body>
+</html>

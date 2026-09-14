@@ -157,6 +157,7 @@
 
     revealAllSteps(SECTIONS[i].el);
     watchViz(SECTIONS[i].el);
+    setupCards(SECTIONS[i].el);
 
     if (anchorId) {
       var t = document.getElementById(anchorId);
@@ -330,6 +331,65 @@
     }, 2500);
   }
   window.watchViz = watchViz;
+
+  /* ================= Cartes de concepts interactives =================
+     Délégation : un clic sur .vz-c bascule son détail. Le repli initial est
+     posé ici et non dans le HTML, pour que le contenu reste intégralement
+     lisible si ce script ne tourne pas. */
+  function setupCards(scope) {
+    var cards = (scope || document).querySelectorAll('.vz-c:not([data-open])');
+    for (var i = 0; i < cards.length; i++) {
+      var c = cards[i];
+      c.setAttribute('data-open', '0');
+      if (!c.getAttribute('type')) c.setAttribute('type', 'button');
+      c.setAttribute('aria-expanded', 'false');
+      if (!c.querySelector('.hint')) {
+        var h = document.createElement('span');
+        h.className = 'hint';
+        h.textContent = c.getAttribute('data-hint') || 'En savoir plus';
+        c.appendChild(h);
+      }
+    }
+    var bars = (scope || document).querySelectorAll('.vz-bar:not([data-ready])');
+    for (var j = 0; j < bars.length; j++) { bars[j].setAttribute('data-ready', '1'); }
+    refreshCardCounts(scope);
+  }
+  function cardsOf(el) {
+    var viz = el.closest ? el.closest('.viz') : null;
+    return (viz || document).querySelectorAll('.vz-c');
+  }
+  function refreshCardCounts(scope) {
+    var vizs = (scope || document).querySelectorAll('.viz');
+    for (var i = 0; i < vizs.length; i++) {
+      var cnt = vizs[i].querySelector('.vz-bar .cnt');
+      if (!cnt) continue;
+      var all = vizs[i].querySelectorAll('.vz-c');
+      var open = vizs[i].querySelectorAll('.vz-c[data-open="1"]');
+      cnt.textContent = open.length + ' / ' + all.length + ' ouvertes';
+    }
+  }
+  function toggleCard(c, force) {
+    var open = force === undefined ? c.getAttribute('data-open') !== '1' : force;
+    c.setAttribute('data-open', open ? '1' : '0');
+    c.setAttribute('aria-expanded', open ? 'true' : 'false');
+    var h = c.querySelector('.hint');
+    if (h) h.textContent = open ? 'Replier' : (c.getAttribute('data-hint') || 'En savoir plus');
+  }
+  document.addEventListener('click', function (e) {
+    var all = e.target.closest && e.target.closest('.vz-bar [data-cards]');
+    if (all) {
+      var want = all.getAttribute('data-cards') === 'open';
+      var list = cardsOf(all);
+      for (var i = 0; i < list.length; i++) toggleCard(list[i], want);
+      refreshCardCounts();
+      return;
+    }
+    var c = e.target.closest && e.target.closest('.vz-c');
+    if (!c) return;
+    toggleCard(c);
+    refreshCardCounts();
+  });
+  window.setupCards = setupCards;
 
   /* ================= Retour en haut ================= */
   function setupTop() {

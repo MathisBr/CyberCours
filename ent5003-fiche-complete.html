@@ -1,0 +1,2198 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Méthodologie de la sécurité (ENT5003) — fiche de révision</title>
+<link rel="stylesheet" href="assets/core.css?v=26">
+<link rel="stylesheet" href="assets/viz.css?v=10">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><span class="dot"></span> ENT5003 <small>· Méthodologie de la sécurité</small></div>
+  <div class="spacer"></div>
+  <input id="search" type="search" placeholder="Rechercher…  (Ctrl+K)">
+  <a class="home" href="index.html">← Accueil</a>
+  <button class="btn ghost" onclick="toggleTheme()" title="Thème clair / sombre">◐</button>
+  <button class="btn ghost" onclick="window.print()" title="Imprimer / PDF">⎙</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar"><h4>Chapitres</h4><div id="toc"></div></nav>
+  <main class="content">
+<h1>Méthodologie de la sécurité — fiche de révision</h1>
+<p class="lead">
+Ce cours ne parle pas de technique mais de <b>méthode</b>&nbsp;: comment une organisation décide de ce
+qu'elle protège, à quoi elle est tenue, sur quels référentiels elle s'appuie, et comment elle
+structure sa démarche. Trois niveaux s'emboîtent — <b>obligations</b>, <b>normes</b>,
+<b>méthodes</b> — puis quatre <b>angles de vue</b> possibles sur la sécurité, dont l'un, le
+<b>zero trust</b>, est traité en détail.
+</p>
+
+<!-- ===================================================================== -->
+<h2 id="essentiel">★ L'essentiel — à relire la veille</h2>
+
+<div class="callout danger"><div class="t">Le plan du module, et comment il est évalué</div>
+<b>Trois journées</b>&nbsp;: <b>J1</b> cadrage de la cybersécurité + approche centrée sur le système,
+puis approche centrée sur la donnée (zero trust) · <b>J2</b> approche centrée sur la menace (CTI),
+puis approche centrée sur le métier (analyse de risque) · <b>J3</b> journée de formation à
+l'<b>analyse de risque et à la méthode EBIOS Risk Manager</b>, avec l'outil <b>Agile Risk Manager</b>.
+<p style="margin-bottom:0"><b>Quatre évaluations</b>&nbsp;: un <b>QCM Moodle sur le zero trust</b>
+(20 questions, une seule bonne réponse par question, 1 pt par bonne réponse, 0 pour une mauvaise) ·
+un <b>QCM Moodle de la formation EBIOS RM</b> — <b>à valider à 80&nbsp;%</b> pour obtenir
+l'attestation, et la journée de formation est <b>obligatoire</b> · une <b>analyse EBIOS sur un cas
+d'étude</b> en groupe · un <b>examen final Moodle</b>, décrit comme un <b>problème de synthèse</b>.</p>
+</div>
+
+<div class="callout warn"><div class="t">Ce que cette fiche couvre — et ce qui manque encore</div>
+Elle est construite sur les supports disponibles&nbsp;: le <b>syllabus</b>, la présentation du module
+et la <b>Partie 1 — Normes, méthodes, approches</b> (85 diapositives), plus le tableur des
+<b>93 mesures ISO 27002</b> et l'énoncé du devoir EBIOS.
+<p style="margin-bottom:0">Les chapitres <b>21 à 27</b> couvrent la <b>méthode EBIOS Risk Manager</b> à partir du <b>guide
+officiel de l'ANSSI</b> (ANSSI-PA-048), la référence citée dans la bibliographie du syllabus —
+puisque le support de la <b>journée 3</b> n'a pas encore été distribué. Ils sont signalés comme tels
+et seront à confronter au support du cours.</p>
+<p style="margin-bottom:0">Reste <b>hors couverture</b>&nbsp;: la <b>Partie 2</b> du support, à
+laquelle la diapositive 41 renvoie pour l'analyse de risque&nbsp;; les items du syllabus non traités
+par les supports reçus (<i>notions fondamentales</i>, <i>de l'information au système
+d'information</i>, <i>du système d'information à la SSI</i>, <i>droit et éthique en
+cybersécurité</i>)&nbsp;; et l'<b>oral du cours</b>, qui n'a pas encore eu lieu.</p>
+</div>
+
+<h3 id="essentiel-chiffres">Les chiffres qu'on ne peut pas deviner</h3>
+<div class="tw"><table>
+<thead><tr><th>Quoi</th><th>Valeur</th><th>§</th></tr></thead>
+<tbody>
+<tr><td>Directive NIS — première législation européenne</td><td><b>2016</b> (2016/1148)</td><td><a href="#ch3">3</a></td></tr>
+<tr><td>Directive NIS 2</td><td><b>2022</b> (2022/2555) — elle <b>remplace et abroge</b> NIS</td><td><a href="#ch3">3</a></td></tr>
+<tr><td>Cybersecurity Act</td><td><b>2019</b>, un <b>règlement</b> (pas une directive)</td><td><a href="#ch4">4</a></td></tr>
+<tr><td>Délais de notification NIS 2</td><td>alerte précoce <b>24 h</b>, rapport complet <b>72 h</b></td><td><a href="#ch3">3</a></td></tr>
+<tr><td>Niveaux d'assurance du Cybersecurity Act</td><td><b>3</b>&nbsp;: basique, substantiel, élevé</td><td><a href="#ch4">4</a></td></tr>
+<tr><td>Validité d'une certification ISO 27001</td><td><b>3 ans</b>, avec un <b>audit de contrôle annuel</b></td><td><a href="#ch6">6</a></td></tr>
+<tr><td>Mesures ISO 27002</td><td><b>93</b> en 2022, contre <b>114</b> en 2013</td><td><a href="#ch7">7</a></td></tr>
+<tr><td>Thèmes ISO 27002:2022</td><td><b>4</b>, contre <b>14</b> en 2013 — dont <b>11 mesures nouvelles</b></td><td><a href="#ch7">7</a></td></tr>
+<tr><td>Répartition des 93 mesures</td><td>organisationnelles <b>37</b> · personnes <b>8</b> · physiques <b>14</b> · technologiques <b>34</b></td><td><a href="#ch7">7</a></td></tr>
+<tr><td>Piliers du zero trust</td><td><b>6</b>&nbsp;: identité, appareils, applications, données, infrastructure, réseau</td><td><a href="#ch14">14</a></td></tr>
+<tr><td>Principes du zero trust</td><td><b>3</b>&nbsp;: vérifier explicitement, moindre privilège, surveillance continue</td><td><a href="#ch13">13</a></td></tr>
+<tr><td>Gain du MFA</td><td>réduit de <b>plus de 99&nbsp;%</b> les attaques sur l'identité</td><td><a href="#ch16">16</a></td></tr>
+<tr><td>Référence du zero trust</td><td><b>NIST SP 800-207</b>, <i>Zero Trust Architecture</i>, <b>2020</b></td><td><a href="#ch12">12</a></td></tr>
+<tr><td>Principes de la normalisation</td><td><b>7</b>&nbsp;: transparence, ouverture, impartialité, consensus, efficacité, pertinence, cohérence</td><td><a href="#ch2">2</a></td></tr>
+<tr><td>Ateliers EBIOS Risk Manager</td><td><b>5</b> — cadrage et socle · sources de risque · scénarios stratégiques · scénarios opérationnels · traitement</td><td><a href="#ch21">21</a></td></tr>
+<tr><td>Échelles EBIOS</td><td>gravité <b>G1 à G4</b> · vraisemblance <b>V1 à V4</b></td><td><a href="#ch22">22</a></td></tr>
+<tr><td>Couples SR/OV à retenir</td><td><b>3 à 6</b>, «&nbsp;base suffisante&nbsp;» selon le guide</td><td><a href="#ch23">23</a></td></tr>
+<tr><td>Séquence d'attaque de l'atelier 4</td><td><b>Connaître → Rentrer → Trouver → Exploiter</b></td><td><a href="#ch25">25</a></td></tr>
+<tr><td>Classes d'acceptabilité du risque</td><td><b>3</b>&nbsp;: acceptable en l'état · tolérable sous contrôle · inacceptable</td><td><a href="#ch26">26</a></td></tr>
+<tr><td>Norme avec laquelle EBIOS RM est conforme</td><td><b>ISO/IEC 27005:2022</b> — et compatible <b>ISO 31000:2018</b></td><td><a href="#ch21">21</a></td></tr>
+</tbody>
+</table></div>
+
+<h3 id="essentiel-pieges">Les 22 pièges et confusions à éviter</h3>
+<div class="tw"><table>
+<thead><tr><th>#</th><th>La confusion</th><th>Ce qu'il faut répondre</th><th>§</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Norme = obligation</td><td><b>Non.</b> Une <b>obligation</b> est <b>externe</b> et s'impose&nbsp;; une <b>norme</b> est un document de <b>consensus</b>, et elle peut être <b>interne ou externe</b>. Les deux sont complémentaires — mais <b>une norme peut dicter la réglementation</b> et devenir elle-même un support réglementaire.</td><td><a href="#ch1">1</a></td></tr>
+<tr><td>2</td><td>Être certifié ISO 27001 = être sécurisé</td><td><b>Non.</b> La norme <b>n'impose aucun niveau minimum</b>. On peut être certifié avec un <b>périmètre réduit</b> et une politique <b>peu stricte</b>. La certification atteste qu'on a appliqué les <b>exigences de la norme</b>, pas qu'on est sûr.</td><td><a href="#ch6">6</a></td></tr>
+<tr><td>3</td><td>Conformité à une norme = sécurité</td><td><b>Non</b>, et le support le dit deux fois&nbsp;: les normes <b>ne prennent pas en compte l'état de l'art récent</b> ni les exigences réglementaires.</td><td><a href="#ch5">5</a></td></tr>
+<tr><td>4</td><td>Confondre la méthode et l'outil</td><td>La <b>méthode DevOps</b> n'est pas Git ni Jenkins&nbsp;; la <b>méthode EBIOS RM</b> n'est pas <b>Agile Risk Manager</b>. L'outil <b>supporte</b> la méthode.</td><td><a href="#ch1">1</a></td></tr>
+<tr><td>5</td><td>NIS 2 et Cybersecurity Act, même chose</td><td><b>Non.</b> NIS 2 est une <b>directive</b> (à transposer en droit national), le Cybersecurity Act un <b>règlement</b> (applicable directement). NIS 2 impose des <b>exigences de sécurité</b> et des <b>sanctions</b>&nbsp;; le CSA crée un <b>cadre de certification</b> et <b>ne prévoit pas de sanctions directes</b>.</td><td><a href="#ch4">4</a></td></tr>
+<tr><td>6</td><td>Entités essentielles et importantes ont des obligations différentes</td><td><b>Non</b>&nbsp;: les <b>obligations de cybersécurité sont identiques</b>. Ce qui diffère, c'est la <b>supervision</b> (proactive contre réactive) et le <b>niveau de sanctions</b>.</td><td><a href="#ch3">3</a></td></tr>
+<tr><td>7</td><td>ISO 27001 = ISO 27002</td><td><b>27001</b> = le <b>SMSI</b>, ses exigences, et c'est elle qui est <b>certifiable</b>. <b>27002</b> = le <b>catalogue de bonnes pratiques</b>, le référentiel de mise en œuvre et la <i>check-list</i> d'audit. <b>27005</b> = les <b>lignes directrices de gestion des risques</b>.</td><td><a href="#ch5">5</a></td></tr>
+<tr><td>8</td><td>La défense en profondeur suffit</td><td><b>Non</b>, elle a <b>deux hypothèses fausses</b>&nbsp;: que l'attaquant est <b>à l'extérieur</b>, et que le défenseur est <b>passif</b>. Les attaques modernes partent d'éléments <b>légitimes</b>.</td><td><a href="#ch9">9</a></td></tr>
+<tr><td>9</td><td>Zero trust = ne faire confiance à personne</td><td>Plus précisément&nbsp;: <b>chaque tentative de connexion est présumée illégitime jusqu'à preuve du contraire</b>. La confiance n'est plus <b>implicite</b> ni liée à l'<b>emplacement</b>&nbsp;: elle est <b>vérifiée, en continu</b>.</td><td><a href="#ch12">12</a></td></tr>
+<tr><td>10</td><td>Zero trust = un produit à acheter</td><td><b>Non</b>&nbsp;: c'est un <b>ensemble de paradigmes</b> et une <b>démarche progressive</b>. Une bascule complète est «&nbsp;peu envisageable&nbsp;» pour un patrimoine informatique hérité.</td><td><a href="#ch17">17</a></td></tr>
+<tr><td>11</td><td>Confondre Zero Trust, ZTA et ZTNA</td><td><b>Zero Trust</b> = le principe global · <b>ZTA</b> = son application à l'accès aux ressources · <b>ZTNA</b> = la <b>technologie</b> qui sécurise l'accès réseau, bloque tout par défaut et <b>cache les applications d'Internet</b>.</td><td><a href="#ch18">18</a></td></tr>
+<tr><td>12</td><td>Zero trust et SASE, c'est pareil</td><td><b>Zero trust</b> (Forrester) met l'accent sur l'<b>identité et le terminal</b>, et reste <b>agnostique</b> (il prend en compte le sur site). <b>SASE</b> (Gartner) met l'accent sur le <b>réseau et l'infrastructure</b>, tout cloud&nbsp;— c'est «&nbsp;<b>périmétrique dans le cloud</b>&nbsp;».</td><td><a href="#ch18">18</a></td></tr>
+<tr><td>13</td><td>Segmentation = micro-segmentation</td><td><b>Segmentation</b>&nbsp;: réseau <b>physique</b>, trafic <b>nord-sud</b>, couches <b>2 et 3</b>, VLAN/MPLS/pare-feu, <b>matériel</b>. <b>Micro-segmentation</b>&nbsp;: réseau <b>virtuel</b>, trafic <b>est-ouest</b>, couche <b>4</b>, SDN/virtualisation/conteneurs, <b>logiciel</b>.</td><td><a href="#ch18">18</a></td></tr>
+<tr><td>14</td><td>Le zero trust dispense de réfléchir</td><td><b>Non.</b> Il «&nbsp;ne dispense pas d'une réflexion autonome sur chacun des piliers&nbsp;». Et l'<b>ANSSI met en garde</b>&nbsp;: faute de maturité, le déploiement peut <b>accroître la vulnérabilité</b> et donner un <b>faux sentiment de sécurité</b>.</td><td><a href="#ch19">19</a></td></tr>
+<tr><td>15</td><td>Mettre toute l'emphase sur la donnée</td><td>C'est le risque d'une démarche zero trust <b>mal maîtrisée</b>. La cybersécurité est une affaire d'<b>équilibre entre les quatre approches</b>.</td><td><a href="#ch19">19</a></td></tr>
+<tr><td>16</td><td>Un quick win, c'est ce qui va vite</td><td>C'est une action <b>simple, peu coûteuse en implication, à résultat rapide et tangible</b> — définie <b>par rapport à un périmètre</b>, généralement les actifs les plus critiques. Il peut être <b>visible ou non</b>, mais doit <b>toujours être mesurable</b>.</td><td><a href="#ch16">16</a></td></tr>
+<tr><td>17</td><td>Inverser gravité et vraisemblance en EBIOS</td><td>La <b>gravité</b> se cote aux ateliers <b>1</b> (événements redoutés) et <b>3</b> (scénarios stratégiques)&nbsp;; la <b>vraisemblance</b> à l'atelier <b>4</b>. La gravité est <b>identique</b> pour un scénario stratégique et <b>tous</b> ses chemins&nbsp;; la vraisemblance est <b>propre à chaque</b> scénario opérationnel.</td><td><a href="#ch21">21</a></td></tr>
+<tr><td>18</td><td>Confondre objectif visé et motivation</td><td>L'<b>objectif visé</b> est <b>ce que la source de risque veut obtenir</b>&nbsp;; la <b>motivation</b> est <b>pourquoi elle le veut</b>. Le guide signale explicitement le piège.</td><td><a href="#ch23">23</a></td></tr>
+<tr><td>19</td><td>Croire qu'une partie prenante «&nbsp;dangereuse&nbsp;» est suspecte</td><td><b>Non</b>&nbsp;: le niveau de dangerosité «&nbsp;<b>ne préjuge aucunement d'une intention malveillante</b>&nbsp;». Il mesure la capacité d'une <b>source de risque</b> à <b>exploiter la relation privilégiée</b> entre cette partie prenante et l'objet de l'étude.</td><td><a href="#ch24">24</a></td></tr>
+<tr><td>20</td><td>Confondre valeur métier et bien support</td><td>La <b>valeur métier</b> est ce qu'on <b>protège</b>&nbsp;; le <b>bien support</b> est ce <b>sur quoi elle repose</b>. On cote des <b>événements redoutés</b> sur les valeurs métier, on trace des <b>scénarios opérationnels</b> sur les biens supports.</td><td><a href="#ch22">22</a></td></tr>
+<tr><td>21</td><td>Lancer l'appréciation des risques sans regarder le socle</td><td>Le guide pose une règle d'arrêt&nbsp;: «&nbsp;<b>en cas d'écarts trop significatifs, ne pas poursuivre les ateliers</b>&nbsp;». Inutile de modéliser une attaque sophistiquée si l'hygiène de base manque.</td><td><a href="#ch22">22</a></td></tr>
+<tr><td>22</td><td>Dire «&nbsp;PACS&nbsp;» et croire que c'est encore le terme</td><td>Depuis l'édition 2024, le <b>PACS</b> s'appelle <b>plan de traitement du risque</b>. Deux autres renommages&nbsp;: «&nbsp;entité responsable&nbsp;» → <b>propriétaire</b>, «&nbsp;synthèse des scénarios&nbsp;» → <b>évaluations des risques</b>.</td><td><a href="#ch21">21</a></td></tr>
+</tbody>
+</table></div>
+
+<h3 id="essentiel-defs">Les définitions à donner en une phrase</h3>
+<div class="tw"><table>
+<thead><tr><th>Notion</th><th>La phrase</th></tr></thead>
+<tbody>
+<tr><td><b>Norme</b></td><td>«&nbsp;Un document établi par <b>consensus</b> et approuvé par un <b>organisme reconnu</b>, qui fournit, pour des usages <b>communs et répétés</b>, des règles, des lignes directrices ou des caractéristiques, garantissant un <b>niveau d'ordre optimal</b> dans un contexte donné.&nbsp;» (ISO/CEI, 2004)</td></tr>
+<tr><td><b>Les 2 conditions d'une norme</b></td><td><b>(1)</b> les moyens et méthodes décrits sont <b>reproductibles</b> dans les conditions indiquées&nbsp;; <b>(2)</b> ils font l'objet d'un <b>consensus</b>.</td></tr>
+<tr><td><b>Cadre méthodologique</b></td><td>Un <b>guide</b> d'intégration et d'entretien de bonnes pratiques, fondé sur l'<b>expérience des sachants</b> et s'appuyant fréquemment sur l'organisation d'<b>ateliers</b>.</td></tr>
+<tr><td><b>SMSI</b></td><td>Système de management de la sécurité de l'information&nbsp;: ce que l'<b>ISO 27001</b> définit et fait vivre, sur un cycle <b>Plan / Do / Check / Act</b>.</td></tr>
+<tr><td><b>Défense en profondeur</b></td><td>Une stratégie qui utilise <b>plusieurs couches</b> de défense, pour rendre difficile la pénétration <b>et</b>, si elle a lieu, le <b>déplacement latéral</b> et l'accès aux données sensibles.</td></tr>
+<tr><td><b>Zero trust</b></td><td>«&nbsp;Un ensemble de <b>paradigmes en évolution</b>, qui font passer les défenses d'un <b>périmètre statique basé sur le réseau</b> à un périmètre <b>centré sur les utilisateurs, les actifs et les ressources</b>.&nbsp;» (NIST SP 800-207)</td></tr>
+<tr><td><b>Objectif du zero trust</b></td><td>«&nbsp;Empêcher l'<b>accès non autorisé</b> aux données et aux services, tout en rendant l'application du contrôle d'accès <b>aussi granulaire que possible</b>.&nbsp;»</td></tr>
+<tr><td><b>CTI</b></td><td>L'ensemble des activités de <b>recueil, d'étude et de partage</b> d'informations liées à des attaques informatiques, pour fournir des <b>connaissances qualifiées et adaptées</b> à de multiples destinataires. (ANSSI)</td></tr>
+<tr><td><b>Menace</b></td><td>L'intersection de trois choses&nbsp;: <b>capacités</b> × <b>intentions hostiles</b> × <b>opportunités</b>.</td></tr>
+<tr><td><b>Analyse de risque</b></td><td>Le processus structuré d'<b>identification, d'évaluation et de hiérarchisation</b> des risques&nbsp;: identifier menaces et vulnérabilités, estimer la <b>probabilité</b>, mesurer les <b>conséquences</b>, et fournir une <b>base rationnelle</b> pour décider du traitement.</td></tr>
+<tr><td><b>Shadow IT</b></td><td>Les SI mis en œuvre dans une organisation <b>sans approbation de la DSI</b>&nbsp;: BYOD, solutions <i>drive</i>, classeurs Excel à macros.</td></tr>
+<tr><td><b>Assume breach</b></td><td>Présumer <b>ouvertement la compromission</b>&nbsp;: c'est l'hypothèse de travail du premier principe zero trust.</td></tr>
+<tr><td><b>Valeur métier</b></td><td>«&nbsp;Composante <b>importante pour l'organisation dans l'accomplissement de sa mission</b>&nbsp;»&nbsp;: un service, une fonction support, une étape de projet, une information ou un savoir-faire. <b>Un élément à protéger.</b></td></tr>
+<tr><td><b>Scénario stratégique</b></td><td>Un <b>chemin d'attaque</b> allant d'une <b>source de risque</b> à un <b>objectif visé</b>, en passant par l'<b>écosystème</b> et les <b>valeurs métier</b>. Estimé en <b>gravité</b>.</td></tr>
+<tr><td><b>Scénario opérationnel</b></td><td>Un <b>enchaînement d'actions élémentaires portées sur les biens supports</b>. Estimé en <b>vraisemblance</b>.</td></tr>
+<tr><td><b>Scénario de risque</b></td><td>Le scénario <b>complet</b>&nbsp;: de la source de risque à l'objectif visé, décrivant <b>un chemin d'attaque et le scénario opérationnel associé</b>. C'est l'unité cotée en <b>gravité × vraisemblance</b>.</td></tr>
+<tr><td><b>Homologation</b></td><td>Validation, par une <b>autorité d'homologation</b>, que le <b>niveau de sécurité atteint est conforme</b> et que les <b>risques résiduels sont acceptés</b>. On <b>certifie</b> un produit, on <b>homologue</b> un système.</td></tr>
+<tr><td><b>Trafic nord-sud / est-ouest</b></td><td><b>Nord-sud</b>&nbsp;: entrant et sortant d'un centre de données. <b>Est-ouest</b>&nbsp;: entre les appareils <b>au sein</b> d'un centre de données.</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout ok"><div class="t">Les listes à savoir réciter</div>
+<b>Le triple cadre</b>&nbsp;: réglementaire et légal · normatif · méthodologique.<br>
+<b>Les 5 questions de cadrage</b>&nbsp;: qu'est-ce que je veux protéger&nbsp;? de quoi&nbsp;? à quels
+risques suis-je exposé&nbsp;? qu'est-ce que je redoute&nbsp;? quelles normes s'appliquent à moi&nbsp;?<br>
+<b>Les 7 principes de la normalisation</b>&nbsp;: transparence · ouverture · impartialité · consensus ·
+efficacité · pertinence · cohérence.<br>
+<b>Les 4 thèmes ISO 27002:2022</b>&nbsp;: organisationnelles (37) · personnes (8) · physiques (14) ·
+technologiques (34).<br>
+<b>Les 4 approches</b>&nbsp;: système · donnée · menace · métier.<br>
+<b>Les 7 couches de la défense en profondeur</b>&nbsp;: organisationnel et humain · accès physique ·
+périmètre du cyberespace · périmètre réseau · machines · applications · données et contrôle d'accès.<br>
+<b>Les 3 principes zero trust</b>&nbsp;: vérifier explicitement · moindre privilège · surveillance continue.<br>
+<b>Les 6 piliers zero trust</b>&nbsp;: identité · appareils · applications · données · infrastructure ·
+réseau — chapeautés par <b>visibilité, automatisation, orchestration</b>.<br>
+<b>Les 5 ateliers EBIOS RM</b>&nbsp;: cadrage et socle de sécurité · sources de risque ·
+scénarios stratégiques · scénarios opérationnels · traitement du risque.<br>
+<b>La séquence d'attaque de l'atelier 4</b>&nbsp;: connaître · rentrer · trouver · exploiter.<br>
+<b>Les 4 critères de dangerosité</b>&nbsp;: exposition = <b>dépendance</b> × <b>pénétration</b>&nbsp;;
+fiabilité cyber = <b>maturité</b> × <b>confiance</b>.<br>
+<b>Les 4 entrées du PEP</b>&nbsp;: identité · terminal · politique · protection.
+<b>Les 4 sorties</b>&nbsp;: données · applications · infrastructure · réseau.<br>
+<b>Le cycle du renseignement</b>&nbsp;: expression des besoins → collecte → traitement → analyse → diffusion.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch1"><span class="num">1.</span> Le triple cadre : obligations, normes, méthodes</h2>
+
+<p>La question de départ du cours n'est pas technique&nbsp;: <b>comment intégrer la cybersécurité au
+sein d'une organisation&nbsp;?</b> Les mesures à mettre en place «&nbsp;dépendent de l'<b>activité</b>,
+de l'<b>organisation</b>, de la <b>réglementation</b> et des <b>contraintes de son
+écosystème</b>&nbsp;».</p>
+
+<div class="callout def"><div class="t">Les cinq questions à poser pour évaluer le niveau de sécurité attendu</div>
+<b>1.</b> Qu'est-ce que je veux protéger&nbsp;? · <b>2.</b> De quoi je veux me protéger&nbsp;? ·
+<b>3.</b> À quel type de risques mon organisation est-elle exposée&nbsp;? · <b>4.</b> Qu'est-ce que je
+redoute&nbsp;? · <b>5.</b> Quelles sont les normes qui s'appliquent à mon organisation&nbsp;?
+<p style="margin-bottom:0">Pour y répondre, l'organisation peut s'appuyer sur la famille
+<b>ISO 27000</b>, les <b>guides nationaux</b> (ANSSI, CLUSIF) voire les politiques en usage dans
+l'État (<b>PSSIE</b>, <b>RGS</b>).</p>
+</div>
+
+<h3 id="ch1-cadres">1.1 Les trois cadres</h3>
+<div class="tw"><table>
+<thead><tr><th>Cadre</th><th>Ce que c'est</th></tr></thead>
+<tbody>
+<tr><td><b>Réglementaire et légal</b></td><td>Les <b>exigences auxquelles les entreprises doivent se conformer</b>. Il détermine les <b>conditions d'exercice</b> de leur activité, leurs <b>obligations envers les clients et les utilisateurs</b> du SI, et leurs <b>responsabilités en cas de non-respect</b>.</td></tr>
+<tr><td><b>Normatif</b></td><td>Les <b>normes</b>&nbsp;: des documents de <b>consensus</b>, approuvés par un organisme reconnu, qui fournissent règles, lignes directrices ou caractéristiques pour des <b>usages communs et répétés</b>.</td></tr>
+<tr><td><b>Méthodologique</b></td><td>Un <b>guide</b> permettant l'intégration et l'entretien de bonnes pratiques dans un domaine donné. Il repose sur l'<b>expérience des sachants</b> qui les ont mises en œuvre et fait évoluer, et s'appuie fréquemment sur l'organisation d'<b>ateliers</b>.</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="ch1-exemples">1.2 Les exemples à connaître, dans les trois colonnes</h3>
+<div class="tw"><table>
+<thead><tr><th>Domaine</th><th>Obligation</th><th>Norme</th><th>Méthode</th></tr></thead>
+<tbody>
+<tr><td><b>Général</b></td><td><b>RGPD</b> · règlement <b>Cybersecurity Act</b> · directive <b>NIS</b> · l'instruction interministérielle sur la protection contre les <b>SPC</b> (signaux parasites compromettants)</td><td>la série <b>2700x</b> · <b>ISO 27034</b> (sécurité applicative) · <b>CEI 62443</b> (sécurité industrielle) · <b>ISO 21434 / UN R155</b> (cybersécurité automobile)</td><td><b>ITIL</b> (bonnes pratiques IT) · <b>CTL</b> (<i>CyberThreat Landscape</i>) · <b>GISSIP</b> (sécurité dans les projets) · <b>DevOps</b> · le <b>NIST Cybersecurity Framework (CSF)</b></td></tr>
+<tr><td><b>Analyse de risque</b></td><td>Dans la <b>défense</b>, les SI de <b>classe C3</b> sont tenus de disposer d'une analyse de risque</td><td><b>ISO/CEI 27005</b>&nbsp;: lignes directrices de gestion des risques, en appui de l'<b>ISO 27001</b></td><td><b>EBIOS</b>, la méthode d'analyse de risque <b>française de référence</b></td></tr>
+<tr><td><b>Risque IA</b></td><td>Les systèmes d'IA <b>à haut risque</b> doivent respecter l'<b>AI Act</b> européen&nbsp;: maîtrise des risques, qualité des données, traçabilité, <b>supervision humaine</b></td><td><b>ISO/IEC 42001</b> (système de management de l'IA, <b>AIMS</b>), complétée par <b>ISO/IEC 23894</b> (gestion des risques IA)</td><td>Pas une mais <b>plusieurs</b>&nbsp;: <b>NIST AI RMF</b>, <b>EBIOS RM</b>, méthodes internes</td></tr>
+</tbody>
+</table></div>
+<p><b>La classe C3</b> renvoie aux <b>risques industriels critiques</b>&nbsp;: les obligations y sont
+plus fortes et la conformité est <b>vérifiée par l'autorité étatique ou un organisme accrédité</b>.</p>
+<p><b>Les trois types de risque IA</b> que ces méthodes permettent de traiter&nbsp;: le risque
+<b>adversarial</b>, le risque <b>intrinsèque</b> et le risque d'<b>impact</b>.</p>
+
+<div class="exam"><div class="t">Les deux mises en garde du support, et elles tombent bien en QCM</div>
+<b>1. Ne pas confondre la méthode et l'outil qui la supporte.</b> Son exemple&nbsp;: la <b>méthode
+DevOps</b> d'un côté, les <b>outils Git, Jenkins</b> de l'autre. Le même piège vaut pour la
+<b>méthode EBIOS RM</b> et l'outil <b>Agile Risk Manager</b> utilisé en journée 3.
+<p style="margin-bottom:0"><b>2. Norme et réglementation sont <i>généralement</i>
+complémentaires</b> — mais il arrive que <b>la norme dicte la réglementation</b>, et devienne alors
+<b>en elle-même un support réglementaire</b>.</p>
+</div>
+
+<div class="callout"><div class="t">Interne ou externe : la ligne de partage</div>
+Les <b>exigences (ou obligations) sont par définition externes</b> à l'entreprise et se déclinent en
+exigences <b>légales</b> et <b>réglementaires</b>. Les <b>normes</b>, elles, se déclinent en normes
+<b>internes</b> et normes <b>externes</b>.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch2"><span class="num">2.</span> Qu'est-ce qu'une norme, et pourquoi normaliser</h2>
+
+<div class="callout def"><div class="t">La définition ISO, à restituer telle quelle</div>
+«&nbsp;Une norme est un <b>document établi par consensus et approuvé par un organisme reconnu</b>,
+qui fournit, pour des <b>usages communs et répétés</b>, des <b>règles</b>, des <b>lignes
+directrices</b> ou des <b>caractéristiques</b>, pour des activités ou leurs résultats garantissant un
+<b>niveau d'ordre optimal dans un contexte donné</b>.&nbsp;» (ISO/CEI, 2004)
+</div>
+
+<p>La norme est un <b>document de référence</b> sur un sujet donné&nbsp;: elle indique l'<b>état de la
+science, de la technologie et des savoir-faire au moment de la rédaction</b>. C'est ce qui explique sa
+limite&nbsp;: elle date, par construction.</p>
+
+<div class="exam"><div class="t">Les deux conditions pour qu'un document soit une norme</div>
+<b>1.</b> Les <b>moyens et méthodes décrits doivent être reproductibles</b>, en utilisant et
+respectant les conditions indiquées.<br>
+<b>2.</b> Ils doivent faire l'objet d'un <b>consensus</b>, c'est-à-dire recevoir la <b>reconnaissance
+de tous</b>.
+<p style="margin-bottom:0">La norme est alors un <b>référentiel incontestable commun</b> proposant des
+solutions techniques et commerciales — et c'est à ce titre qu'elle sert à <b>simplifier les relations
+contractuelles</b>.</p>
+</div>
+
+<h3 id="ch2-principes">2.1 Les sept principes du processus de normalisation</h3>
+<div class="tw"><table>
+<thead><tr><th>#</th><th>Principe</th><th>Ce qu'il garantit</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><b>Transparence</b></td><td>Programmes de travail, projets à l'étude et résultats finaux sont <b>accessibles à toutes les parties intéressées</b>.</td></tr>
+<tr><td>2</td><td><b>Ouverture</b></td><td>Les travaux sont ouverts à <b>toutes les parties prenantes, sans discrimination</b>, pour que leurs intérêts soient pris en compte.</td></tr>
+<tr><td>3</td><td><b>Impartialité</b></td><td>Le processus est conçu pour <b>éviter de privilégier des intérêts particuliers</b>.</td></tr>
+<tr><td>4</td><td><b>Consensus</b></td><td>Les décisions <b>concilient les arguments opposés</b> et tiennent compte de tous les avis.</td></tr>
+<tr><td>5</td><td><b>Efficacité</b></td><td>Les normes sont définies sur l'<b>aptitude à l'emploi</b> plutôt que sur des caractéristiques descriptives.</td></tr>
+<tr><td>6</td><td><b>Pertinence</b></td><td>Elles sont <b>révisées régulièrement</b> pour rester conformes à l'état de l'art&nbsp;; sinon elles sont <b>maintenues ou annulées</b>.</td></tr>
+<tr><td>7</td><td><b>Cohérence</b></td><td>Les travaux sont <b>coordonnés et centralisés</b> pour éviter des <b>normes contradictoires</b>.</td></tr>
+</tbody>
+</table></div>
+
+<!-- ===================================================================== -->
+<h2 id="ch3"><span class="num">3.</span> La directive NIS et la directive NIS 2</h2>
+
+<h3 id="ch3-nis">3.1 NIS (2016) — la première</h3>
+<ul class="key-points">
+<li><b>Contexte.</b> La <b>première législation européenne</b> sur la cybersécurité, <b>2016</b>.</li>
+<li><b>Objectif.</b> Améliorer la sécurité des <b>réseaux et systèmes d'information</b> au sein de l'UE.</li>
+<li><b>Champ d'application.</b> Deux catégories&nbsp;: les <b>opérateurs de services essentiels
+(OSE)</b> — énergie, transport, santé, infrastructures numériques — et les <b>fournisseurs de
+services numériques (FSN)</b> — cloud, moteurs de recherche, places de marché en ligne.</li>
+<li><b>Exigences clés.</b> Des mesures <b>techniques et organisationnelles</b> adaptées&nbsp;;
+l'obligation de <b>notifier les incidents significatifs</b>&nbsp;; une <b>coopération renforcée</b>
+entre États membres (CSIRT, points de contact).</li>
+</ul>
+
+<h3 id="ch3-nis2">3.2 NIS 2 (2022) — ce qui change</h3>
+<p>La directive <b>NIS 2 (2022/2555)</b> <b>remplace et abroge</b> la directive NIS (2016/1148). Elle
+a été adoptée «&nbsp;pour répondre à l'<b>augmentation des cybermenaces</b>&nbsp;», avec pour objectif
+de renforcer la <b>résilience</b> et l'<b>harmonisation</b>.</p>
+<ul class="key-points">
+<li><b>Champ élargi.</b> De nouveaux secteurs&nbsp;: <b>administration publique</b>, <b>gestion des
+déchets</b>, <b>spatial</b>, <b>production alimentaire</b>…</li>
+<li><b>Nouveauté majeure.</b> La distinction entre <b>entités essentielles</b> et <b>entités
+importantes</b>.</li>
+<li><b>Gouvernance.</b> La <b>responsabilité des dirigeants</b> en cybersécurité est engagée.</li>
+<li><b>Mesures techniques renforcées.</b> Gestion des risques, <b>supply chain</b>, tests de sécurité.</li>
+<li><b>Délais stricts de notification.</b> <b>24 h</b> pour l'alerte précoce, <b>72 h</b> pour le
+rapport complet.</li>
+<li><b>Sanctions.</b> <b>Amendes administratives</b> et pouvoirs accrus des autorités nationales.</li>
+</ul>
+
+<div class="exam"><div class="t">Entités essentielles contre entités importantes — le tableau à connaître</div>
+<div class="tw" style="margin-top:8px"><table>
+<thead><tr><th>Critère</th><th>Entités essentielles</th><th>Entités importantes</th></tr></thead>
+<tbody>
+<tr><td><b>Secteurs typiques</b></td><td>Énergie, transport, santé, <b>eau potable</b>, infrastructures numériques, administration publique, spatial</td><td>Services postaux, gestion des déchets, production alimentaire, fabrication (produits médicaux, chimiques, électroniques, machines)</td></tr>
+<tr><td><b>Impact en cas d'incident</b></td><td><b>Très critique</b> pour la société et l'économie</td><td><b>Significatif mais moins critique</b></td></tr>
+<tr><td><b>Supervision</b></td><td><b>Proactive</b>&nbsp;: contrôles <b>réguliers</b> par l'autorité compétente</td><td><b>Réactive</b>&nbsp;: contrôle <b>déclenché</b> en cas de problème ou d'incident</td></tr>
+<tr><td><b>Obligations de cybersécurité</b></td><td colspan="2" style="text-align:center"><b>Identiques</b> — gestion des risques, gouvernance, notification d'incidents</td></tr>
+<tr><td><b>Niveau de sanctions</b></td><td><b>Plus sévères</b>, sanctions fortes</td><td>Sanctions applicables mais <b>moins strictes</b></td></tr>
+</tbody>
+</table></div>
+<b>Le point qui piège</b>&nbsp;: les <b>obligations sont les mêmes</b> pour les deux catégories. Ce qui
+change, c'est la <b>manière dont on vérifie</b> (proactive ou réactive) et <b>ce qu'on risque</b>.
+</div>
+
+<h3 id="ch3-comparaison">3.3 NIS contre NIS 2, point par point</h3>
+<div class="tw"><table>
+<thead><tr><th>Critère</th><th>NIS (2016)</th><th>NIS 2 (2022)</th></tr></thead>
+<tbody>
+<tr><td><b>Contexte</b></td><td>1<sup>re</sup> directive européenne sur la cybersécurité</td><td>Révision face à l'augmentation des menaces</td></tr>
+<tr><td><b>Secteurs</b></td><td>OSE + FSN (énergie, santé, cloud…)</td><td><b>Élargi</b>&nbsp;: administration, spatial, déchets, alimentaire…</td></tr>
+<tr><td><b>Typologie d'entités</b></td><td><b>Pas de distinction</b></td><td><b>Essentielles</b> / <b>importantes</b></td></tr>
+<tr><td><b>Exigences de sécurité</b></td><td>Mesures organisationnelles et techniques <b>de base</b></td><td>Renforcement&nbsp;: <b>gouvernance</b>, <b>supply chain</b>, <b>tests</b>, gestion avancée des risques</td></tr>
+<tr><td><b>Notification d'incidents</b></td><td>Obligation, mais <b>sans délais précis</b></td><td><b>Délais stricts</b>&nbsp;: <b>24 h</b> / <b>72 h</b></td></tr>
+<tr><td><b>Sanctions</b></td><td><b>Peu détaillées</b>, laissées aux États membres</td><td><b>Harmonisation</b> et amendes administratives significatives</td></tr>
+</tbody>
+</table></div>
+
+<!-- ===================================================================== -->
+<h2 id="ch4"><span class="num">4.</span> Le Cybersecurity Act</h2>
+
+<p>Règlement européen adopté en <b>2019</b>. Deux objectifs&nbsp;: <b>renforcer la cybersécurité dans
+l'UE par un cadre commun</b>, et <b>accroître la confiance dans les produits et services
+numériques</b>.</p>
+
+<ul class="key-points">
+<li><b>Le rôle central de l'ENISA.</b> L'agence obtient un <b>mandat permanent</b> — elle était
+jusque-là une <b>agence temporaire</b> — et se voit confier le soutien aux États membres et la
+<b>coordination en cas de crise</b>.</li>
+<li><b>Le mécanisme clé.</b> La création d'un <b>cadre européen de certification en
+cybersécurité</b>, dont l'objectif est d'<b>harmoniser les certifications</b> et de <b>réduire la
+fragmentation du marché</b>.</li>
+<li><b>L'impact.</b> Il facilite la <b>reconnaissance mutuelle</b> des certifications dans l'UE et
+renforce la confiance des entreprises et des citoyens.</li>
+</ul>
+
+<div class="exam"><div class="t">Les trois niveaux d'assurance — à ne pas confondre ni inverser</div>
+<b>Basique</b>&nbsp;: protection contre des <b>menaces courantes</b>, <b>conformité minimale</b>.<br>
+<b>Substantiel</b>&nbsp;: mesures <b>plus robustes</b>, adressant des menaces <b>plus
+sophistiquées</b>.<br>
+<b>Élevé</b>&nbsp;: <b>niveau maximal de confiance</b>, protections renforcées, exigences <b>strictes
+de vérification et d'évaluation</b>.
+<p style="margin-bottom:0">Les bénéfices annoncés&nbsp;: <b>réduction de la fragmentation</b> du
+marché européen, <b>reconnaissance mutuelle</b> dans tous les États membres, <b>renforcement de la
+confiance</b> des utilisateurs.</p>
+</div>
+
+<h3 id="ch4-comparaison">4.1 NIS 2 contre Cybersecurity Act</h3>
+<div class="tw"><table>
+<thead><tr><th>Critère</th><th>Directive NIS 2 (2022)</th><th>Cybersecurity Act (2019)</th></tr></thead>
+<tbody>
+<tr><td><b>Nature juridique</b></td><td><b>Directive</b> — doit être <b>transposée</b> dans le droit national</td><td><b>Règlement</b> — <b>application directe</b> dans l'UE</td></tr>
+<tr><td><b>Objectif principal</b></td><td>Renforcer la cybersécurité et la <b>résilience des entités critiques</b></td><td>Créer un <b>cadre européen de certification</b> et renforcer l'<b>ENISA</b></td></tr>
+<tr><td><b>Champ d'application</b></td><td>Large éventail de <b>secteurs</b>&nbsp;: énergie, transport, santé, administration, spatial…</td><td><b>Tous les produits, services et processus TIC</b> pouvant être certifiés</td></tr>
+<tr><td><b>Acteurs concernés</b></td><td>Entités <b>essentielles</b> et <b>importantes</b></td><td><b>Fabricants</b>, prestataires de services, <b>fournisseurs TIC</b></td></tr>
+<tr><td><b>Exigences</b></td><td>Gestion des risques, gouvernance, <b>notification 24 h – 72 h</b></td><td>Respect des <b>schémas de certification</b> (les 3 niveaux d'assurance)</td></tr>
+<tr><td><b>Sanctions</b></td><td><b>Amendes administratives significatives</b>, supervision par les autorités nationales</td><td><b>Pas de sanctions directes</b>, mais obligation de <b>reconnaître les certifications</b> dans l'UE</td></tr>
+<tr><td><b>Rôle d'ENISA</b></td><td>Support aux États, <b>coordination</b> et assistance technique</td><td><b>Mandat permanent</b>, gestion des schémas de certification européens</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout ok"><div class="t">La façon la plus courte de les distinguer</div>
+<b>NIS 2 protège des <i>entités</i>. Le Cybersecurity Act certifie des <i>produits</i>.</b> L'une est
+une directive à transposer et elle sanctionne&nbsp;; l'autre est un règlement directement applicable
+et il ne sanctionne pas — il fait <b>reconnaître</b>.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch5"><span class="num">5.</span> La famille ISO 27000</h2>
+
+<div class="callout def"><div class="t">Définition</div>
+La suite <b>ISO/CEI 27000</b> (ou <b>ISO27k</b>) contient des <b>recommandations des meilleures
+pratiques en management de la sécurité de l'information</b>, pour l'<b>initialisation</b>,
+l'<b>implémentation</b> ou le <b>maintien</b> de systèmes de management de la sécurité de
+l'information (<b>SMSI</b>).
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>Norme</th><th>Objet</th></tr></thead>
+<tbody>
+<tr><td><b>27001</b></td><td>Systèmes de management de la sécurité de l'information — <b>c'est elle qui est certifiable</b></td></tr>
+<tr><td><b>27002</b></td><td><b>Code de bonnes pratiques</b> — le catalogue des mesures</td></tr>
+<tr><td><b>27004</b></td><td><b>Mesures</b> du management de la sécurité (les indicateurs)</td></tr>
+<tr><td><b>27005</b></td><td><b>Gestion des risques</b></td></tr>
+<tr><td><b>27035</b></td><td><b>Gestion des incidents</b> de sécurité</td></tr>
+<tr><td><b>27037</b></td><td><b>Traitement des preuves numériques</b> (<i>forensics</i>)</td></tr>
+</tbody>
+</table></div>
+<p>À connaître aussi, hors série 27k mais cités dans le cours&nbsp;: <b>ISO 27034</b> (sécurité
+applicative), <b>CEI/IEC 62443</b> (sécurité industrielle), <b>ISO 21434 / UN R155</b> (automobile),
+<b>ISO/IEC 42001</b> et <b>23894</b> (IA).</p>
+
+<div class="exam"><div class="t">L'avertissement, répété deux fois dans le support</div>
+<b>La conformité à une norme ne garantit pas formellement un niveau de sécurité.</b> Deux
+raisons&nbsp;: les normes <b>ne prennent pas en compte l'état de l'art récent</b> — elles figent
+l'état des savoir-faire au moment de leur rédaction — et elles <b>ne prennent pas en compte les
+exigences réglementaires</b>.
+<p style="margin-bottom:0">C'est le pendant de ce qu'on verra sur l'ISO 27001&nbsp;: être conforme et
+être sécurisé sont <b>deux choses différentes</b>.</p>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch6"><span class="num">6.</span> ISO 27001 : le SMSI et le cycle PDCA</h2>
+
+<div class="callout def"><div class="t">Définition</div>
+La norme <b>ISO 27001</b> définit la <b>mise en œuvre et l'amélioration du système de management de
+la sécurité (SMSI)</b>. Une <b>certification ISO 27001</b> garantit qu'une organisation a bien
+appliqué les <b>exigences de la norme</b> en matière de sécurité. Elle est <b>valable 3 ans</b>, avec
+<b>tous les ans un audit de contrôle</b>.
+</div>
+
+<p>La démarche est <b>calquée sur la norme ISO 9000</b>&nbsp;: <b>Plan / Do / Check / Act</b>.</p>
+
+<div class="steps">
+<div class="step"><b>Plan — fixer des objectifs et des plans d'actions</b><br>
+C'est la seule phase détaillée par le support, et elle comporte trois temps&nbsp;:
+<b>(1)</b> l'<b>identification des actifs ou des biens</b>&nbsp;; <b>(2)</b> l'<b>analyse de
+risques</b>&nbsp;; <b>(3)</b> le <b>choix du périmètre du SMSI</b>, qui se décompose lui-même en trois
+questions&nbsp;: <b>quel périmètre de sécurité&nbsp;?</b> <b>quelle politique de sécurité&nbsp;?</b>
+<b>quel niveau de sécurité&nbsp;?</b></div>
+<div class="step"><b>Do</b><br>Mettre en œuvre les mesures décidées.</div>
+<div class="step"><b>Check</b><br>Contrôler — c'est là qu'interviennent les <b>audits</b>, dont
+l'audit de contrôle annuel de la certification.</div>
+<div class="step"><b>Act</b><br>Corriger et améliorer, puis reboucler sur <i>Plan</i>.</div>
+</div>
+
+<div class="exam"><div class="t">La limite majeure de l'ISO 27001 — c'est un classique de QCM</div>
+<b>La norme n'impose pas de niveau minimum de sécurité à atteindre.</b>
+<p style="margin-bottom:0">Conséquence, écrite noir sur blanc dans le support&nbsp;: <b>une entreprise
+peut donc être certifiée ISO 27001 tout en ayant défini un périmètre réduit et une politique de
+sécurité peu stricte.</b> La certification atteste d'une <b>démarche</b>, pas d'un <b>résultat</b>.
+C'est pour cela que le choix du <b>périmètre</b> est la question centrale de la phase <i>Plan</i>.</p>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch7"><span class="num">7.</span> ISO 27002 : les 93 mesures</h2>
+
+<div class="callout def"><div class="t">Définition</div>
+La norme <b>ISO 27002</b> définit un <b>ensemble de bonnes pratiques</b> en matière de sécurité.
+L'organisation y trouve un <b>référentiel de mise en œuvre</b> et une <b>« check-list » en cas
+d'audit</b>.
+</div>
+
+<p>Elle a été <b>refondue en 2022</b>. Elle aborde désormais <b>4 thèmes</b>, contre <b>14</b> dans la
+version de 2013, et compte <b>93 mesures</b> contre <b>114</b>. Elle embarque <b>11 nouvelles
+mesures</b>, parmi lesquelles l'<b>intelligence de la menace</b>, la <b>suppression de
+l'information</b>, l'<b>anonymisation</b> et la <b>sécurité dans le développement</b>.</p>
+
+<div class="viz">
+  <div class="t">Les quatre thèmes, et la répartition des 93 mesures</div>
+  <div class="vz-grid">
+
+    <button class="vz-c k-green" data-hint="Voir des mesures de ce thème">
+      <span class="n">Série 05.xx</span>
+      <h5>Organisationnelles</h5>
+      <span class="en">organizational controls</span>
+      <span class="big">37</span>
+      <span class="q">40&nbsp;% des mesures</span>
+      <span class="more"><span class="t">Ce qu'on y trouve</span>
+      Politiques, <b>responsabilités de la direction</b>, séparation des tâches, <b>classification de
+      l'information</b>, contrôle d'accès et gestion des identités, <b>relations fournisseurs</b>,
+      gestion des incidents, continuité, conformité légale.</span>
+      <span class="more"><span class="t">Ce que ce poids veut dire</span>
+      Le thème le plus lourd à lui seul. <b>La sécurité de l'information est d'abord une affaire
+      d'organisation</b>, pas de technique — c'est la lecture à retenir de cette répartition.</span>
+    </button>
+
+    <button class="vz-c k-amber" data-hint="Voir les 8 mesures">
+      <span class="n">Série 06.xx</span>
+      <h5>Liées aux personnes</h5>
+      <span class="en">people controls</span>
+      <span class="big">8</span>
+      <span class="q">le thème le plus court</span>
+      <span class="more"><span class="t">Les 8, en entier</span>
+      Présélection · conditions générales d'embauche · <b>sensibilisation et formation</b> · processus
+      disciplinaire · responsabilités à la fin du contrat · <b>engagements de confidentialité</b> ·
+      <b>travail à distance</b> · signalement des événements.</span>
+      <span class="more"><span class="t">À savoir</span>
+      Huit mesures seulement, mais elles couvrent <b>tout le cycle de vie</b> d'un collaborateur — de
+      l'embauche au départ. C'est le thème le plus facile à réciter en entier.</span>
+    </button>
+
+    <button class="vz-c k-blue" data-hint="Voir des mesures de ce thème">
+      <span class="n">Série 07.xx</span>
+      <h5>Physiques</h5>
+      <span class="en">physical controls</span>
+      <span class="big">14</span>
+      <span class="q">du bâtiment au câble</span>
+      <span class="more"><span class="t">Ce qu'on y trouve</span>
+      <b>Périmètre de sécurité physique</b>, contrôles d'accès, surveillance, protection contre les
+      menaces environnementales, <b>bureau propre et écran vide</b>, supports de stockage,
+      <b>sécurité du câblage</b>, maintenance, <b>mise au rebut sécurisée</b>.</span>
+      <span class="more"><span class="t">Le lien avec le reste</span>
+      C'est la <b>couche 2 de la défense en profondeur</b> (<a href="#ch9">§9</a>) — et le rappel que
+      la sécurité numérique s'arrête là où commence l'accès physique.</span>
+    </button>
+
+    <button class="vz-c k-purple" data-hint="Voir des mesures de ce thème">
+      <span class="n">Série 08.xx</span>
+      <h5>Technologiques</h5>
+      <span class="en">technological controls</span>
+      <span class="big">34</span>
+      <span class="q">37&nbsp;% des mesures</span>
+      <span class="more"><span class="t">Ce qu'on y trouve</span>
+      Terminaux, <b>privilèges d'accès</b>, authentification sécurisée, <b>protection contre les
+      programmes malveillants</b>, gestion des vulnérabilités, <b>suppression d'information</b> et
+      <b>masquage</b>, DLP, sauvegardes, <b>journalisation</b>, cloisonnement des réseaux,
+      cryptographie, <b>développement sécurisé</b>.</span>
+      <span class="more"><span class="t">Où sont les nouveautés de 2022</span>
+      Plusieurs des <b>11 nouvelles mesures</b> sont ici&nbsp;: <b>suppression d'information</b>,
+      <b>masquage des données</b>, <b>prévention de la fuite</b>, <b>filtrage Internet</b>,
+      <b>codage sécurisé</b>. Elles reflètent le RGPD et le DevSecOps.</span>
+    </button>
+
+  </div>
+  <div class="vz-mid">37 + 8 + 14 + 34 = 93 mesures — contre 114 en 2013</div>
+  <div class="vz-bar">
+    <button class="btn" data-cards="open">Tout déplier</button>
+    <button class="btn ghost" data-cards="close">Tout replier</button>
+    <span class="cnt"></span>
+  </div>
+  <div class="legend">Quatre thèmes en 2022, contre <b>14</b> en 2013. Onze mesures sont
+  <b>nouvelles</b>&nbsp;: intelligence de la menace, suppression de l'information, anonymisation,
+  sécurité dans le développement… La liste complète est en <a href="#annexe-iso">annexe</a>.</div>
+</div>
+
+<h3 id="ch7-attributs">7.1 La nouveauté de 2022 : les attributs</h3>
+<p>La version 2022 introduit la notion de <b>propriété</b> (<i>attribute</i>), notée sous forme de
+<b>#hashtag</b>. Chaque mesure porte plusieurs attributs, ce qui permet de <b>filtrer le catalogue</b>
+selon l'angle qui intéresse.</p>
+<div class="tw"><table>
+<thead><tr><th>Famille d'attributs</th><th>Valeurs</th></tr></thead>
+<tbody>
+<tr><td><b>Types de contrôles</b></td><td><code>#Prévention</code> · <code>#Détection</code> · <code>#Correction</code></td></tr>
+<tr><td><b>Propriétés de sécurité</b></td><td><code>#Confidentialité</code> · <code>#Intégrité</code> · <code>#Disponibilité</code></td></tr>
+<tr><td><b>Concepts</b></td><td><code>#Identification</code> · <code>#Protection</code> · <code>#Traitement</code> · <code>#Détection</code> · <code>#Récupération</code></td></tr>
+<tr><td><b>Capacités opérationnelles</b></td><td><code>#Gouvernance</code> · <code>#Gestion_des_actifs</code> · <code>#Protection_des_informations</code> · <code>#Sécurité_des_ressources_humaines</code> · <code>#Sécurité_physique</code> · <code>#Sécurité_système_et_réseau</code> · <code>#Sécurité_des_applications</code> · <code>#Configuration_sécurisée</code> · <code>#Gestion_des_identités_et_des_accès</code> · <code>#Gestion_des_menaces_et_des_vulnérabilités</code> · <code>#Continuité</code> · <code>#Sécurité_des_relations_fournisseurs</code> · <code>#Législation_et_conformité</code> · <code>#Gestion_des_événements</code> · <code>#Assurance_de_sécurité</code></td></tr>
+<tr><td><b>Domaines de sécurité</b></td><td><code>#Gouvernance_et_écosystème</code> · <code>#Protection</code> · <code>#Défense</code> · <code>#Résilience</code></td></tr>
+</tbody>
+</table></div>
+<p>Les <b>concepts</b> reprennent les cinq fonctions du <b>NIST Cybersecurity Framework</b>&nbsp;:
+identifier, protéger, détecter, répondre, récupérer.</p>
+
+<div class="example"><div class="t">L'exercice du cours, et comment l'aborder</div>
+<b>L'énoncé.</b> Une PME fictive de <b>50 salariés</b>&nbsp;: un <b>cabinet d'expertise comptable</b>
+possédant des <b>données personnelles</b> et des <b>données comptables confidentielles</b>. On vous
+mandate pour préconiser un renforcement selon l'ISO 27002. <b>Question</b>&nbsp;: lister les
+<b>10 mesures</b> les plus appropriées parmi les 93.
+<p><b>La méthode qui tient debout</b> — c'est la cohérence du raisonnement qui est évaluée, pas la
+liste «&nbsp;juste&nbsp;». <b>(1)</b> Partir des <b>actifs</b>&nbsp;: données personnelles (donc
+<b>RGPD</b>) et données comptables. <b>(2)</b> Partir du <b>contexte</b>&nbsp;: 50 salariés, donc pas
+d'équipe sécurité dédiée — privilégier des mesures <b>peu coûteuses à exploiter</b>. <b>(3)</b>
+Couvrir les <b>quatre thèmes</b>, pas seulement le technologique&nbsp;: c'est ce qui distingue une
+bonne réponse.</p>
+<p style="margin-bottom:0"><b>Une sélection défendable</b>&nbsp;:
+<code>05.01</code> politiques de sécurité · <code>05.12</code> classification de l'information ·
+<code>05.15</code> contrôle d'accès · <code>05.34</code> vie privée et protection des DCP ·
+<code>06.03</code> sensibilisation et formation · <code>06.07</code> travail à distance ·
+<code>07.02</code> contrôles physiques des accès · <code>08.05</code> authentification sécurisée ·
+<code>08.07</code> protection contre les programmes malveillants · <code>08.13</code> sauvegarde des
+informations. Soit <b>4 organisationnelles, 2 personnes, 1 physique, 3 technologiques</b> — et chacune
+se justifie par un actif ou une obligation.</p>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch8"><span class="num">8.</span> Les quatre approches de la cybersécurité</h2>
+
+<p>Le cœur conceptuel du module. Il n'y a pas <b>une</b> façon d'aborder la cybersécurité mais
+<b>quatre angles de vue</b>, chacun avec son vocabulaire, ses questions et ses angles morts. Le
+support les présente comme les quatre quadrants d'une même démarche de <b>modélisation de la
+menace</b> (<i>threat modelling approach</i>).</p>
+
+<div class="viz">
+  <div class="t">Les quatre angles de vue</div>
+  <div class="vz-grid quad">
+
+    <button class="vz-c k-red" data-hint="Angle mort et où l'étudier">
+      <span class="n">Approche 4 · journée 2</span>
+      <h5>Centrée sur le MÉTIER</h5>
+      <span class="en">risk based / asset centric</span>
+      <span class="q">«&nbsp;Qu'est-ce que je perds&nbsp;?&nbsp;»</span>
+      <ul>
+        <li><i>Likelihood</i> — la vraisemblance</li>
+        <li><i>Consequence</i> — la conséquence</li>
+        <li><i>Impact</i></li>
+        <li><i>Supporting assets</i> — les biens supports</li>
+        <li><i>Asset criticality</i> — la criticité de l'actif</li>
+      </ul>
+      <span class="more"><span class="t">Ce qu'elle apporte</span>
+      Elle <b>hiérarchise</b>&nbsp;: on ne protège pas tout, on protège ce dont la perte coûte le plus.
+      C'est la seule approche qui parle le langage de la <b>direction</b>.</span>
+      <span class="more"><span class="t">Son angle mort</span>
+      Elle dit <b>ce qu'on risque de perdre</b>, pas <b>comment l'attaque arrive</b>. Sans les trois
+      autres, elle produit des priorités sans chemin d'attaque.</span>
+      <span class="more"><span class="t">Où elle est traitée</span>
+      <a href="#ch11">§11</a>, puis toute la méthode <a href="#ch21">EBIOS RM</a> — c'est son
+      outillage.</span>
+    </button>
+
+    <button class="vz-c k-blue" data-hint="Angle mort et où l'étudier">
+      <span class="n">Approche 3 · journée 2</span>
+      <h5>Centrée sur la MENACE</h5>
+      <span class="en">threat centric — on part de l'attaquant</span>
+      <span class="q">«&nbsp;Qui m'attaque, et comment&nbsp;?&nbsp;»</span>
+      <ul>
+        <li><i>Tactics, techniques and procedures</i> (TTP)</li>
+        <li><i>Intent</i> — l'intention · <i>Motivation</i></li>
+        <li><i>Resources</i> · <i>Capabilities</i></li>
+        <li><i>Tools</i> — l'outillage</li>
+        <li><i>Behaviour</i> — le comportement</li>
+      </ul>
+      <span class="more"><span class="t">Ce qu'elle apporte</span>
+      Elle rend la défense <b>spécifique</b>&nbsp;: on se protège d'adversaires <b>réels</b>, avec leurs
+      modes opératoires, plutôt que d'un danger abstrait.</span>
+      <span class="more"><span class="t">Son angle mort</span>
+      Elle ne vaut que ce que vaut le <b>renseignement</b>, et elle ne dit rien de <b>ce qu'on
+      protège</b>. Un attaquant nouveau ou un mode opératoire inédit la prend en défaut.</span>
+      <span class="more"><span class="t">Où elle est traitée</span>
+      <a href="#ch10">§10, la CTI</a> — et elle alimente l'<a href="#ch23">atelier 2</a> d'EBIOS
+      (sources de risque).</span>
+    </button>
+
+    <button class="vz-c k-amber" data-hint="Angle mort et où l'étudier">
+      <span class="n">Approche 2 · journée 1</span>
+      <h5>Centrée sur la DONNÉE</h5>
+      <span class="en">data centric — le terrain du zero trust</span>
+      <span class="q">«&nbsp;Où est l'information, et qui y accède&nbsp;?&nbsp;»</span>
+      <ul>
+        <li><i>Storage</i> — le stockage</li>
+        <li><i>Transmitting</i> — la transmission</li>
+        <li><i>Classification</i> · <i>Categorisation</i></li>
+        <li><i>Processing</i> — le traitement</li>
+        <li><i>Authorised access</i> — l'accès autorisé</li>
+      </ul>
+      <span class="more"><span class="t">Ce qu'elle apporte</span>
+      Elle <b>survit à la disparition du périmètre</b>&nbsp;: cloud, nomadisme, BYOD. La protection
+      suit la donnée au lieu de suivre le réseau.</span>
+      <span class="more"><span class="t">Son angle mort</span>
+      «&nbsp;Une démarche zero trust <b>mal maîtrisée</b> pourra mettre une <b>emphase excessive sur la
+      donnée</b>&nbsp;» — et l'ANSSI prévient qu'un déploiement sans maturité peut <b>accroître la
+      vulnérabilité</b>.</span>
+      <span class="more"><span class="t">Où elle est traitée</span>
+      <a href="#ch12">§12 à 19</a> — huit chapitres, c'est la plus développée du module, et celle
+      qu'évalue le QCM Moodle.</span>
+    </button>
+
+    <button class="vz-c k-green" data-hint="Angle mort et où l'étudier">
+      <span class="n">Approche 1 · journée 1</span>
+      <h5>Centrée sur le SYSTÈME</h5>
+      <span class="en">system centric — hôte et logiciel</span>
+      <span class="q">«&nbsp;Par où peut-on entrer&nbsp;?&nbsp;»</span>
+      <ul>
+        <li><i>Vulnerability</i> — la vulnérabilité</li>
+        <li><i>Network</i> — le réseau</li>
+        <li><i>Design</i> — la conception</li>
+        <li><i>Operating system</i></li>
+        <li><i>Development</i> — le développement</li>
+      </ul>
+      <span class="more"><span class="t">Ce qu'elle apporte</span>
+      C'est l'approche <b>historique</b> et la plus concrète&nbsp;: des <b>couches de protection</b>
+      qu'on peut auditer, mesurer et durcir une par une.</span>
+      <span class="more"><span class="t">Son angle mort</span>
+      <b>Deux hypothèses fausses</b>&nbsp;: que l'attaquant est <b>à l'extérieur</b>, et que le
+      défenseur est <b>passif</b>. Les attaques modernes partent d'éléments <b>légitimes</b>.</span>
+      <span class="more"><span class="t">Où elle est traitée</span>
+      <a href="#ch9">§9, la défense en profondeur</a> — ses limites sont précisément ce qui amène le
+      zero trust.</span>
+    </button>
+
+  </div>
+  <div class="vz-mid">Threat modelling approach</div>
+  <div class="vz-bar">
+    <button class="btn" data-cards="open">Tout déplier</button>
+    <button class="btn ghost" data-cards="close">Tout replier</button>
+    <span class="cnt"></span>
+  </div>
+  <div class="legend">Chaque approche répond à une <b>question différente</b> — et chacune a son
+  <b>angle mort</b>, que les trois autres comblent. C'est pourquoi le support conclut que la
+  cybersécurité est une affaire d'<b>équilibre</b> entre les quatre&nbsp;: <a href="#ch19">§19</a>.
+  <b>Clique sur une carte</b> pour voir son apport, sa limite et où elle est traitée.</div>
+</div>
+
+<div class="callout"><div class="t">Le calendrier du cours suit ces quatre approches</div>
+<b>Journée 1</b>&nbsp;: cadrage, puis <b>approche 1 — le système</b>, puis <b>approche 2 — la
+donnée</b> (zero trust). <b>Journée 2</b>&nbsp;: <b>approche 3 — la menace</b> (CTI), puis
+<b>approche 4 — le métier</b> (analyse de risque). <b>Journée 3</b>&nbsp;: la formation EBIOS RM, qui
+est l'outillage de la quatrième.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch9"><span class="num">9.</span> Approche système : la défense en profondeur</h2>
+
+<div class="callout def"><div class="t">Définition</div>
+La <b>défense en profondeur</b> est une stratégie de sécurité qui utilise <b>plusieurs couches de
+défenses</b> pour protéger les données et les systèmes. Son objectif est de <b>rendre difficile pour
+les attaquants de pénétrer les défenses extérieures</b> et, <b>même s'ils le font</b>, de rendre
+difficile leur <b>déplacement latéral</b> et l'<b>accès aux données sensibles</b>.
+</div>
+
+<p><b>Les principes</b>&nbsp;: penser la sécurité en <b>couches de protection</b>&nbsp;; distinguer
+<b>trois types de contrôle</b> — <b>physique</b>, <b>technique</b>, <b>administratif</b>&nbsp;; mettre
+en place une <b>défense périmétrique</b>&nbsp;; <b>défendre les postes de travail</b>&nbsp;;
+<b>défendre les données</b>.</p>
+
+<h3 id="ch9-couches">9.1 Les sept couches, de l'extérieur vers le cœur</h3>
+<p>Le support illustre la défense en profondeur par la norme <b>IEC 62443</b>, sous forme de cercles
+concentriques. C'est la liste de l'exercice «&nbsp;citez des mesures de sécurité pour chaque
+couche&nbsp;».</p>
+<div class="tw"><table>
+<thead><tr><th>#</th><th>Couche</th><th>Mesures qu'on peut y citer</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><b>Organisationnel et humain</b></td><td>PSSI, chartes, <b>sensibilisation</b> et formation, gestion des habilitations, processus disciplinaire, clauses de confidentialité, contrôles à l'embauche</td></tr>
+<tr><td>2</td><td><b>Accès physique</b></td><td>Contrôle d'accès par badge, <b>zones sécurisées</b>, vidéosurveillance, gardiennage, bureau propre et écran vide, sécurité du câblage</td></tr>
+<tr><td>3</td><td><b>Périmètre du cyberespace</b><br>et réseau Internet</td><td>Nom de domaine et <b>anti-typosquatting</b>, surveillance de la marque, <b>géofiltrage</b>, listes noires, veille et CTI, anti-DDoS, protection de la messagerie (SPF/DKIM/DMARC)</td></tr>
+<tr><td>4</td><td><b>Réseau</b></td><td><b>Pare-feu</b>, DMZ, segmentation et VLAN, <b>micro-segmentation</b>, IDS/IPS, chiffrement des flux (TLS, VPN), proxy et WAF, NAC</td></tr>
+<tr><td>5</td><td><b>Machines</b></td><td><b>Durcissement</b> et suppression des services inutiles, correctifs et gestion des vulnérabilités, <b>EDR</b> et antivirus, chiffrement de disque, MDM, inventaire</td></tr>
+<tr><td>6</td><td><b>Applications</b></td><td><b>Développement sécurisé</b>, revue de code, tests de sécurité, gestion des dépendances, cloisonnement des environnements, contrôle d'accès applicatif</td></tr>
+<tr><td>7</td><td><b>Données / contrôle d'accès</b></td><td><b>Classification</b>, <b>chiffrement</b> au repos et en transit, <b>DLP</b>, masquage et anonymisation, <b>sauvegardes</b> et restauration testée, journalisation des accès</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout ok"><div class="t">L'image du fromage suisse</div>
+Chaque couche est une tranche <b>percée de trous</b> — aucune n'est parfaite. Ce qui protège, c'est
+que les trous <b>ne s'alignent pas</b>&nbsp;: <b>chaque couche réduit le risque global, et une faille
+isolée n'expose pas tout le système</b>. C'est aussi l'argument qui justifie la <b>diversité</b> des
+mesures&nbsp;: des couches trop semblables ont des trous au même endroit.
+</div>
+
+<div class="callout"><div class="t">IEC 62443 : le pendant industriel de l'ISO 27001</div>
+«&nbsp;L'<b>IEC 62443</b> est à l'industrie ce que l'<b>ISO/IEC 27001</b> est à la bureautique&nbsp;:
+une référence spécifiquement conçue pour les <b>environnements industriels</b> — <b>OT</b>,
+<b>SCADA</b>, <b>ICS</b>.&nbsp;»
+</div>
+
+<h3 id="ch9-limites">9.2 Les deux limites — et c'est ce qui amène le zero trust</h3>
+<p>Le support consacre trois diapositives aux limites de la défense en profondeur. Elles reposent sur
+<b>deux hypothèses</b> qui ne tiennent plus.</p>
+
+<div class="exam"><div class="t">Première hypothèse fausse : l'attaquant est à l'extérieur</div>
+La défense en profondeur est <b>héritée d'une logique militaire classique</b>&nbsp;: le <b>mur</b>
+matérialise une <b>frontière de confiance</b>, et l'objectif est d'<b>empêcher un adversaire
+extérieur de pénétrer</b>.
+<p>Or les attaques modernes <b>débutent à partir d'éléments légitimes</b>&nbsp;: un <b>compte
+utilisateur compromis</b>, un <b>poste de travail infecté</b>, un <b>administrateur victime de
+phishing</b>, un <b>partenaire ou sous-traitant compromis</b>, une <b>erreur humaine ou une mauvaise
+configuration</b>, une <b>application cloud vulnérable</b>.</p>
+<p style="margin-bottom:0"><b>Conséquence</b>&nbsp;: «&nbsp;le réseau interne ne peut plus être
+considéré comme une zone de confiance&nbsp;». La question devient&nbsp;: <b>que se passe-t-il lorsque
+l'attaquant est déjà à l'intérieur&nbsp;?</b> — et <b>c'est à cette question que répond le zero
+trust</b>. L'image du support&nbsp;: «&nbsp;une forteresse protège efficacement contre un ennemi
+extérieur, mais beaucoup moins contre un <b>ennemi déjà présent à l'intérieur</b>&nbsp;».</p>
+</div>
+
+<div class="exam"><div class="t">Seconde hypothèse fausse : le défenseur est passif</div>
+La vision de la défense en profondeur est <b>essentiellement statique</b>&nbsp;: renforcer les
+barrières, ralentir l'attaquant, multiplier les couches, <b>défendre passivement</b>.
+<p>Le support oppose l'<b>art militaire chinois</b>, où la muraille sert aussi à <b>déplacer
+rapidement les défenseurs vers le point attaqué</b>.</p>
+<p style="margin-bottom:0"><b>Une défense active</b> ne se limite plus à bloquer&nbsp;: elle cherche à
+<b>détecter</b> les activités suspectes, <b>suivre</b> les déplacements de l'attaquant, <b>ralentir</b>
+sa progression, <b>le tromper</b>, <b>contenir</b> l'incident et <b>réagir rapidement</b>. Les exemples
+donnés&nbsp;: la <b>déception</b>, les <b>honeypots</b>, le <b>threat hunting</b>.</p>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch10"><span class="num">10.</span> Approche menace : la CTI</h2>
+
+<div class="callout def"><div class="t">Définition — ANSSI</div>
+La <b>Cyber Threat Intelligence</b> (CTI), ou <b>renseignement sur la menace</b>, implique
+l'ensemble des activités de <b>recueil</b>, d'<b>étude</b> et de <b>partage</b> d'informations liées à
+des <b>attaques informatiques</b>. Son but est de fournir des <b>connaissances qualifiées et
+adaptées</b> à de multiples destinataires souhaitant protéger des systèmes numériques.
+</div>
+
+<p><b>Les principes</b>&nbsp;: protéger les systèmes d'information et les données sensibles&nbsp;;
+<b>comprendre la menace et anticiper les attaques</b>&nbsp;; développer la <b>capacité de réaction et
+de prise de décision</b>.</p>
+
+<div class="viz">
+  <div class="t">Ce qui fait une menace, et le cycle qui la qualifie</div>
+  <svg viewBox="0 0 900 300" role="img" aria-label="À gauche : la menace comme intersection de capacités, intentions hostiles et opportunités. À droite : le cycle du renseignement en cinq étapes.">
+    <g class="vz-step">
+      <circle cx="170" cy="105" r="72" style="fill:var(--accent-soft);stroke:var(--d-blue);stroke-width:1.4;opacity:.75"/>
+      <circle cx="120" cy="185" r="72" style="fill:var(--ok-soft);stroke:var(--d-green);stroke-width:1.4;opacity:.75"/>
+      <circle cx="225" cy="185" r="72" style="fill:var(--warn-soft);stroke:var(--d-amber);stroke-width:1.4;opacity:.75"/>
+      <text class="vz-lbl" x="170" y="58" text-anchor="middle">Capacités</text>
+      <text class="vz-lbl" x="62" y="232" text-anchor="middle">Intentions</text>
+      <text class="vz-lbl" x="62" y="248" text-anchor="middle">hostiles</text>
+      <text class="vz-lbl" x="285" y="240" text-anchor="middle">Opportunités</text>
+      <rect class="vz-box" x="133" y="140" width="80" height="26" rx="5"/>
+      <text class="vz-lbl" x="173" y="158" text-anchor="middle">MENACE</text>
+    </g>
+    <g class="vz-step">
+      <text class="vz-lbl" x="640" y="34" text-anchor="middle">Le cycle du renseignement</text>
+      <circle cx="640" cy="165" r="46" class="vz-filt"/>
+      <text class="vz-sub" x="640" y="162" text-anchor="middle">Cycle du</text>
+      <text class="vz-sub" x="640" y="176" text-anchor="middle">renseignement</text>
+      <circle cx="640" cy="70" r="34" class="vz-ok"/><text class="vz-sub" x="640" y="68" text-anchor="middle">Expression</text><text class="vz-sub" x="640" y="80" text-anchor="middle">des besoins</text>
+      <circle cx="775" cy="130" r="34" class="vz-ok"/><text class="vz-sub" x="775" y="134" text-anchor="middle">Collecte</text>
+      <circle cx="722" cy="258" r="34" class="vz-ok"/><text class="vz-sub" x="722" y="262" text-anchor="middle">Traitement</text>
+      <circle cx="558" cy="258" r="34" class="vz-ok"/><text class="vz-sub" x="558" y="262" text-anchor="middle">Analyse</text>
+      <circle cx="505" cy="130" r="34" class="vz-ok"/><text class="vz-sub" x="505" y="134" text-anchor="middle">Diffusion</text>
+      <g class="vz-wire" style="stroke:var(--d-blue);stroke-width:2">
+        <path d="M672,84 A 100 100 0 0 1 755,101"/>
+        <path d="M782,166 A 100 100 0 0 1 748,228"/>
+        <path d="M688,272 A 100 100 0 0 1 592,272"/>
+        <path d="M532,228 A 100 100 0 0 1 499,166"/>
+        <path d="M526,101 A 100 100 0 0 1 608,84"/>
+      </g>
+    </g>
+  </svg>
+  <div class="legend">Une <b>menace</b> n'existe que si les trois cercles se recoupent&nbsp;: un
+  attaquant <b>capable</b>, <b>qui veut</b>, et <b>qui peut</b>. Supprimer <b>un seul</b> des trois
+  suffit — et c'est sur l'<b>opportunité</b> que le défenseur a le plus de prise.</div>
+</div>
+
+<h3 id="ch10-cycle">10.1 Le cycle du renseignement en détail</h3>
+<div class="tw"><table>
+<thead><tr><th>Étape</th><th>Ce qu'on y fait</th><th>Exemples du support</th></tr></thead>
+<tbody>
+<tr><td><b>Direction</b><br><i>expression des besoins</i></td><td><b>Fixer les objectifs</b> et formuler les <b>besoins prioritaires en renseignement</b> (<b>PIR</b> — <i>Priority Intelligence Requirements</i>)</td><td>Ce qu'on cherche à savoir, et pour qui</td></tr>
+<tr><td><b>Collection</b><br><i>collecte</i></td><td>Rassembler la matière, de sources très diverses</td><td>Presse traditionnelle · <b>threat intel feeds</b> (OSINT, STIX, SANS) · réseaux sociaux · <b>plateformes de déception</b> (honeypots, <i>canarytokens</i>) · vulnérabilités (MITRE CVE, bases d'exploits) · incidents de sécurité · <b>rapports de sécurité</b> des éditeurs · <b>partage</b> (AlienVault, X-Force, MISP) · <b>darkweb</b> (forums, places de marché) · <i>fraud intelligence</i> · <b>brand monitoring</b> · <i>phishing intelligence</i></td></tr>
+<tr><td><b>Processing</b><br><i>traitement</i></td><td><b>Traiter</b> les données de façon qualitative et quantitative, puis les <b>enrichir en contexte</b> (<i>aggregation &amp; enrichment</i>)</td><td>Normaliser, dédupliquer, corréler</td></tr>
+<tr><td><b>Analysis</b><br><i>analyse et production</i></td><td><b>Intégrer et analyser</b> l'information rassemblée pour en <b>tirer des produits</b>&nbsp;: <i>threat actor tracking</i>, <b>modélisation de la menace</b>, <b>attribution</b></td><td>C'est le travail des <b>analystes CTI</b></td></tr>
+<tr><td><b>Dissemination</b><br><i>diffusion</i></td><td><b>Diffuser</b> au bon destinataire, dans le bon format</td><td><b>Rapports qualitatifs</b> (stratégique, tactique, opérationnel) · <b>intégration technique</b> (YARA, SIGMA, SNORT, STIX, IoC&nbsp;: hachés, domaines) · <b>parties prenantes internes</b> (SOC, CSIRT, sécurité et gestion informatique, niveau direction) · <b>partenaires externes</b> (CERT, communauté, partenaires du secteur)</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout"><div class="t">Le jeu de mots du support, qui dit la vraie difficulté</div>
+La diapositive oppose «&nbsp;<b>Threat</b> <s>Intelligence</s>&nbsp;» — la menace elle-même, avec ses
+capacités, intentions et opportunités — à «&nbsp;<s>Threat</s> <b>Intelligence</b>&nbsp;» — le
+<b>processus de renseignement</b>. Ce sont deux objets différents&nbsp;: l'un est ce qu'on étudie,
+l'autre la <b>manière</b> de l'étudier. La CTI est traitée en détail dans le cours <b>OSINT et CTI</b>
+de la mineure Intelligence économique.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch11"><span class="num">11.</span> Approche métier : l'analyse de risque</h2>
+
+<p>«&nbsp;On considère ici la cybersécurité comme un <b>levier de protection de la valeur
+métier</b>. <b>On ne part pas de la technologie, mais des actifs critiques pour
+l'organisation.</b>&nbsp;» C'est le renversement de perspective qui caractérise cette quatrième
+approche.</p>
+
+<div class="steps">
+<div class="step"><b>1. Identifier les actifs métier essentiels</b><br>
+Les <b>données</b>, les <b>processus</b>, les <b>services critiques</b>.</div>
+<div class="step"><b>2. Analyser les risques liés à ces actifs</b><br>
+L'<b>impact potentiel</b> sur les <b>opérations</b>, les <b>finances</b>, la <b>réputation</b>.</div>
+<div class="step"><b>3. Prioriser les mesures</b><br>
+Selon la <b>valeur business protégée</b> — et non selon la sophistication technique.</div>
+<div class="step"><b>4. S'aligner sur la gestion des risques globaux</b><br>
+<b>ISO 27005</b>, <b>EBIOS RM</b>.</div>
+</div>
+
+<div class="callout def"><div class="t">Définition — analyse de risque</div>
+L'analyse de risque est le <b>processus structuré d'identification, d'évaluation et de
+hiérarchisation des risques</b> susceptibles d'affecter des <b>actifs</b>, des <b>activités</b> ou des
+<b>objectifs</b> d'une organisation. Elle vise à&nbsp;: <b>identifier les menaces et les
+vulnérabilités associées</b>, <b>estimer la probabilité d'occurrence</b> d'un incident, <b>mesurer ses
+conséquences potentielles</b>, et <b>fournir une base rationnelle pour décider des mesures de
+traitement</b>.
+</div>
+
+<div class="callout warn"><div class="t">Ce chapitre est volontairement court</div>
+L'analyse de risque et la méthode <b>EBIOS Risk Manager</b> font l'objet de la <b>journée 3
+entière</b>, dont le support n'a pas encore été distribué. Ce qui est certain dès maintenant&nbsp;:
+la méthode s'organise en <b>cinq ateliers</b>, c'est ce que dit l'énoncé du devoir — <b>atelier 1</b>
+pour dresser le portrait de l'organisation, <b>ateliers 2, 3 et 4</b> pour étudier les menaces,
+<b>atelier 5</b> pour le <b>traitement du risque</b>. Voir le <a href="#ch20">chapitre 20</a>.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch12"><span class="num">12.</span> Zero trust : le constat et la définition</h2>
+
+<h3 id="ch12-constat">12.1 Le constat</h3>
+<p>«&nbsp;Le monde d'aujourd'hui n'est plus celui d'il y a simplement 10 ans.&nbsp;» Trois évolutions
+sont citées&nbsp;:</p>
+<ul class="key-points">
+<li>Une <b>augmentation de la surface d'attaque</b> due au <b>cloud</b>, à l'<b>IoT</b>, à
+l'<b>industrie 4.0</b> et au <b>DevOps</b> — des environnements <b>hybrides, complexes ou
+éphémères</b>.</li>
+<li>Le <b>développement du cybercrime</b>, notamment contre les <b>OIV</b>.</li>
+<li>L'avènement du <b>nomadisme</b> (télétravail, coworking) et du <b>BYOD</b> (<i>Bring Your Own
+Device</i>).</li>
+</ul>
+
+<h3 id="ch12-conscience">12.2 La prise de conscience</h3>
+<div class="exam"><div class="t">Les trois constats qui fondent la démarche</div>
+<b>1.</b> Il est nécessaire de <b>remettre en cause le principe de confiance implicite</b> accordée à
+l'<b>accédant</b> et à l'<b>emplacement depuis lequel l'accès est demandé</b>.<br>
+<b>2.</b> Il s'agit de <b>dépasser le principe de défense en profondeur</b> et de passer d'un
+<b>modèle périmétrique</b> à un <b>modèle axé sur l'identité et le contrôle d'accès</b>.<br>
+<b>3.</b> Le projet de refonte est <b>ambitieux et doit s'envisager dans la durée</b>.
+<p style="margin-bottom:0">Le support oppose «&nbsp;le modèle de sécurité périmétrique&nbsp;» tel
+qu'on le dessine, et «&nbsp;le modèle périmétrique <b>en réalité</b>&nbsp;» — c'est-à-dire troué de
+toutes parts par le cloud, le VPN, les partenaires et le BYOD.</p>
+</div>
+
+<div class="callout"><div class="t">La digression sur la présomption, qui est la meilleure façon de retenir le principe</div>
+«&nbsp;Quand la cybersécurité s'inspire de traditions moyenâgeuses&nbsp;!&nbsp;» Jusqu'à preuve du
+contraire, l'accusé est&nbsp;: <b>coupable</b> dans le <b>procès médiéval</b>, <b>innocent</b> dans le
+<b>procès moderne</b>.
+<p style="margin-bottom:0">Dans le modèle zero trust, <b>chaque tentative de connexion est considérée
+comme illégitime jusqu'à preuve du contraire</b>&nbsp;: c'est une <b>présomption de culpabilité</b>.</p>
+</div>
+
+<h3 id="ch12-def">12.3 La définition et l'objectif — NIST SP 800-207</h3>
+<div class="callout def"><div class="t">Définition</div>
+«&nbsp;Le modèle zero trust est un <b>ensemble de paradigmes de cybersécurité en évolution</b>, qui
+font passer les défenses d'un <b>périmètre statique basé sur le réseau</b> à un <b>périmètre centré
+sur les utilisateurs, les actifs et les ressources</b>.&nbsp;»
+<p style="margin-bottom:0"><i>NIST Special Publication <b>800-207</b>, Zero Trust Architecture,
+<b>2020</b></i></p>
+</div>
+<div class="callout def"><div class="t">Objectif</div>
+«&nbsp;Le modèle zero trust a pour objectif d'<b>empêcher l'accès non autorisé aux données et aux
+services</b>, tout en rendant l'application du <b>contrôle d'accès aussi granulaire que
+possible</b>.&nbsp;»
+</div>
+<p>Deux mots comptent dans la définition&nbsp;: <b>«&nbsp;paradigmes&nbsp;»</b> au pluriel — ce n'est
+pas une technologie mais un ensemble d'idées — et <b>«&nbsp;en évolution&nbsp;»</b> — ce n'est pas un
+état à atteindre une fois pour toutes.</p>
+
+<!-- ===================================================================== -->
+<h2 id="ch13"><span class="num">13.</span> Zero trust : les trois principes</h2>
+
+<div class="steps">
+<div class="step"><b>1. Vérifier explicitement</b><br>
+<b>Contrôler dynamiquement le contexte de l'accédant</b>&nbsp;: son <b>identité</b>, <b>l'endroit
+depuis lequel se fait l'accès</b>, <b>l'appareil utilisé</b>, <b>son état de santé</b>, etc. — en
+<b>présumant ouvertement la compromission</b> (<i>assume breach</i>).</div>
+<div class="step"><b>2. Implémenter l'accès à moindre privilège</b><br>
+S'assurer, <b>en fonction de ce contexte</b>, que l'accédant aura <b>uniquement les privilèges
+nécessaires</b> pour accéder à l'application, au service ou à la donnée. «&nbsp;Cela peut être
+affiné en attribuant une <b>fenêtre temporelle</b> pour l'accès.&nbsp;»</div>
+<div class="step"><b>3. Surveillance continue</b><br>
+<b>Inspecter et enregistrer toutes les activités</b>, en utilisant l'<b>analyse des données de
+sécurité</b>.</div>
+</div>
+
+<div class="callout def"><div class="t">La définition du modèle, en une phrase</div>
+Le modèle de confiance zéro <b>met l'accent sur la nécessité de vérifier chaque utilisateur et
+appareil avant de leur accorder l'accès</b> aux ressources de l'entreprise. Ce processus de
+vérification est <b>continu</b>, garantissant que <b>seuls les utilisateurs et appareils autorisés ont
+accès, même s'ils proviennent de l'intérieur de l'organisation</b>.
+</div>
+
+<div class="exam"><div class="t">Les trois mots qui distinguent le zero trust de tout le reste</div>
+<b>Dynamique</b> — le contexte est réévalué, pas acquis une fois pour toutes à la connexion.<br>
+<b>Continu</b> — la vérification ne s'arrête pas après l'authentification initiale.<br>
+<b>Granulaire</b> — le contrôle porte sur la ressource, pas sur le réseau.
+<p style="margin-bottom:0">Et le renversement de charge&nbsp;: la confiance n'est plus <b>déduite de
+l'emplacement</b> («&nbsp;il est sur le réseau interne donc il est légitime&nbsp;») mais <b>prouvée à
+chaque demande</b>.</p>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch14"><span class="num">14.</span> Zero trust : les six piliers et l'architecture</h2>
+
+<div class="viz">
+  <div class="t">Les six piliers technologiques du zero trust</div>
+  <div class="vz-mid">Visibilité · Automatisation · Orchestration</div>
+  <div class="vz-grid g3">
+
+    <button class="vz-c k-green" data-hint="Briques et rôle">
+      <span class="n">Pilier prioritaire</span>
+      <h5>Identité</h5>
+      <span class="big">24 %</span>
+      <span class="q">C'est par là qu'il faut commencer</span>
+      <span class="more"><span class="t">Briques technologiques</span>
+      <b>SSO</b> · <b>IAM</b> · <b>PAM</b> · <b>MFA</b></span>
+      <span class="more"><span class="t">Pourquoi en premier</span>
+      Le support le désigne explicitement comme <b>à traiter en priorité</b>. Et le <b>MFA</b> est le
+      <i>quick win</i> type&nbsp;: il réduit de <b>plus de 99&nbsp;%</b> les attaques sur l'identité.</span>
+      <span class="more"><span class="t">Dans l'architecture</span>
+      C'est une <b>entrée</b> du PEP — humaines <b>et non humaines</b> (comptes de service, machines).</span>
+    </button>
+
+    <button class="vz-c k-blue" data-hint="Briques et rôle">
+      <span class="n">Le poids le plus lourd</span>
+      <h5>Appareils</h5>
+      <span class="big">38 %</span>
+      <span class="q">Tout ce qui se connecte au réseau</span>
+      <span class="more"><span class="t">Briques technologiques</span>
+      <b>EDR</b> · contrôle d'accès au réseau (<b>NAC</b>) · <b>MDM</b></span>
+      <span class="more"><span class="t">Pourquoi ce poids</span>
+      La définition du <b>terminal</b> est volontairement très large&nbsp;: serveurs, postes,
+      portables, <b>imprimantes</b>, téléphones, <b>objets IoT</b>, équipements réseau — matériel,
+      logiciel et micrologiciel compris.</span>
+      <span class="more"><span class="t">Dans l'architecture</span>
+      C'est l'autre <b>entrée</b> du PEP&nbsp;: <b>corporate et personnels</b> — le BYOD est
+      explicitement dans le modèle.</span>
+    </button>
+
+    <button class="vz-c k-blue" data-hint="Briques et rôle">
+      <span class="n">Le poids le plus faible</span>
+      <h5>Applications</h5>
+      <span class="big">1 %</span>
+      <span class="q">Peu pondéré, pas négligeable</span>
+      <span class="more"><span class="t">Briques technologiques</span>
+      Gestion des accès aux applications · <b>pare-feux applicatifs</b></span>
+      <span class="more"><span class="t">Dans l'architecture</span>
+      C'est une <b>sortie</b> du PEP&nbsp;: «&nbsp;restriction des accès en fonction du contexte des
+      demandes, <b>dans l'espace et dans le temps</b>&nbsp;», plus la sécurité applicative.</span>
+    </button>
+
+    <button class="vz-c k-purple" data-hint="Briques et rôle">
+      <span class="n">L'objet à protéger</span>
+      <h5>Données</h5>
+      <span class="big">16 %</span>
+      <span class="q">Le cœur de l'approche</span>
+      <span class="more"><span class="t">Briques technologiques</span>
+      <b>Inventorisation</b> · <b>classification</b> · <b>chiffrement</b> · sauvegarde et
+      restauration</span>
+      <span class="more"><span class="t">Dans l'architecture</span>
+      <b>Sortie</b> du PEP&nbsp;: classification et chiffrement des données les plus sensibles, et l'on
+      peut y inclure la <b>protection contre la fuite d'information (DLP)</b>.</span>
+      <span class="more"><span class="t">Le point de vigilance</span>
+      Le zero trust <b>est</b> l'approche centrée sur la donnée&nbsp;; mal maîtrisée, elle met une
+      <b>emphase excessive</b> sur ce pilier au détriment des trois autres approches
+      (<a href="#ch19">§19</a>).</span>
+    </button>
+
+    <button class="vz-c k-amber" data-hint="Briques et rôle">
+      <span class="n">Cloud et sur site</span>
+      <h5>Infrastructure</h5>
+      <span class="big">9 %</span>
+      <span class="q">Ce qui fait tourner les applications</span>
+      <span class="more"><span class="t">Briques technologiques</span>
+      Gestion des versions <b>JIT</b> des IaaS, PaaS, VM et conteneurs · <b>CASB</b></span>
+      <span class="more"><span class="t">Dans l'architecture</span>
+      <b>Sortie</b> du PEP&nbsp;: protection des composants des applications — VM, <b>conteneurs</b>,
+      <b>microservices</b>. S'applique <b>aussi bien au cloud qu'au sur site</b>.</span>
+    </button>
+
+    <button class="vz-c k-amber" data-hint="Briques et rôle">
+      <span class="n">Plus seulement le périmètre</span>
+      <h5>Réseau</h5>
+      <span class="big">12 %</span>
+      <span class="q">Segmenter, plus que ceinturer</span>
+      <span class="more"><span class="t">Briques technologiques</span>
+      Segmentation · <b>micro-segmentation</b> · chiffrement du trafic</span>
+      <span class="more"><span class="t">Dans l'architecture</span>
+      <b>Sortie</b> du PEP&nbsp;: filtrage des flux, chiffrement des communications, exposition aux
+      risques des terminaux, micro-segmentation.</span>
+      <span class="more"><span class="t">Le glissement à comprendre</span>
+      On passe de la <b>segmentation</b> — physique, nord-sud, couches 2-3, matérielle — à la
+      <b>micro-segmentation</b> — virtuelle, est-ouest, couche 4, logicielle (<a href="#ch18">§18.1</a>).</span>
+    </button>
+
+  </div>
+  <div class="vz-bar">
+    <button class="btn" data-cards="open">Tout déplier</button>
+    <button class="btn ghost" data-cards="close">Tout replier</button>
+    <span class="cnt"></span>
+  </div>
+  <div class="legend">Les pourcentages viennent de l'infographie <i>Securing identities with Zero
+  Trust</i> et donnent l'<b>importance relative</b> des piliers. <b>Appareils</b> et <b>identités</b>
+  pèsent ensemble <b>62&nbsp;%</b> — et ce sont justement les <b>deux entrées</b> du PEP&nbsp;; les
+  quatre autres en sont les <b>sorties</b>.</div>
+</div>
+
+<div class="exam"><div class="t">Les trois consignes de mise en œuvre</div>
+<b>1. Par où commencer.</b> Six grands piliers, <b>dont certains à traiter en priorité</b>&nbsp;:
+<b>l'identité</b>, et d'autres <b>en fonction de leur importance et de leur maturité dans
+l'organisation</b>.<br>
+<b>2. Comment.</b> <b>Privilégier une mise en œuvre progressive</b> — «&nbsp;une bascule complète vers
+un modèle zero trust est <b>peu envisageable</b> pour les entités dotées d'un <b>patrimoine
+informatique hérité et sédimenté</b>&nbsp;».<br>
+<b>3. Le point de vigilance.</b> <b>Attention à la dépendance entre les piliers</b>, aussi bien
+<b>fonctionnelle</b> que <b>commerciale</b> — c'est-à-dire au risque d'enfermement chez un éditeur.
+</div>
+
+<h3 id="ch14-archi">14.1 L'architecture zero trust</h3>
+<p>L'architecture de référence articule des <b>entrées</b> — identités et terminaux — vers une
+<b>politique centrale</b> qui décide, et des <b>sorties</b> protégées.</p>
+<div class="tw"><table>
+<thead><tr><th>Bloc</th><th>Ce qu'il contient</th></tr></thead>
+<tbody>
+<tr><td><b>Identities</b></td><td><b>Humaines</b> et <b>non humaines</b> (comptes de service, machines)</td></tr>
+<tr><td><b>Endpoints</b></td><td><b>Corporate</b> et <b>personnels</b> — le BYOD est explicitement dans le modèle</td></tr>
+<tr><td><b>Zero Trust Policy</b><br><i>le centre</i></td><td><b>Évaluation</b> puis <b>application</b> (<i>evaluation / enforcement</i>)&nbsp;: elle reçoit l'<b>authentification forte</b>, la <b>conformité du terminal</b>, l'<b>évaluation du risque</b>, et délivre un <b>enrichissement de la demande</b></td></tr>
+<tr><td><b>Policy Optimization</b></td><td><b>Gouvernance</b>, <b>conformité</b>, <b>évaluation de la posture de sécurité</b>, <b>optimisation de la productivité</b></td></tr>
+<tr><td><b>Threat Protection</b></td><td><b>Évaluation continue</b>, <b>threat intelligence</b>, <b>forensics</b>, <b>automatisation de la réponse</b></td></tr>
+<tr><td><b>Network</b></td><td><b>Public / privé</b>&nbsp;: filtrage du trafic et <b>segmentation</b></td></tr>
+<tr><td><b>Data · Apps · Infrastructure</b></td><td>Les ressources protégées&nbsp;: <b>classification et chiffrement</b> des données, <b>accès adaptatif</b> aux applications SaaS et sur site, <b>contrôle d'exécution</b> de l'infrastructure (IaaS, PaaS, sites internes, conteneurs, <b>JIT et contrôle de version</b>)</td></tr>
+</tbody>
+</table></div>
+<p>Le tout est bouclé par de la <b>télémétrie, de l'analytique et de l'évaluation</b> qui remonte en
+permanence vers la politique — c'est la traduction architecturale du principe de <b>surveillance
+continue</b>.</p>
+
+<!-- ===================================================================== -->
+<h2 id="ch15"><span class="num">15.</span> Le cœur du modèle : le PEP</h2>
+
+<p>«&nbsp;Le cœur de l'architecture zero trust est composé d'un <b>moteur d'évaluation de l'accès en
+temps réel</b> qui contrôle <b>deux propriétés fondamentales&nbsp;: l'authentification et
+l'autorisation</b>.&nbsp;»</p>
+
+<div class="exam"><div class="t">Les quatre sigles, et qui fait quoi</div>
+<div class="tw" style="margin-top:8px"><table>
+<thead><tr><th>Sigle</th><th>Nom</th><th>Rôle</th></tr></thead>
+<tbody>
+<tr><td><b>PEP</b></td><td><i>Policy Enforcement Point</i></td><td><b>Applique</b> les décisions d'accès prises par le PE</td></tr>
+<tr><td><b>PE</b></td><td><i>Policy Engine</i></td><td><b>Prend</b> les décisions d'accès</td></tr>
+<tr><td><b>PA</b></td><td><i>Policy Administrator</i></td><td><b>Configure et gère</b> les PEP</td></tr>
+<tr><td><b>PDP</b></td><td><i>Policy Decision Point</i></td><td>Le point de décision, qui regroupe PE et PA</td></tr>
+</tbody>
+</table></div>
+<b>La phrase à retenir</b>&nbsp;: <b>le PE décide, le PEP applique, le PA administre les PEP.</b>
+</div>
+
+<h3 id="ch15-questions">15.1 Les quatre questions que pose le moteur</h3>
+<ol class="key-points">
+<li>Quel est le <b>niveau de confiance de l'identité</b> de l'utilisateur pour <b>cette
+demande</b>&nbsp;?</li>
+<li>L'accès à la ressource est-il <b>autorisé compte tenu de ce niveau de confiance</b>&nbsp;?</li>
+<li>L'<b>appareil</b> utilisé pour la demande présente-t-il un <b>niveau de sécurité
+adéquat</b>&nbsp;?</li>
+<li>Y a-t-il d'<b>autres facteurs</b> à prendre en compte — l'<b>heure</b>, la <b>localisation</b> du
+sujet…&nbsp;?</li>
+</ol>
+
+<h3 id="ch15-io">15.2 Les entrées et les sorties du PEP</h3>
+<div class="tw"><table>
+<thead><tr><th colspan="2">Les 4 ENTRÉES</th></tr></thead>
+<tbody>
+<tr><td><b>L'identité</b></td><td>Un <b>ensemble d'attributs qui décrit de manière unique un utilisateur ou une entité</b>, <b>y compris des entités non personnelles</b>.</td></tr>
+<tr><td><b>Le terminal</b></td><td><b>Tout bien</b> — matériel, logiciel, micrologiciel — <b>pouvant se connecter à un réseau</b>&nbsp;: serveurs, postes, portables, <b>imprimantes</b>, téléphones, <b>IoT</b>, équipements réseau.</td></tr>
+<tr><td><b>La politique</b></td><td>Les <b>règles d'accès fixées par la DSI</b>, y compris les mesures garantissant la <b>conformité</b> de l'organisme.</td></tr>
+<tr><td><b>La protection</b></td><td>Le <b>contrôle continu</b>, le <b>renseignement sur la menace</b>, l'<b>analyse forensique</b> et la <b>réponse aux incidents</b>.</td></tr>
+</tbody>
+</table></div>
+<div class="tw"><table>
+<thead><tr><th colspan="2">Les 4 SORTIES</th></tr></thead>
+<tbody>
+<tr><td><b>Données</b></td><td><b>Classification et chiffrement</b> des données les plus sensibles. On peut y inclure la <b>protection contre la fuite d'information (DLP)</b>.</td></tr>
+<tr><td><b>Applications</b></td><td><b>Restriction des accès en fonction du contexte</b> des demandes, <b>dans l'espace et dans le temps</b>. Sécurité des applications.</td></tr>
+<tr><td><b>Infrastructure</b></td><td>Protection des <b>composants des applications</b>&nbsp;: VM, <b>conteneurs</b>, <b>microservices</b>. S'applique <b>aussi bien au cloud qu'aux infrastructures sur site</b>.</td></tr>
+<tr><td><b>Réseau</b></td><td><b>Filtrage des flux</b>, <b>chiffrement des communications</b>, exposition aux risques des terminaux, <b>micro-segmentation</b>.</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout ok"><div class="t">La symétrie à repérer</div>
+Les <b>4 entrées</b> sont les <b>éléments de contexte</b> qui servent à décider&nbsp;: <b>qui</b>
+(identité), <b>avec quoi</b> (terminal), <b>selon quelles règles</b> (politique), <b>dans quel état de
+menace</b> (protection). Les <b>4 sorties</b> sont les <b>ressources</b> à protéger — et elles
+correspondent à <b>quatre des six piliers</b>. Les deux piliers qui manquent, <b>identité</b> et
+<b>appareils</b>, sont justement… les <b>entrées</b>.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch16"><span class="num">16.</span> Briques technologiques et quick wins</h2>
+
+<p>«&nbsp;Pour répondre aux attentes définies, il faut identifier les <b>solutions technologiques</b>
+en puisant dans les <b>briques technologiques</b> à disposition. Certaines attentes simples
+mobiliseront un <b>nombre restreint</b> de briques, d'autres impliquant <b>plusieurs piliers</b> sont
+plus complexes à décliner — par exemple la <b>protection contre les rançongiciels</b>.&nbsp;»</p>
+
+<div class="tw"><table>
+<thead><tr><th>Pilier</th><th>Briques technologiques</th></tr></thead>
+<tbody>
+<tr><td><b>Identité</b></td><td><b>SSO</b> · <b>IAM</b> · <b>PAM</b> · <b>MFA</b></td></tr>
+<tr><td><b>Terminaux</b></td><td><b>EDR</b> · <b>contrôle d'accès au réseau (NAC)</b> · <b>MDM</b></td></tr>
+<tr><td><b>Réseau</b></td><td><b>Segmentation</b>, <b>micro-segmentation</b>, <b>chiffrement du trafic</b></td></tr>
+<tr><td><b>Données</b></td><td><b>Inventorisation</b>, <b>classification</b>, <b>chiffrement</b>, <b>sauvegarde / restauration</b></td></tr>
+<tr><td><b>Applications</b></td><td><b>Gestion des accès aux applications</b>, <b>pare-feux applicatifs</b></td></tr>
+<tr><td><b>Infrastructure</b></td><td><b>Gestion des versions JIT</b> des IaaS, PaaS, VM, conteneurs · <b>CASB</b></td></tr>
+</tbody>
+</table></div>
+<p><b>MDM</b> (<i>Mobile Device Management</i>)&nbsp;: solution de <b>gestion de flotte mobile</b>
+permettant à la DSI de <b>déployer, administrer et sécuriser</b> le parc de terminaux mobiles.<br>
+<b>CASB</b> (<i>Cloud Access Security Broker</i>)&nbsp;: un logiciel <b>situé entre les utilisateurs de
+services cloud et les applications cloud</b>. Il peut <b>surveiller l'activité</b>, <b>avertir les
+administrateurs</b> d'actions dangereuses, <b>appliquer les politiques</b> et <b>bloquer
+automatiquement les logiciels malveillants</b>.</p>
+
+<div class="exam"><div class="t">Le quick win — définition et exemples</div>
+<b>Un <i>quick win</i> est une action simple demandant peu d'implication en échange de résultats
+rapides et tangibles.</b>
+<p>Quatre caractéristiques dans le support&nbsp;: <b>(1)</b> il est <b>défini par rapport à un
+périmètre de mise en œuvre</b>, typiquement les <b>actifs les plus critiques</b> — accès aux
+applications critiques, données les plus sensibles, <b>comptes à privilèges</b>&nbsp;; <b>(2)</b>
+certains correspondent à des <b>briques zero trust incontournables</b>&nbsp;; <b>(3)</b> il peut être
+<b>visible ou non</b>&nbsp;; <b>(4)</b> il doit <b>toujours être mesurable</b>.</p>
+<p style="margin-bottom:0"><b>L'exemple typique&nbsp;: le MFA</b>, «&nbsp;ou mieux l'<b>authentification
+sans mot de passe</b>&nbsp;» — <b>le MFA réduit de plus de 99&nbsp;% les attaques sur l'identité</b>
+(Microsoft, <i>Evolving Zero Trust</i>, nov. 2021). <b>Autres exemples</b>&nbsp;: le <b>SSO</b>
+(identité), l'<b>EDR</b> (terminaux), et la <b>suppression des actifs obsolètes inutilisés</b>
+(terminaux, applications, infrastructure, réseau).</p>
+</div>
+
+<div class="callout"><div class="t">L'outil de maturité fourni sur Moodle</div>
+Le support renvoie à un <b>outil d'évaluation de la maturité</b> disponible sur Moodle&nbsp;: c'est le
+<b>AWS Security Maturity Model</b>. Il classe les actions en <b>quatre phases</b> — <b>Phase 1 Quick
+Wins</b>, <b>Phase 2 Foundational</b>, <b>Phase 3 Efficient</b>, <b>Phase 4 Optimized</b> — réparties
+sur des domaines&nbsp;: <i>security governance</i>, <i>security assurance</i>, <i>threat
+detection</i>, <i>vulnerability management</i>, <i>infrastructure protection</i>, <i>data
+protection</i>, <i>application security</i>, <i>incident response</i>.
+<p style="margin-bottom:0">On y retrouve la même logique&nbsp;: en phase 1, <b>MFA</b>, désignation
+des <b>contacts sécurité</b>, <b>sauvegardes</b>, <b>chiffrement en transit</b>, <b>segmentation
+réseau</b>&nbsp;; en phase 4, <b>automatisation de la correction des déviations</b> et <b>reprise
+multi-régions</b>.</p>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch17"><span class="num">17.</span> Conduire un projet zero trust</h2>
+
+<h3 id="ch17-problemes">17.1 Les problèmes à résoudre — « je veux pouvoir… »</h3>
+<p>Le support formule la démarche non pas en solutions mais en <b>besoins exprimés par le
+métier</b>&nbsp;: porter des <b>applications dans le cloud</b> de façon sécurisée · permettre le
+<b>télétravail</b> dans les mêmes conditions de sécurité et de performance · rendre <b>accessibles de
+l'extérieur</b> des applications sur site sous conditions strictes · protéger les <b>données
+critiques</b> contre la fuite et le vol · se protéger contre les <b>rançongiciels</b> · faciliter le
+travail avec des <b>partenaires</b> sur des projets sensibles · <b>renforcer l'authentification</b> ·
+<b>minimiser la surface d'attaque de l'annuaire AD</b> · <b>rationaliser les solutions de sécurité</b>
+pour en réduire les coûts · <b>garantir la conformité RGPD</b> pour limiter les risques d'amende ·
+<b>limiter les outils et contraintes d'infrastructure</b> (type VPN) · offrir plus de <b>flexibilité</b>
+aux utilisateurs.</p>
+
+<h3 id="ch17-arguments">17.2 Les six arguments à avancer</h3>
+<div class="tw"><table>
+<thead><tr><th>Argument</th><th>Le contenu</th></tr></thead>
+<tbody>
+<tr><td><b>Sécurité</b></td><td>Une <b>meilleure résistance aux attaques</b> ciblant <b>tous les secteurs</b> — privés, gouvernementaux, ONG, académies. C'est le principe «&nbsp;<b>assume breach</b>&nbsp;» qui prend en compte ces menaces.</td></tr>
+<tr><td><b>Adaptabilité</b></td><td>Répondre à des <b>scénarios beaucoup plus ouverts</b>&nbsp;: télétravail, <b>gestion des identités externes</b>, accès facilité dans le respect du <b>moindre privilège</b>, <b>facilitation des fusions-acquisitions</b>.</td></tr>
+<tr><td><b>Opportunités</b></td><td>Développement de <b>nouvelles applications</b> en interne ou pour la clientèle, <b>mise à disposition plus rapide</b> de nouvelles applications SaaS.</td></tr>
+<tr><td><b>Contrôle des données</b></td><td>Garantir la <b>confidentialité</b> (<b>y compris en cas de fuite</b>), l'<b>intégrité</b> et la <b>disponibilité</b> — par exemple en cas d'attaque par rançongiciel.</td></tr>
+<tr><td><b>Conformité</b></td><td>Une protection <b>ajustée à la sensibilité</b> des données facilite le respect des réglementations et limite les <b>impacts financiers ou réputationnels</b>.</td></tr>
+<tr><td><b>Intégration du cloud</b></td><td>Une <b>gestion stricte des identités</b> facilite le déploiement tout en <b>limitant le Shadow IT</b>.</td></tr>
+</tbody>
+</table></div>
+<div class="callout def"><div class="t">Shadow IT</div>
+Les <b>systèmes d'information et de communication réalisés et mis en œuvre au sein d'organisations
+sans approbation de la DSI</b>. Exemples donnés&nbsp;: le <b>BYOD</b>, les <b>solutions
+<i>drive</i></b>, les <b>classeurs Excel comprenant des macros</b>.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch18"><span class="num">18.</span> Zero trust : les compléments</h2>
+
+<h3 id="ch18-seg">18.1 Segmentation contre micro-segmentation</h3>
+<div class="tw"><table>
+<thead><tr><th>Critère</th><th>Segmentation</th><th>Micro-segmentation</th></tr></thead>
+<tbody>
+<tr><td><b>Politiques</b></td><td><b>Générales</b></td><td><b>Granulaires</b></td></tr>
+<tr><td><b>Réseau</b></td><td><b>Physique</b></td><td><b>Virtuel ou superposé</b> (<i>overlay</i>)</td></tr>
+<tr><td><b>Trafic</b></td><td><b>Nord-sud</b> — communication <b>externe</b></td><td><b>Est-ouest</b> — communication <b>interne</b></td></tr>
+<tr><td><b>Découpage</b></td><td><b>Géographique et fonctionnel</b></td><td><b>Segmentation de la charge de travail</b></td></tr>
+<tr><td><b>Couches OSI</b></td><td><b>2 (liaison) et 3 (réseau)</b></td><td><b>4 (transport)</b></td></tr>
+<tr><td><b>Technologies</b></td><td><b>VLAN, MPLS, pare-feu</b></td><td><b>SDN, virtualisation, conteneurisation</b></td></tr>
+<tr><td><b>Nature</b></td><td><b>Matériel</b></td><td><b>Logiciel</b></td></tr>
+</tbody>
+</table></div>
+<p><b>Réseau superposé</b>&nbsp;: un réseau bâti <b>sur un autre réseau</b>, dont les nœuds sont
+interconnectés par des <b>liens logiques</b> du réseau sous-jacent — l'exemple donné est <b>Tor</b>.<br>
+<b>SDN</b> (<i>software-defined networking</i>)&nbsp;: un modèle d'architecture qui permet de gérer les
+services de réseaux <b>par abstraction de fonctionnalités</b>.<br>
+<b>MPLS</b>&nbsp;: transport de données par <b>commutation de labels</b> insérés <b>entre la couche 2
+et la couche 3</b>.</p>
+
+<h3 id="ch18-ztna">18.2 Zero Trust, ZTA et ZTNA</h3>
+<div class="tw"><table>
+<thead><tr><th></th><th>Définition</th><th>Fonctionnement</th></tr></thead>
+<tbody>
+<tr><td><b>ZTA</b></td><td><b>Approche</b> qui applique les principes de Zero Trust à l'<b>accès aux ressources</b>, incluant la <b>vérification de l'identité des utilisateurs et des appareils</b> avant de leur accorder l'accès.</td><td>Contrôle l'accès aux applications et aux données en fonction de <b>politiques strictes</b>, en s'assurant que <b>chaque demande est légitime et conforme</b>.</td></tr>
+<tr><td><b>ZTNA</b></td><td><b>Technologie spécifique</b> permettant un accès sécurisé aux applications et services via des politiques d'accès. <b>Contrairement au VPN</b>, le ZTNA <b>agit au-delà du réseau</b> et <b>réduit la surface d'attaque en cachant les applications de l'Internet</b>.</td><td><b>Bloque par défaut tous les accès</b> et n'autorise que ceux des utilisateurs approuvés. Crée des <b>tunnels chiffrés pour chaque session d'application</b>.</td></tr>
+</tbody>
+</table></div>
+<div class="exam"><div class="t">La phrase de synthèse, et le piège de sigle</div>
+«&nbsp;<b>Zero Trust est le principe global, ZTA est son application à l'accès aux ressources, et
+ZTNA met en œuvre ces principes pour sécuriser l'accès réseau.</b>&nbsp;»
+<p style="margin-bottom:0"><b>Attention</b>&nbsp;: ne pas confondre ce <b>ZTA</b> avec <b>Zero Trust
+Architecture</b>, parfois aussi abrégé <b>ZTA</b> — le support le signale explicitement.</p>
+</div>
+
+<h3 id="ch18-sase">18.3 Zero trust (Forrester) contre SASE (Gartner)</h3>
+<div class="callout def"><div class="t">SASE — Secure Access Service Edge</div>
+«&nbsp;La transformation numérique de l'entreprise <b>inverse les modèles de conception du réseau et
+des services de sécurité</b>, déplaçant le point focal vers <b>l'identité de l'utilisateur et/ou de
+l'appareil — pas le centre de données</b>.&nbsp;» (Gartner, <i>The Future of Network Security Is in
+the Cloud</i>, août 2019)
+</div>
+<p><b>Là où l'approche zero trust met l'accent sur l'identité et le terminal, l'approche SASE met en
+avant le réseau et l'infrastructure.</b> Ses trois caractéristiques&nbsp;: une <b>vision complètement
+cloud</b>&nbsp;; le <b>regroupement du réseau et de la sécurité réseau «&nbsp;as a Service&nbsp;»</b>
+(SD-WAN, FaaS) dans une solution cloud&nbsp;; l'accent sur le <b>pilier réseau avec le SD-WAN</b>,
+préféré à l'architecture <b>MPLS</b>.</p>
+<div class="tw"><table>
+<thead><tr><th>Ce qui les relie</th><th>Ce qui les différencie</th></tr></thead>
+<tbody>
+<tr><td>Exigence de <b>vérification d'identité forte</b> (pilier identité, ZTNA)<br>Volonté de <b>limiter les solutions de sécurité</b> utilisées et leur <b>coût</b></td><td><b>SASE</b> est focalisée sur le <b>SD-WAN</b> et la sécurité réseau<br><b>Zero trust</b> est plus <b>agnostique</b>&nbsp;: il prend en compte les <b>SI sur site</b><br><b>SASE</b> peut être qualifiée de «&nbsp;<b>périmétrique dans le cloud</b>&nbsp;»</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="ch18-crypto">18.4 Zero trust et cryptographie</h3>
+<div class="callout def"><div class="t">Cryptographie légère (LWC)</div>
+Une forme de chiffrement <b>conçue pour les dispositifs à contraintes de ressources</b>. Son objectif
+est de trouver le <b>meilleur compromis entre la performance, la sécurité et le coût</b> — c'est le
+<b>triangle LWC</b>. La <b>taille de la clé</b> peut être ajustée (par exemple à <b>64 bits</b>), tout
+comme le <b>nombre de tours</b> (par exemple <b>16 cartouches</b>). Elle est <b>idéale pour la
+sécurisation des dispositifs IoT</b> et la protection des <b>réseaux de capteurs sans fil</b>.
+</div>
+<p><b>Le chiffrement homomorphe</b> est mis en avant pour <b>quatre raisons</b>&nbsp;:
+<b>sécurité des données</b> — il permet de <b>traiter des données chiffrées sans les
+déchiffrer</b>&nbsp;; <b>confidentialité</b> — les données sensibles restent confidentielles <b>même
+lorsqu'elles sont utilisées ou partagées avec des tiers</b>&nbsp;; <b>conformité</b>&nbsp;; et
+<b>réduction des risques</b> en <b>minimisant les points d'exposition</b>.</p>
+
+<h3 id="ch18-ia">18.5 Zero trust et IA</h3>
+<p>«&nbsp;L'approche zero trust peut <b>gérer efficacement les risques de sécurité liés à l'IA</b> car
+c'est une <b>approche centrée sur les données</b>.&nbsp;» Et l'IA a en retour <b>trois impacts</b> sur
+le zero trust&nbsp;:</p>
+<ol class="key-points">
+<li>Elle <b>fournit des informations précieuses</b> sur les données et tous les <b>événements liés aux
+identités</b>.</li>
+<li>Elle <b>améliore les capacités</b> à fournir des <b>renseignements sur les menaces en temps
+réel</b> et à <b>automatiser les réponses</b> de sécurité.</li>
+<li>L'<b>IA générative induit des risques de fuite de données</b> (shadow IT). La <b>DLP</b> permet de
+<b>suivre le mouvement des données</b> au sein du réseau, sur les appareils des collaborateurs et
+lorsqu'elles sont stockées dans l'infrastructure.</li>
+</ol>
+
+<!-- ===================================================================== -->
+<h2 id="ch19"><span class="num">19.</span> Précautions et équilibre des approches</h2>
+
+<div class="exam"><div class="t">Les précautions d'usage — la diapositive de conclusion</div>
+<b>Le modèle zero trust ne doit pas faire oublier que la cybersécurité est une affaire d'équilibre
+entre quatre grandes approches</b>&nbsp;: centrée sur la <b>donnée</b>, sur le <b>système</b>, sur la
+<b>menace</b>, sur le <b>métier</b>.
+<p style="margin-bottom:0">«&nbsp;Une démarche zero trust <b>mal maîtrisée</b> pourra mettre une
+<b>emphase excessive sur la donnée</b>.&nbsp;» C'est la boucle avec le chapitre 8&nbsp;: le zero trust
+<b>est</b> l'approche centrée sur la donnée — le prendre pour toute la sécurité, c'est confondre un
+quadrant avec le tableau entier.</p>
+</div>
+
+<div class="callout warn"><div class="t">La mise en garde de l'ANSSI, à citer</div>
+«&nbsp;Le recours à ces solutions est <b>ardu, faute de maturité</b>&nbsp;: le déploiement est
+susceptible d'<b>entraîner des erreurs d'installation ou de configuration</b>, d'<b>accroître la
+vulnérabilité des systèmes d'information</b> et de donner aux entreprises un <b>faux sentiment de
+sécurité</b>.&nbsp;»
+<p style="margin-bottom:0">Et la conclusion du support&nbsp;: «&nbsp;L'approche zero trust <b>ne
+dispense pas d'une réflexion autonome</b> sur chacun des piliers de la démarche et des briques
+technologiques de la sécurité&nbsp;: <b>chiffrement des flux</b>, <b>jetons d'authentification</b>,
+<b>journalisation</b> et <b>sensibilisation des utilisateurs</b>. <b>Tout dépend des objectifs visés
+et surtout du niveau de maturité déjà atteint par le SI.</b>&nbsp;»</p>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch20"><span class="num">20.</span> Le TP et le devoir EBIOS RM</h2>
+
+<h3 id="ch20-tp1">20.1 Le TP zero trust — plateforme de streaming</h3>
+<p>Le même cas d'entreprise sert au TP de la journée 1 et au devoir noté. <b>Le contexte</b>&nbsp;: une
+<b>plateforme de streaming vidéo internationale</b>.</p>
+<div class="tw"><table>
+<thead><tr><th>Ce que possède l'entreprise</th><th>Ce que l'audit a révélé</th></tr></thead>
+<tbody>
+<tr><td>
+<b>Millions de comptes utilisateurs</b> — emails, mots de passe, abonnements<br>
+<b>Contenu protégé par droit d'auteur</b> — films, séries<br>
+<b>Paiements en ligne</b> — cartes bancaires, PayPal<br>
+<b>Accès multi-supports</b> — applications web, mobiles, Smart TV<br>
+<b>Infrastructure cloud avec CDN</b> pour distribuer les vidéos
+</td><td>
+<b>Comptes utilisateurs trop privilégiés</b><br>
+<b>VPN utilisé depuis des postes personnels</b> non sécurisés<br>
+<b>Risque de compromission d'un compte administrateur</b>
+</td></tr>
+</tbody>
+</table></div>
+<p><b>L'architecture simplifiée</b> qu'on vous donne&nbsp;: côté <i>viewer</i>, un <b>load balancer +
+API gateway</b> devant un <b>video playback service</b>, un <b>cache de métadonnées</b> et une base de
+<b>métadonnées</b>, avec un <b>CDN</b> pour la diffusion&nbsp;; côté <i>content providers</i>, un
+second <b>load balancer + API gateway</b> devant un <b>video upload service</b>, un <b>object
+storage</b> et un <b>video processing pipeline</b> avec <b>transcodage</b>.</p>
+
+<div class="exam"><div class="t">Le travail demandé, et le livrable</div>
+<b>Livrable</b>&nbsp;: un <b>tableau forces / faiblesses</b>.
+<p><b>Consignes</b>&nbsp;: <b>(1)</b> associer <b>chaque problème identifié</b> à un ou plusieurs
+principes zero trust — <b>authentification forte</b>, <b>principe du moindre privilège</b>,
+<b>microsegmentation</b>, <b>surveillance continue</b>&nbsp;; <b>(2)</b> <b>justifier vos
+choix</b>.</p>
+<p style="margin-bottom:0"><b>Résultats attendus</b>&nbsp;: identifier les <b>limites du modèle
+périmétrique</b> · <b>relier chaque problème à un principe</b> zero trust · construire une
+<b>méthodologie claire et argumentée</b> · <b>prendre conscience que le zero trust est une démarche
+globale</b>.</p>
+</div>
+
+<div class="example"><div class="t">Le rattachement des trois faiblesses, pour s'entraîner</div>
+<b>Comptes utilisateurs trop privilégiés</b> → <b>moindre privilège</b> en premier chef, mais aussi
+<b>surveillance continue</b> (détecter l'usage anormal d'un privilège) et <b>vérification
+explicite</b> (réévaluer le droit à chaque demande, pas une fois pour toutes). Briques&nbsp;:
+<b>IAM</b>, revue périodique des droits, <b>PAM</b> et accès <b>juste-à-temps</b>.
+<p><b>VPN depuis des postes personnels</b> → <b>vérification explicite</b> (l'<b>état de santé de
+l'appareil</b> fait partie du contexte) et <b>microsegmentation</b> — car le VPN, lui, <b>place le
+poste sur le réseau interne</b>, ce qui est exactement le modèle périmétrique qu'on veut quitter.
+La réponse structurelle est le <b>ZTNA</b>, qui «&nbsp;agit au-delà du réseau&nbsp;» et
+<b>cache les applications</b>. Briques&nbsp;: <b>NAC</b>, <b>MDM</b>, <b>EDR</b>, conformité du
+terminal.</p>
+<p style="margin-bottom:0"><b>Compromission d'un compte administrateur</b> → <b>authentification
+forte</b> (<b>MFA</b>, le quick win qui réduit de <b>plus de 99&nbsp;%</b> les attaques sur
+l'identité), <b>moindre privilège</b> avec <b>fenêtre temporelle</b>, et <b>surveillance
+continue</b>. C'est aussi l'illustration du principe <b>assume breach</b>&nbsp;: on conçoit la
+politique en supposant que ce compte <b>sera</b> compromis.</p>
+</div>
+
+<h3 id="ch20-devoir">20.2 Le devoir noté — analyse EBIOS RM</h3>
+<div class="callout danger"><div class="t">Les contraintes formelles</div>
+<b>Ouvert</b> le vendredi 11 septembre 2026 · <b>à rendre</b> le <b>dimanche 20 septembre 2026 à
+23h59</b> · devoir <b>collectif, par groupe de 4 à 6 personnes</b> · format accepté&nbsp;: <b>PDF</b>,
+en utilisant les <b>fonctions d'export</b> d'<b>Agile Risk Manager</b>.
+</div>
+
+<p><b>La mise en situation.</b> «&nbsp;Vous êtes mandatés par une <b>plateforme de streaming
+vidéo</b> pour réaliser une <b>analyse de risque</b>&nbsp;» — la même entreprise que le TP, avec les
+mêmes trois faiblesses révélées par l'audit.</p>
+
+<div class="exam"><div class="t">Ce sur quoi vous serez réellement évalués — lisez bien</div>
+L'énoncé le dit deux fois, et c'est le point le plus important&nbsp;:
+<p>«&nbsp;Vous êtes libre de choisir des mesures déjà en place&nbsp;: <b>c'est sur la cohérence de
+l'analyse que vous serez évalués, pas sur la justesse des mesures</b>. Simplement <b>laissez
+suffisamment de faiblesses</b> pour donner du corps à l'analyse de risques.&nbsp;»</p>
+<p style="margin-bottom:0">«&nbsp;L'objectif de cette mise en situation <b>n'est pas performatif mais
+pédagogique</b>&nbsp;: vous ne serez <b>pas jugés sur le réalisme du résultat</b> — vous ne connaissez
+pas les détails du SI — <b>mais sur le réalisme du processus, c'est-à-dire sur la cohérence des
+ateliers et leur enchaînement</b>.&nbsp;»</p>
+</div>
+
+<div class="callout ok"><div class="t">Ce que ça implique concrètement</div>
+<b>1.</b> Ne pas chercher la mesure techniquement parfaite&nbsp;: chercher la mesure <b>qui découle de
+l'atelier précédent</b>.<br>
+<b>2.</b> <b>Ne pas tout sécuriser</b> dans l'atelier 1&nbsp;: si le socle est déjà parfait, les
+ateliers 2 à 5 n'ont plus rien à mordre. L'énoncé demande explicitement de <b>laisser des
+faiblesses</b>.<br>
+<b>3.</b> Soigner les <b>transitions</b> entre ateliers&nbsp;: ce qui sort de l'atelier <i>n</i> doit
+être ce qui entre dans l'atelier <i>n+1</i>. C'est exactement ce que veut dire «&nbsp;<b>la cohérence
+des ateliers et leur enchaînement</b>&nbsp;».
+</div>
+
+<p><b>L'enchaînement annoncé par l'énoncé</b>&nbsp;: «&nbsp;dresser le <b>portrait robot de cette
+entreprise fictive</b> (<b>atelier 1</b>) avant d'étudier <b>les menaces qui pèsent sur son SI</b>
+(<b>ateliers 2, 3 et 4</b>) pour finalement suggérer un <b>traitement du risque</b> (<b>atelier
+5</b>).&nbsp;»</p>
+
+<div class="callout warn"><div class="t">À compléter après la journée de formation</div>
+Le détail des cinq ateliers EBIOS RM — leur nom exact, leurs livrables, le vocabulaire de la méthode
+(valeurs métier, biens supports, événements redoutés, sources de risque, objectifs visés, parties
+prenantes, scénarios stratégiques et opérationnels, socle de sécurité) — sera à intégrer ici quand le
+support de la journée 3 sera distribué. Rappel&nbsp;: la <b>journée est obligatoire</b> et le
+<b>QCM doit être validé à 80&nbsp;%</b> pour obtenir l'attestation de formation.
+</div>
+
+
+<!-- ===================================================================== -->
+<h2 id="ch21"><span class="num">21.</span> EBIOS Risk Manager : la démarche d'ensemble</h2>
+
+<div class="callout danger"><div class="t">Provenance de ce chapitre et des suivants</div>
+Les chapitres <b>21 à 27</b> ne sont <b>pas</b> tirés du support de cours — la journée 3 n'a pas encore
+eu lieu. Ils sont construits sur le <b>guide officiel de l'ANSSI</b>,
+<i>«&nbsp;EBIOS Risk Manager — la méthode&nbsp;»</i>, <b>version 1.5, ANSSI-PA-048</b>, qui est la
+référence citée dans la bibliographie du syllabus.
+<p style="margin-bottom:0"><b>Deux conséquences.</b> D'abord, tout ce qui suit est <b>fiable</b>&nbsp;:
+c'est la source normative de la méthode enseignée. Ensuite, <b>ce n'est pas la parole de
+l'enseignant</b>&nbsp;: il peut simplifier, insister ailleurs, ou utiliser ses propres exemples. À
+confronter au support de la journée 3 quand il sera distribué.</p>
+</div>
+
+<div class="callout def"><div class="t">Ce qu'est EBIOS Risk Manager</div>
+La <b>méthode d'appréciation et de traitement du risque numérique</b> publiée par l'<b>ANSSI</b> avec
+le soutien du <b>Club EBIOS</b> (association loi 1901, qui enrichit le référentiel français depuis
+<b>2003</b>). Elle propose une «&nbsp;<b>boîte à outils adaptable</b>&nbsp;», compatible avec les
+référentiels en vigueur — <b>ISO 31000:2018</b> pour la gestion des risques, et la série
+<b>ISO/IEC 27000</b>, en particulier <b>27005:2022</b> avec laquelle elle est <b>conforme</b>.
+<p style="margin-bottom:0"><i>EBIOS</i> est une <b>marque déposée</b> par le Secrétariat général de la
+défense et de la sécurité nationale.</p>
+</div>
+
+<h3 id="ch21-usages">21.1 À quoi elle sert</h3>
+<p>Le guide énonce <b>trois finalités</b>&nbsp;: mettre en place ou renforcer un <b>processus de
+management du risque numérique</b>&nbsp;; apprécier et traiter les risques d'un <b>projet
+numérique</b>, notamment en vue d'une <b>homologation de sécurité</b>&nbsp;; définir le <b>niveau de
+sécurité à atteindre</b> pour un produit ou un service, dans la perspective d'une <b>certification ou
+d'un agrément</b>.</p>
+<p>Elle s'applique aux organisations <b>publiques comme privées</b>, <b>quelles que soient leur taille
+et leur activité</b>, et que les SI soient <b>en cours d'élaboration ou déjà existants</b>.</p>
+
+<h3 id="ch21-pyramide">21.2 Conformité et scénarios : la pyramide</h3>
+<div class="exam"><div class="t">Le cœur de la méthode, en une idée</div>
+EBIOS RM <b>combine deux approches</b> et les place «&nbsp;là où elles apportent la plus forte valeur
+ajoutée&nbsp;»&nbsp;:
+<p><b>1. Une approche par <i>conformité</i></b> pour déterminer le <b>socle de sécurité</b> face aux
+risques <b>les plus communs</b>, <b>y compris ceux liés à des événements accidentels et
+environnementaux</b>.</p>
+<p><b>2. Une approche par <i>scénarios</i></b> pour identifier les <b>risques avancés, d'origine
+intentionnelle</b>, notamment les attaques <b>particulièrement ciblées ou sophistiquées</b>.</p>
+<p style="margin-bottom:0">C'est la <b>pyramide du management du risque numérique</b>&nbsp;: à la base,
+<b>large et simple</b>, les principes de base et l'hygiène&nbsp;; au-dessus le <b>cadre réglementaire
+et normatif</b>&nbsp;; au sommet, <b>étroit et avancé</b>, l'<b>appréciation des risques</b> par
+scénarios. On ne traite pas une attaque étatique avec une check-list, ni une clé USB perdue avec un
+graphe d'attaque.</p>
+</div>
+
+<div class="viz">
+  <div class="t">La pyramide du management du risque numérique</div>
+  <svg viewBox="0 0 900 330" role="img" aria-label="Pyramide du management du risque numérique : à la base les principes de base et l'hygiène (approche par conformité, attaques simples et larges), au milieu le cadre réglementaire et normatif, au sommet l'appréciation des risques par scénarios (attaques avancées et ciblées).">
+    <g class="vz-step">
+      <path class="vz-ok" d="M80,300 H820 L700,215 H200 Z"/>
+      <text class="vz-lbl" x="450" y="265" text-anchor="middle">Principes de base et hygiène</text>
+      <text class="vz-sub" x="450" y="285" text-anchor="middle">le socle — approche par CONFORMITÉ</text>
+    </g>
+    <g class="vz-step">
+      <path class="vz-dec" d="M200,212 H700 L580,127 H320 Z"/>
+      <text class="vz-lbl" x="450" y="176" text-anchor="middle">Cadre réglementaire et normatif</text>
+      <text class="vz-sub" x="450" y="196" text-anchor="middle">NIS 2, RGPD, ISO 27001/27002…</text>
+    </g>
+    <g class="vz-step">
+      <path class="vz-bad" d="M320,124 H580 L450,30 Z"/>
+      <text class="vz-lbl" x="450" y="90" text-anchor="middle">Appréciation</text>
+      <text class="vz-lbl" x="450" y="108" text-anchor="middle">des risques</text>
+      <text class="vz-sub" x="450" y="123" text-anchor="middle">approche par SCÉNARIOS</text>
+    </g>
+    <g class="vz-step">
+      <path class="vz-wire" d="M40,300 V30" marker-end="url(#pyrA)"/>
+      <defs><marker id="pyrA" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" style="fill:var(--border)"/></marker></defs>
+      <text class="vz-sub" x="52" y="300">SIMPLE · LARGE</text>
+      <text class="vz-sub" x="52" y="46">AVANCÉ · CIBLÉ</text>
+      <text class="vz-sub" x="52" y="175" style="font-weight:600">niveau des</text>
+      <text class="vz-sub" x="52" y="190" style="font-weight:600">cyberattaques</text>
+    </g>
+  </svg>
+  <div class="legend">Le <b>volume</b> de chaque étage dit la <b>proportion des attaques</b>&nbsp;:
+  l'immense majorité est traitée par le socle d'hygiène. Le sommet ne concerne que les menaces
+  <b>ciblées et sophistiquées</b> — mais c'est là que les scénarios apportent ce que la conformité ne
+  peut pas donner.</div>
+</div>
+
+<h3 id="ch21-ateliers">21.3 Les cinq ateliers, et leur enchaînement</h3>
+<div class="tw"><table>
+<thead><tr><th>Atelier</th><th>Nom officiel</th><th>Ce qu'on y produit</th></tr></thead>
+<tbody>
+<tr><td><b>1</b></td><td><b>Cadrage et socle de sécurité</b></td><td>Le cadre, le <b>périmètre métier et technique</b>, les <b>événements redoutés</b> et leur <b>gravité</b>, le <b>socle de sécurité</b></td></tr>
+<tr><td><b>2</b></td><td><b>Sources de risque</b></td><td>Les couples <b>SR/OV</b> retenus, et une <b>cartographie des sources de risque</b></td></tr>
+<tr><td><b>3</b></td><td><b>Scénarios stratégiques</b></td><td>La <b>cartographie de dangerosité</b> de l'écosystème, les <b>scénarios stratégiques</b>, les <b>mesures sur l'écosystème</b></td></tr>
+<tr><td><b>4</b></td><td><b>Scénarios opérationnels</b></td><td>Les <b>scénarios opérationnels</b> et leur <b>vraisemblance</b></td></tr>
+<tr><td><b>5</b></td><td><b>Traitement du risque</b></td><td>La <b>stratégie de traitement</b>, le <b>plan de traitement</b>, les <b>risques résiduels</b>, le <b>cadre de suivi</b></td></tr>
+</tbody>
+</table></div>
+
+<div class="exam"><div class="t">La chaîne logique, et c'est elle qui fait la « cohérence de l'enchaînement »</div>
+<b>Couple SR/OV</b> (atelier 2) → <b>scénario stratégique</b> (atelier 3), qui porte la
+<b>GRAVITÉ</b> — la même pour le scénario et <b>tous</b> ses chemins d'attaque → chaque <b>chemin
+d'attaque</b> donne un <b>scénario opérationnel</b> (atelier 4), qui porte la
+<b>VRAISEMBLANCE</b>, <b>propre à chacun</b> → l'association d'un chemin d'attaque et de son scénario
+opérationnel forme un <b>scénario de risque</b>, dont le <b>niveau de risque</b> s'évalue sur
+<b>gravité × vraisemblance</b>.
+<p style="margin-bottom:0"><b>La phrase à retenir</b>&nbsp;: <b>la gravité vient de l'atelier 3, la
+vraisemblance de l'atelier 4</b>. C'est l'erreur la plus commune de les inverser.</p>
+</div>
+
+<h3 id="ch21-cycles">21.4 Les deux cycles</h3>
+<p>La démarche est <b>itérative</b> et prévoit <b>deux cycles</b>, dont les durées sont <b>définies
+lors du premier atelier</b>&nbsp;:</p>
+<ul class="key-points">
+<li>Un <b>cycle stratégique</b>, qui revisite <b>l'ensemble de l'étude</b> et en particulier les
+<b>scénarios stratégiques</b>. C'est la période à considérer pour les <b>ateliers 1 et 3</b>.</li>
+<li>Un <b>cycle opérationnel</b>, qui revient sur les <b>scénarios opérationnels</b> à la lumière
+<b>des incidents survenus</b>, de <b>l'apparition de nouvelles vulnérabilités</b> et de
+<b>l'évolution des modes opératoires</b>. C'est la période de l'<b>atelier 4</b>.</li>
+</ul>
+<p>Les <b>ateliers 3 et 4 s'alimentent mutuellement</b> au cours d'itérations successives — mais le
+guide conseille de <b>ne pas dépasser deux itérations</b>, «&nbsp;pour ne pas trop complexifier
+l'analyse&nbsp;».</p>
+
+<div class="callout warn"><div class="t">Attention au vocabulaire : il a changé en 2024</div>
+La version actuelle du guide a rapproché sa terminologie de celle de l'ISO. Trois renommages, et le
+syllabus renvoie encore à l'édition <b>2018</b>&nbsp;— tu peux donc entendre les deux&nbsp;:
+<div class="tw" style="margin-top:8px"><table>
+<thead><tr><th>Édition 2018</th><th>Édition actuelle</th></tr></thead>
+<tbody>
+<tr><td><b>PACS</b> — Plan d'Amélioration Continue de la Sécurité</td><td><b>Plan de traitement du risque</b></td></tr>
+<tr><td>Entité ou personne responsable</td><td><b>Propriétaire</b></td></tr>
+<tr><td>Synthèse des scénarios de risque</td><td><b>Évaluations des risques</b></td></tr>
+</tbody>
+</table></div>
+Le sigle <b>PACS</b> reste très employé à l'oral et dans les outils. Si l'enseignant l'utilise, c'est
+le <b>plan de traitement du risque</b>.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch22"><span class="num">22.</span> Atelier 1 — Cadrage et socle de sécurité</h2>
+
+<p><b>L'objectif.</b> «&nbsp;Définir le <b>cadre de l'étude</b>, son <b>périmètre métier et
+technique</b>, les <b>événements redoutés</b> associés et le <b>socle de sécurité</b>.&nbsp;» C'est un
+<b>prérequis</b> à toute appréciation des risques. La période à considérer est celle du <b>cycle
+stratégique</b>.</p>
+
+<div class="tw"><table>
+<thead><tr><th>Participants</th><th>Données de sortie</th></tr></thead>
+<tbody>
+<tr><td>
+<b>Direction</b> — ou décideurs ayant le bon niveau de délégation<br>
+<b>Métiers</b><br>
+<b>RSSI</b> du périmètre de l'étude<br>
+<b>DSI</b> ou responsable informatique du périmètre
+</td><td>
+Les <b>éléments de cadrage</b>&nbsp;: objectifs, rôles et responsabilités, <b>cadre temporel</b><br>
+Le <b>périmètre métier et technique</b>&nbsp;: <b>missions</b>, <b>valeurs métier</b>, <b>biens supports</b><br>
+Les <b>événements redoutés</b> et leur <b>niveau de gravité</b><br>
+Le <b>socle de sécurité</b>&nbsp;: référentiels applicables, <b>état d'application</b>, <b>identification et justification des écarts</b>
+</td></tr>
+</tbody>
+</table></div>
+
+<p><b>Les étapes</b>, sur une à trois demi-journées&nbsp;: <b>(A)</b> définir le cadre de l'étude ·
+<b>(B)</b> définir le périmètre métier et technique · <b>(C)</b> identifier les événements redoutés et
+estimer leur gravité · <b>(D)</b> déterminer le socle de sécurité.</p>
+
+<div class="exam"><div class="t">Les trois notions à ne jamais confondre</div>
+<b>Mission</b> — «&nbsp;fonction, finalité, <b>raison d'être</b> de l'objet de l'étude&nbsp;». C'est le
+plus haut niveau.
+<p><b>Valeur métier</b> — «&nbsp;<b>composante importante pour l'organisation dans l'accomplissement de
+sa mission</b>. Cela peut être un <b>service</b>, une <b>fonction support</b>, une <b>étape dans un
+projet</b>, et toute <b>information ou savoir-faire</b> associé.&nbsp;» Le guide ajoute&nbsp;: «&nbsp;une
+valeur métier peut être vue comme un <b>élément à protéger</b>&nbsp;». C'est ce que la méthode 2010
+appelait un <b>bien essentiel</b>.</p>
+<p style="margin-bottom:0"><b>Bien support</b> — le <b>composant du SI sur lequel repose</b> une ou
+plusieurs valeurs métier. C'est le <b>«&nbsp;sur quoi ça tourne&nbsp;»</b>.</p>
+</div>
+
+<div class="example"><div class="t">La distinction, appliquée à la plateforme de streaming du devoir</div>
+<b>Mission</b>&nbsp;: distribuer des contenus vidéo à des abonnés, dans le respect des droits d'auteur.
+<p><b>Valeurs métier</b>&nbsp;: le <b>service de lecture vidéo</b> · le <b>catalogue de contenus sous
+droits</b> · le <b>processus de paiement</b> · les <b>données personnelles des abonnés</b> · le
+<b>processus de mise en ligne</b> par les fournisseurs de contenu.</p>
+<p style="margin-bottom:0"><b>Biens supports</b>&nbsp;: le <b>CDN</b> · l'<b>object storage</b> · les
+<b>bases de métadonnées</b> et leur cache · les <b>API gateways</b> et load balancers · le <b>pipeline
+de transcodage</b> · l'<b>annuaire</b> et le <b>VPN d'administration</b> · les <b>postes des
+administrateurs</b>.</p>
+</div>
+
+<h3 id="ch22-er">22.1 Les événements redoutés et leur gravité</h3>
+<p>Un <b>événement redouté</b> est associé à une <b>valeur métier</b> et correspond à l'atteinte d'un
+<b>critère de sécurité</b> — disponibilité, intégrité, confidentialité, et souvent traçabilité. On en
+estime la <b>gravité</b> par ses <b>impacts</b>.</p>
+<div class="exam"><div class="t">L'échelle de gravité du guide — quatre niveaux</div>
+<div class="tw" style="margin-top:8px"><table>
+<thead><tr><th>Niveau</th><th>Conséquences</th></tr></thead>
+<tbody>
+<tr><td><b>G4 — Critique</b></td><td><b>Incapacité pour la société d'assurer tout ou partie de son activité</b>, avec d'éventuels <b>impacts graves sur la sécurité des personnes et des biens</b>. Elle <b>ne surmontera vraisemblablement pas</b> la situation — <b>sa survie est menacée</b>.</td></tr>
+<tr><td><b>G3 — Grave</b></td><td><b>Forte dégradation</b> des performances de l'activité, avec d'éventuels <b>impacts significatifs</b> sur la sécurité des personnes et des biens. Elle surmontera <b>avec de sérieuses difficultés</b> — fonctionnement en <b>mode très dégradé</b>.</td></tr>
+<tr><td><b>G2 — Significative</b></td><td><b>Dégradation</b> des performances <b>sans impact sur la sécurité</b> des personnes et des biens. Elle surmontera <b>malgré quelques difficultés</b> — <b>mode dégradé</b>.</td></tr>
+<tr><td><b>G1 — Mineure</b></td><td><b>Aucun impact opérationnel</b> ni sur les performances ni sur la sécurité. Elle surmontera <b>sans trop de difficultés</b> — <b>consommation des marges</b>.</td></tr>
+</tbody>
+</table></div>
+<b>Le repère&nbsp;:</b> la ligne entre <b>G2 et G3</b> est celle de l'<b>impact sur la sécurité des
+personnes</b>&nbsp;; la ligne entre <b>G3 et G4</b> est celle de la <b>survie de l'organisation</b>.
+Cette grille est un <b>exemple</b> du guide, à adapter au contexte.
+</div>
+
+<h3 id="ch22-socle">22.2 Le socle de sécurité</h3>
+<p>C'est le <b>référentiel applicable</b> — guides d'hygiène, normes, réglementation — dont on évalue
+l'<b>état d'application</b> et dont on <b>identifie et justifie les écarts</b>. Le guide insiste sur un
+point&nbsp;: «&nbsp;l'étude du socle de sécurité qui supporte toute l'approche par conformité est une
+activité qui <b>occupe une grande partie du processus</b> d'analyse de risque&nbsp;».</p>
+<div class="callout warn"><div class="t">La règle d'arrêt</div>
+«&nbsp;<b>En cas d'écarts trop significatifs, ne pas poursuivre les ateliers</b>&nbsp;» d'appréciation
+des risques. Autrement dit&nbsp;: inutile de modéliser une attaque étatique sophistiquée si l'hygiène
+de base n'est pas en place — il faut d'abord <b>combler le socle</b>. Les mesures de réduction des
+écarts du socle seront inscrites dans le <b>plan de traitement du risque</b> de l'atelier 5.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch23"><span class="num">23.</span> Atelier 2 — Sources de risque</h2>
+
+<p><b>L'objectif.</b> Identifier les <b>sources de risque (SR)</b> et leurs <b>objectifs visés
+(OV)</b>. L'atelier répond à une question, formulée telle quelle par le guide&nbsp;: <b>«&nbsp;qui ou
+quoi pourrait porter atteinte aux missions et valeurs métier identifiées dans l'atelier 1, et dans
+quels buts&nbsp;?&nbsp;»</b></p>
+
+<div class="tw"><table>
+<thead><tr><th>Participants</th><th>Données de sortie</th></tr></thead>
+<tbody>
+<tr><td>
+<b>Direction</b> — au minimum lors de la <b>dernière étape</b><br>
+<b>Métiers</b><br>
+<b>RSSI</b><br>
+Éventuellement un <b>spécialiste en analyse de la menace numérique</b>
+</td><td>
+La liste des couples <b>SR/OV prioritaires</b> retenus pour la suite<br>
+La liste des couples <b>SR/OV secondaires</b>, à étudier dans un second temps et à <b>surveiller</b><br>
+Une <b>cartographie des sources de risque</b>
+</td></tr>
+</tbody>
+</table></div>
+
+<p><b>Les étapes</b>, de 2 heures à une journée&nbsp;: <b>(A)</b> identifier les sources de risque et
+les objectifs visés · <b>(B)</b> évaluer la <b>pertinence</b> des couples SR/OV · <b>(C)</b>
+sélectionner les couples <b>prioritaires</b>.</p>
+
+<div class="callout def"><div class="t">Source de risque — la définition officielle</div>
+«&nbsp;<b>Élément, personne, groupe de personnes ou organisation susceptible d'engendrer un
+risque.</b> Une source de risque peut être caractérisée par sa <b>motivation</b>, ses
+<b>ressources</b>, ses <b>compétences</b>, ses <b>modes opératoires</b> de prédilection.&nbsp;»
+<p style="margin-bottom:0">Exemples donnés&nbsp;: <b>organismes étatiques</b>, <b>activistes</b>,
+<b>concurrents</b>, <b>collaborateurs</b>.</p>
+</div>
+
+<div class="exam"><div class="t">Les trois critères d'évaluation de la pertinence</div>
+<b>1. La motivation</b> de la source de risque à atteindre son objectif.<br>
+<b>2. Ses ressources</b> — financières, compétences, infrastructures d'attaque.<br>
+<b>3. Son activité</b> — est-elle active <b>dans le périmètre de l'étude</b>, dans
+<b>l'écosystème</b>, dans <b>l'industrie concernée</b>, dans une <b>industrie similaire</b>&nbsp;?
+<p style="margin-bottom:0"><b>Le piège signalé par le guide</b>&nbsp;: «&nbsp;<b>attention à ne pas
+confondre objectifs visés et la motivation</b> poussant la source de risque à réaliser son
+objectif&nbsp;». L'<b>objectif visé</b> est <b>ce qu'elle veut obtenir</b>&nbsp;; la <b>motivation</b>
+est <b>pourquoi elle le veut</b>.</p>
+</div>
+
+<div class="callout ok"><div class="t">Les deux conseils de volumétrie et de diversité</div>
+<b>Combien&nbsp;?</b> «&nbsp;<b>3 à 6 couples SR/OV</b> constituent généralement une base suffisante
+pour élaborer des scénarios stratégiques.&nbsp;»
+<p style="margin-bottom:0"><b>Lesquels&nbsp;?</b> Le guide donne la clé de succès&nbsp;: rechercher des
+<b>catégories variées</b>, «&nbsp;afin de disposer d'un <b>panel différencié de profils d'attaquant et
+d'objectifs visés</b>&nbsp;», et privilégier des couples <b>suffisamment distincts</b> qui
+<b>impacteront différentes valeurs métier et biens supports</b>. Et surtout&nbsp;: <b>ne pas laisser
+d'angle mort</b> — couvrir le plus largement possible les valeurs métier.</p>
+</div>
+
+<div class="example"><div class="t">Les couples SR/OV de l'exemple du guide — noter la structure des formulations</div>
+Le guide file l'exemple d'une <b>société de biotechnologie fabriquant des vaccins</b>&nbsp;:
+<div class="tw" style="margin-top:8px"><table>
+<thead><tr><th>Source de risque</th><th>Objectif visé</th></tr></thead>
+<tbody>
+<tr><td><b>Activiste</b></td><td><b>Saboter</b> la prochaine campagne nationale de vaccination <b>en perturbant</b> la production ou la distribution des vaccins, <b>pour</b> générer un choc psychologique sur la population et discréditer les pouvoirs publics.</td></tr>
+<tr><td><b>Concurrent</b></td><td><b>Voler</b> des informations <b>en espionnant</b> les travaux de R&amp;D <b>en vue d'</b>obtenir un avantage concurrentiel.</td></tr>
+<tr><td><b>Activiste</b></td><td><b>Divulguer</b> au grand public des informations sur la façon dont les vaccins sont conçus <b>en collectant</b> des photos et vidéos des tests animaliers <b>afin de</b> rallier l'opinion publique à sa cause.</td></tr>
+<tr><td><b>Cybercriminel</b></td><td><b>Menace d'altération</b> de la composition de vaccins distribués lors d'une campagne nationale, sous couvert de bioterrorisme, <b>à des fins d'</b>extorsion d'une rançon.</td></tr>
+</tbody>
+</table></div>
+<b>La structure d'un bon OV</b>&nbsp;: un <b>verbe d'action</b> (saboter, voler, divulguer) + <b>sur
+quoi</b> + <b>par quel biais</b> + <b>pour quelle finalité</b>. La dernière partie est la
+<b>motivation</b>, et c'est elle qu'on confond avec l'objectif.
+<p style="margin-bottom:0">Noter aussi qu'une <b>même source de risque</b> — ici l'activiste —
+apparaît <b>deux fois avec des objectifs de natures différentes</b>. Le guide le permet
+explicitement.</p>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch24"><span class="num">24.</span> Atelier 3 — Scénarios stratégiques</h2>
+
+<p><b>Pourquoi l'écosystème.</b> «&nbsp;De plus en plus de modes opératoires d'attaque exploitent
+<b>les maillons les plus vulnérables de cet écosystème</b> pour atteindre leur objectif.&nbsp;» Les
+exemples du guide&nbsp;: une atteinte à la disponibilité d'un service <b>en attaquant le fournisseur
+de service en nuage</b>, ou le <b>piégeage de la chaîne logistique</b> d'approvisionnement de serveurs
+pour faciliter l'exfiltration.</p>
+
+<p><b>L'objectif</b> est double&nbsp;: disposer d'une <b>vision claire de l'écosystème</b> pour
+<b>présenter les parties prenantes les plus menaçantes à la direction</b>, puis bâtir les
+<b>scénarios stratégiques</b> — «&nbsp;autant de <b>chemins d'attaque</b> que pourrait emprunter une
+source de risque pour atteindre son objectif&nbsp;». Le guide précise qu'il est «&nbsp;à aborder comme
+une <b>étude préliminaire de risque</b>&nbsp;».</p>
+
+<div class="tw"><table>
+<thead><tr><th>Participants</th><th>Données de sortie</th></tr></thead>
+<tbody>
+<tr><td>
+<b>Métiers</b>, selon la finalité de l'étude<br>
+Les acteurs connaissant les <b>engagements contractuels</b> avec les parties prenantes — usuellement <b>Achats</b> ou <b>Service juridique</b><br>
+<b>Architectes fonctionnels</b><br>
+<b>RSSI</b><br>
+Éventuellement un <b>spécialiste en cybersécurité</b>
+</td><td>
+La <b>cartographie du niveau de dangerosité</b> induit par les parties prenantes majeures, et l'identification des <b>parties prenantes critiques</b><br>
+Les <b>scénarios stratégiques</b> et les événements redoutés<br>
+Les <b>mesures de sécurité retenues pour l'écosystème</b>
+</td></tr>
+</tbody>
+</table></div>
+
+<p><b>Les étapes</b>, une à trois demi-journées&nbsp;: <b>(A)</b> construire la <b>cartographie de
+dangerosité</b> et sélectionner les <b>parties prenantes critiques</b> · <b>(B)</b> élaborer les
+<b>scénarios stratégiques</b> · <b>(C)</b> définir des <b>mesures de sécurité sur l'écosystème</b>.</p>
+
+<div class="exam"><div class="t">Le niveau de dangerosité — et le contresens à éviter</div>
+Le niveau de dangerosité <b>«&nbsp;ne préjuge aucunement d'une intention malveillante de la part de la
+partie prenante&nbsp;»</b>. Il mesure <b>la capacité d'une source de risque à exploiter la relation
+privilégiée</b> entre cette partie prenante et l'objet de l'étude.
+<p>Autrement dit&nbsp;: un prestataire de ménage n'est pas «&nbsp;dangereux&nbsp;» parce qu'il serait
+suspect, mais parce qu'il a un <b>accès physique</b> qu'un attaquant peut détourner. Le guide insiste
+sur des <b>critères objectifs et opposables, plutôt que des facteurs subjectifs</b>.</p>
+<p style="margin-bottom:0"><b>Les quatre critères, en deux familles&nbsp;:</b><br>
+<b>EXPOSITION</b> = <b>dépendance</b> × <b>pénétration</b> — à quel point je dépends d'eux, et à quel
+point ils entrent chez moi.<br>
+<b>FIABILITÉ CYBER</b> = <b>maturité</b> × <b>confiance</b> — leur niveau de sécurité, et le crédit
+qu'on peut leur accorder.<br>
+La dangerosité croît avec l'<b>exposition</b> et décroît avec la <b>fiabilité cyber</b>.</p>
+</div>
+
+<div class="callout def"><div class="t">Partie prenante, et partie prenante critique</div>
+<b>Partie prenante</b>&nbsp;: un acteur de l'écosystème «&nbsp;dont le <b>système d'information est
+interconnecté</b> avec l'objet de l'étude&nbsp;», ou <b>pour lequel des prestations sont réalisées</b>
+sur l'objet de l'étude — l'infogérance, par exemple.
+<p style="margin-bottom:0"><b>Partie prenante critique (PPC)</b>&nbsp;: celle «&nbsp;susceptible de
+constituer un <b>vecteur d'attaque privilégié</b>, du fait par exemple de son <b>accès numérique
+privilégié</b>, de sa <b>vulnérabilité</b> ou de son <b>exposition au risque</b>&nbsp;».</p>
+</div>
+
+<div class="callout def"><div class="t">Scénario stratégique — la définition officielle</div>
+«&nbsp;<b>Chemins d'attaque allant d'une source de risque à un objectif visé en passant par
+l'écosystème et les valeurs métier de l'objet étudié.</b> Les scénarios stratégiques sont estimés en
+termes de <b>GRAVITÉ</b>.&nbsp;»
+</div>
+
+<p><b>Les mesures sur l'écosystème</b> agissent sur les quatre critères. Les exemples du
+guide&nbsp;: «&nbsp;<b>réduire la dépendance</b> à un sous-traitant&nbsp;», «&nbsp;<b>réduire la
+pénétration</b> des…&nbsp;», «&nbsp;<b>accroître la maturité cyber</b> du…&nbsp;». On peut donc traiter
+un risque d'écosystème <b>sans toucher à son propre SI</b> — par le contrat, l'audit du prestataire,
+ou la réduction de l'interconnexion.</p>
+
+<!-- ===================================================================== -->
+<h2 id="ch25"><span class="num">25.</span> Atelier 4 — Scénarios opérationnels</h2>
+
+<p><b>L'objectif.</b> Construire les <b>scénarios opérationnels</b>&nbsp;: ils «&nbsp;schématisent les
+<b>modes opératoires</b> que pourraient mettre en œuvre les sources de risque pour <b>réaliser les
+scénarios stratégiques</b>&nbsp;». Même démarche que l'atelier 3, mais <b>centrée sur les biens
+supports</b>. La période à considérer est celle du <b>cycle opérationnel</b>.</p>
+
+<div class="tw"><table>
+<thead><tr><th>Participants</th><th>Données de sortie</th></tr></thead>
+<tbody>
+<tr><td><b>RSSI</b> · <b>DSI</b> · éventuellement un <b>spécialiste en cybersécurité</b><br>
+<small>C'est l'atelier <b>le plus technique</b> et le seul où la direction et les métiers n'apparaissent pas.</small></td>
+<td>La <b>liste des scénarios opérationnels</b> et leur <b>vraisemblance</b></td></tr>
+</tbody>
+</table></div>
+
+<p><b>Les étapes</b>, une à trois demi-journées&nbsp;: <b>(A)</b> élaborer les scénarios opérationnels ·
+<b>(B)</b> évaluer leur vraisemblance.</p>
+
+<div class="exam"><div class="t">La séquence d'attaque type — les quatre temps</div>
+Le guide structure les scénarios opérationnels selon une <b>séquence d'attaque</b>, en s'appuyant sur
+des modèles existants — il cite la <b>cyber kill chain de Lockheed Martin</b>. La séquence employée
+dans son exemple comporte quatre étapes&nbsp;:
+<p style="margin:8px 0"><b>CONNAÎTRE → RENTRER → TROUVER → EXPLOITER</b></p>
+<div class="tw"><table>
+<thead><tr><th>Étape</th><th>Ce qu'on y met — exemples du guide</th></tr></thead>
+<tbody>
+<tr><td><b>Connaître</b></td><td><b>Reconnaissance externe</b> sur sources ouvertes&nbsp;; reconnaissance externe <b>avancée</b></td></tr>
+<tr><td><b>Rentrer</b></td><td>Instruction via un <b>canal d'accès préexistant</b>&nbsp;; <b>mail d'hameçonnage</b> sur le service RH&nbsp;; <b>point d'eau</b> — le site du comité d'entreprise piégé&nbsp;; <b>corruption d'un personnel</b>&nbsp;; corruption d'un <b>prestataire d'entretien des locaux</b>&nbsp;; <b>clé USB piégée</b></td></tr>
+<tr><td><b>Trouver</b></td><td><b>Reconnaissance interne</b> des réseaux bureautique et IT&nbsp;; <b>latéralisation</b> vers le réseau cible</td></tr>
+<tr><td><b>Exploiter</b></td><td><b>Maliciel de collecte et d'exfiltration</b>&nbsp;; <b>création et maintien d'un canal d'exfiltration</b>&nbsp;; <b>vol et exploitation</b> des données</td></tr>
+</tbody>
+</table></div>
+<b>Les opérateurs.</b> Le graphe d'attaque peut porter des opérateurs entre actions
+élémentaires&nbsp;: <b>OU</b> — l'une <b>ou</b> l'autre des actions en entrée permet l'étape
+suivante&nbsp;; <b>ET</b> — l'une <b>et</b> l'autre sont <b>nécessaires</b>.
+</div>
+
+<div class="callout"><div class="t">Pourquoi on raisonne en chaîne et pas en vulnérabilité isolée</div>
+«&nbsp;Une attaque réussie relève le plus souvent de l'<b>exploitation de plusieurs failles</b>. […]
+Une telle approche fondée sur l'exploitation simultanée de failles distinctes <b>peut avoir des
+conséquences lourdes alors même que les vulnérabilités exploitées peuvent sembler anodines lorsqu'on
+les considère individuellement</b>.&nbsp;»
+<p style="margin-bottom:0">La démarche doit permettre d'identifier les <b>biens supports
+critiques</b> susceptibles de servir de <b>vecteur d'entrée</b>, d'<b>exploitation</b> ou de
+<b>relais de propagation</b>.</p>
+</div>
+
+<h3 id="ch25-vraisemblance">25.1 Évaluer la vraisemblance</h3>
+<p>La vraisemblance globale «&nbsp;reflète sa <b>probabilité de réussite</b> ou sa
+<b>faisabilité</b>&nbsp;». On procède en deux temps&nbsp;: d'abord la <b>vraisemblance élémentaire</b>
+de chaque action, puis la <b>vraisemblance globale</b> — «&nbsp;l'évaluation peut par exemple porter
+sur le <b>mode opératoire de moindre effort</b> pour la source de risque&nbsp;».</p>
+
+<div class="exam"><div class="t">Ce que confronte l'évaluation, et l'échelle</div>
+L'évaluation confronte <b>deux choses</b>&nbsp;: d'une part les <b>ressources et la motivation
+présumées de la source de risque</b>&nbsp;; d'autre part le <b>socle de sécurité</b> de l'objet étudié
+et le <b>niveau de vulnérabilité de l'écosystème</b> — surface d'attaque exposée, vulnérabilités
+structurelles et organisationnelles, <b>capacités de détection et de réaction</b>.
+<div class="tw" style="margin-top:8px"><table>
+<thead><tr><th>Niveau</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td><b>V4 — Quasi certain</b></td><td>La source de risque <b>va certainement</b> atteindre son objectif selon l'un des modes opératoires envisagés. Vraisemblance <b>très élevée</b>.</td></tr>
+<tr><td><b>V3 — Très vraisemblable</b></td><td>Elle <b>va probablement</b> l'atteindre. Vraisemblance <b>élevée</b>.</td></tr>
+<tr><td><b>V2 — Vraisemblable</b></td><td>Elle est <b>susceptible</b> de l'atteindre. Vraisemblance <b>significative</b>.</td></tr>
+<tr><td><b>V1 — Peu vraisemblable</b></td><td>Elle a <b>peu de chance</b> de l'atteindre. Vraisemblance <b>faible</b>.</td></tr>
+</tbody>
+</table></div>
+<b>Deux rappels du guide.</b> La <b>gravité</b> du scénario opérationnel est <b>celle du scénario
+stratégique associé</b>, évaluée à l'atelier 3 — on ne la réévalue pas. Et il est judicieux de
+<b>rapprocher la vraisemblance de la pertinence du couple SR/OV</b> pour vérifier la cohérence entre
+les deux.
+</div>
+
+<div class="callout def"><div class="t">Les trois définitions à ne pas mélanger</div>
+<b>Mode opératoire</b>&nbsp;: «&nbsp;<b>suite d'actions élémentaires</b> que la source de risque devra
+probablement réaliser pour atteindre son objectif&nbsp;». Cette terminologie <b>concerne les scénarios
+opérationnels</b>.
+<p><b>Scénario opérationnel</b>&nbsp;: «&nbsp;<b>enchaînement d'actions élémentaires portées sur les
+biens supports</b> de l'objet étudié ou de son écosystème&nbsp;». Estimé en <b>vraisemblance</b>.</p>
+<p style="margin-bottom:0"><b>Scénario de risque</b>&nbsp;: «&nbsp;scénario <b>complet</b>, allant de la
+<b>source de risque à l'objectif visé</b>, décrivant un <b>chemin d'attaque</b> et le <b>scénario
+opérationnel associé</b>&nbsp;». C'est l'unité qu'on cote en <b>gravité × vraisemblance</b>.</p>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch26"><span class="num">26.</span> Atelier 5 — Traitement du risque</h2>
+
+<p><b>L'objectif.</b> «&nbsp;Réaliser une <b>synthèse des scénarios de risque</b> identifiés et définir
+une <b>stratégie de traitement du risque</b>. Cette stratégie aboutit à la définition de <b>mesures de
+sécurité</b>, recensées dans un <b>plan de traitement du risque</b>. Les <b>risques résiduels</b> sont
+ensuite identifiés ainsi que le <b>cadre de suivi</b> de ces risques.&nbsp;»</p>
+
+<div class="tw"><table>
+<thead><tr><th>Participants</th><th>Données de sortie</th></tr></thead>
+<tbody>
+<tr><td><b>Les mêmes que l'atelier 1</b>&nbsp;: Direction · Métiers · RSSI · DSI<br>
+<small>La boucle se referme&nbsp;: ceux qui ont cadré décident du traitement.</small></td>
+<td>La <b>stratégie de traitement du risque</b><br>La <b>synthèse des risques résiduels</b><br>Le <b>plan de traitement du risque</b><br>Le <b>cadre du suivi des risques</b></td></tr>
+</tbody>
+</table></div>
+
+<p><b>Les étapes</b>, deux à quatre demi-journées&nbsp;: <b>(A)</b> réaliser la synthèse des scénarios
+de risque · <b>(B)</b> décider de la stratégie de traitement · <b>(C)</b> définir les mesures de
+sécurité · <b>(D)</b> évaluer et documenter les <b>risques résiduels</b> · <b>(E)</b> mettre en place
+le <b>cadre de suivi</b> · <b>(F)</b> mettre en place des <b>mécanismes de surveillance</b>.</p>
+
+<div class="exam"><div class="t">Les trois classes d'acceptabilité — à savoir restituer</div>
+<div class="tw" style="margin-top:8px"><table>
+<thead><tr><th>Niveau de risque</th><th>Acceptabilité</th><th>Décisions et actions</th></tr></thead>
+<tbody>
+<tr><td><b>Faible</b></td><td><b>Acceptable en l'état</b></td><td><b>Aucune action</b> n'est à entreprendre</td></tr>
+<tr><td><b>Moyen</b></td><td><b>Tolérable sous contrôle</b></td><td>Un <b>suivi</b> est à mener et des actions à mettre en place dans le cadre d'une <b>amélioration continue</b>, sur le <b>moyen et long terme</b></td></tr>
+<tr><td><b>Élevé</b></td><td><b>Inacceptable</b></td><td>Des mesures de réduction doivent <b>impérativement</b> être prises <b>à court terme</b>. Dans le cas contraire, <b>tout ou partie de l'activité sera refusé</b></td></tr>
+</tbody>
+</table></div>
+La <b>stratégie de traitement du risque</b> «&nbsp;formalise les <b>seuils d'acceptation</b> du risque
+et un <b>niveau de sécurité à atteindre</b> en cas de non-acceptation&nbsp;». Elle se construit à
+partir de la <b>cartographie du risque initial</b>&nbsp;: gravité en ordonnée, vraisemblance en
+abscisse, chaque risque positionné.
+</div>
+
+<div class="callout ok"><div class="t">La vérification des angles morts — un réflexe à avoir</div>
+Le guide demande de vérifier la <b>couverture des événements redoutés</b> de l'atelier 1&nbsp;: passer
+en revue <b>tous les ER</b> et identifier ceux qui <b>n'ont été abordés dans aucun scénario de
+risque</b>. Selon leur gravité, on peut alors décider de <b>refaire une itération des ateliers 2, 3
+et 4</b>. Il suggère d'établir une <b>matrice de couverture</b> entre les ER de l'atelier 1 et les
+scénarios de risque traités.
+<p style="margin-bottom:0">C'est exactement le genre de contrôle qui démontre la <b>cohérence de
+l'enchaînement</b> — le critère d'évaluation du devoir.</p>
+</div>
+
+<div class="callout def"><div class="t">Les quatre définitions de clôture</div>
+<b>Risque</b>&nbsp;: «&nbsp;<b>possibilité qu'un événement redouté survienne et que ses effets impactent
+les missions</b> de l'objet de l'étude&nbsp;». En contexte cyber, un risque est décrit sous la forme
+d'un <b>scénario de risque</b>.
+<p><b>Risque initial</b>&nbsp;: le scénario de risque évalué <b>avant</b> application de la stratégie de
+traitement. <b>Risque résiduel</b>&nbsp;: celui qui <b>subsiste après</b>. Les deux s'évaluent sur
+<b>gravité et vraisemblance</b>.</p>
+<p><b>Mesure de sécurité</b>&nbsp;: «&nbsp;moyen de traiter un risque prenant la forme de <b>solutions ou
+d'exigences pouvant être inscrites dans un contrat</b>&nbsp;». Elle peut être <b>fonctionnelle,
+technique ou organisationnelle</b>&nbsp;; elle peut agir sur une <b>valeur métier</b>, un <b>bien
+support</b> ou une <b>partie prenante</b>&nbsp;; et certaines se <b>renforcent mutuellement</b> en
+agissant sur des axes complémentaires — <b>gouvernance, protection, défense, résilience</b>.</p>
+<p style="margin-bottom:0"><b>Plan de traitement du risque</b> — anciennement <b>PACS</b>&nbsp;: il
+«&nbsp;formalise l'ensemble des mesures de traitement à mettre en œuvre. Il favorise l'<b>élévation du
+niveau de maturité SSI</b> et permet une <b>gestion progressive des risques résiduels</b>&nbsp;». Ses
+mesures concernent <b>à la fois l'objet étudié et son écosystème</b>.</p>
+</div>
+
+<div class="callout"><div class="t">Et l'homologation</div>
+«&nbsp;Validation par une <b>autorité dite d'homologation</b> que le <b>niveau de sécurité atteint est
+conforme aux attentes</b> et que les <b>risques résiduels sont acceptés</b> dans le cadre de
+l'étude.&nbsp;» C'est l'un des trois usages annoncés de la méthode — et ça referme la boucle avec le
+chapitre 4 sur la certification&nbsp;: on <b>certifie</b> un produit, on <b>homologue</b> un système.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch27"><span class="num">27.</span> Adapter la méthode, et conduire le devoir</h2>
+
+<h3 id="ch27-usages">27.1 EBIOS RM est une boîte à outils, pas un rituel</h3>
+<p>«&nbsp;Elle constitue une véritable <b>boîte à outils</b>, dont le <b>niveau de détail</b> et le
+<b>séquencement</b> des activités seront <b>adaptés en fonction des objectifs</b>.&nbsp;» Le guide
+donne une grille des ateliers à conduire selon l'objectif&nbsp;:</p>
+<div class="tw"><table>
+<thead><tr><th>Objectif de l'étude</th><th>Ateliers principaux</th></tr></thead>
+<tbody>
+<tr><td>Identifier le <b>socle de sécurité</b> adapté à l'objet de l'étude</td><td><b>1</b></td></tr>
+<tr><td>Être en <b>conformité</b> avec les référentiels de sécurité numérique</td><td><b>1</b></td></tr>
+<tr><td>Évaluer le <b>niveau de menace de l'écosystème</b></td><td><b>3</b> — l'étape (A) seule, sans avoir conduit les ateliers 1 et 2</td></tr>
+<tr><td>Identifier et analyser les <b>scénarios de haut niveau</b> intégrant l'écosystème</td><td><b>1 · 2 · 3</b></td></tr>
+<tr><td>Réaliser une <b>étude préliminaire</b> pour identifier les axes prioritaires</td><td><b>1 · 2 · 3 · 5</b></td></tr>
+<tr><td>Conduire une <b>étude complète et fine</b>, par exemple en vue d'une <b>homologation</b></td><td><b>1 · 2 · 3 · 4 · 5</b></td></tr>
+<tr><td>Orienter un <b>audit de sécurité</b>, notamment un test d'intrusion</td><td><b>3 · 4</b></td></tr>
+<tr><td>Orienter les <b>dispositifs de détection et de réaction</b>, par exemple au niveau d'un <b>SOC</b></td><td><b>3 · 4</b></td></tr>
+</tbody>
+</table></div>
+<p>Le guide ajoute&nbsp;: «&nbsp;selon les contextes particuliers, <b>ne pas s'interdire d'aller
+chercher des éléments d'autres ateliers</b> qui ne font pas l'objet de croix dans ce tableau&nbsp;».</p>
+
+<h3 id="ch27-devoir">27.2 Comment conduire le devoir, atelier par atelier</h3>
+<div class="callout danger"><div class="t">Rappel du critère d'évaluation</div>
+«&nbsp;C'est sur la <b>cohérence de l'analyse</b> que vous serez évalués, pas sur la justesse des
+mesures&nbsp;» · «&nbsp;sur le <b>réalisme du processus</b>, c'est-à-dire sur la <b>cohérence des
+ateliers et leur enchaînement</b>&nbsp;». Le devoir demande une étude <b>complète</b> — les cinq
+ateliers.
+</div>
+
+<div class="steps">
+<div class="step"><b>Atelier 1 — poser le décor, sans tout verrouiller</b><br>
+<b>Missions</b> de la plateforme, <b>valeurs métier</b> (lecture vidéo, catalogue sous droits,
+paiement, données d'abonnés, mise en ligne), <b>biens supports</b> (CDN, object storage, bases de
+métadonnées, API gateways, pipeline de transcodage, annuaire, VPN, postes admin). Puis les
+<b>événements redoutés</b> cotés de <b>G1 à G4</b>.
+<p style="margin-bottom:0"><b>Le socle&nbsp;:</b> déclare les référentiels applicables — <b>RGPD</b>
+sur les données d'abonnés, <b>PCI DSS</b> sur le paiement, guide d'hygiène ANSSI, ISO 27002 — et
+<b>documente les écarts</b>. C'est ici que tu <b>laisses les trois faiblesses de l'audit</b>&nbsp;:
+elles sont tes <b>écarts justifiés</b>. Ne les corrige pas, <b>déclare-les</b>.</p></div>
+
+<div class="step"><b>Atelier 2 — 3 à 6 couples SR/OV, bien distincts</b><br>
+Sers-toi de la <b>diversité des profils</b>&nbsp;: un <b>cybercriminel</b> (rançongiciel ou revente de
+comptes), un <b>concurrent</b> ou un <b>groupe de piratage de contenu</b> (vol du catalogue avant
+sortie), un <b>hacktiviste</b>, un <b>collaborateur</b> ou prestataire. Formule chaque OV avec le
+patron&nbsp;: <b>verbe + sur quoi + par quel biais + pour quelle finalité</b>. Cote la
+<b>pertinence</b> sur <b>motivation / ressources / activité</b>.</div>
+
+<div class="step"><b>Atelier 3 — l'écosystème d'abord, les scénarios ensuite</b><br>
+Les parties prenantes d'une plateforme de streaming sont nombreuses et c'est une chance&nbsp;:
+<b>fournisseur cloud</b>, <b>opérateur de CDN</b>, <b>prestataire de paiement</b>, <b>studios et
+ayants droit</b>, <b>régie publicitaire</b>, <b>infogérance</b>, <b>fabricants de Smart TV</b>. Cote
+chacune sur <b>dépendance × pénétration</b> et <b>maturité × confiance</b>, retiens les
+<b>critiques</b>, puis trace les <b>chemins d'attaque</b> qui passent par elles. Estime la
+<b>GRAVITÉ</b> ici.</div>
+
+<div class="step"><b>Atelier 4 — les graphes, en CONNAÎTRE / RENTRER / TROUVER / EXPLOITER</b><br>
+C'est là que les faiblesses de l'audit deviennent des <b>actions élémentaires</b>&nbsp;: le <b>VPN
+depuis un poste personnel</b> est une action de <i>rentrer</i>&nbsp;; les <b>comptes trop
+privilégiés</b> servent à <i>trouver</i> et <i>exploiter</i>&nbsp;; la <b>compromission d'un compte
+admin</b> est le pivot. Utilise les opérateurs <b>ET</b> / <b>OU</b>. Estime la <b>VRAISEMBLANCE</b>
+ici, de <b>V1 à V4</b>.</div>
+
+<div class="step"><b>Atelier 5 — croiser, décider, tracer</b><br>
+Place les scénarios de risque sur la matrice <b>gravité × vraisemblance</b>, applique les trois classes
+d'acceptabilité, définis les mesures, réévalue en <b>risque résiduel</b>, et pose le <b>cadre de
+suivi</b>. Termine par la <b>matrice de couverture</b> des événements redoutés&nbsp;: c'est la preuve
+visible que rien n'a été laissé de côté.</div>
+</div>
+
+<div class="exam"><div class="t">Les cinq points de contrôle de la cohérence</div>
+Avant de rendre, vérifie que&nbsp;:
+<b>(1)</b> chaque <b>valeur métier</b> de l'atelier 1 porte au moins un <b>événement redouté</b>&nbsp;;
+<b>(2)</b> chaque <b>couple SR/OV</b> retenu à l'atelier 2 donne au moins un <b>scénario
+stratégique</b>&nbsp;;
+<b>(3)</b> chaque <b>partie prenante critique</b> de l'atelier 3 apparaît dans <b>au moins un chemin
+d'attaque</b>&nbsp;;
+<b>(4)</b> chaque <b>chemin d'attaque</b> a son <b>scénario opérationnel</b> et sa
+<b>vraisemblance</b>&nbsp;;
+<b>(5)</b> chaque <b>risque inacceptable</b> a des <b>mesures</b> et un <b>risque résiduel</b> réévalué.
+<p style="margin-bottom:0">Et le contrôle transversal&nbsp;: la <b>gravité</b> ne doit apparaître qu'aux
+ateliers 1 et 3, la <b>vraisemblance</b> qu'à l'atelier 4. Si tu cotes une vraisemblance à l'atelier 3,
+c'est que quelque chose a glissé.</p>
+</div>
+
+<div class="callout warn"><div class="t">Ce qu'il restera à vérifier auprès de l'enseignant</div>
+Trois choses que le guide ANSSI ne peut pas te dire&nbsp;: le <b>niveau de détail attendu</b> par
+Arnaud Valence pour chaque atelier&nbsp;; la manière dont <b>Agile Risk Manager</b> nomme et enchaîne
+les écrans, qui peut différer du guide&nbsp;; et le <b>format d'export</b> attendu. La journée de
+formation répondra aux trois.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="annexe-iso">⚓ Annexe — les 93 mesures de l'ISO 27002:2022</h2>
+<p class="lead">La liste complète, telle qu'elle figure dans le tableur fourni. Elle sert de
+<b>check-list</b>&nbsp;: pour l'exercice du §7, pour choisir des mesures de traitement en EBIOS, et
+pour vérifier qu'on n'a pas oublié un thème entier. Dans le tableur, chaque mesure porte en plus ses
+<b>attributs</b> (#hashtags) — types de contrôle, propriétés, concepts, capacités, domaines.</p>
+<h4>05.xx — Mesures organisationnelles (37)</h4>
+<div class="tw"><table><thead><tr><th style="width:5.5em">Réf.</th><th>Intitulé</th></tr></thead><tbody>
+<tr><td><code>05.01</code></td><td>Politiques de sécurité de l'information</td></tr>
+<tr><td><code>05.02</code></td><td>Fonctions et responsabilités liées à la sécurité de l'information</td></tr>
+<tr><td><code>05.03</code></td><td>Séparation des tâches</td></tr>
+<tr><td><code>05.04</code></td><td>Responsabilités de la direction</td></tr>
+<tr><td><code>05.05</code></td><td>Relations avec les autorités</td></tr>
+<tr><td><code>05.06</code></td><td>Relations avec des groupes de travail spécialisés</td></tr>
+<tr><td><code>05.07</code></td><td>Intelligence des menaces</td></tr>
+<tr><td><code>05.08</code></td><td>Sécurité de l'information dans la gestion de projet</td></tr>
+<tr><td><code>05.09</code></td><td>Inventaire des informations et des autres actifs associés</td></tr>
+<tr><td><code>05.10</code></td><td>Utilisation correcte des actifs</td></tr>
+<tr><td><code>05.11</code></td><td>Restitution des actifs</td></tr>
+<tr><td><code>05.12</code></td><td>Classification de l'information</td></tr>
+<tr><td><code>05.13</code></td><td>Marquage des informations</td></tr>
+<tr><td><code>05.14</code></td><td>Transfert de l'information</td></tr>
+<tr><td><code>05.15</code></td><td>Contrôle d'accès</td></tr>
+<tr><td><code>05.16</code></td><td>Gestion des identités</td></tr>
+<tr><td><code>05.17</code></td><td>Informations d'authentification</td></tr>
+<tr><td><code>05.18</code></td><td>Droits d'accès</td></tr>
+<tr><td><code>05.19</code></td><td>Sécurité de l'information dans les relations avec les fournisseurs</td></tr>
+<tr><td><code>05.20</code></td><td>Prise en compte de la sécurité de l'information dans les accords</td></tr>
+<tr><td><code>05.21</code></td><td>Management de la sécurité de l'information dans la chaîne</td></tr>
+<tr><td><code>05.22</code></td><td>Suivi, revue et gestion des changements des services fournisseurs</td></tr>
+<tr><td><code>05.23</code></td><td>Sécurité de l'information dans l'utilisation de services en nuage</td></tr>
+<tr><td><code>05.24</code></td><td>Responsabilités et préparation de la gestion des incidents liés à la</td></tr>
+<tr><td><code>05.25</code></td><td>Appréciation des événements liés à la sécurité de l'information et prise</td></tr>
+<tr><td><code>05.26</code></td><td>Réponse aux incidents liés à la sécurité de l'information</td></tr>
+<tr><td><code>05.27</code></td><td>Tirer des enseignements des incidents liés à la sécurité de l'information</td></tr>
+<tr><td><code>05.28</code></td><td>Recueil de preuves</td></tr>
+<tr><td><code>05.29</code></td><td>Sécurité de l'information durant une perturbation</td></tr>
+<tr><td><code>05.30</code></td><td>Préparation des TIC pour la continuité d'activité</td></tr>
+<tr><td><code>05.31</code></td><td>Identification des exigences légales, statutaires, réglementaires et</td></tr>
+<tr><td><code>05.32</code></td><td>Droits de propriété intellectuelle</td></tr>
+<tr><td><code>05.33</code></td><td>Protection des enregistrements</td></tr>
+<tr><td><code>05.34</code></td><td>Vie privée et protection des DCP</td></tr>
+<tr><td><code>05.35</code></td><td>Revue indépendante de la sécurité de l'information</td></tr>
+<tr><td><code>05.36</code></td><td>Conformité aux politiques et normes de sécurité de l'information</td></tr>
+<tr><td><code>05.37</code></td><td>Procédures d'exploitation documentées</td></tr>
+</tbody></table></div>
+<h4>06.xx — Mesures liées aux personnes (8)</h4>
+<div class="tw"><table><thead><tr><th style="width:5.5em">Réf.</th><th>Intitulé</th></tr></thead><tbody>
+<tr><td><code>06.01</code></td><td>Préselection</td></tr>
+<tr><td><code>06.02</code></td><td>Conditions générales d'embauche</td></tr>
+<tr><td><code>06.03</code></td><td>Sensibilisation, apprentissage et formation à la sécurité de l'information</td></tr>
+<tr><td><code>06.04</code></td><td>Processus disciplinaire</td></tr>
+<tr><td><code>06.05</code></td><td>Responsabilités consécutivement à la fin ou à la modification du</td></tr>
+<tr><td><code>06.06</code></td><td>Engagements de confidentialité ou de non-divulgation</td></tr>
+<tr><td><code>06.07</code></td><td>Travail à distance</td></tr>
+<tr><td><code>06.08</code></td><td>Signalement des événements liés à la sécurité de l’information</td></tr>
+</tbody></table></div>
+<h4>07.xx — Mesures physiques (14)</h4>
+<div class="tw"><table><thead><tr><th style="width:5.5em">Réf.</th><th>Intitulé</th></tr></thead><tbody>
+<tr><td><code>07.01</code></td><td>Périmètre de sécurité physique</td></tr>
+<tr><td><code>07.02</code></td><td>Contrôles physiques des accès</td></tr>
+<tr><td><code>07.03</code></td><td>Sécurisation des bureaux, des salles et des équipements</td></tr>
+<tr><td><code>07.04</code></td><td>Surveillance de la sécurité physique</td></tr>
+<tr><td><code>07.05</code></td><td>Protection contre les menaces extérieures et environnementales</td></tr>
+<tr><td><code>07.06</code></td><td>Travail dans les zones sécurisées</td></tr>
+<tr><td><code>07.07</code></td><td>Bureau propre et écran vide</td></tr>
+<tr><td><code>07.08</code></td><td>Emplacement et protection du matériel</td></tr>
+<tr><td><code>07.09</code></td><td>Sécurité du matériel et des actifs hors des locaux</td></tr>
+<tr><td><code>07.10</code></td><td>Supports de stockage</td></tr>
+<tr><td><code>07.11</code></td><td>Services généraux</td></tr>
+<tr><td><code>07.12</code></td><td>Sécurité du câblage</td></tr>
+<tr><td><code>07.13</code></td><td>Maintenance du matériel</td></tr>
+<tr><td><code>07.14</code></td><td>Mise au rebut ou recyclage sécurisé(e) du matériel</td></tr>
+</tbody></table></div>
+<h4>08.xx — Mesures technologiques (34)</h4>
+<div class="tw"><table><thead><tr><th style="width:5.5em">Réf.</th><th>Intitulé</th></tr></thead><tbody>
+<tr><td><code>08.01</code></td><td>Terminaux utilisateurs</td></tr>
+<tr><td><code>08.02</code></td><td>Privilèges d'accès</td></tr>
+<tr><td><code>08.03</code></td><td>Restriction d'accès à l'information</td></tr>
+<tr><td><code>08.04</code></td><td>Accès au code source</td></tr>
+<tr><td><code>08.05</code></td><td>Authentification sécurisée</td></tr>
+<tr><td><code>08.06</code></td><td>Dimensionnement</td></tr>
+<tr><td><code>08.07</code></td><td>Protection contre les programmes malveillants</td></tr>
+<tr><td><code>08.08</code></td><td>Gestion des vulnérabilités techniques</td></tr>
+<tr><td><code>08.09</code></td><td>Gestion de la configuration</td></tr>
+<tr><td><code>08.10</code></td><td>Suppression d'information</td></tr>
+<tr><td><code>08.11</code></td><td>Masquage des données</td></tr>
+<tr><td><code>08.12</code></td><td>Prévention de la fuite de données</td></tr>
+<tr><td><code>08.13</code></td><td>Sauvegarde des informations</td></tr>
+<tr><td><code>08.14</code></td><td>Redondance des moyens de traitement de l'information</td></tr>
+<tr><td><code>08.15</code></td><td>Journalisation</td></tr>
+<tr><td><code>08.16</code></td><td>Activités de surveillance</td></tr>
+<tr><td><code>08.17</code></td><td>Synchronisation des horloges</td></tr>
+<tr><td><code>08.18</code></td><td>Utilisation de programmes utilitaires à privilèges</td></tr>
+<tr><td><code>08.19</code></td><td>Installation de logiciels sur des systèmes en exploitation</td></tr>
+<tr><td><code>08.20</code></td><td>Mesures liées aux réseaux</td></tr>
+<tr><td><code>08.21</code></td><td>Sécurité des services en réseau</td></tr>
+<tr><td><code>08.22</code></td><td>Filtrage Internet</td></tr>
+<tr><td><code>08.23</code></td><td>Cloisonnement des réseaux</td></tr>
+<tr><td><code>08.24</code></td><td>Utilisation de la cryptographie</td></tr>
+<tr><td><code>08.25</code></td><td>Cycle de vie de développement sécurisé</td></tr>
+<tr><td><code>08.26</code></td><td>Exigences de sécurité des applications</td></tr>
+<tr><td><code>08.27</code></td><td>Principes d'ingénierie et d'architecture système sécurisée</td></tr>
+<tr><td><code>08.28</code></td><td>Codage sécurisé</td></tr>
+<tr><td><code>08.29</code></td><td>Tests de sécurité dans le développement et l'acceptation</td></tr>
+<tr><td><code>08.30</code></td><td>Développement externalisé</td></tr>
+<tr><td><code>08.31</code></td><td>Séparation des environnements de développement, de test et de</td></tr>
+<tr><td><code>08.32</code></td><td>Gestion des changements</td></tr>
+<tr><td><code>08.33</code></td><td>Informations relatives aux tests</td></tr>
+<tr><td><code>08.34</code></td><td>Protection des systèmes d'information en cours d'audit et de test</td></tr>
+</tbody></table></div>
+<!-- ===================================================================== -->
+<h2 id="qcm-sec"><span class="num">28.</span> QCM — <span id="count-badge" class="badge acc"></span></h2>
+<p>Filtres par chapitre et par niveau, ordre des questions et des propositions tiré au hasard,
+correction expliquée immédiatement, mémorisation des erreurs pour pouvoir les rejouer.</p>
+<div id="qcm"></div>
+  </main>
+</div>
+
+<button id="top" title="Haut de page">↑</button>
+<script src="data/qcm-ent5003.js?v=2"></script>
+<script src="assets/app.js?v=31"></script>
+<script>initQCM(window.QCM_DATA, window.QCM_CHAPTERS, 'ent5003');</script>
+</body>
+</html>

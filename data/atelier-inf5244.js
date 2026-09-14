@@ -96,7 +96,13 @@ window.ATL_RESTIT = [
  note:"Et la <b>mise en garde</b>&nbsp;: on y perd la rigueur du script, où chaque ligne oblige à assumer un choix. <b>Ne pas chercher à y faire rentrer de l'iptables de force.</b>"},
 {id:"R30", ch:18, q:"Les <b>cinq étapes</b> du schéma au brouillon, avant d'écrire les règles",
  a:["Poser les zones et les pattes : un rectangle par zone, l'interface et le réseau sur chaque trait","Tracer une flèche par flux, dans le sens de l'aller, annotée du service et du port","Écrire sur chaque flèche la chaîne traversée : FORWARD si transit, INPUT si destiné au pare-feu, OUTPUT s'il en part","Marquer les translations et leur emplacement : DNAT avant (PREROUTING), SNAT après (POSTROUTING), avec les valeurs que verra la table filter","Écrire les règles : une flèche = une ligne, le schéma servant de liste de contrôle"],
- note:"La phrase à se répéter&nbsp;: «&nbsp;<b>ce flux va de là à là — qu'est-ce qu'il traverse&nbsp;?</b>&nbsp;». C'est ce qui évite l'<b>erreur d'aiguillage</b>. Le brouillon est <b>autorisé à l'examen</b>."}
+ note:"La phrase à se répéter&nbsp;: «&nbsp;<b>ce flux va de là à là — qu'est-ce qu'il traverse&nbsp;?</b>&nbsp;». C'est ce qui évite l'<b>erreur d'aiguillage</b>. Le brouillon est <b>autorisé à l'examen</b>."},
+{id:"R31", ch:15, q:"Les <b>huit flux</b> du corrigé du TD, dans l'ordre",
+ a:["Flux 1 : les clients internes surfent en passant par la DMZ (tcp 80 et udp 53) et consultent leur courrier (tcp 110)","Flux 2 : la DMZ relaie les requêtes des clients vers le WAN","Flux 3 : les administrateurs se connectent au FW en ssh (tcp 22 en INPUT)","Flux 4 : les administrateurs se connectent à la DMZ en ssh (tcp 22 en FORWARD)","Flux 5 : envoi des LOGs vers le serveur syslog (172.16.10.50 en udp 514)","Flux 6 : les clients, administrateurs compris, peuvent pinguer le WAN","Flux 7 : les administrateurs pinguent le FW","Flux 8 : les administrateurs pinguent la DMZ"],
+ note:"Sa solution est faite de <b>trois schémas</b>&nbsp;: un pour la table <code>nat</code>, puis deux pour la table <code>filter</code> — flux 1 à 4, puis 5 à 8. Le <b>flux 5</b> est le <b>seul</b> DMZ → interne de tout le script."},
+{id:"R32", ch:15, q:"Les <b>quatre translations</b> du script du TD, et leur commentaire d'origine",
+ a:["# SNAT sur eth0 : POSTROUTING -o eth0 -j MASQUERADE","# SNAT sur eth2 : POSTROUTING -o eth2 -j SNAT --to-source 20.0.0.12","# DNAT sur eth0 (dépôt de mails depuis l'extérieur) : PREROUTING --dport 25 vers 20.0.0.100:2025","# DNAT sur eth1 (proxy transparent pour les clients) : PREROUTING --dport 80 vers 20.0.0.100:8080"],
+ note:"Le second DNAT est sur <b>eth1</b>, l'interface du LAN&nbsp;: c'est ce qui en fait un <b>proxy transparent</b>. Et il range <code>MASQUERADE</code> sous l'appellation <b>SNAT</b> — même opération, seule la façon d'obtenir l'adresse change."}
 ];
 
 /* ---------------- 2. ÉCRITURE DE RÈGLES ---------------- */
@@ -301,7 +307,7 @@ window.ATL_ERREURS = [
  sit:"Le pare-feu a trois pattes : eth0 vers Internet en adresse publique fixe, eth2 vers la DMZ. Les deux règles fonctionnent, mais l'auditeur les signale.",
  err:"<b>Incohérence de méthode</b>&nbsp;: on masque dynamiquement d'un côté et on écrit une adresse fixe de l'autre, sans raison technique.",
  why:"Les deux cibles font le <b>même travail</b> — un SNAT. <code>MASQUERADE</code> <b>interroge l'interface à chaque paquet</b>&nbsp;: c'est fait pour une adresse <b>dynamique</b>, et cela coûte du CPU. <code>SNAT --to-source</code> écrit une adresse <b>connue d'avance</b>&nbsp;: plus rapide, mais il faut qu'elle soit fixe. Ici l'adresse publique d'<code>eth0</code> est <b>fixe</b>&nbsp;: le <code>MASQUERADE</code> n'a aucune justification.",
- fix:"Choisir selon le <b>critère unique</b>&nbsp;: adresse <b>fixe</b> → <code>SNAT --to-source</code>&nbsp;; adresse <b>dynamique</b> → <code>MASQUERADE</code>. Ici, passer <code>eth0</code> en <code>SNAT --to-source 198.51.100.1</code>. Mélanger les deux sans raison est «&nbsp;une aberration technique en production&nbsp;» — c'est exactement ce qu'un exercice d'audit cherche à vous faire relever."},
+ fix:"Choisir selon le <b>critère unique</b>&nbsp;: adresse <b>fixe</b> → <code>SNAT --to-source</code>&nbsp;; adresse <b>dynamique</b> → <code>MASQUERADE</code>. Ici, passer <code>eth0</code> en <code>SNAT --to-source 198.51.100.1</code>. Mélanger les deux sans raison est «&nbsp;une aberration technique en production&nbsp;» — mots de l'enseignant en corrigeant le TD, où les deux formes figurent <b>délibérément</b> «&nbsp;pour vérifier que vous comprenez la nuance&nbsp;»."},
 
 {id:"E24", ch:15, t:"Le pare-feu n'a rien à se reprocher… mais il peut tout émettre",
  code:["iptables -P INPUT DROP",

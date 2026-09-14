@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sécurisation des interconnexions (INF5244) — fiche de révision</title>
-<link rel="stylesheet" href="assets/core.css?v=25">
-<link rel="stylesheet" href="assets/viz.css?v=5">
+<link rel="stylesheet" href="assets/core.css?v=26">
+<link rel="stylesheet" href="assets/viz.css?v=10">
 </head>
 <body>
 
@@ -46,6 +46,15 @@ ces trois compétences&nbsp;: <b>30 listes à restituer</b>, des <b>exercices de
 l'infini</b> avec correction critère par critère, et <b>24 configurations à diagnostiquer</b>.</p>
 </div>
 
+<div class="callout warn"><div class="t">Ce que l'enseignant a lui-même signalé</div>
+Une page à part recense les <b>35 passages des enregistrements</b> où il désigne lui-même ce qu'il
+attend&nbsp;: «&nbsp;je peux vous poser une question là-dessus&nbsp;», «&nbsp;pour l'examen&nbsp;»,
+«&nbsp;règle capitale&nbsp;», «&nbsp;la bonne réponse c'est&nbsp;». Chaque citation est suivie de
+<b>la réponse à savoir donner</b>.
+<p style="margin-bottom:0"><a href="points-examen-inf5244.html"><b>→ Ce que le prof a signalé pour
+l'examen</b></a></p>
+</div>
+
 <div class="callout danger"><div class="t">Le plan du module, et l'évaluation</div>
 Le support suit cinq parties&nbsp;: <b>1. Rappels réseau</b> (OSI, TCP/IP) · <b>2. Principe des
 pare-feux</b> (définitions, pare-feux personnels et d'entreprise, architectures, analyse des flux,
@@ -81,7 +90,7 @@ la source des pièges 3, 4, 5 et 22 ci-dessous. <a href="#ch18-schema">Méthode 
 <tr><td>9</td><td>La passerelle par défaut est « injoignable »</td><td>Elle doit être <b>dans le même sous-réseau</b> que la machine&nbsp;: il faut sa <b>MAC</b>, obtenue par <b>ARP</b>, qui ne sort pas du segment local.</td><td><a href="#ch4-gateway">4.2</a></td></tr>
 <tr><td>10</td><td>« Le ping passe mais les gros transferts se figent »</td><td>On a bloqué <b>tout l'ICMP</b>. Il faut laisser <i>fragmentation needed</i> (<b>type 3 code 4</b>, découverte du MTU) et <i>time exceeded</i> (<b>type 11</b>, traceroute).</td><td><a href="#ch6-icmp">6.3</a></td></tr>
 <tr><td>11</td><td>Le DNS marche, sauf pour les grosses réponses</td><td>On n'a ouvert que <b>UDP 53</b>. Il faut <b>UDP <i>et</i> TCP 53</b>&nbsp;: TCP pour les <b>transferts de zone (AXFR/IXFR)</b> et les réponses <b>&gt; 512 octets</b>, notamment DNSSEC.</td><td><a href="#ch6-dns">6.2</a></td></tr>
-<tr><td>12</td><td>La plage privée 172</td><td>C'est <b><code>172.16.0.0/12</code></b>, pas un /16&nbsp;: de <code>172.16</code> à <code>172.31</code>. <code>172.15.x.x</code> et <code>172.32.x.x</code> sont <b>publiques</b>.</td><td><a href="#ch4-rfc1918">4.3</a></td></tr>
+<tr><td>12</td><td>La plage privée 172</td><td>C'est <b><code>172.16.0.0/12</code></b>, pas un /16&nbsp;: de <code>172.16</code> à <code>172.31</code>. <code>172.15.x.x</code> et <code>172.32.x.x</code> sont <b>publiques</b>.</td><td><a href="#ch4-rfc1918">4.4</a></td></tr>
 <tr><td>13</td><td>Filtrer sur les adresses MAC depuis Internet</td><td><b>Aucun sens</b>&nbsp;: la MAC s'arrête au premier routeur, tout arrive avec celle de l'opérateur. Utile <b>seulement</b> dans le LAN ou une DMZ.</td><td><a href="#ch4-mac">4.1</a></td></tr>
 <tr><td>14</td><td>Croire que le NAT protège</td><td><b>Le NAT n'est pas une mesure de sécurité.</b> Il masque le plan d'adressage — effet de bord. <b>La protection vient du filtrage.</b></td><td><a href="#ch12">12</a></td></tr>
 <tr><td>15</td><td>Un port source égal au port destination</td><td><b>Anomalie</b>&nbsp;: paquet forgé ou contournement. Le port source d'un client est toujours <b>éphémère, &gt; 1024</b>. À bloquer.</td><td><a href="#ch5-ports">5.1</a></td></tr>
@@ -2212,7 +2221,7 @@ auditable&nbsp;; c'est aussi ce qui alimente le SIEM (§17.4) et ce qu'exige le 
 (<b>Stormshield</b>) et les consoles constructeur (Check Point <i>SmartDashboard</i>) permettent de
 composer des règles visuellement et de les <b>compiler</b> vers plusieurs cibles. Le raisonnement
 reste celui du §8&nbsp;: elles ne dispensent pas de savoir ce qu'elles génèrent —
-<a href="#ch15-fwb">détail au §15.7</a>.</li>
+<a href="#ch15-fwb">détail au §15.6</a>.</li>
 <li><b>Il n'y a pas que Netfilter.</b> Le support illustre la <b>syntaxe Cisco ASA</b> du NAT, avec
 une taxonomie différente de celle de Netfilter — voir l'encadré ci-dessous. Le vocabulaire change, le
 modèle « critères → action » ne change pas.</li>
@@ -2238,274 +2247,465 @@ rentrer dans Netfilter&nbsp;: mettez-vous dans la philosophie du produit », et 
 vocabulaire exact</b> — c'est là-dessus qu'on est interrogé.</p>
 </div>
 
-<h3 id="ch15-td">15.5 Le TD de lecture de script, commenté</h3>
-<div class="exam"><div class="t">L'exercice, et la méthode</div>
-Le TD demande deux choses&nbsp;: <b>(1) rétablir les commentaires manquants</b> d'un script, et
-<b>(2) en tirer un schéma des flux et des translations</b>. C'est le format d'analyse le plus probable
-à l'examen — on ne vous demande pas d'écrire, on vous demande de <b>comprendre ce que quelqu'un
-d'autre a écrit</b>. Le <a href="#ch15-audit">§15.6</a> reprend le même exercice sur une seconde
-configuration, corrigée en séance.
-<p style="margin-bottom:0"><b>La méthode qui marche</b>&nbsp;: on ne lit pas un script de haut en bas.
-On le lit en <b>quatre passes</b> — d'abord les <b>variables</b> et les <b>politiques par défaut</b>
-(que refuse-t-on&nbsp;?), puis la <b>table nat</b> (quelles adresses sont réécrites, et donc quelles
-valeurs verra la table filter&nbsp;?), puis les <b>flux autorisés</b>, et enfin l'<b>ordre</b> et les
-<b>chaînes utilisateur</b>.</p>
+<h3 id="ch15-td">15.5 Le TD de lecture de script — la correction officielle</h3>
+<p>Le TD «&nbsp;<i>Analyse de script</i>&nbsp;» et sa correction sont fournis. C'est le <b>format
+d'analyse annoncé pour l'examen</b>&nbsp;: on ne demande pas d'écrire, on demande de
+<b>comprendre ce que quelqu'un d'autre a écrit</b>. Tout ce qui suit dans les deux blocs
+«&nbsp;Question&nbsp;»/«&nbsp;Solution&nbsp;» est <b>repris à l'identique du corrigé</b>&nbsp;; les
+commentaires ajoutés sont signalés comme tels.</p>
+
+<div class="callout def"><div class="t">L'énoncé, mot pour mot</div>
+<b>Objectif</b>&nbsp;: «&nbsp;Après avoir écrit vos propres scripts, vous allez <b>reconstituer les
+commentaires manquants</b> d'un script iptables. Il est possible que certaines directives présentes
+dans ce script n'aient pas été abordées en cours, quelques recherches sur Internet vous donneront
+alors la réponse.&nbsp;»
+<p style="margin-bottom:0"><b>Question 1</b>&nbsp;: «&nbsp;Rétablissez les commentaires.&nbsp;» ·
+<b>Question 2</b>&nbsp;: «&nbsp;En reprenant le script précédent, réalisez un schéma faisant
+apparaître les <b>flux réseaux</b>, et les <b>éventuelles translations d'adresses</b>.&nbsp;»</p>
 </div>
 
-<h4>La topologie qu'on en déduit</h4>
-<p>Aucun schéma n'est donné&nbsp;: il faut le reconstituer à partir des interfaces et des adresses.</p>
-<div class="tw"><table>
-<thead><tr><th>Interface</th><th>Zone</th><th>Ce qui le prouve dans le script</th></tr></thead>
-<tbody>
-<tr><td><code>eth0</code></td><td><b>Internet</b></td><td><code>POSTROUTING -o eth0 -j MASQUERADE</code> — on masque en sortant, donc c'est le côté public</td></tr>
-<tr><td><code>eth1</code></td><td><b>LAN interne</b> <code>172.16.0.0/16</code><br>pare-feu&nbsp;: <b>172.16.0.11</b></td><td>Les sources <code>172.16.x</code> y arrivent&nbsp;; l'admin s'y connecte en SSH sur <code>172.16.0.11</code></td></tr>
-<tr><td><code>eth2</code></td><td><b>DMZ</b> <code>20.0.0.0</code><br>pare-feu&nbsp;: <b>20.0.0.12</b><br>serveur&nbsp;: <b>20.0.0.100</b></td><td><code>POSTROUTING -o eth2 -j SNAT --to-source 20.0.0.12</code>, et toutes les destinations DMZ sont <code>20.0.0.100</code></td></tr>
-</tbody>
-</table></div>
-<p><b>Les variables</b>&nbsp;: <code>NET_ADMINS=172.16.10.0/24</code> ·
-<code>NET_CLIENTS=172.16.20.0/24</code> · <code>IP_LOG=172.16.10.50</code> (le collecteur, dans le
-réseau d'administration) · <code>PORT_LOG=514</code> (syslog en UDP).</p>
-
-<h4>Le script, commenté bloc par bloc</h4>
-<div class="tw"><table>
-<thead><tr><th>Le bloc</th><th>Le commentaire à rétablir</th></tr></thead>
-<tbody>
-<tr><td><code>-X</code> · <code>-F</code> · <code>-t nat -F</code> · <code>-t mangle -F</code></td><td><b>Remise à zéro complète</b> avant de reconstruire. Noter qu'on vide <b>les trois tables</b>, pas seulement <code>filter</code> (§7.2).</td></tr>
-<tr><td><code>-P INPUT/FORWARD/OUTPUT DROP</code></td><td><b>Politique fermée sur les trois chaînes</b> — liste blanche et <i>fail-safe</i>. Tout ce qui suit est une exception explicite.</td></tr>
-<tr><td><code>-A INPUT/FORWARD/OUTPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT</code></td><td><b>Le suivi de session gère tous les retours</b>, sur les trois chaînes. C'est ce qui permet de n'écrire ensuite que des règles <code>NEW</code>, dans le sens aller uniquement.</td></tr>
-<tr><td><code>-N adminssh</code></td><td><b>Création d'une chaîne dédiée à l'administration SSH</b>, pour isoler et auditer ces accès (§8.2).</td></tr>
-<tr><td>2 × (<code>LOG</code> puis <code>ACCEPT</code>) vers <code>20.0.0.100</code> et <code>172.16.0.11</code></td><td><b>Les admins ouvrent du SSH vers le serveur DMZ et vers le pare-feu lui-même</b>, chaque ouverture étant <b>journalisée avant</b> d'être acceptée — le <code>LOG</code> précède l'action (§11.3).</td></tr>
-<tr><td><code>-A adminssh -j LOG "ATTENTION…"</code> puis <code>-j DROP</code></td><td><b>Tout autre SSH est journalisé comme illicite, puis jeté.</b> La chaîne se termine par un <i>log and drop</i>&nbsp;: elle est <b>autonome</b>, elle ne relâche rien vers la suite.</td></tr>
-<tr><td><code>eth2 → eth0</code>, <code>-s 20.0.0.100</code>, tcp 80 et udp 53</td><td><b>Le serveur DMZ peut sortir sur Internet</b> en HTTP et DNS — mises à jour et résolution de noms. Rien d'autre.</td></tr>
-<tr><td><code>eth1</code>, <code>-s 172.16.0.0/16 -d 20.0.0.100</code>, tcp <b>8080</b>, udp 53, tcp 110</td><td><b>Le LAN accède au serveur DMZ</b>&nbsp;: web (sur <b>8080</b>, voir le piège ci-dessous), DNS et <b>POP3</b> pour relever le courrier.</td></tr>
-<tr><td><code>eth0 → eth2 -d 20.0.0.100</code>, tcp <b>2025</b></td><td><b>Internet atteint le serveur de messagerie</b> de la DMZ — sur <b>2025</b>, le port réel après translation.</td></tr>
-<tr><td><code>-A FORWARD -p tcp --dport 22 -j adminssh</code><br><code>-A INPUT -p tcp --dport 22 -j adminssh</code></td><td><b>Tout le SSH est dérouté vers la chaîne dédiée</b>, qu'il traverse le pare-feu ou qu'il lui soit destiné. Un seul endroit à auditer.</td></tr>
-<tr><td><code>eth1 → eth0 -s 172.16.0.0/16 -p icmp --icmp-type echo-request</code></td><td><b>Le LAN peut pinguer Internet.</b> Le retour est couvert par <code>ESTABLISHED,RELATED</code>&nbsp;: pas besoin d'autoriser <code>echo-reply</code>.</td></tr>
-<tr><td><code>-A INPUT -i eth1 -s $NET_ADMINS -p icmp</code><br><code>-A FORWARD -i eth1 -o eth2 -s $NET_ADMINS -p icmp</code></td><td><b>Les admins peuvent pinguer le pare-feu et la DMZ</b> pour le diagnostic.</td></tr>
-<tr><td><code>eth2 → eth1 -s 20.0.0.100 -d $IP_LOG -p udp --dport $PORT_LOG</code></td><td><b>Le serveur DMZ envoie ses journaux</b> en syslog UDP 514 vers le collecteur du réseau d'administration. C'est le seul flux DMZ → interne autorisé.</td></tr>
-<tr><td><code>-t nat -A POSTROUTING -o eth0 -j MASQUERADE</code></td><td><b>Masquage de tout ce qui sort sur Internet</b> derrière l'adresse de <code>eth0</code>. <code>MASQUERADE</code> et non <code>SNAT</code>&nbsp;: l'adresse publique est <b>dynamique</b> (§12.2).</td></tr>
-<tr><td><code>-t nat -A POSTROUTING -o eth2 -j SNAT --to-source 20.0.0.12</code></td><td><b>Tout ce qui entre en DMZ est translaté</b> en <code>20.0.0.12</code>. Adresse <b>fixe</b>, donc <code>SNAT</code>. Effet de sécurité&nbsp;: <b>le serveur DMZ ne voit jamais les adresses réelles du LAN</b> — s'il est compromis, il n'apprend rien du plan d'adressage interne.</td></tr>
-<tr><td><code>-t nat -A PREROUTING -i eth0 -p tcp --dport 25 -j DNAT --to-destination 20.0.0.100:2025</code></td><td><b>Publication du serveur de messagerie</b>&nbsp;: le SMTP entrant (25) est redirigé vers le port <b>2025</b> de la DMZ.</td></tr>
-<tr><td><code>-t nat -A PREROUTING -i eth1 -p tcp --dport 80 -j DNAT --to-destination 20.0.0.100:8080</code></td><td><b>Proxy transparent pour le LAN</b>&nbsp;: toute requête web des postes internes est <b>détournée</b> vers le service en <b>8080</b> de la DMZ, sans configuration sur les postes (§2.2).</td></tr>
-</tbody>
-</table></div>
-
-<div class="exam"><div class="t">Les quatre observations qui font la différence</div>
-<b>1. Le piège du port, deux fois.</b> Les règles <code>filter</code> visent <b>8080</b> et <b>2025</b>,
-jamais 80 ni 25. C'est cohérent&nbsp;: <code>PREROUTING</code> s'exécute <b>avant</b>
-<code>FORWARD</code>, donc le paquet est <b>déjà réécrit</b> quand on le filtre (§12). Écrire
-<code>--dport 80</code> ici aurait tout cassé.
-<p><b>2. <code>NET_CLIENTS</code> est défini mais jamais utilisé.</b> Les règles du LAN portent sur
-<code>172.16.0.0/16</code>, qui englobe admins <i>et</i> clients. La variable est un <b>reliquat</b> —
-le genre de détail qu'une lecture attentive doit relever, et qui signale soit une évolution non
-terminée, soit une intention perdue.</p>
-<p><b>3. L'ordre <code>-X</code> avant <code>-F</code> est fragile.</b> <code>iptables -X</code> ne
-supprime que les chaînes <b>vides et non référencées</b>. Sur un pare-feu déjà configuré, la chaîne
-<code>adminssh</code> serait encore remplie et référencée&nbsp;: la suppression échouerait. L'ordre
-robuste est <b><code>-F</code> puis <code>-X</code></b>.</p>
-<p style="margin-bottom:0"><b>4. Les règles ICMP des admins sont larges.</b>
-<code>-p icmp</code> sans <code>--icmp-type</code> autorise <b>tous</b> les types, y compris le
-<b>type 5 redirect</b> (§6.3). Défendable depuis un réseau d'administration de confiance, mais c'est
-exactement le laxisme que le cours dénonce — à signaler si on vous demande de critiquer le script.</p>
-</div>
-
-<div class="viz">
-  <div class="t">Question 2 du TD — les flux et les translations</div>
-  <svg viewBox="0 0 960 400" role="img" aria-label="Schéma du TD : Internet sur eth0, LAN 172.16.0.0/16 sur eth1, DMZ 20.0.0.0 sur eth2, avec les flux autorisés et les translations d'adresses.">
-    <defs><marker id="ar3" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
-      <path d="M0,0 L7,3 L0,6 z" fill="currentColor"/></marker></defs>
-
-    <g class="vz-step">
-      <rect class="vz-bad" x="20" y="150" width="120" height="70" rx="8"/>
-      <text class="vz-lbl" x="80" y="178" text-anchor="middle">Internet</text>
-      <text class="vz-mono vz-sub" x="80" y="196" text-anchor="middle">eth0</text>
-      <text class="vz-sub" x="80" y="211" text-anchor="middle">IP dynamique</text>
-    </g>
-    <g class="vz-step">
-      <rect class="vz-dec" x="400" y="120" width="150" height="130" rx="8"/>
-      <text class="vz-lbl" x="475" y="150" text-anchor="middle">PARE-FEU</text>
-      <text class="vz-mono vz-sub" x="475" y="170" text-anchor="middle">eth1 : 172.16.0.11</text>
-      <text class="vz-mono vz-sub" x="475" y="186" text-anchor="middle">eth2 : 20.0.0.12</text>
-      <text class="vz-sub" x="475" y="210" text-anchor="middle">politique DROP</text>
-      <text class="vz-sub" x="475" y="226" text-anchor="middle">chaîne adminssh</text>
-    </g>
-    <g class="vz-step">
-      <rect class="vz-ok" x="790" y="40" width="155" height="90" rx="8"/>
-      <text class="vz-lbl" x="867" y="66" text-anchor="middle">LAN interne</text>
-      <text class="vz-mono vz-sub" x="867" y="84" text-anchor="middle">172.16.0.0/16</text>
-      <text class="vz-sub" x="867" y="101" text-anchor="middle">admins .10.0/24</text>
-      <text class="vz-sub" x="867" y="116" text-anchor="middle">clients .20.0/24</text>
-    </g>
-    <g class="vz-step">
-      <rect class="vz-box" x="790" y="175" width="155" height="58" rx="8"/>
-      <text class="vz-lbl" x="867" y="199" text-anchor="middle">Collecteur de logs</text>
-      <text class="vz-mono vz-sub" x="867" y="217" text-anchor="middle">172.16.10.50 : 514</text>
-    </g>
-    <g class="vz-step">
-      <rect class="vz-filt" x="790" y="290" width="155" height="80" rx="8"/>
-      <text class="vz-lbl" x="867" y="316" text-anchor="middle">DMZ — SRV</text>
-      <text class="vz-mono vz-sub" x="867" y="334" text-anchor="middle">20.0.0.100</text>
-      <text class="vz-sub" x="867" y="351" text-anchor="middle">web 8080 · SMTP 2025</text>
-      <text class="vz-sub" x="867" y="365" text-anchor="middle">DNS 53 · POP3 110</text>
-    </g>
-
-    <g class="vz-wire" color="var(--fg-mute)">
-      <path d="M140,170 H400" marker-end="url(#ar3)"/>
-      <path d="M550,150 H700 V80 H786" marker-end="url(#ar3)"/>
-      <path d="M550,200 H700 V204 H786" marker-end="url(#ar3)"/>
-      <path d="M550,235 H700 V330 H786" marker-end="url(#ar3)"/>
-      <path d="M140,205 H360 V240 H396" marker-end="url(#ar3)"/>
-    </g>
-
-    <text class="vz-mono vz-t-nat" x="270" y="162" text-anchor="middle">DNAT 25 → 20.0.0.100:2025</text>
-    <text class="vz-mono vz-t-nat" x="250" y="232" text-anchor="middle">MASQUERADE en sortie</text>
-    <text class="vz-mono vz-t-nat" x="640" y="322" text-anchor="middle">SNAT → 20.0.0.12</text>
-    <text class="vz-mono vz-t-filt" x="640" y="72" text-anchor="middle">SSH (chaîne adminssh)</text>
-    <text class="vz-mono vz-t-filt" x="640" y="196" text-anchor="middle">syslog udp 514</text>
-    <text class="vz-mono vz-sub" x="640" y="345" text-anchor="middle">DNAT 80 → :8080 (proxy transparent)</text>
-  </svg>
-  <div class="legend">Trois zones, <b>deux translations en sortie</b> (MASQUERADE vers Internet, SNAT
-  vers la DMZ) et <b>deux en entrée</b> (SMTP 25→2025 depuis Internet, web 80→8080 depuis le LAN).
-  Le seul flux <b>DMZ → interne</b> autorisé est le <b>syslog</b>.</div>
-</div>
-
-<h3 id="ch15-audit">15.6 L'exercice d'audit, corrigé</h3>
-<p>Second exercice d'analyse du cours, corrigé en séance&nbsp;: un script de pare-feu à
-<b>trois pattes</b> qu'il faut lire pour en <b>déduire la topologie</b>, le <b>rôle de chaque zone</b>
-et la <b>politique d'administration</b>. Même format que le TD du §15.5, mais avec une DMZ de
-serveurs et — volontairement — les <b>deux formes de SNAT côte à côte</b>.</p>
-
+<h4>La topologie, telle que la donne la correction</h4>
 <div class="tw"><table>
 <thead><tr><th>Interface</th><th>Zone</th><th>Adressage</th></tr></thead>
 <tbody>
-<tr><td><code>eth0</code></td><td><b>Internet / <i>Outside</i></b></td><td>adresse publique <code>198.51.100.1</code></td></tr>
-<tr><td><code>eth1</code></td><td><b>LAN interne</b></td><td><code>192.168.1.0/24</code> — clients <code>192.168.1.50</code>, poste d'administration <code>192.168.1.100</code></td></tr>
-<tr><td><code>eth2</code></td><td><b>DMZ serveurs</b></td><td><code>10.0.0.0/24</code> — serveur de messagerie <code>10.0.0.25</code> (SMTP 25), serveur web <code>10.0.0.10</code> (port <b>8080</b>)</td></tr>
+<tr><td><code>eth0</code></td><td><b>WAN</b></td><td>réseau <code>10.0.0.0/8</code> — le pare-feu y porte <b><code>172.16.0.10</code></b></td></tr>
+<tr><td><code>eth1</code></td><td><b>LAN interne</b></td><td>pare-feu <b><code>172.16.0.11</code></b> · deux groupes&nbsp;: <b>clients <code>172.16.20.0</code></b> et <b>administrateurs <code>172.16.10.0</code></b></td></tr>
+<tr><td><code>eth2</code></td><td><b>DMZ</b></td><td>réseau <code>20.0.0.0/8</code> — pare-feu <b><code>20.0.0.12</code></b>, serveur <b><code>20.0.0.100</code></b> en écoute sur <b>8080</b> et <b>2025</b></td></tr>
+</tbody>
+</table></div>
+<p><b>Les variables du script</b>&nbsp;: <code>NET_ADMINS=172.16.10.0/24</code> ·
+<code>NET_CLIENTS=172.16.20.0/24</code> · <code>IP_LOG=172.16.10.50</code> (le collecteur syslog,
+dans le réseau d'administration) · <code>PORT_LOG=514</code>.</p>
+
+<div class="callout warn"><div class="t">Une incohérence dans le document lui-même</div>
+Les trois schémas notent les deux groupes du LAN <code>172.16.20.0 <b>/16</b></code> et
+<code>172.16.10.0 <b>/16</b></code>, alors que le script déclare des <b><code>/24</code></b>. Deux
+<code>/16</code> qui se recouvrent ne peuvent pas coexister — <b>ce sont les <code>/24</code> du
+script qui font foi</b>. Le pare-feu porte par ailleurs <code>172.16.0.10</code> et
+<code>172.16.0.11</code>, donc lui aussi dans <code>172.16.0.0/16</code>&nbsp;: c'est un plan
+d'adressage de maquette, pas de production.
+</div>
+
+<h4>Question 1 — le script, avec les commentaires de la correction</h4>
+<p>Les lignes en commentaire ci-dessous sont <b>exactement celles du corrigé</b>, y compris les deux
+bandeaux de section.</p>
+
+<pre><code><span class="c"># RAZ</span>
+iptables -X
+iptables -F
+iptables -t nat -F
+iptables -t mangle -F
+
+<span class="c"># Assignation de valeurs aux constantes</span>
+IP_LOG=172.16.10.50
+PORT_LOG=514
+NET_CLIENTS=172.16.20.0/24
+NET_ADMINS=172.16.10.0/24
+
+<span class="c">############################
+#     Règles de filtrage   #
+############################</span>
+
+<span class="c"># Politique par défaut</span>
+iptables -P INPUT DROP
+iptables -P FORWARD DROP
+iptables -P OUTPUT DROP
+
+<span class="c"># on autorise les retours</span>
+iptables -A INPUT   -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+iptables -A OUTPUT  -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+
+<span class="c"># chaîne de traitement de ssh</span>
+iptables -N adminssh
+iptables -A adminssh -i eth1 -s $NET_ADMINS -d 20.0.0.100 \
+ -m conntrack --ctstate NEW -j LOG --log-prefix "connexion SSH sur SRV-DMZ "
+iptables -A adminssh -i eth1 -s $NET_ADMINS -d 20.0.0.100 \
+ -m conntrack --ctstate NEW -j ACCEPT
+iptables -A adminssh -i eth1 -s $NET_ADMINS -d 172.16.0.11 \
+ -m conntrack --ctstate NEW -j LOG --log-prefix "connexion SSH sur le Firewall "
+iptables -A adminssh -i eth1 -s $NET_ADMINS -d 172.16.0.11 \
+ -m conntrack --ctstate NEW -j ACCEPT
+iptables -A adminssh -j LOG \
+ --log-prefix "ATTENTION - Tentative connexion SSH illicite "
+iptables -A adminssh -j DROP
+
+<span class="c"># flux sortants de la DMZ (web et DNS)</span>
+iptables -A FORWARD -i eth2 -o eth0 -s 20.0.0.100 \
+ -m conntrack --ctstate NEW -p tcp --dport 80 -j ACCEPT
+iptables -A FORWARD -i eth2 -o eth0 -s 20.0.0.100 \
+ -m conntrack --ctstate NEW -p udp --dport 53 -j ACCEPT
+
+<span class="c"># flux web sortant du LAN
+# (les clients internes, dont les admins surfent)</span>
+iptables -A FORWARD -i eth1 -s 172.16.0.0/16 -d 20.0.0.100 \
+ -m conntrack --ctstate NEW -p tcp --dport 8080 -j ACCEPT
+iptables -A FORWARD -i eth1 -s 172.16.0.0/16 -d 20.0.0.100 \
+ -m conntrack --ctstate NEW -p udp --dport 53 -j ACCEPT
+
+<span class="c"># flux messagerie sortant du LAN
+# (les clients internes vont relever leur courrier)</span>
+iptables -A FORWARD -i eth1 -s 172.16.0.0/16 -d 20.0.0.100 \
+ -m conntrack --ctstate NEW -p tcp --dport 110 -j ACCEPT
+
+<span class="c"># flux messagerie entrant dans la DMZ
+# (les extérieurs déposent du courrier)</span>
+iptables -A FORWARD -i eth0 -o eth2 -d 20.0.0.100 \
+ -m conntrack --ctstate NEW -p tcp --dport 2025 -j ACCEPT
+
+<span class="c"># ssh</span>
+iptables -A FORWARD -p tcp --dport 22 -j adminssh
+iptables -A INPUT   -p tcp --dport 22 -j adminssh
+
+<span class="c"># icmp clients et administrateurs vers WAN</span>
+iptables -A FORWARD -i eth1 -o eth0 -s 172.16.0.0/16 -p icmp \
+--icmp-type echo-request -j ACCEPT
+
+<span class="c"># icmp administrateurs vers PF et DMZ</span>
+iptables -A INPUT   -i eth1 -s $NET_ADMINS -p icmp -j ACCEPT
+iptables -A FORWARD -i eth1 -o eth2 -s $NET_ADMINS -p icmp -j ACCEPT
+
+<span class="c"># Flux syslog (Logs envoyés vers le serveur de logs)</span>
+iptables -A FORWARD -i eth2 -o eth1 -s 20.0.0.100 -d $IP_LOG -p udp \
+--dport $PORT_LOG -j ACCEPT
+
+<span class="c">############################
+#  Translation d'adresses  #
+############################</span>
+
+<span class="c"># SNAT sur eth0</span>
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+
+<span class="c"># SNAT sur eth2</span>
+iptables -t nat -A POSTROUTING -o eth2 -j SNAT --to-source 20.0.0.12
+
+<span class="c"># DNAT sur eth0 (dépôt de mails depuis l'extérieur)</span>
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 25 -j DNAT \
+--to-destination 20.0.0.100:2025
+
+<span class="c"># DNAT sur eth1 (proxy transparent pour les clients)</span>
+iptables -t nat -A PREROUTING -i eth1 -p tcp --dport 80 -j DNAT \
+--to-destination 20.0.0.100:8080</code></pre>
+
+<div class="exam"><div class="t">Les quatre commentaires qui portent une information, et pas juste une étiquette</div>
+<b>1. <code># SNAT sur eth0</code> pour un <code>MASQUERADE</code>.</b> Il range
+<code>MASQUERADE</code> sous l'appellation <b>SNAT</b>&nbsp;: c'est bien la même opération —
+réécrire la source en <code>POSTROUTING</code> — seule la façon d'obtenir l'adresse change.
+<p><b>2. <code># DNAT sur eth1 (proxy transparent pour les clients)</code>.</b> Le mot
+<b>proxy</b> est de lui. Le DNAT <code>80 → 20.0.0.100:8080</code> sur l'interface <b>LAN</b> détourne
+les requêtes web des postes internes vers le service en 8080 de la DMZ, <b>sans configuration sur les
+postes</b> (§13.6).</p>
+<p><b>3. <code># flux web sortant du LAN (les clients internes, <u>dont les admins</u> surfent)</code>.</b>
+Cette parenthèse explique pourquoi la règle porte sur <code>172.16.0.0/16</code> et non sur
+<code>$NET_CLIENTS</code>&nbsp;: le <code>/16</code> est <b>volontaire</b>, il englobe clients
+<i>et</i> administrateurs. <code>NET_CLIENTS</code> est déclaré mais <b>jamais utilisé</b> dans tout
+le script.</p>
+<p style="margin-bottom:0"><b>4. <code># flux messagerie entrant dans la DMZ (les extérieurs déposent
+du courrier)</code>.</b> Le sens compte&nbsp;: le <b>2025</b> entrant sert au <b>dépôt</b> de courrier
+depuis le WAN, tandis que le <b>110 (POP3)</b> sert aux clients internes à <b>relever</b> le leur.
+Deux flux, deux sens, deux ports.</p>
+</div>
+
+<h4>Ce que chaque bloc veut dire</h4>
+<p class="lead" style="font-size:.95rem">Explicitation des blocs du corrigé — cette colonne est un
+ajout, pas un extrait.</p>
+<div class="tw"><table>
+<thead><tr><th>Le bloc</th><th>Ce qu'il faut savoir en dire</th></tr></thead>
+<tbody>
+<tr><td><code># RAZ</code><br><code>-X</code> · <code>-F</code> · <code>-t nat -F</code> · <code>-t mangle -F</code></td><td><b>Remise à zéro avant de reconstruire.</b> Noter qu'on vide <b>les trois tables</b>, pas seulement <code>filter</code>&nbsp;: <code>iptables -F</code> seul laisserait le NAT en place (§7.2).</td></tr>
+<tr><td><code># Assignation de valeurs aux constantes</code></td><td>Les <b>variables en tête de script</b>&nbsp;: un changement d'adressage se répercute partout. Même bénéfice que les objets d'une console graphique (§15.6).</td></tr>
+<tr><td><code># Politique par défaut</code><br><code>-P INPUT/FORWARD/OUTPUT DROP</code></td><td><b>Politique fermée sur les trois chaînes</b> — liste blanche et <i>fail-safe</i>. Tout ce qui suit est une <b>exception explicite</b>. <code>OUTPUT</code> compris&nbsp;: le pare-feu lui-même ne peut rien émettre sans règle.</td></tr>
+<tr><td><code># on autorise les retours</code><br><code>--ctstate ESTABLISHED,RELATED</code> ×3</td><td><b>Le suivi de session gère tous les retours</b>, sur les trois chaînes. C'est ce qui permet de n'écrire ensuite que des règles <code>NEW</code>, dans le sens <b>aller uniquement</b> (§10.2).</td></tr>
+<tr><td><code># chaîne de traitement de ssh</code><br><code>-N adminssh</code></td><td><b>Une chaîne dédiée</b> pour isoler et auditer les accès SSH&nbsp;: un seul endroit à relire (§8.2).</td></tr>
+<tr><td>2 × (<code>LOG</code> puis <code>ACCEPT</code>) vers <code>20.0.0.100</code> et <code>172.16.0.11</code></td><td><b>Les admins ouvrent du SSH vers le serveur DMZ et vers le pare-feu lui-même</b>, chaque ouverture étant <b>journalisée avant</b> d'être acceptée — <code>LOG</code> est non terminale, elle doit précéder l'action (§11.3). Les préfixes nomment la cible&nbsp;: <code>"connexion SSH sur SRV-DMZ "</code>, <code>"connexion SSH sur le Firewall "</code>.</td></tr>
+<tr><td><code>-A adminssh -j LOG "ATTENTION…"</code> puis <code>-j DROP</code></td><td><b>Tout autre SSH est journalisé comme illicite, puis jeté.</b> La chaîne se termine par un <i>log and drop</i>&nbsp;: elle est <b>autonome</b>, elle ne relâche rien vers la suite.</td></tr>
+<tr><td><code># flux sortants de la DMZ (web et DNS)</code><br><code>eth2 → eth0</code>, <code>-s 20.0.0.100</code>, tcp 80 · udp 53</td><td><b>C'est le second maillon de la chaîne proxy</b>&nbsp;: le serveur DMZ <b>relaie vers le WAN les requêtes des clients</b> — c'est le <b>flux 2</b> du schéma. Le client ne sort jamais lui-même&nbsp;: il s'arrête en DMZ, qui rouvre une <b>seconde connexion</b> (§14.1).</td></tr>
+<tr><td><code># flux web sortant du LAN</code><br><code>eth1</code>, <code>-s 172.16.0.0/16 -d 20.0.0.100</code>, tcp <b>8080</b> · udp 53</td><td><b>Le LAN n'atteint que le serveur DMZ</b>, sur <b>8080</b> — le port <b>réel après le DNAT</b> — et en DNS. Aucune règle ne relie directement le LAN au WAN en web.</td></tr>
+<tr><td><code># flux messagerie sortant du LAN</code><br>tcp <b>110</b></td><td><b>Les clients relèvent leur courrier</b> en POP3 sur le serveur DMZ.</td></tr>
+<tr><td><code># flux messagerie entrant dans la DMZ</code><br><code>eth0 → eth2</code>, tcp <b>2025</b></td><td><b>Les extérieurs déposent du courrier</b>&nbsp;: le SMTP entrant arrive en 25 et le DNAT l'a réécrit en <b>2025</b> — c'est ce port-là que la règle de filtrage doit viser.</td></tr>
+<tr><td><code># ssh</code><br><code>-A FORWARD -p tcp --dport 22 -j adminssh</code><br><code>-A INPUT -p tcp --dport 22 -j adminssh</code></td><td><b>Tout le SSH est dérouté vers la chaîne dédiée</b>, qu'il traverse le pare-feu (<code>FORWARD</code>) ou qu'il lui soit destiné (<code>INPUT</code>).</td></tr>
+<tr><td><code># icmp clients et administrateurs vers WAN</code><br><code>--icmp-type echo-request</code></td><td><b>Le LAN peut pinguer le WAN.</b> Seul l'<i>echo-request</i> est autorisé&nbsp;: le retour est couvert par <code>ESTABLISHED,RELATED</code>, inutile d'ouvrir <i>echo-reply</i>.</td></tr>
+<tr><td><code># icmp administrateurs vers PF et DMZ</code><br><code>-p icmp</code> sans type</td><td><b>Les admins peuvent pinguer le pare-feu et la DMZ</b> pour le diagnostic. Ici <b>aucun type n'est précisé</b> — voir la critique plus bas.</td></tr>
+<tr><td><code># Flux syslog</code><br><code>eth2 → eth1 -s 20.0.0.100 -d $IP_LOG -p udp --dport $PORT_LOG</code></td><td><b>Le serveur DMZ envoie ses journaux</b> vers le collecteur du réseau d'administration, en <b>UDP 514</b>. C'est le <b>seul flux DMZ → interne</b> autorisé de tout le script.</td></tr>
+<tr><td><code># SNAT sur eth0</code><br><code>POSTROUTING -o eth0 -j MASQUERADE</code></td><td><b>Masquage de tout ce qui sort vers le WAN</b> derrière l'adresse d'<code>eth0</code>. Le corrigé ne motive pas le choix de <code>MASQUERADE</code> plutôt que <code>--to-source</code>&nbsp;: le critère habituel est l'adresse <b>dynamique</b> (§12.2), mais ici l'adresse d'<code>eth0</code> est <b>fixe</b> — c'est le point de comparaison, voir ci-dessous.</td></tr>
+<tr><td><code># SNAT sur eth2</code><br><code>POSTROUTING -o eth2 -j SNAT --to-source 20.0.0.12</code></td><td><b>Tout ce qui entre en DMZ est translaté</b> en <code>20.0.0.12</code>, l'adresse <b>fixe</b> du pare-feu de ce côté. Effet de bord utile&nbsp;: <b>le serveur DMZ ne voit jamais les adresses réelles du LAN</b>.</td></tr>
+<tr><td><code># DNAT sur eth0 (dépôt de mails…)</code><br><code>--dport 25 → 20.0.0.100:2025</code></td><td><b>Publication du serveur de messagerie</b>&nbsp;: le port public reste le <b>25</b> standard, le service interne écoute en <b>2025</b>.</td></tr>
+<tr><td><code># DNAT sur eth1 (proxy transparent…)</code><br><code>--dport 80 → 20.0.0.100:8080</code></td><td><b>Proxy transparent pour le LAN</b>&nbsp;: toute requête web des postes est <b>détournée</b> vers le 8080 de la DMZ. Le DNAT est sur <code>eth1</code>, donc sur le trafic <b>sortant du LAN</b> (§13.6).</td></tr>
 </tbody>
 </table></div>
 
-<pre><code><span class="c"># 1. Politiques par défaut</span>
-iptables -P INPUT DROP
-iptables -P FORWARD DROP
-iptables -P OUTPUT ACCEPT
-
-<span class="c"># 2. Suivi de connexion, en tête de chaîne</span>
-iptables -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
-iptables -A INPUT   -m state --state ESTABLISHED,RELATED -j ACCEPT
-
-<span class="c"># 3. Table nat</span>
-iptables -t nat -A PREROUTING  -i eth0 -p tcp --dport 25 -j DNAT --to-destination 10.0.0.25:25
-iptables -t nat -A PREROUTING  -i eth0 -p tcp --dport 80 -j DNAT --to-destination 10.0.0.10:8080
-iptables -t nat -A POSTROUTING -o eth0 -s 192.168.1.0/24 -j MASQUERADE
-
-<span class="c"># 4. Filtrage du transit — adresses et ports APRÈS translation</span>
-iptables -A FORWARD -i eth0 -o eth2 -d 10.0.0.25 -p tcp --dport 25   -j ACCEPT
-iptables -A FORWARD -i eth0 -o eth2 -d 10.0.0.10 -p tcp --dport 8080 -j ACCEPT
-iptables -A FORWARD -i eth1 -o eth0 -s 192.168.1.0/24 -p tcp -m multiport --dports 80,443 -j ACCEPT
-
-<span class="c"># 5. Administration du pare-feu</span>
-iptables -A INPUT -i eth1 -s 192.168.1.100 -p tcp --dport 22 -j ACCEPT</code></pre>
-
-<h4>Les cinq points de la correction</h4>
-<div class="steps">
-<div class="step"><b>1. Les deux SNAT — et pourquoi ils sont différents</b><br>
-Sur la patte Internet, la sortie est masquée en <b><code>MASQUERADE</code></b>&nbsp;; sur l'autre
-patte, l'énoncé fait un SNAT vers <b>une seule adresse source</b> avec
-<b><code>--to-source</code></b>. Mélanger les deux dans une même configuration est «&nbsp;<b>une
-aberration technique en production</b>&nbsp;» — c'est <b>délibéré</b>&nbsp;: l'exercice met les deux
-formes sous les yeux pour vérifier qu'on comprend la <b>nuance</b>. Adresse publique
-<b>dynamique</b> → <code>MASQUERADE</code>&nbsp;; adresse <b>fixe et connue</b> →
-<code>SNAT --to-source</code>, plus rapide car aucune interrogation de l'interface (§12.2).</div>
-
-<div class="step"><b>2. Les deux DNAT, et ce qu'ils révèlent du rôle des serveurs</b><br>
-Le <b>25 → <code>10.0.0.25:25</code></b> publie un <b>relais de messagerie SMTP</b> pour le courrier
-entrant&nbsp;: même port des deux côtés, seule la destination change. Le <b>80 →
-<code>10.0.0.10:8080</code></b> publie un <b>serveur web déporté</b> qui écoute sur un port non
-standard&nbsp;: <b>l'adresse et le port</b> changent tous les deux.</div>
-
-<div class="step"><b>3. La zone est bien une DMZ</b><br>
-C'est la <b>déduction demandée</b>&nbsp;: ces machines sont <b>joignables depuis Internet</b> et
-servent d'<b>intermédiaires</b> — relais pour les flux de messagerie entrants, passerelle et
-filtrage pour les flux web. Aucun flux Internet ne descend jusqu'au LAN&nbsp;: il se
-<b>termine en DMZ</b> (§14).</div>
-
-<div class="step"><b>4. La politique SSH sépare les administrateurs des utilisateurs</b><br>
-Le seul <code>ACCEPT</code> en <code>INPUT</code> vient de <code>eth1</code> <b>et</b> de
-<code>192.168.1.100</code>. Les <b>clients ordinaires n'ont aucun accès SSH au pare-feu</b>&nbsp;:
-la restriction ne porte pas sur l'interface seule, mais sur le <b>couple interface + adresse
-source</b>. C'est la traduction du <b>moindre privilège</b> (§3).</div>
-
-<div class="step"><b>5. <code>-P OUTPUT ACCEPT</code> — la différence avec le TD précédent</b><br>
-Ici le pare-feu peut émettre <b>librement</b>, contrairement au script du §15.5 qui fermait les
-<b>trois</b> chaînes. C'est un <b>choix assumé</b>, plus simple à exploiter (mises à jour, DNS,
-syslog sortants sans règle), mais <b>moins strict</b>&nbsp;: si le pare-feu est compromis, rien ne
-contraint ce qu'il émet. C'est exactement le genre de point à relever si l'on vous demande de
-<b>critiquer</b> la configuration.</div>
+<h4>Question 2 — les trois schémas de la correction</h4>
+<div class="exam"><div class="t">La méthode, et c'est elle qu'il faut reproduire</div>
+Sa solution est «&nbsp;<b>constituée de trois schémas</b>&nbsp;» — et le découpage n'est pas
+décoratif&nbsp;: <b>un schéma pour la table <code>nat</code></b>, puis <b>deux pour la table
+<code>filter</code></b>, avec les <b>huit flux numérotés</b> répartis entre les deux.
+<p style="margin-bottom:0"><b>Pourquoi ça marche</b>&nbsp;: mélanger translations et flux sur un seul
+dessin rend illisible le seul point qui compte — <b>quelles adresses et quels ports la table
+<code>filter</code> voit-elle&nbsp;?</b> En séparant, on lit d'abord ce qui est réécrit, puis on
+filtre sur les valeurs déjà réécrites. C'est exactement la méthode du brouillon qu'il conseille pour
+l'examen (§18.3).</p>
 </div>
 
 <div class="viz">
-  <div class="t">La topologie à reconstituer</div>
-  <svg viewBox="0 0 960 380" role="img" aria-label="Topologie de l'exercice d'audit : Internet sur eth0 en 198.51.100.1, LAN 192.168.1.0/24 sur eth1, DMZ 10.0.0.0/24 sur eth2, avec les deux DNAT entrants et le MASQUERADE sortant.">
-    <defs><marker id="ar5" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
-      <path d="M0,0 L7,3 L0,6 z" fill="currentColor"/></marker></defs>
+  <div class="t">Schéma 1 — TABLE NAT</div>
+  <svg viewBox="0 0 940 470" role="img" aria-label="Schéma NAT du corrigé : WAN 10.0.0.0/8 sur eth0, LAN 172.16 sur eth1, DMZ 20.0.0.0/8 sur eth2 ; SNAT sur eth0 et sur eth2, DNAT 25 vers 2025 et DNAT 80 vers 8080 vers le serveur 20.0.0.100.">
+    <defs>
+      <marker id="tdnW" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" style="fill:var(--border)"/></marker>
+      <marker id="tdnP" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" style="fill:var(--d-purple)"/></marker>
+    </defs>
+
+    <g class="vz-wire">
+      <path d="M470,64 V145"/><path d="M535,230 H745"/><path d="M470,315 V372"/>
+      <path d="M197,372 H725"/><path d="M197,372 V398"/><path d="M725,372 V398"/>
+    </g>
 
     <g class="vz-step">
-      <rect class="vz-bad" x="20" y="145" width="130" height="72" rx="8"/>
-      <text class="vz-lbl" x="85" y="173" text-anchor="middle">Internet</text>
-      <text class="vz-mono vz-sub" x="85" y="191" text-anchor="middle">eth0</text>
-      <text class="vz-mono vz-sub" x="85" y="207" text-anchor="middle">198.51.100.1</text>
+      <rect class="vz-bad" x="385" y="10" width="170" height="54" rx="10"/>
+      <text class="vz-lbl" x="470" y="33" text-anchor="middle">WAN</text>
+      <text class="vz-mono vz-sub" x="470" y="50" text-anchor="middle">10.0.0.0 /8</text>
     </g>
     <g class="vz-step">
-      <rect class="vz-dec" x="400" y="120" width="155" height="122" rx="8"/>
-      <text class="vz-lbl" x="477" y="149" text-anchor="middle">PARE-FEU</text>
-      <text class="vz-sub" x="477" y="170" text-anchor="middle">INPUT / FORWARD : DROP</text>
-      <text class="vz-sub" x="477" y="187" text-anchor="middle">OUTPUT : ACCEPT</text>
-      <text class="vz-sub" x="477" y="211" text-anchor="middle">SSH : depuis .1.100</text>
-      <text class="vz-sub" x="477" y="228" text-anchor="middle">uniquement</text>
+      <rect class="vz-dec" x="405" y="145" width="130" height="170" rx="12"/>
+      <text class="vz-mono vz-sub" x="470" y="163" text-anchor="middle">eth0</text>
+      <text class="vz-lbl" x="470" y="232" text-anchor="middle">PARE-FEU</text>
+      <text class="vz-mono vz-sub" x="470" y="308" text-anchor="middle">eth1</text>
+      <text class="vz-mono vz-sub" x="398" y="140" text-anchor="end">172.16.0.10</text>
+      <text class="vz-mono vz-sub" x="398" y="322" text-anchor="end">172.16.0.11</text>
+      <text class="vz-mono vz-sub" x="545" y="222">.12</text>
     </g>
     <g class="vz-step">
-      <rect class="vz-ok" x="785" y="35" width="160" height="92" rx="8"/>
-      <text class="vz-lbl" x="865" y="61" text-anchor="middle">LAN interne</text>
-      <text class="vz-mono vz-sub" x="865" y="79" text-anchor="middle">192.168.1.0/24</text>
-      <text class="vz-sub" x="865" y="96" text-anchor="middle">clients .50</text>
-      <text class="vz-sub" x="865" y="112" text-anchor="middle">admin .100</text>
+      <rect class="vz-filt" x="745" y="185" width="185" height="92" rx="10"/>
+      <text class="vz-lbl" x="837" y="209" text-anchor="middle">SRV — DMZ</text>
+      <text class="vz-mono vz-sub" x="837" y="227" text-anchor="middle">20.0.0.0 /8 · .100</text>
+      <text class="vz-mono vz-sub" x="837" y="248" text-anchor="middle">! 8080</text>
+      <text class="vz-mono vz-sub" x="837" y="265" text-anchor="middle">! 2025</text>
     </g>
     <g class="vz-step">
-      <rect class="vz-filt" x="785" y="250" width="160" height="105" rx="8"/>
-      <text class="vz-lbl" x="865" y="276" text-anchor="middle">DMZ serveurs</text>
-      <text class="vz-mono vz-sub" x="865" y="294" text-anchor="middle">10.0.0.0/24</text>
-      <text class="vz-sub" x="865" y="313" text-anchor="middle">mail 10.0.0.25 : 25</text>
-      <text class="vz-sub" x="865" y="330" text-anchor="middle">web 10.0.0.10 : 8080</text>
-      <text class="vz-sub" x="865" y="347" text-anchor="middle">eth2</text>
+      <rect class="vz-ok" x="55" y="398" width="285" height="58" rx="10"/>
+      <text class="vz-lbl" x="197" y="421" text-anchor="middle">Clients</text>
+      <text class="vz-mono vz-sub" x="197" y="440" text-anchor="middle">172.16.20.0 /24</text>
+    </g>
+    <g class="vz-step">
+      <rect class="vz-ok" x="580" y="398" width="300" height="58" rx="10"/>
+      <text class="vz-lbl" x="730" y="421" text-anchor="middle">Administrateurs</text>
+      <text class="vz-mono vz-sub" x="730" y="440" text-anchor="middle">172.16.10.0 /24 · syslog .50</text>
     </g>
 
-    <g class="vz-wire" color="var(--fg-mute)">
-      <path d="M150,163 H400" marker-end="url(#ar5)"/>
-      <path d="M555,145 H700 V78 H781" marker-end="url(#ar5)"/>
-      <path d="M555,225 H700 V300 H781" marker-end="url(#ar5)"/>
-      <path d="M781,118 H700 V200 H559" marker-end="url(#ar5)"/>
+    <g class="vz-step">
+      <path class="vz-flux" style="stroke:var(--d-purple)" d="M552,112 Q700,112 738,198" marker-end="url(#tdnP)"/>
+      <path class="vz-flux" style="stroke:var(--d-purple)" d="M552,348 Q700,348 738,272" marker-end="url(#tdnP)"/>
+      <text class="vz-mono vz-t-nat" x="655" y="104" text-anchor="middle">DNAT 25 → 2025</text>
+      <text class="vz-mono vz-t-nat" x="655" y="366" text-anchor="middle">DNAT 80 → 8080</text>
+      <text class="vz-mono vz-t-nat" x="398" y="122" text-anchor="end">SNAT (MASQUERADE)</text>
+      <text class="vz-mono vz-t-nat" x="545" y="243">SNAT → 20.0.0.12</text>
     </g>
-
-    <text class="vz-mono vz-t-nat" x="275" y="153" text-anchor="middle">DNAT 25 → 10.0.0.25:25</text>
-    <text class="vz-mono vz-t-nat" x="275" y="186" text-anchor="middle">DNAT 80 → 10.0.0.10:8080</text>
-    <text class="vz-mono vz-t-nat" x="640" y="192" text-anchor="middle">MASQUERADE en sortie</text>
-    <text class="vz-mono vz-t-filt" x="640" y="70" text-anchor="middle">web sortant 80/443</text>
-    <text class="vz-mono vz-t-filt" x="640" y="292" text-anchor="middle">mail 25 · web 8080</text>
   </svg>
-  <div class="legend">Trois pattes, <b>deux publications entrantes</b> vers la DMZ et <b>un masquage
-  sortant</b> pour le LAN. Aucun trait ne relie directement Internet au LAN&nbsp;: c'est ce que
-  l'analyse doit faire apparaître.</div>
+  <div class="legend"><b>Deux translations de source</b> — <code>MASQUERADE</code> en sortant sur
+  <code>eth0</code>, <code>SNAT --to-source 20.0.0.12</code> en entrant en DMZ sur
+  <code>eth2</code> — et <b>deux translations de destination</b>&nbsp;: le <b>25 depuis le WAN</b>
+  vers <code>20.0.0.100:2025</code>, et le <b>80 depuis le LAN</b> vers
+  <code>20.0.0.100:8080</code>. Noter que le second DNAT est sur <code>eth1</code>&nbsp;: c'est le
+  <b>proxy transparent</b>.</div>
 </div>
 
-<div class="exam"><div class="t">Le piège du port, encore : les règles filter visent 8080, pas 80</div>
-Comme dans le TD, la règle <code>FORWARD</code> du serveur web porte sur <code>--dport 8080</code>.
-Le <code>PREROUTING</code> a réécrit la destination <b>avant</b> la décision de routage&nbsp;: quand
-<code>FORWARD</code> examine le paquet, il porte déjà l'adresse <b>et le port</b> internes. Le
-serveur de messagerie, lui, garde le <b>25</b> des deux côtés — d'où l'impression trompeuse que
-«&nbsp;ça marche pour l'un et pas pour l'autre&nbsp;».
+<div class="viz">
+  <div class="t">Schéma 2 — TABLE FILTER, flux 1 à 4</div>
+  <svg viewBox="0 0 940 470" role="img" aria-label="Schéma des flux 1 à 4 : le LAN vers la DMZ, la DMZ vers le WAN, les administrateurs vers le pare-feu en SSH, les administrateurs vers la DMZ en SSH.">
+    <defs>
+      <marker id="tdfW" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" style="fill:var(--border)"/></marker>
+      <marker id="tdfG" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" style="fill:var(--d-green)"/></marker>
+      <marker id="tdfB" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" style="fill:var(--d-blue)"/></marker>
+      <marker id="tdfR" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" style="fill:var(--d-red)"/></marker>
+    </defs>
+
+    <g class="vz-wire">
+      <path d="M470,64 V145"/><path d="M535,230 H745"/><path d="M470,315 V372"/>
+      <path d="M197,372 H725"/><path d="M197,372 V398"/><path d="M725,372 V398"/>
+    </g>
+
+    <g class="vz-step">
+      <rect class="vz-bad" x="385" y="10" width="170" height="54" rx="10"/>
+      <text class="vz-lbl" x="470" y="33" text-anchor="middle">WAN</text>
+      <text class="vz-mono vz-sub" x="470" y="50" text-anchor="middle">10.0.0.0 /8</text>
+    </g>
+    <g class="vz-step">
+      <rect class="vz-dec" x="405" y="145" width="130" height="170" rx="12"/>
+      <text class="vz-mono vz-sub" x="470" y="163" text-anchor="middle">eth0</text>
+      <text class="vz-lbl" x="470" y="232" text-anchor="middle">PARE-FEU</text>
+      <text class="vz-mono vz-sub" x="470" y="308" text-anchor="middle">eth1</text>
+      <text class="vz-mono vz-sub" x="545" y="222">.12</text>
+    </g>
+    <g class="vz-step">
+      <rect class="vz-filt" x="745" y="185" width="185" height="92" rx="10"/>
+      <text class="vz-lbl" x="837" y="209" text-anchor="middle">SRV — DMZ</text>
+      <text class="vz-mono vz-sub" x="837" y="227" text-anchor="middle">20.0.0.100</text>
+      <text class="vz-mono vz-sub" x="837" y="248" text-anchor="middle">! 8080</text>
+      <text class="vz-mono vz-sub" x="837" y="265" text-anchor="middle">! 2025</text>
+    </g>
+    <g class="vz-step">
+      <rect class="vz-ok" x="55" y="398" width="285" height="58" rx="10"/>
+      <text class="vz-lbl" x="197" y="421" text-anchor="middle">Clients</text>
+      <text class="vz-mono vz-sub" x="197" y="440" text-anchor="middle">172.16.20.0 /24</text>
+    </g>
+    <g class="vz-step">
+      <rect class="vz-ok" x="580" y="398" width="300" height="58" rx="10"/>
+      <text class="vz-lbl" x="730" y="421" text-anchor="middle">Administrateurs</text>
+      <text class="vz-mono vz-sub" x="730" y="440" text-anchor="middle">172.16.10.0 /24</text>
+    </g>
+
+    <g class="vz-step">
+      <path class="vz-flux vz-fg" d="M200,396 V344 H445 V210 H740" marker-end="url(#tdfG)"/>
+      <circle class="vz-badge vz-bg" cx="330" cy="344" r="12"/>
+      <text class="vz-bnum vz-nt-g" x="330" y="348" text-anchor="middle">1</text>
+
+      <path class="vz-flux vz-fb" d="M740,248 H497 V68" marker-end="url(#tdfB)"/>
+      <circle class="vz-badge vz-bb" cx="625" cy="248" r="12"/>
+      <text class="vz-bnum vz-nt-b" x="625" y="252" text-anchor="middle">2</text>
+
+      <path class="vz-flux vz-fr" d="M725,396 V362 H462 V320" marker-end="url(#tdfR)"/>
+      <circle class="vz-badge vz-br" cx="595" cy="362" r="12"/>
+      <text class="vz-bnum vz-nt-r" x="595" y="366" text-anchor="middle">3</text>
+
+      <path class="vz-flux vz-fr" d="M792,396 V336 H518 V266 H740" marker-end="url(#tdfR)"/>
+      <circle class="vz-badge vz-br" cx="668" cy="336" r="12"/>
+      <text class="vz-bnum vz-nt-r" x="668" y="340" text-anchor="middle">4</text>
+    </g>
+  </svg>
+  <div class="legend" style="text-align:left">
+  <b>Flux 1</b>&nbsp;: les clients internes surfent en passant par la DMZ (ports tcp 80 et udp 53) et
+  consultent leur courrier (tcp 110)<br>
+  <b>Flux 2</b>&nbsp;: DMZ relaie les requêtes des clients vers le WAN<br>
+  <b>Flux 3</b>&nbsp;: les administrateurs se connectent au FW en ssh (tcp 22 en <code>INPUT</code>)<br>
+  <b>Flux 4</b>&nbsp;: les administrateurs se connectent à la DMZ en ssh (tcp 22 en <code>FORWARD</code>)
+  <p style="margin:8px 0 0"><b>Le détail qui compte dans le flux 1</b>&nbsp;: il écrit «&nbsp;tcp
+  80&nbsp;» parce que c'est ce que <b>le client émet</b>&nbsp;; la règle de <code>filter</code>, elle,
+  porte sur <b>8080</b> — la valeur d'après le DNAT.</p>
+  </div>
 </div>
 
-<h3 id="ch15-fwb">15.7 Les consoles graphiques : Firewall Builder</h3>
+<div class="viz">
+  <div class="t">Schéma 3 — TABLE FILTER, flux 5 à 8</div>
+  <svg viewBox="0 0 940 470" role="img" aria-label="Schéma des flux 5 à 8 : les logs de la DMZ vers le collecteur syslog, les clients qui pinguent le WAN, les administrateurs qui pinguent le pare-feu et la DMZ.">
+    <defs>
+      <marker id="tdgW" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" style="fill:var(--border)"/></marker>
+      <marker id="tdgG" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" style="fill:var(--d-green)"/></marker>
+      <marker id="tdgB" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" style="fill:var(--d-blue)"/></marker>
+    </defs>
+
+    <g class="vz-wire">
+      <path d="M470,64 V145"/><path d="M535,230 H745"/><path d="M470,315 V372"/>
+      <path d="M197,372 H725"/><path d="M197,372 V398"/><path d="M725,372 V398"/>
+    </g>
+
+    <g class="vz-step">
+      <rect class="vz-bad" x="385" y="10" width="170" height="54" rx="10"/>
+      <text class="vz-lbl" x="470" y="33" text-anchor="middle">WAN</text>
+      <text class="vz-mono vz-sub" x="470" y="50" text-anchor="middle">10.0.0.0 /8</text>
+    </g>
+    <g class="vz-step">
+      <rect class="vz-dec" x="405" y="145" width="130" height="170" rx="12"/>
+      <text class="vz-mono vz-sub" x="470" y="163" text-anchor="middle">eth0</text>
+      <text class="vz-lbl" x="470" y="232" text-anchor="middle">PARE-FEU</text>
+      <text class="vz-mono vz-sub" x="470" y="308" text-anchor="middle">eth1</text>
+      <text class="vz-mono vz-sub" x="545" y="222">.12</text>
+    </g>
+    <g class="vz-step">
+      <rect class="vz-filt" x="745" y="185" width="185" height="92" rx="10"/>
+      <text class="vz-lbl" x="837" y="209" text-anchor="middle">SRV — DMZ</text>
+      <text class="vz-mono vz-sub" x="837" y="227" text-anchor="middle">20.0.0.100</text>
+      <text class="vz-mono vz-sub" x="837" y="252" text-anchor="middle">émet ses journaux</text>
+    </g>
+    <g class="vz-step">
+      <rect class="vz-ok" x="55" y="398" width="285" height="58" rx="10"/>
+      <text class="vz-lbl" x="197" y="421" text-anchor="middle">Clients</text>
+      <text class="vz-mono vz-sub" x="197" y="440" text-anchor="middle">172.16.20.0 /24</text>
+    </g>
+    <g class="vz-step">
+      <rect class="vz-box" x="580" y="398" width="300" height="58" rx="10"/>
+      <text class="vz-lbl" x="730" y="421" text-anchor="middle">Administrateurs · collecteur syslog</text>
+      <text class="vz-mono vz-sub" x="730" y="440" text-anchor="middle">172.16.10.0 /24 · 172.16.10.50 : 514</text>
+    </g>
+
+    <g class="vz-step">
+      <path class="vz-flux vz-fb" d="M740,262 H505 V350 H858 V392" marker-end="url(#tdgB)"/>
+      <circle class="vz-badge vz-bb" cx="700" cy="350" r="12"/>
+      <text class="vz-bnum vz-nt-b" x="700" y="354" text-anchor="middle">5</text>
+
+      <path class="vz-flux vz-fg" d="M200,396 V358 H452 V68" marker-end="url(#tdgG)"/>
+      <circle class="vz-badge vz-bg" cx="452" cy="112" r="12"/>
+      <text class="vz-bnum vz-nt-g" x="452" y="116" text-anchor="middle">6</text>
+
+      <path class="vz-flux vz-fg" d="M725,396 V374 H484 V320" marker-end="url(#tdgG)"/>
+      <circle class="vz-badge vz-bg" cx="600" cy="374" r="12"/>
+      <text class="vz-bnum vz-nt-g" x="600" y="378" text-anchor="middle">7</text>
+
+      <path class="vz-flux vz-fg" d="M792,396 V334 H520 V212 H740" marker-end="url(#tdgG)"/>
+      <circle class="vz-badge vz-bg" cx="668" cy="334" r="12"/>
+      <text class="vz-bnum vz-nt-g" x="668" y="338" text-anchor="middle">8</text>
+    </g>
+  </svg>
+  <div class="legend" style="text-align:left">
+  <b>Flux 5</b>&nbsp;: envoi des LOGs vers serveur syslog (172.16.10.50 en udp 514)<br>
+  <b>Flux 6</b>&nbsp;: Les clients (administrateurs compris) peuvent pingguer le WAN<br>
+  <b>Flux 7</b>&nbsp;: les administrateurs pingguent le FW<br>
+  <b>Flux 8</b>&nbsp;: les administrateurs pingguent la DMZ
+  <p style="margin:8px 0 0">Le <b>flux 5</b> est le <b>seul flux DMZ → interne</b> de tout le
+  script&nbsp;: si le serveur DMZ est compromis, il ne peut parler à l'intérieur que par
+  <b>UDP 514, vers une seule adresse</b>.</p>
+  </div>
+</div>
+
+<div class="exam"><div class="t">Ce qu'il en a dit à l'oral, en corrigeant (séance 3)</div>
+<b>Sur les deux formes de SNAT.</b> «&nbsp;J'ai du SNAT qui est fait avec <code>MASQUERADE</code> au
+moment où ça sort vers Internet. Et sur l'autre patte, j'ai du SNAT qui est fait vers une seule
+adresse source (<code>--to-source</code>). <b>C'est une aberration technique en prod de mélanger les
+deux, mais le but c'était justement que vous ayez dans l'énoncé à la fois le <code>MASQUERADE</code>
+et le <code>--to-source</code> pour vérifier que vous comprenez la nuance&nbsp;!</b>&nbsp;»
+<p>C'est <b>la</b> raison d'être du <code>MASQUERADE</code> sur <code>eth0</code>&nbsp;: pas une
+adresse dynamique, mais un <b>point de comparaison pédagogique</b>. La nuance à restituer&nbsp;:
+même opération, mais <code>MASQUERADE</code> <b>lit l'adresse de l'interface à chaque flux</b> —
+obligatoire en DHCP, coûteux en CPU&nbsp;; <code>--to-source</code> écrit une adresse <b>fixe et
+connue d'avance</b> — plus rapide, et elle sert de <b>détecteur</b> si l'adresse change sans raison
+(§12.2).</p>
+<p><b>Sur le rôle de la DMZ.</b> À la question posée à la classe, la réponse est&nbsp;: «&nbsp;C'est
+la DMZ&nbsp;! Ça sert de <b>relais de messagerie</b> pour les flux de messagerie entrants, et ça sert
+de <b>passerelle / filtrage</b> pour les flux web&nbsp;». Les deux moitiés comptent&nbsp;: le
+<b>2025 entrant</b> pour le courrier, le <b>8080 + relais vers le WAN</b> pour le web.</p>
+<p style="margin-bottom:0"><b>Sur le SSH.</b> «&nbsp;Le SSH n'est géré que depuis la zone qui est
+supposée être le réseau des administrateurs. <b>Les clients normaux, eux, n'ont PAS accès au SSH du
+pare-feu&nbsp;!</b> [...] et tout le reste est rejeté par défaut.&nbsp;»</p>
+</div>
+
+<div class="callout warn"><div class="t">Ce que le corrigé ne dit pas — trois critiques à savoir formuler</div>
+Ces trois points ne figurent <b>pas</b> dans la correction. Ils sont justes techniquement et c'est
+exactement le genre de remarque attendue si l'on demande de <b>critiquer</b> le script — mais ne les
+présente pas comme venant du corrigé.
+<p><b>1. L'ordre <code>-X</code> avant <code>-F</code> est fragile.</b>
+<code>iptables -X</code> ne supprime que les chaînes <b>vides et non référencées</b>. Sur un pare-feu
+déjà configuré, <code>adminssh</code> serait encore remplie et référencée&nbsp;: la suppression
+échouerait. L'ordre robuste est <b><code>-F</code> puis <code>-X</code></b>.</p>
+<p><b>2. <code>NET_CLIENTS</code> est déclaré et jamais utilisé.</b> Toutes les règles du LAN portent
+sur <code>172.16.0.0/16</code> — ce qui est <b>voulu</b>, son commentaire le dit («&nbsp;dont les
+admins surfent&nbsp;»). La variable reste donc un <b>reliquat</b>&nbsp;: le genre de détail qu'une
+lecture attentive relève.</p>
+<p style="margin-bottom:0"><b>3. L'ICMP des administrateurs est large.</b>
+<code>-A INPUT -i eth1 -s $NET_ADMINS -p icmp -j ACCEPT</code> n'a <b>pas</b> de
+<code>--icmp-type</code>&nbsp;: tous les types passent, y compris le <b>type 5 <i>redirect</i></b>
+(§6.3). Défendable depuis un réseau d'administration de confiance — à comparer avec la règle du flux
+6, qui elle <b>restreint</b> à <code>--icmp-type echo-request</code>.</p>
+</div>
+
+<div class="callout ok"><div class="t">La méthode de lecture, en quatre passes</div>
+On ne lit pas un script de haut en bas. <b>(1)</b> les <b>variables</b> et les <b>politiques par
+défaut</b> — que refuse-t-on&nbsp;? · <b>(2)</b> la <b>table <code>nat</code></b> — quelles adresses
+et quels ports sont réécrits, et donc quelles valeurs la table <code>filter</code> verra-t-elle&nbsp;?
+· <b>(3)</b> les <b>flux autorisés</b>, un par un, en notant le sens · <b>(4)</b> l'<b>ordre</b> et
+les <b>chaînes utilisateur</b>.
+<p style="margin-bottom:0">C'est l'ordre des trois schémas de la correction&nbsp;: <b>NAT
+d'abord</b>, filtrage ensuite.</p>
+</div>
+
+<h3 id="ch15-fwb">15.6 Les consoles graphiques : Firewall Builder</h3>
 <p>Dernier volet de la partie «&nbsp;exploitation&nbsp;» du support&nbsp;: <b>on ne tape pas toujours
 les règles à la main</b>. <b>Firewall Builder</b> (<code>fwbuilder</code>) est un <b>assistant de
 création de règles</b> — un outil ancien, mais dont la logique est celle de <b>toutes</b> les
@@ -2873,7 +3073,7 @@ sens d'interface, ou filtrer sur une adresse d'avant translation.</p>
 <div class="step"><b>1. Poser les zones et les pattes</b><br>
 Un rectangle par zone (Internet, LAN, DMZ), le pare-feu au milieu, et sur chaque trait le nom de
 l'<b>interface</b> et le <b>réseau</b>. C'est ce que produit la lecture des <code>-i</code> /
-<code>-o</code> et des adresses (§15.5, §15.6).</div>
+<code>-o</code> et des adresses (§15.5).</div>
 <div class="step"><b>2. Tracer une flèche par flux, dans le sens de l'<i>aller</i></b><br>
 Un flux = une flèche orientée, annotée du <b>service et du port</b>. Le retour ne se dessine pas&nbsp;:
 il est couvert par <code>ESTABLISHED,RELATED</code> (§10).</div>
@@ -3093,8 +3293,8 @@ correction expliquée immédiatement, mémorisation des erreurs pour pouvoir les
 </div>
 
 <button id="top" title="Haut de page">↑</button>
-<script src="data/qcm-inf5244.js?v=9"></script>
-<script src="assets/app.js?v=30"></script>
+<script src="data/qcm-inf5244.js?v=10"></script>
+<script src="assets/app.js?v=31"></script>
 <script>initQCM(window.QCM_DATA, window.QCM_CHAPTERS, 'inf5244');</script>
 </body>
 </html>

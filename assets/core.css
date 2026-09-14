@@ -367,6 +367,13 @@ html[data-theme="dark"] mark { background: #7a5c00; color: #fff; }
   .topbar .brand small { display: none; }
 }
 
+/* Barre du haut sur écran étroit : elle ne doit jamais faire déborder la page. */
+@media (max-width: 700px) {
+  .topbar { gap: 7px; padding: 10px 12px; flex-wrap: wrap; }
+  .topbar .brand { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .topbar a.home { padding: 5px 7px; font-size: .84rem; white-space: nowrap; }
+}
+
 /* ============================================================
    Navigation par onglets
    ============================================================ */
