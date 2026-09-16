@@ -431,6 +431,14 @@ html[data-theme="dark"] mark { background: #7a5c00; color: #fff; }
 
 .qcm-controls input[type=number] { width: 78px; }
 
+/* Le <select> de chapitre se dimensionne sur son option la plus longue : sans
+   plafond, un intitulé de chapitre un peu long fait déborder la page sur
+   mobile. On le laisse rétrécir — la liste déroulante, elle, reste lisible. */
+@media (max-width: 700px) {
+  .qcm-controls label { max-width: 100%; min-width: 0; }
+  .qcm-controls select { flex: 1 1 auto; min-width: 0; max-width: 100%; }
+}
+
 /* ---------- Impression : tout le contenu réapparaît ---------- */
 @media print {
   .sidebar, .topbar, #top, .qcm-controls, .btn, .sec-nav, .search-panel,

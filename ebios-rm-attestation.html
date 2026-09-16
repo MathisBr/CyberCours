@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EBIOS Risk Manager — préparation à l'attestation (80 %)</title>
+<link rel="stylesheet" href="assets/core.css?v=27">
+<link rel="stylesheet" href="assets/viz.css?v=10">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><span class="dot"></span> EBIOS RM <small>· attestation — seuil 80 %</small></div>
+  <div class="spacer"></div>
+  <input id="search" type="search" placeholder="Rechercher…  (Ctrl+K)">
+  <a class="home" href="index.html">← Accueil</a>
+  <button class="btn ghost" onclick="toggleTheme()" title="Thème clair / sombre">◐</button>
+  <button class="btn ghost" onclick="window.print()" title="Imprimer / PDF">⎙</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar"><h4>Parcours</h4><div id="toc"></div></nav>
+  <main class="content">
+<h1>EBIOS Risk Manager — préparation à l'attestation</h1>
+<p class="lead">
+Le second QCM Moodle du module, celui qui conditionne l'<b>attestation de formation</b>. Son seuil est
+de <b>80 %</b>, et c'est ce seuil qui dicte la méthode de révision&nbsp;: il ne s'agit plus de viser
+une bonne note mais de <b>ne rien laisser au hasard</b> sur un corpus restreint et parfaitement
+documenté.
+</p>
+
+<!-- ===================================================================== -->
+<h2 id="format">★ Le format — ce qui est établi, et ce qui ne l'est pas</h2>
+
+<div class="callout danger"><div class="t">Ce qui est certain, et d'où ça vient</div>
+De la présentation du module (<code>MethodoSecu0</code>), mot pour mot&nbsp;: «&nbsp;<b>La journée de
+formation est obligatoire et le QCM doit être validé à 80&nbsp;% pour obtenir l'attestation de
+formation.</b>&nbsp;»
+<p style="margin-bottom:0">Deux conséquences sèches&nbsp;: la <b>présence</b> est une condition, et le
+seuil est un <b>seuil</b> — pas une moyenne à compenser ailleurs.</p>
+</div>
+
+<div class="callout warn"><div class="t">Ce que la recherche publique ne donne pas — et il faut le dire</div>
+J'ai cherché le format exact de ce questionnaire sur les sources officielles&nbsp;: le site
+d'<b>ALL4TEC</b> (pages formations et licences académiques), le <b>Club EBIOS</b> (pages
+certification, labels et FAQ) et l'<b>ANSSI</b> (méthode, label, formations labellisées).
+<p><b>Aucune de ces sources ne publie</b> le nombre de questions, la durée, ni le barème de ce QCM.
+Le seuil de 80&nbsp;% ne vient d'aucune de ces sources non plus&nbsp;: il vient de la présentation du
+module. C'est donc un <b>dispositif propre au cours</b>, pas une certification externe normalisée.</p>
+<p style="margin-bottom:0">Ce que la recherche a donné d'utile, en revanche&nbsp;: le <b>référentiel
+de compétences</b> du Club EBIOS (<a href="#competences">§1</a>) et le <b>kit de formation officiel de
+l'ANSSI</b>, dont cette page reprend l'ossature. <b>Ne comptez donc pas sur une annonce de format en
+séance&nbsp;: préparez-vous à ce qu'on vous interroge sur tout.</b></p>
+</div>
+
+<div class="grid c2">
+  <div class="card">
+    <h4>Ce que 80 % implique concrètement</h4>
+    <ul>
+      <li>Sur <b>20 questions</b> — le format de l'autre QCM du module — il faut <b>16 bonnes
+      réponses</b>. Quatre erreurs, et c'est raté.</li>
+      <li>Sur <b>25 questions</b>, il en faut <b>20</b>. Sur <b>30</b>, il en faut <b>24</b>.</li>
+      <li>Autrement dit&nbsp;: <b>une impasse sur un atelier suffit à faire échouer</b>. Les cinq
+      ateliers pèsent chacun trop lourd pour être sacrifiés.</li>
+      <li>La stratégie n'est pas de réviser «&nbsp;le plus important&nbsp;» mais de <b>couvrir
+      uniformément</b> — c'est l'inverse de la préparation à une note.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Le corpus, et il est fermé</h4>
+    <ul>
+      <li>La <b>séance du 15 septembre</b> — 3 h 12 de transcription. <b>C'est la source qui prime</b>&nbsp;:
+      c'est l'enseignant qui écrit le QCM.</li>
+      <li>Le <b>guide officiel</b> — <i>EBIOS Risk Manager, la méthode</i>, ANSSI-PA-048 v1.5.</li>
+      <li>Le <b>kit de formation de l'ANSSI</b>&nbsp;: support de formation (<b>205 diapositives</b>),
+      support du stagiaire (42 p.), correction de l'étude de cas (18 p.).</li>
+      <li>Le <b>support de la séance 2</b> — <code>MethodoSecu2</code>, <b>92 diapositives</b>,
+      désormais distribué.</li>
+      <li>L'outil <b>Agile Risk Manager</b> d'ALL4TEC, utilisé en TP.</li>
+    </ul>
+    <p style="font-size:.88rem;color:var(--fg-soft);margin-bottom:0">C'est un corpus <b>fini et
+    public</b>. Contrairement à un examen ouvert, il n'y a rien à deviner&nbsp;: tout ce qui peut
+    tomber est dans ces quatre sources.</p>
+  </div>
+</div>
+
+<div class="exam"><div class="t">La bonne nouvelle, et la mauvaise</div>
+<b>La bonne</b>&nbsp;: la méthode est <b>hautement structurée</b>. Cinq ateliers, chacun avec un
+objectif, des participants, des entrées, des sorties et des activités numérotées. Une fois cette
+grille en tête, presque toute question s'y raccroche.
+<p style="margin-bottom:0"><b>La mauvaise</b>&nbsp;: c'est précisément cette régularité qui rend les
+questions faciles à écrire <b>et</b> faciles à rater — il suffit d'échanger deux ateliers dans une
+proposition. D'où le <a href="#pieges">§7</a>, consacré aux confusions.</p>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="competences"><span class="num">1.</span> Le référentiel de compétences</h2>
+
+<p>Le <b>Club EBIOS</b> agrée des organismes certificateurs pour évaluer les candidats. Son référentiel
+vise le <b>niveau 2, «&nbsp;Application&nbsp;»</b>, et se structure en <b>trois thèmes</b>. C'est la
+grille de lecture la plus proche d'un programme officiel pour ce QCM — et c'est sur elle que cette
+page est construite.</p>
+
+<div class="viz">
+  <div class="t">Les trois thèmes du référentiel, et où les travailler</div>
+  <div class="vz-grid g3">
+
+    <button class="vz-c k-green" data-hint="Ce qui est attendu">
+      <span class="n">Thème 1</span>
+      <h5>Maîtrise des concepts</h5>
+      <span class="q">Le vocabulaire, et les idées qui fondent la méthode.</span>
+      <span class="more"><span class="t">Ce que ça couvre</span>
+      Danger, risque, dommage · gravité et vraisemblance · valeur métier et bien support · source de
+      risque et objectif visé · événement redouté · scénario stratégique et opérationnel · socle de
+      sécurité · risque résiduel.</span>
+      <span class="more"><span class="t">Où le travailler</span>
+      <a href="#bases">§3, les bases</a> et <a href="#pieges">§6, les pièges</a>. C'est le thème le
+      plus exposé aux questions de définition pure.</span>
+    </button>
+
+    <button class="vz-c k-blue" data-hint="Ce qui est attendu">
+      <span class="n">Thème 2</span>
+      <h5>Maîtrise de la démarche</h5>
+      <span class="q">L'enchaînement, et la logique qui le commande.</span>
+      <span class="more"><span class="t">Ce que ça couvre</span>
+      Les <b>5 fondements</b> · la pyramide conformité / scénarios · l'alternance des points de vue ·
+      l'ordre des ateliers et ce qui circule entre eux · le caractère <b>itératif</b> de la
+      démarche.</span>
+      <span class="more"><span class="t">Où le travailler</span>
+      <a href="#fondements">§2</a> et <a href="#ateliers">§4</a> et <a href="#activites">§5</a>. C'est le thème qui distingue une
+      révision sérieuse d'un simple bachotage de définitions.</span>
+    </button>
+
+    <button class="vz-c k-purple" data-hint="Ce qui est attendu">
+      <span class="n">Thème 3</span>
+      <h5>Pratique de la méthode</h5>
+      <span class="q">Savoir la dérouler sur un cas.</span>
+      <span class="more"><span class="t">Ce que ça couvre</span>
+      Les <b>activités</b> de chaque atelier (1-1 à 5-3) · les <b>livrables</b> · la cotation en
+      gravité puis en vraisemblance · la conduite des ateliers avec les métiers.</span>
+      <span class="more"><span class="t">Où le travailler</span>
+      <a href="#ateliers">§4</a> et <a href="#activites">§5</a>, <a href="#recitation">§8</a> — et surtout le <b>devoir</b> sur
+      Agile Risk Manager, qui est l'exercice d'application grandeur nature.</span>
+    </button>
+
+  </div>
+  <div class="vz-bar">
+    <button class="btn" data-cards="open">Tout déplier</button>
+    <button class="btn ghost" data-cards="close">Tout replier</button>
+    <span class="cnt"></span>
+  </div>
+  <div class="legend">Source&nbsp;: dispositif de labellisation du Club EBIOS. Attention à ne pas
+  confondre ses <b>quatre dispositifs</b>&nbsp;: les <b>formateurs signataires</b> de la charte, les
+  <b>formations labellisées</b> SecNumedu-FC par l'ANSSI, la <b>certification de compétences</b>
+  délivrée par des organismes accrédités, et les <b>logiciels labellisés</b> par l'ANSSI — dont
+  <b>Agile Risk Manager</b>.</div>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="fondements"><span class="num">2.</span> Les cinq fondements</h2>
+
+<div class="exam"><div class="t">Une compétence explicitement exigée par le support officiel</div>
+La diapositive «&nbsp;<b>ce que vous devez être capable de faire à ce stade</b>&nbsp;» du kit de
+formation de l'ANSSI n'en demande que <b>deux</b>&nbsp;:
+<p style="margin-bottom:0"><b>1.</b> Savoir <b>définir un risque</b>. <b>2.</b> <b>Lister les
+5 fondamentaux</b> de la méthode EBIOS Risk Manager.
+<br>C'est une question de <b>restitution pure</b>, donc la plus facile à poser et la plus impardonnable
+à rater.</p>
+</div>
+
+<div class="tw"><table>
+<thead><tr><th style="width:5%">#</th><th style="width:31%">Fondement</th><th>Ce qu'il veut dire</th></tr></thead>
+<tbody>
+<tr><td><b>1</b></td><td>Une démarche structurée en <b>ateliers</b></td><td>Cinq ateliers successifs, chacun avec ses participants et ses livrables. Ce ne sont pas des «&nbsp;phases&nbsp;» documentaires&nbsp;: ce sont des <b>réunions de travail</b>.</td></tr>
+<tr><td><b>2</b></td><td>Une <b>synthèse entre conformité et scénarios</b></td><td>La <b>conformité</b> traite les risques communs et accidentels — c'est le <b>socle</b>. Les <b>scénarios</b> traitent les attaques ciblées. Chaque approche est placée «&nbsp;là où elle apporte la plus forte valeur ajoutée&nbsp;».</td></tr>
+<tr><td><b>3</b></td><td>Une <b>alternance entre points de vue</b></td><td><b>Organisation → attaquant → organisation.</b> On part de ce qu'on protège, on passe du côté de celui qui attaque, on revient décider. C'est ce qui donne son rythme à l'enchaînement des ateliers.</td></tr>
+<tr><td><b>4</b></td><td>Une prise en compte de l'<b>écosystème</b></td><td>«&nbsp;De plus en plus de modes opératoires exploitent les <b>maillons les plus vulnérables</b> de cet écosystème.&nbsp;» C'est tout l'objet de l'atelier 3.</td></tr>
+<tr><td><b>5</b></td><td>Une approche <b>efficace plutôt qu'exhaustive</b></td><td>Focalisation sur les éléments les plus importants, et «&nbsp;production d'un document <b>efficace et accessible</b> plutôt qu'exhaustif&nbsp;». C'est ce qui oppose EBIOS RM à EBIOS 2010.</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout ok"><div class="t">Le moyen de les retenir dans l'ordre</div>
+<b>A</b>teliers · <b>C</b>onformité et scénarios · <b>P</b>oints de vue · <b>É</b>cosystème ·
+<b>E</b>fficacité. Et une logique&nbsp;: les deux premiers disent <b>comment on travaille</b>, le
+troisième <b>dans quel ordre</b>, le quatrième <b>jusqu'où on regarde</b>, le cinquième <b>quand on
+s'arrête</b>.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="bases"><span class="num">3.</span> Les bases — risque, gravité, vraisemblance</h2>
+
+<div class="callout def"><div class="t">Les trois notions à ne jamais confondre</div>
+<b>Danger</b>&nbsp;: une <b>propriété intrinsèque</b>, un fait. <b>Risque</b>&nbsp;: une <b>situation
+d'exposition</b> à ce danger — <b>ce n'est pas une propriété du système</b>. <b>Dommage</b>&nbsp;: la
+<b>conséquence</b> si l'événement se réalise.
+<p style="margin-bottom:0">La plaque de verglas est un danger en permanence&nbsp;; <b>tant que
+personne ne passe, il n'y a aucun risque</b>&nbsp;; la fracture est le dommage.</p>
+</div>
+
+<div class="tw"><table>
+<thead><tr><th style="width:26%">Grandeur</th><th>Définition</th><th style="width:22%">Déterminée où</th></tr></thead>
+<tbody>
+<tr><td><b>Gravité</b></td><td>L'ampleur du <b>préjudice</b> subi par l'organisation. Se cote sur les <b>événements redoutés</b>.</td><td><b>Atelier 1</b></td></tr>
+<tr><td><b>Vraisemblance</b></td><td>La <b>probabilité</b> que le scénario se réalise. <b>Vraisemblance = menace × vulnérabilité.</b></td><td><b>Atelier 4</b></td></tr>
+<tr><td><b>Risque</b></td><td><b>Risque = f (gravité, vraisemblance)</b> — un point dans un plan à deux dimensions.</td><td>Croisement, <b>atelier 5</b></td></tr>
+<tr><td><b>Risque résiduel</b></td><td>Ce qui subsiste <b>après</b> application du plan de traitement. Doit être <b>formellement accepté</b>.</td><td><b>Atelier 5</b></td></tr>
+</tbody>
+</table></div>
+
+<div class="exam"><div class="t">Le sens de lecture qui évite l'erreur la plus coûteuse</div>
+La <b>gravité</b> se cote sur ce qu'on <b>perd</b> — donc <b>tôt</b>, avec les métiers, à l'atelier 1.
+La <b>vraisemblance</b> se cote sur ce que l'attaquant <b>doit franchir</b> — donc <b>tard</b>, avec
+les techniciens, à l'atelier 4.
+<p style="margin-bottom:0">Si une proposition place les deux dans le même atelier, elle est fausse.</p>
+</div>
+
+<h3 id="bases-echelle">3.1 Les échelles</h3>
+<p><b>Quatre niveaux</b>, et un nombre <b>pair</b> — pour supprimer le <b>biais du juste milieu</b>&nbsp;:
+face à une échelle impaire, les participants choisissent massivement la valeur centrale pour éviter de
+trancher.</p>
+<div class="tw"><table>
+<thead><tr><th style="width:16%">Niveau</th><th>Conséquences pour l'organisation</th></tr></thead>
+<tbody>
+<tr><td><b>G1 — Mineure</b></td><td>Aucun impact opérationnel ni sur la sécurité des personnes. Elle surmontera <b>sans trop de difficultés</b> — consommation des marges.</td></tr>
+<tr><td><b>G2 — Significative</b></td><td>Dégradation des performances <b>sans</b> impact sur la sécurité des personnes et des biens. Elle surmontera <b>malgré quelques difficultés</b> — mode dégradé.</td></tr>
+<tr><td><b>G3 — Grave</b></td><td>Forte dégradation, avec d'éventuels <b>impacts significatifs sur la sécurité des personnes</b>. Elle surmontera avec de <b>sérieuses difficultés</b> — mode très dégradé.</td></tr>
+<tr><td><b>G4 — Critique</b></td><td>Incapacité d'assurer tout ou partie de l'activité, avec d'éventuels impacts graves sur la sécurité. Elle <b>ne surmontera vraisemblablement pas</b> — <b>sa survie est menacée</b>.</td></tr>
+</tbody>
+</table></div>
+<div class="callout ok"><div class="t">Les deux lignes de partage</div>
+Entre <b>G2 et G3</b>&nbsp;: l'apparition d'un <b>impact sur la sécurité des personnes</b>.<br>
+Entre <b>G3 et G4</b>&nbsp;: la <b>survie de l'organisation</b>.
+<p style="margin-bottom:0">Ne placez un événement en <b>G4</b> que si la survie est réellement en
+jeu&nbsp;: si l'organisation peut survivre, même au prix de pertes lourdes, c'est du <b>G3</b>.</p>
+</div>
+<p>Les <b>cinq propriétés</b> d'une bonne échelle&nbsp;: <b>non ambiguë</b> · <b>explicite</b> (des
+critères factuels et mesurables) · <b>comprise par tous</b>, y compris des non-techniciens ·
+<b>adaptée à l'organisme</b> · <b>graduée de façon cohérente</b>.</p>
+
+<h3 id="bases-impacts">3.2 Les quatre familles d'impacts</h3>
+<p>C'est sur elles que se cote la <b>gravité</b>. Le cours en donne quatre, avec des cas réels — et
+les cas sont autant d'accroches mémorielles.</p>
+<div class="tw"><table>
+<thead><tr><th style="width:24%">Famille</th><th>Ce qu'elle recouvre</th></tr></thead>
+<tbody>
+<tr><td><b>Fonctionnel</b><br>opérationnel</td><td>Interruption d'un processus métier&nbsp;: l'usine s'arrête, les trains ne circulent plus, les médecins n'accèdent plus aux dossiers patients.</td></tr>
+<tr><td><b>Financier</b></td><td>Perte de chiffre d'affaires, <b>rançon</b>, coûts d'intervention forensique pour reconstruire le SI.</td></tr>
+<tr><td><b>Réputationnel</b></td><td><b>Ashley Madison (2015)</b> — base d'un site de rencontres extraconjugales publiée en clair&nbsp;; <b>Sony Pictures (2014)</b> — fuite de courriels de dirigeants et de scénarios non sortis.</td></tr>
+<tr><td><b>Juridique</b><br>réglementaire</td><td>Poursuites, amendes CNIL pour violation du RGPD — <b>jusqu'à 4&nbsp;% du chiffre d'affaires mondial</b>.</td></tr>
+</tbody>
+</table></div>
+<div class="callout"><div class="t">Deux repères de cours à garder avec</div>
+Le <b>fil conducteur</b> employé pour introduire la gravité et la vraisemblance est celui du
+<b>conducteur sur une route bordée de platanes</b>&nbsp;: la <b>gravité</b> dépend de la vitesse, de la
+taille de l'arbre et de la valeur du véhicule&nbsp;; la <b>vraisemblance</b>, de la configuration des
+lieux, de l'état du conducteur et des mesures préventives.
+<p style="margin-bottom:0">Et l'origine mathématique&nbsp;: <b>Christiaan Huygens (1659)</b>, formalisée
+par <b>Daniel Bernoulli (1738)</b> — le risque comme <b>espérance mathématique du dommage</b>. C'est ce
+qui justifie le produit gravité × vraisemblance.</p>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ateliers"><span class="num">4.</span> Les cinq ateliers, fiche par fiche</h2>
+
+<p>C'est le cœur du QCM. Chaque carte donne l'<b>objectif</b>, les <b>participants</b>, ce qui entre,
+ce qui sort et les <b>activités</b> — dans les termes du kit officiel. <b>Cliquez</b> pour ouvrir.</p>
+
+<div class="viz">
+  <div class="t">Les cinq ateliers — fiches d'identité officielles</div>
+  <div class="vz-grid">
+
+    <button class="vz-c k-green" data-hint="Entrées, sorties, activités">
+      <span class="n">Atelier 1 · le plus long</span>
+      <h5>Cadrage et socle de sécurité</h5>
+      <span class="q">Définir le cadre de l'étude et du projet, son périmètre métier et technique.</span>
+      <span class="more"><span class="t">Participants</span>
+      <b>Direction · Métiers · RSSI · DSI</b> — tout le monde.</span>
+      <span class="more"><span class="t">En entrée</span>
+      Si disponibles, les <b>résultats d'une précédente analyse</b>. Rien d'autre n'est requis&nbsp;:
+      c'est ce qui permet de partir de zéro.</span>
+      <span class="more"><span class="t">En sortie — quatre livrables</span>
+      Éléments de <b>cadrage</b> (participants, planning) · <b>périmètre métier et technique</b>
+      (missions, valeurs métier, biens supports) · <b>événements redoutés et leur gravité</b> ·
+      <b>socle de sécurité</b> (référentiels applicables, état d'application, <b>écarts et leurs
+      justifications</b>).</span>
+      <span class="more"><span class="t">Activités</span>
+      <b>1-1</b> définir le cadre de l'étude · <b>1-2</b> définir le périmètre métier et technique ·
+      <b>1-3</b> identifier les événements redoutés · <b>1-4</b> déterminer le socle de sécurité.</span>
+    </button>
+
+    <button class="vz-c k-red" data-hint="Entrées, sorties, activités">
+      <span class="n">Atelier 2 · point de vue attaquant</span>
+      <h5>Sources de risque</h5>
+      <span class="q">Identifier les sources de risque (SR) et leurs objectifs visés (OV) en lien avec l'objet de l'étude.</span>
+      <span class="more"><span class="t">Participants</span>
+      <b>Métiers · RSSI</b> · éventuellement un <b>spécialiste de l'analyse de la menace</b> · la
+      <b>direction</b> pour valider les résultats.</span>
+      <span class="more"><span class="t">En entrée</span>
+      Les <b>valeurs métier</b> et les <b>événements redoutés</b> de l'atelier 1.</span>
+      <span class="more"><span class="t">En sortie — trois livrables</span>
+      La liste des <b>couples SR/OV retenus</b> · la liste des <b>couples secondaires</b>, qui seront
+      si possible <b>mis sous surveillance</b> · une <b>cartographie</b> des SR/OV.</span>
+      <span class="more"><span class="t">Activités</span>
+      <b>2-1</b> identifier les sources de risque et objectifs visés · <b>2-2</b> évaluer les couples
+      SR/OV · <b>2-3</b> <b>sélectionner les couples SR/OV</b>. Évaluer et sélectionner sont deux
+      activités <b>distinctes</b>.</span>
+      <span class="more"><span class="t">La question de l'atelier</span>
+      «&nbsp;<b>Qui ou quoi</b> pourrait porter atteinte aux missions et valeurs métier identifiées
+      dans l'atelier 1, et <b>dans quels buts</b>&nbsp;?&nbsp;»</span>
+    </button>
+
+    <button class="vz-c k-amber" data-hint="Entrées, sorties, activités">
+      <span class="n">Atelier 3 · l'écosystème</span>
+      <h5>Scénarios stratégiques</h5>
+      <span class="q">Identifier les parties prenantes critiques et construire des scénarios de risque de haut niveau.</span>
+      <span class="more"><span class="t">Participants</span>
+      <b>Métiers · architectes fonctionnels · juristes · RSSI</b> · éventuellement un spécialiste
+      cybersécurité. C'est l'atelier où la sécurité rencontre le <b>droit des contrats</b>.</span>
+      <span class="more"><span class="t">En entrée</span>
+      Missions et valeurs métier, événements redoutés et gravité (atelier 1)&nbsp;; couples SR/OV
+      retenus (atelier 2). <b>C'est le point de convergence des deux premiers ateliers.</b></span>
+      <span class="more"><span class="t">En sortie — trois livrables</span>
+      <b>Cartographie de menace de l'écosystème</b> · <b>scénarios stratégiques</b> · <b>mesures de
+      sécurité retenues pour l'écosystème</b>. Le troisième est le plus souvent oublié&nbsp;: l'atelier 3
+      produit <b>déjà</b> des mesures.</span>
+      <span class="more"><span class="t">Activités</span>
+      <b>3-1</b> cartographier l'écosystème · <b>3-2</b> élaborer les scénarios stratégiques ·
+      <b>3-3</b> <b>définir les mesures de sécurité sur l'écosystème</b>. C'est la troisième qui
+      explique que l'atelier 3 produise déjà des mesures.</span>
+      <span class="more"><span class="t">Les 3 catégories de parties prenantes</span>
+      Les <b>clients</b> · les <b>partenaires</b> (flux réguliers, interconnexions VPN ou API) · les
+      <b>fournisseurs et sous-traitants</b>. Le troisième est «&nbsp;<b>le vecteur d'attaque le plus
+      redoutable aujourd'hui</b>&nbsp;» — l'assaillant vise un petit sous-traitant mal sécurisé pour
+      rebondir. Exemples cités&nbsp;: le prestataire de climatisation chez <b>Target</b>, et
+      <b>SolarWinds</b>.</span>
+    </button>
+
+    <button class="vz-c k-blue" data-hint="Entrées, sorties, activités">
+      <span class="n">Atelier 4 · le plus technique</span>
+      <h5>Scénarios opérationnels</h5>
+      <span class="q">Construire les scénarios schématisant les modes opératoires techniques des sources de risque.</span>
+      <span class="more"><span class="t">Participants</span>
+      <b>RSSI · DSI · architectes SI</b> · éventuellement un spécialiste cybersécurité. <b>Le seul
+      atelier sans la direction ni les métiers</b> — ils sont libérés.</span>
+      <span class="more"><span class="t">En entrée — le plus fourni</span>
+      Missions, valeurs métier et <b>biens supports</b> + <b>socle de sécurité</b> (atelier 1) ·
+      couples SR/OV (atelier 2) · <b>scénarios stratégiques</b> (atelier 3).</span>
+      <span class="more"><span class="t">En sortie — un seul livrable</span>
+      Les <b>scénarios opérationnels</b> et leur <b>évaluation en vraisemblance</b>. C'est ici, et
+      nulle part ailleurs, que la vraisemblance est déterminée.</span>
+      <span class="more"><span class="t">Activités et outillage</span>
+      <b>4-1</b> élaborer les scénarios · <b>4-2</b> évaluer leur vraisemblance. On s'appuie sur
+      <b>MITRE ATT&amp;CK</b> et les catalogues <b>CAPEC</b>.</span>
+    </button>
+
+    <button class="vz-c k-purple" data-hint="Entrées, sorties, activités">
+      <span class="n">Atelier 5 · la boucle se referme</span>
+      <h5>Traitement du risque</h5>
+      <span class="q">Définir une stratégie de traitement du risque et identifier les risques résiduels.</span>
+      <span class="more"><span class="t">Participants</span>
+      <b>Les mêmes qu'à l'atelier 1</b>&nbsp;: direction, métiers, RSSI, DSI. Ceux qui ont cadré
+      décident du traitement.</span>
+      <span class="more"><span class="t">En entrée</span>
+      <b>Socle de sécurité</b> (atelier 1) · <b>mesures pour l'écosystème</b> et <b>scénarios
+      stratégiques</b> (atelier 3) · <b>scénarios opérationnels</b> (atelier 4).</span>
+      <span class="more"><span class="t">En sortie — cinq livrables</span>
+      <b>Synthèse des risques initiaux</b> · <b>stratégie de traitement</b> · <b>plan de traitement du
+      risque</b> · <b>synthèse des risques résiduels</b> · <b>cadre du suivi des risques</b>.</span>
+      <span class="more"><span class="t">Activités</span>
+      <b>5-1</b> réaliser une évaluation des risques · <b>5-2</b> décider de la stratégie de
+      traitement du risque · <b>5-3</b> définir les mesures de sécurité · <b>5-4</b> <b>évaluer et
+      documenter les risques résiduels</b> · <b>5-5</b> <b>mettre en place le cadre de suivi des
+      risques</b>.</span>
+    </button>
+
+  </div>
+  <div class="vz-bar">
+    <button class="btn" data-cards="open">Tout déplier</button>
+    <button class="btn ghost" data-cards="close">Tout replier</button>
+    <span class="cnt"></span>
+  </div>
+  <div class="legend">L'<b>alternance des points de vue</b> se lit dans cette suite&nbsp;: atelier 1
+  <b>organisation</b> → atelier 2 <b>attaquant</b> → ateliers 3 et 4 <b>les deux</b> → atelier 5
+  <b>organisation</b>. C'est le fondement 3 rendu visible.</div>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="activites"><span class="num">5.</span> Les dix-sept activités, une par une</h2>
+
+<p>Chaque atelier se décompose en <b>activités numérotées</b>. Ce découpage sert à une seule
+chose&nbsp;: savoir <b>à quel moment précis</b> se fait chaque geste de la méthode. C'est là-dessus
+que porte toute question sérieuse.</p>
+
+<div class="exam"><div class="t">Ce qui compte vraiment : savoir où se fait quoi</div>
+Personne ne vous demandera combien d'activités compte un atelier. En revanche, <b>toute question
+utile porte sur le placement</b>&nbsp;: à quel moment on cote la gravité, à quel moment la
+vraisemblance, où naissent les mesures, où le risque résiduel est acté.
+<p style="margin-bottom:0"><b>Les quatre placements à tenir</b>&nbsp;: la <b>gravité</b> en 1-3 · la
+<b>vraisemblance</b> en 4-2 · les <b>mesures</b> en 3-3 <i>et</i> 5-3 · le <b>risque résiduel</b> en
+5-4. Tout le reste s'en déduit.</p>
+</div>
+
+<div class="tw"><table>
+<thead><tr><th style="width:7%">N°</th><th style="width:30%">Activité</th><th>Ce qu'on y fait concrètement</th></tr></thead>
+<tbody>
+<tr><td colspan="3" style="background:#EAF0F7"><b>Atelier 1 — Cadrage et socle de sécurité · 4 activités</b></td></tr>
+<tr><td><b>1-1</b></td><td>Définir le cadre de l'étude</td><td>Délimiter l'<b>objet de l'étude</b>, ses <b>missions</b>, le <b>projet</b> lui-même&nbsp;: participants, planning, rôles. C'est ici que se pose la <b>matrice RACI</b> de l'étude.</td></tr>
+<tr><td><b>1-2</b></td><td>Définir le périmètre métier et technique</td><td>Identifier les <b>valeurs métier</b> — processus, fonction support, étape de projet ou information — puis les <b>biens supports</b> sur lesquels elles reposent&nbsp;: numériques, physiques ou organisationnels, <b>y compris des personnes</b>. Et <b>limiter leur nombre</b>&nbsp;: c'est le fondement 5.</td></tr>
+<tr><td><b>1-3</b></td><td>Identifier les événements redoutés</td><td>Formuler les <b>craintes du métier</b> en expressions courtes et compréhensibles, <b>un seul critère de sécurité à la fois</b>, puis leur attribuer une <b>gravité de G1 à G4</b>.</td></tr>
+<tr><td><b>1-4</b></td><td>Déterminer le socle de sécurité</td><td>Lister les <b>référentiels applicables</b>, constater leur <b>état d'application</b>, et surtout identifier les <b>écarts</b> avec leur <b>justification</b>. C'est le livrable le plus utile pour la suite.</td></tr>
+
+<tr><td colspan="3" style="background:#EAF0F7"><b>Atelier 2 — Sources de risque · 3 activités</b></td></tr>
+<tr><td><b>2-1</b></td><td>Identifier les sources de risque et objectifs visés</td><td>Recenser les couples <b>SR/OV</b>&nbsp;: qui ou quoi pourrait porter atteinte aux valeurs métier, et dans quels buts. Le commandement 4 précise&nbsp;: interroger d'abord les participants, <b>sans</b> chercher à coller aux exemples du guide.</td></tr>
+<tr><td><b>2-2</b></td><td>Évaluer les couples SR/OV</td><td>Coter chaque couple sur la <b>motivation</b>, les <b>ressources</b> et l'<b>activité</b> de la source — et sur le <b>couple</b>, jamais sur la source seule (commandement 5). La motivation est définie comme «&nbsp;la capacité à <b>surmonter l'échec</b> lors d'une tentative infructueuse&nbsp;».</td></tr>
+<tr><td><b>2-3</b></td><td>Sélectionner les couples SR/OV</td><td><b>Activité distincte de la précédente</b>&nbsp;: on retient les couples <b>les plus pertinents</b> pour la suite, on range les autres en <b>secondaires</b> à mettre sous surveillance, et on <b>apparie</b> les événements redoutés les plus graves aux couples retenus.</td></tr>
+
+<tr><td colspan="3" style="background:#EAF0F7"><b>Atelier 3 — Scénarios stratégiques · 3 activités</b></td></tr>
+<tr><td><b>3-1</b></td><td>Cartographier l'écosystème</td><td>Identifier les <b>parties prenantes</b> — clients, partenaires, fournisseurs — et coter la menace qu'elles induisent sur <b>quatre critères</b>&nbsp;: <b>dépendance</b>, <b>pénétration</b>, <b>maturité cyber</b>, <b>confiance</b>. On en déduit les <b>parties prenantes critiques</b>.</td></tr>
+<tr><td><b>3-2</b></td><td>Élaborer les scénarios stratégiques</td><td>Construire les <b>chemins d'attaque de haut niveau</b> qu'une source de risque pourrait emprunter. Un scénario stratégique est «&nbsp;une <b>vision orientée événements</b> du ou des chemins d'attaque&nbsp;». Il hérite de la <b>gravité</b> de l'événement redouté visé.</td></tr>
+<tr><td><b>3-3</b></td><td>Définir les mesures de sécurité sur l'écosystème</td><td><b>L'activité qu'on oublie.</b> L'atelier 3 produit <b>déjà des mesures</b> — celles qui portent sur les parties prenantes. Elles remontent en entrée de l'atelier 5 et expliquent le commandement 10.</td></tr>
+
+<tr><td colspan="3" style="background:#EAF0F7"><b>Atelier 4 — Scénarios opérationnels · 2 activités</b></td></tr>
+<tr><td><b>4-1</b></td><td>Élaborer les scénarios opérationnels</td><td>Descendre au <b>mode opératoire technique</b> sur les <b>biens supports</b>, sous forme de <b>kill chain</b> — connaître, rentrer, trouver, exploiter. On s'appuie sur <b>MITRE ATT&amp;CK</b> et <b>CAPEC</b>. Le commandement 9&nbsp;: <b>au moins un chemin d'attaque détaillé par scénario stratégique</b>.</td></tr>
+<tr><td><b>4-2</b></td><td>Évaluer la vraisemblance des scénarios opérationnels</td><td><b>C'est ici, et nulle part ailleurs, que la vraisemblance est déterminée</b> (V1 à V4). Croisée avec la gravité de l'atelier 1, elle donne la matrice des risques.</td></tr>
+
+<tr><td colspan="3" style="background:#EAF0F7"><b>Atelier 5 — Traitement du risque · 5 activités</b></td></tr>
+<tr><td><b>5-1</b></td><td>Réaliser une évaluation des risques</td><td>Positionner chaque scénario dans la <b>matrice des risques</b>. La représentation «&nbsp;doit permettre de <b>comparer les risques les uns par rapport aux autres</b> et être compréhensible par l'ensemble des participants&nbsp;».</td></tr>
+<tr><td><b>5-2</b></td><td>Décider de la stratégie de traitement du risque</td><td>Arbitrer, risque par risque, entre <b>maintien</b>, <b>refus</b>, <b>réduction</b> et <b>transfert</b>. C'est une décision de <b>direction</b>, pas de RSSI.</td></tr>
+<tr><td><b>5-3</b></td><td>Définir les mesures de sécurité</td><td>Consigner les mesures dans le <b>PACS</b> — plan d'amélioration continue de la sécurité, renommé <b>plan de traitement du risque</b> dans le guide. Elles proviennent de <b>tous</b> les ateliers, pas seulement des 3 et 4.</td></tr>
+<tr><td><b>5-4</b></td><td>Évaluer et documenter les risques résiduels</td><td>Recalculer le niveau de risque <b>après</b> application des mesures, et produire la <b>matrice des risques résiduels</b>. «&nbsp;Au terme de l'analyse, les risques résiduels sont <b>acceptés formellement par la direction</b>.&nbsp;»</td></tr>
+<tr><td><b>5-5</b></td><td>Mettre en place le cadre de suivi des risques</td><td>Installer un <b>comité de pilotage</b> chargé du suivi. C'est ce qui fait de l'analyse un <b>cycle</b> et non un document mort.</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout ok"><div class="t">Trois choses que ce découpage révèle</div>
+<b>Les mesures naissent à trois endroits</b>&nbsp;: dès <b>1-4</b> en creux, par les écarts au
+socle&nbsp;; en <b>3-3</b> pour l'écosystème&nbsp;; en <b>5-3</b> pour l'ensemble. C'est la raison du
+dixième commandement — elles ne viennent pas «&nbsp;de l'atelier 5&nbsp;».<br>
+<b>Évaluer un couple SR/OV et le sélectionner sont deux gestes différents</b>&nbsp;: on cote d'abord
+tous les couples, on choisit ensuite lesquels partent en scénario. Un couple bien coté peut être
+écarté du périmètre.<br>
+<b>Le risque résiduel se calcule, il ne se décrète pas</b>&nbsp;: c'est une <b>réévaluation</b> après
+application des mesures, pas une case à cocher.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="circulation"><span class="num">6.</span> Ce qui circule d'un atelier à l'autre</h2>
+
+<p>Les questions les plus discriminantes portent sur cette circulation. Le tableau se lit en colonnes
+verticales&nbsp;: chaque livrable produit à gauche réapparaît en entrée à droite.</p>
+
+<div class="tw"><table>
+<thead><tr><th style="width:14%">Produit par…</th><th style="width:43%">Livrable</th><th>Réutilisé en entrée de…</th></tr></thead>
+<tbody>
+<tr><td><b>Atelier 1</b></td><td>Missions et <b>valeurs métier</b></td><td>Ateliers <b>2</b>, <b>3</b> et <b>4</b></td></tr>
+<tr><td><b>Atelier 1</b></td><td><b>Biens supports</b></td><td>Atelier <b>4</b> — c'est sur eux que portent les scénarios opérationnels</td></tr>
+<tr><td><b>Atelier 1</b></td><td><b>Événements redoutés</b> et leur <b>gravité</b></td><td>Ateliers <b>2</b> et <b>3</b></td></tr>
+<tr><td><b>Atelier 1</b></td><td><b>Socle de sécurité</b></td><td>Ateliers <b>4</b> et <b>5</b></td></tr>
+<tr><td><b>Atelier 2</b></td><td><b>Couples SR/OV retenus</b></td><td>Ateliers <b>3</b> et <b>4</b></td></tr>
+<tr><td><b>Atelier 3</b></td><td><b>Scénarios stratégiques</b></td><td>Ateliers <b>4</b> et <b>5</b></td></tr>
+<tr><td><b>Atelier 3</b></td><td><b>Mesures de sécurité pour l'écosystème</b></td><td>Atelier <b>5</b></td></tr>
+<tr><td><b>Atelier 4</b></td><td><b>Scénarios opérationnels</b> et leur <b>vraisemblance</b></td><td>Atelier <b>5</b></td></tr>
+</tbody>
+</table></div>
+
+<div class="callout ok"><div class="t">Trois observations qui font gagner des points</div>
+<b>1.</b> L'<b>atelier 4</b> est celui qui reçoit le <b>plus d'entrées</b>&nbsp;: il mobilise les trois
+ateliers précédents.<br>
+<b>2.</b> L'<b>atelier 1</b> est le seul dont l'entrée soit <b>facultative</b> — une précédente
+analyse, si elle existe. C'est ce qui permet de partir de zéro, contrairement à un audit.<br>
+<b>3.</b> Le <b>socle de sécurité</b> saute l'atelier 3&nbsp;: produit en 1, il ressert en <b>4</b>
+(ce que l'attaquant devra franchir) et en <b>5</b> (ce sur quoi on s'appuie pour traiter).
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="pieges"><span class="num">7.</span> Les douze confusions à désamorcer</h2>
+
+<div class="tw"><table>
+<thead><tr><th style="width:36%">La confusion</th><th>Le départage</th></tr></thead>
+<tbody>
+<tr><td><b>1. Gravité et vraisemblance</b></td><td><b>Gravité à l'atelier 1</b>, <b>vraisemblance à l'atelier 4</b>. Jamais dans le même atelier.</td></tr>
+<tr><td><b>2. Danger et risque</b></td><td>Le danger est une <b>propriété</b>&nbsp;; le risque est une <b>situation d'exposition</b>.</td></tr>
+<tr><td><b>3. Valeur métier et bien support</b></td><td>La <b>valeur métier</b> est ce qu'on protège&nbsp;; le <b>bien support</b> est ce sur quoi elle repose — et peut être une <b>personne</b>.</td></tr>
+<tr><td><b>4. Bien support et partie prenante</b></td><td>Le bien support est <b>dans</b> le périmètre (atelier 1)&nbsp;; la partie prenante est <b>dehors</b>, dans l'écosystème (atelier 3).</td></tr>
+<tr><td><b>5. Scénario stratégique et opérationnel</b></td><td>Le stratégique dit <b>par où</b> (écosystème, haut niveau)&nbsp;; l'opérationnel dit <b>comment</b> (biens supports, technique).</td></tr>
+<tr><td><b>6. Appréciation, analyse, évaluation</b></td><td>L'<b>appréciation</b> englobe&nbsp;: identification → estimation → <b>évaluation</b>. Évaluer, c'est <b>confronter aux critères d'acceptation</b>.</td></tr>
+<tr><td><b>7. Socle et plan de traitement</b></td><td>Le <b>socle</b> est l'<b>existant</b>, constaté à l'atelier 1. Le <b>plan de traitement</b> est le <b>futur</b>, décidé à l'atelier 5.</td></tr>
+<tr><td><b>8. EBIOS 2010 et EBIOS RM</b></td><td><b>Exhaustivité</b> contre <b>représentativité</b> · <b>SI</b> contre <b>métier</b> · <b>ascendant</b> contre <b>descendant</b> · <b>modules</b> contre <b>ateliers</b> · l'accidentel <b>traité</b> contre l'accidentel <b>renvoyé au socle</b>.</td></tr>
+<tr><td><b>9. ISO 31000, 27005 et EBIOS RM</b></td><td><b>ISO 31000</b> est la norme mère tous risques · <b>ISO 27005</b> la décline pour la sécurité de l'information · <b>EBIOS RM</b> est une <b>méthode</b> qui l'instancie.</td></tr>
+<tr><td><b>10. Security et safety</b></td><td><b>Sécurité</b> = intentionnel malveillant&nbsp;; <b>sûreté</b> = accidentel. <b>EBIOS RM ne traite que la sécurité.</b></td></tr>
+<tr><td><b>11. Label outil et certification de compétences</b></td><td>L'<b>ANSSI</b> labellise les <b>logiciels</b>&nbsp;; le <b>Club EBIOS</b> agrée les organismes qui certifient les <b>personnes</b>.</td></tr>
+<tr><td><b>12. Audit et analyse de risque</b></td><td>L'<b>audit</b> exige un <b>référentiel préexistant</b>&nbsp;; l'<b>analyse de risque</b> peut <b>partir de zéro</b>.</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout warn"><div class="t">Le piège de forme, propre à ce QCM</div>
+Les cinq ateliers ont une structure identique — objectif, participants, entrées, sorties, activités.
+Une proposition fausse se fabrique donc en <b>décalant d'un cran</b>&nbsp;: attribuer à l'atelier 3 le
+livrable de l'atelier 4, ou les participants de l'atelier 5 à l'atelier 2.
+<p style="margin-bottom:0"><b>Le réflexe</b>&nbsp;: devant une proposition qui «&nbsp;sonne
+juste&nbsp;», vérifiez toujours <b>le numéro d'atelier</b> avant le contenu.</p>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="recitation"><span class="num">8.</span> Récitation — les listes à sortir de mémoire</h2>
+
+<p>À 80 %, la reconnaissance ne suffit pas. Formulez la réponse <b>avant</b> de cliquer.</p>
+
+<div class="viz">
+  <div class="t">Dix listes à restituer</div>
+  <div class="vz-grid">
+
+    <button class="vz-c k-green" data-hint="Vérifier">
+      <span class="n">Compétence exigée</span>
+      <h5>Les 5 fondements</h5>
+      <span class="q">Citez-les dans l'ordre.</span>
+      <span class="more"><span class="t">Réponse</span>
+      <b>1.</b> Démarche structurée en <b>ateliers</b> · <b>2.</b> synthèse entre <b>conformité et
+      scénarios</b> · <b>3.</b> alternance entre <b>points de vue</b> · <b>4.</b> prise en compte de
+      l'<b>écosystème</b> · <b>5.</b> approche <b>efficace plutôt qu'exhaustive</b>.</span>
+    </button>
+
+    <button class="vz-c k-blue" data-hint="Vérifier">
+      <span class="n">Atelier 1</span>
+      <h5>Les 4 livrables de l'atelier 1</h5>
+      <span class="q">Que produit-il exactement&nbsp;?</span>
+      <span class="more"><span class="t">Réponse</span>
+      Éléments de <b>cadrage</b> · <b>périmètre métier et technique</b> (missions, valeurs métier,
+      biens supports) · <b>événements redoutés et leur gravité</b> · <b>socle de sécurité</b> avec
+      les <b>écarts et leurs justifications</b>.</span>
+    </button>
+
+    <button class="vz-c k-blue" data-hint="Vérifier">
+      <span class="n">Atelier 1</span>
+      <h5>Les 4 activités de l'atelier 1</h5>
+      <span class="q">Numérotées 1-1 à 1-4.</span>
+      <span class="more"><span class="t">Réponse</span>
+      <b>1-1</b> définir le cadre de l'étude · <b>1-2</b> définir le périmètre métier et technique ·
+      <b>1-3</b> identifier les événements redoutés · <b>1-4</b> déterminer le socle de sécurité.</span>
+    </button>
+
+    <button class="vz-c k-red" data-hint="Vérifier">
+      <span class="n">Atelier 2</span>
+      <h5>Les 3 livrables de l'atelier 2</h5>
+      <span class="q">Attention, il y en a trois, pas un.</span>
+      <span class="more"><span class="t">Réponse</span>
+      Les <b>couples SR/OV retenus</b> · les <b>couples secondaires</b>, si possible <b>mis sous
+      surveillance</b> · une <b>cartographie</b> des sources de risque.</span>
+    </button>
+
+    <button class="vz-c k-amber" data-hint="Vérifier">
+      <span class="n">Atelier 3</span>
+      <h5>Les 3 livrables de l'atelier 3</h5>
+      <span class="q">Le troisième est celui qu'on oublie.</span>
+      <span class="more"><span class="t">Réponse</span>
+      <b>Cartographie de menace de l'écosystème</b> · <b>scénarios stratégiques</b> · <b>mesures de
+      sécurité retenues pour l'écosystème</b>.</span>
+    </button>
+
+    <button class="vz-c k-purple" data-hint="Vérifier">
+      <span class="n">Atelier 5</span>
+      <h5>Les 5 livrables de l'atelier 5</h5>
+      <span class="q">C'est l'atelier le plus productif.</span>
+      <span class="more"><span class="t">Réponse</span>
+      <b>Synthèse des risques initiaux</b> · <b>stratégie de traitement</b> · <b>plan de traitement du
+      risque</b> · <b>synthèse des risques résiduels</b> · <b>cadre du suivi des risques</b>.</span>
+    </button>
+
+    <button class="vz-c k-green" data-hint="Vérifier">
+      <span class="n">Transverse</span>
+      <h5>Qui participe à quoi</h5>
+      <span class="q">Les participants des cinq ateliers.</span>
+      <span class="more"><span class="t">Réponse</span>
+      <b>A1</b> direction, métiers, RSSI, DSI · <b>A2</b> métiers, RSSI, spécialiste menace, direction
+      pour valider · <b>A3</b> métiers, architectes fonctionnels, juristes, RSSI · <b>A4</b> RSSI, DSI,
+      architectes SI — <b>sans direction ni métiers</b> · <b>A5</b> comme l'atelier 1.</span>
+    </button>
+
+    <button class="vz-c k-amber" data-hint="Vérifier">
+      <span class="n">Cotation</span>
+      <h5>L'échelle de gravité</h5>
+      <span class="q">Les quatre niveaux et leurs deux lignes de partage.</span>
+      <span class="more"><span class="t">Réponse</span>
+      <b>G1 mineure</b> · <b>G2 significative</b> · <b>G3 grave</b> · <b>G4 critique</b>.<br>
+      Entre <b>G2 et G3</b>&nbsp;: l'<b>impact sur la sécurité des personnes</b>. Entre <b>G3 et
+      G4</b>&nbsp;: la <b>survie de l'organisation</b>.</span>
+    </button>
+
+    <button class="vz-c k-red" data-hint="Vérifier">
+      <span class="n">Traitement</span>
+      <h5>Les 4 stratégies de traitement</h5>
+      <span class="q">Et la condition qui pèse sur la première.</span>
+      <span class="more"><span class="t">Réponse</span>
+      <b>Maintien</b> (acceptation) — exige une <b>validation signée par la direction générale</b> ·
+      <b>refus</b> (évitement) · <b>réduction</b> (mitigation) · <b>transfert</b> (partage).</span>
+    </button>
+
+    <button class="vz-c k-purple" data-hint="Vérifier">
+      <span class="n">Transverse</span>
+      <h5>La pyramide et le socle</h5>
+      <span class="q">Trois étages, et lesquels forment le socle.</span>
+      <span class="more"><span class="t">Réponse</span>
+      <b>Base</b>&nbsp;: principes de base et <b>hygiène</b> · <b>milieu</b>&nbsp;: cadre
+      <b>réglementaire et normatif</b> · <b>sommet</b>&nbsp;: appréciation des risques par
+      <b>scénarios</b>.<br>
+      Les <b>étages 1 et 2</b> forment le <b>socle de sécurité</b>, traité par <b>conformité</b>.</span>
+    </button>
+
+  </div>
+  <div class="vz-bar">
+    <button class="btn" data-cards="open">Tout déplier</button>
+    <button class="btn ghost" data-cards="close">Tout replier</button>
+    <span class="cnt"></span>
+  </div>
+  <div class="legend">Si les dix sortent sans hésiter, le seuil de 80&nbsp;% est largement
+  atteignable. Celles qui bloquent désignent exactement le chapitre à relire.</div>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="contexte"><span class="num">9.</span> Le contexte de la méthode</h2>
+
+<p>Tout ce qui suit vient du <b>cours</b>, pas du guide&nbsp;: histoire de la méthode, panorama
+concurrent, outils du marché. C'est de la matière à question directe — dates, sigles, origines — et
+c'est l'enseignant qui écrit le QCM.</p>
+
+<h3 id="contexte-histoire">9.1 Quatre versions en vingt-trois ans</h3>
+<div class="tw"><table>
+<thead><tr><th style="width:12%">Année</th><th>Ce qui se passe</th></tr></thead>
+<tbody>
+<tr><td><b>1995</b></td><td>Première version d'EBIOS, à la demande de la <b>DCSSI</b> — rattachée au Premier ministre, elle deviendra l'<b>ANSSI en 2009</b>. La même année, le <b>CLUSIF</b> crée la méthode concurrente <b>MEHARI</b>.</td></tr>
+<tr><td><b>2004</b></td><td>Deuxième version, pour intégrer l'essor d'<b>Internet</b> et des réseaux IP.</td></tr>
+<tr><td><b>2010</b></td><td><b>EBIOS 2010</b>, refondue pour la <b>virtualisation</b> et le cloud naissant. Très exhaustive, structurée en <b>5 modules</b>.</td></tr>
+<tr><td><b>2018</b></td><td><b>EBIOS Risk Manager</b>, co-construite par l'<b>ANSSI et le Club EBIOS</b>. Une «&nbsp;rupture méthodologique totale&nbsp;»&nbsp;: démarche <b>agile, collaborative, focalisée sur les attaques ciblées</b>.</td></tr>
+</tbody>
+</table></div>
+<div class="exam"><div class="t">La métaphore de l'enseignant pour EBIOS 2010 contre EBIOS RM</div>
+«&nbsp;Dans EBIOS 2010, on cherchait à défendre <b>les murs du château fort</b> (le SI). Dans
+EBIOS RM, on se fiche que les murs tombent&nbsp;: ce qui compte, c'est que <b>la princesse</b> — le
+processus métier vital — <b>survive</b>&nbsp;!&nbsp;»
+<p style="margin-bottom:0">Le comparatif complet est le <b>«&nbsp;point capital à retenir pour vos
+examens&nbsp;»</b> signalé en cours&nbsp;: <b>exhaustivité</b> contre <b>représentativité</b> ·
+<b>SI</b> contre <b>métier</b> · menaces <b>unitaires</b> contre <b>scénarisées</b> ·
+<b>ascendant</b> contre <b>descendant</b> · <b>5 modules</b> rigides contre <b>5 ateliers</b> agiles ·
+l'accidentel <b>traité</b> contre l'accidentel <b>renvoyé au socle</b>.</p>
+</div>
+
+<h3 id="contexte-panorama">9.2 Le panorama mondial des méthodes</h3>
+<div class="tw"><table>
+<thead><tr><th>Méthode</th><th>Origine</th><th style="width:14%">Année</th><th>Domaine</th></tr></thead>
+<tbody>
+<tr><td><b>CRAMM</b> / BS 7799</td><td>CCTA (Royaume-Uni)</td><td><b>1987</b></td><td>L'<b>ancêtre britannique</b> de la suite ISO 27000</td></tr>
+<tr><td><b>EBIOS</b> puis <b>EBIOS RM</b></td><td>DCSSI puis <b>ANSSI</b> (France)</td><td><b>1995</b> / <b>2018</b></td><td>Secteur privé, <b>OIV</b>, grandes entreprises</td></tr>
+<tr><td><b>MEHARI</b></td><td><b>CLUSIF</b> (France)</td><td><b>1995</b></td><td>Administrations, collectivités, <b>Défense / DGA</b></td></tr>
+<tr><td><b>OCTAVE</b></td><td>CERT / SEI (USA)</td><td><b>1999</b></td><td>Centrée sur l'<b>organisation</b> et les actifs critiques</td></tr>
+<tr><td><b>NIST SP 800-30</b></td><td>NIST (USA)</td><td><b>2002</b> / 2012</td><td>Systèmes fédéraux américains</td></tr>
+<tr><td><b>Cyber-PHA</b></td><td>Norme <b>CEI 62443</b></td><td>2010+</td><td>Systèmes <b>industriels</b> — OT, SCADA</td></tr>
+</tbody>
+</table></div>
+<p>Le repère le plus utile&nbsp;: <b>EBIOS et MEHARI sont nées la même année, 1995</b>, comme deux
+réponses françaises concurrentes — l'une de la <b>DCSSI</b>, l'autre du <b>CLUSIF</b>.</p>
+
+<h3 id="contexte-outils">9.3 Les outils labellisés par l'ANSSI</h3>
+<p>La labellisation garantit que l'outil «&nbsp;implémente fidèlement les <b>5 ateliers</b> et permet
+d'être en conformité directe avec l'<b>ISO 27005</b>&nbsp;».</p>
+<div class="tw"><table>
+<thead><tr><th style="width:26%">Outil</th><th>Ce qui en a été dit en cours</th></tr></thead>
+<tbody>
+<tr><td><b>Agile Risk Manager</b><br>AllForTech / Olfeo</td><td><b>L'outil des TP.</b> «&nbsp;De loin l'un des meilleurs du marché, extrêmement complet et ergonomique&nbsp;», en SaaS sur le VPS de l'école.</td></tr>
+<tr><td><b>Egerie Risk Manager</b></td><td>«&nbsp;Très bel outil&nbsp;», très réputé en France.</td></tr>
+<tr><td><b>Famic</b> (Airbus D&amp;S)</td><td>Propriétaire, «&nbsp;extrêmement coûteux&nbsp;», réservé aux filières <b>spatiales et défense</b>.</td></tr>
+<tr><td><b>Ermes</b></td><td><b>Open source</b> et historique, mais «&nbsp;dépassé et plus activement maintenu&nbsp;».</td></tr>
+<tr><td><b>Risktic</b></td><td>Nouvel entrant, labellisé récemment.</td></tr>
+<tr><td><b>Oligo Risk Manager</b></td><td>Retour d'expérience <b>négatif</b>&nbsp;: «&nbsp;criblé de bugs, instable. À éviter.&nbsp;»</td></tr>
+<tr><td><b>RSA Archer</b></td><td>Le mastodonte américain du <b>GRC</b>&nbsp;: «&nbsp;très lourde et hors de prix&nbsp;» — devis évoqué de <b>400 000 €</b>.</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="contexte-exemples">9.4 Les exemples du cours, à replacer</h3>
+<div class="tw"><table>
+<thead><tr><th style="width:26%">Exemple</th><th>Ce qu'il illustre</th></tr></thead>
+<tbody>
+<tr><td><b>Rabobank</b></td><td>Le <b>refus / évitement</b>&nbsp;: la banque a <b>fermé sa filiale belge</b> et revendu son portefeuille clients, le droit financier belge étant devenu trop risqué. On supprime l'activité pour supprimer le risque.</td></tr>
+<tr><td>La <b>plaque d'égout ronde</b></td><td>Le <b>refus par conception</b>&nbsp;: une plaque carrée insérée en diagonale peut tomber dans son trou&nbsp;; une plaque ronde ne le peut <b>mathématiquement jamais</b>.</td></tr>
+<tr><td><b>Thales</b></td><td><b>Audit contre analyse de risque</b>&nbsp;: une étudiante arrive pour une analyse, le RSSI vient de démissionner. Un <b>audit</b> aurait été <b>bloqué</b> faute de référentiel&nbsp;; l'<b>analyse</b> a pu repartir de zéro par ateliers.</td></tr>
+<tr><td>La <b>dette grecque</b>, les <b>microfissures EDF</b>, la <b>vaccination</b></td><td>Les trois familles de risques couvertes par l'<b>ISO 31000</b> — financier, industriel, médical — chacune déclinée en danger / risque / dommage.</td></tr>
+<tr><td>L'<b>habilitation Secret Défense</b></td><td>Pourquoi l'<b>IGI 1300</b> n'entre pas dans le socle&nbsp;: elle pèse sur les <b>personnes physiques accréditées</b>. «&nbsp;Toute divulgation, <b>même par négligence</b>, est punie de <b>400 000 euros d'amende et de 20 ans de réclusion</b>.&nbsp;»</td></tr>
+</tbody>
+</table></div>
+
+<!-- ===================================================================== -->
+<h2 id="support"><span class="num">10.</span> Ce que le support ajoute</h2>
+
+<p>Le support de la séance — <code>MethodoSecu2</code>, distribué après le cours — contient trois
+blocs qui ne figurent ni dans le guide ANSSI ni dans le kit de formation. Ils sont donc
+<b>spécifiques à ce cours</b>, et c'est l'enseignant qui écrit le QCM.</p>
+
+<h3 id="support-commandements">10.1 Les dix commandements (slide 80)</h3>
+<div class="tw"><table>
+<thead><tr><th style="width:5%">#</th><th>Le commandement</th></tr></thead>
+<tbody>
+<tr><td><b>01</b></td><td>EBIOS RM permet de gérer <b>tous les risques numériques</b> — attaques ciblées, accidents, non humains. Les risques non délibérés n'ont <b>pas besoin d'être modélisés en scénario</b>&nbsp;: l'analyse par <b>conformité</b> identifie des <b>écarts</b>.</td></tr>
+<tr><td><b>02</b></td><td>EBIOS RM <b>gagne en efficacité</b> sur EBIOS 2010&nbsp;: la <b>pertinence</b> est privilégiée sur l'<b>exhaustivité</b>, ce qui diminue l'<b>entropie</b> de l'étude.</td></tr>
+<tr><td><b>03</b></td><td>Le socle a comme <b>unique objectif de traiter les risques par conformité</b>&nbsp;: les basiques suffisent souvent contre les menaces à large spectre et non ciblées.</td></tr>
+<tr><td><b>04</b></td><td><b>Commencer par interroger les participants</b> sur les sources de risque qu'ils imaginent, <b>sans</b> chercher à coller aux exemples du guide.</td></tr>
+<tr><td><b>05</b></td><td>Ressources et motivation s'évaluent <b>sur le couple SR/OV</b>, pas sur la source seule. Le <b>niveau de pertinence</b> peut être réutilisé pour estimer un scénario opérationnel.</td></tr>
+<tr><td><b>06</b></td><td>Créer des <b>parties prenantes</b> permet des <b>chemins d'attaque distincts</b>. «&nbsp;Il paraît <b>illusoire</b> de considérer qu'il n'existe pas de partie prenante&nbsp;» — cela voudrait dire un projet <b>sans aucun écosystème</b>.</td></tr>
+<tr><td><b>07</b></td><td>On cherche une <b>évaluation relative</b> de la menace des parties prenantes. Les quatre critères&nbsp;: <b>dépendance</b>, <b>pénétration</b>, <b>maturité cyber</b>, <b>confiance</b> — à adapter.</td></tr>
+<tr><td><b>08</b></td><td>La description des scénarios opérationnels <b>sous forme de kill chain</b> doit être <b>adaptée</b> aux modes opératoires qu'on veut mettre en relief.</td></tr>
+<tr><td><b>09</b></td><td>Pour l'atelier 4, on détaille le scénario opérationnel d'<b>au moins un chemin d'attaque par scénario stratégique</b>.</td></tr>
+<tr><td><b>10</b></td><td>Les <b>mesures de traitement</b> (atelier 5) proviennent de la réflexion de <b>chaque atelier</b> — «&nbsp;et non pas uniquement de l'atelier 3 ou 4&nbsp;».</td></tr>
+</tbody>
+</table></div>
+<div class="exam"><div class="t">Trois commandements qui corrigent une idée reçue</div>
+<b>Le n°&nbsp;1</b>&nbsp;: EBIOS RM <b>gère</b> aussi les risques non délibérés — elle ne les
+<b>modélise</b> simplement pas en scénarios, elle les traite en <b>écarts au socle</b>. Dire
+«&nbsp;EBIOS RM ignore l'accidentel&nbsp;» est donc trop fort.<br>
+<b>Le n°&nbsp;6</b>&nbsp;: un projet sans écosystème n'existe pas.<br>
+<b>Le n°&nbsp;10</b>&nbsp;: les mesures <b>ne naissent pas</b> à l'atelier 5, elles y sont
+<b>consolidées</b>.
+</div>
+
+<h3 id="support-flash">10.2 L'approche « Flash » (slide 81)</h3>
+<div class="callout def"><div class="t">Une analyse de risque en deux à trois heures</div>
+<b>Objectif</b>&nbsp;: «&nbsp;réaliser l'analyse de risques en mobilisant les acteurs pendant <b>2 à
+3 heures</b>&nbsp;».
+<p><b>Quatre principes</b>&nbsp;: un <b>sachant</b> qui maîtrise méthode, objet et contexte ·
+<b>exploiter les connaissances capitalisées</b> sur des projets similaires · animation
+<b>collaborative</b> à partir d'un <b>schéma de principe</b> et de <b>fiches</b> · <b>limiter le
+nombre de scénarios</b>, «&nbsp;sans se noyer dans les détails&nbsp;».</p>
+<p style="margin-bottom:0"><b>Trois bénéfices</b>&nbsp;: <b>adhésion du métier</b> et appropriation
+des risques · identification des <b>risques les plus importants</b> · <b>priorisation</b> des
+mesures.</p>
+</div>
+<p>C'est la réponse à la critique d'EBIOS RM en petite structure&nbsp;: on ne renonce pas à la
+méthode, on en comprime le format.</p>
+
+<h3 id="support-ia">10.3 Le risque IA — et pourquoi EBIOS RM n'y suffit pas</h3>
+<p>La <b>partie 3</b> du support (slides 82 à 92). Le raisonnement central&nbsp;: <b>trois familles de
+risques, et aucune méthode unique ne les couvre</b>.</p>
+<div class="tw"><table>
+<thead><tr><th style="width:8%">#</th><th style="width:28%">Famille</th><th>Ce qu'elle recouvre, et la méthode adaptée</th></tr></thead>
+<tbody>
+<tr><td><b>1</b></td><td>L'IA comme <b>cible ou vecteur</b></td><td>Empoisonnement des données, <b>prompt injection</b>, vol de modèle, chaîne d'approvisionnement. <b>Seule famille où EBIOS RM s'applique</b>&nbsp;: il y a un attaquant.</td></tr>
+<tr><td><b>2</b></td><td>Les risques <b>intrinsèques</b></td><td>Hallucinations, biais, dérive, opacité, sur-confiance. <b>Sans attaquant, l'atelier 2 devient inapplicable</b>&nbsp;: EBIOS n'a pas de notion d'erreur intrinsèque. Méthodes&nbsp;: <b>ISO 23894</b>, <b>ISO 42001</b>, <b>NIST AI RMF</b>.</td></tr>
+<tr><td><b>3</b></td><td>Les risques <b>causés à des tiers</b></td><td>Discrimination, atteinte aux droits fondamentaux, décision automatisée défavorable. La question s'inverse&nbsp;: «&nbsp;quel préjudice l'organisation fait-elle subir&nbsp;?&nbsp;» Cadres&nbsp;: <b>AI Act</b>, <b>RGPD</b>. Méthodes&nbsp;: <b>ISO 42005</b>, <b>AIPD</b>.</td></tr>
+</tbody>
+</table></div>
+<div class="callout ok"><div class="t">Les trois normes ISO de l'IA, et leur équivalent cyber</div>
+<b>ISO/IEC 23894</b> — gestion des risques IA. Son pendant est l'<b>ISO 27005</b>, mais elle
+«&nbsp;ne se limite pas aux risques de sécurité&nbsp;».<br>
+<b>ISO/IEC 42001</b> — le <b>AIMS</b>, système de management de l'IA. Son pendant est l'<b>ISO
+27001</b>&nbsp;: mettre l'IA sous contrôle. Elle <b>ne prescrit aucune méthode</b> d'analyse.<br>
+<b>ISO/IEC 42005</b> — l'<b>analyse d'impact</b>&nbsp;: «&nbsp;qui pourrait être affecté par cette IA,
+et comment&nbsp;?&nbsp;» Plus proche d'une <b>AIPD</b> que d'une analyse cyber.
+</div>
+<div class="exam"><div class="t">HUDERIA, et la phrase à retenir</div>
+Méthodologie du <b>Conseil de l'Europe</b> (2024), complétée par le modèle <b>COBRA</b> (2026),
+<b>non contraignante</b>. Quatre temps&nbsp;: <b>analyse contextuelle</b> et triage · <b>parties
+prenantes</b> et corroboration · <b>évaluation d'impact</b> (gravité, portée, réversibilité) ·
+<b>atténuation</b> et voies de recours.
+<p style="margin-bottom:0">«&nbsp;<b>Là où EBIOS RM et l'ISO 27005 protègent les valeurs métier de
+l'organisation, HUDERIA évalue le préjudice que l'organisation peut faire subir aux droits humains, à
+la démocratie et à l'État de droit.</b>&nbsp;»</p>
+</div>
+
+<!-- ===================================================================== -->
+<!-- ===================================================================== -->
+<h2 id="cas"><span class="num">11.</span> Les cas pratiques du support, décomposés</h2>
+
+<p>Le support pose <b>huit exercices</b> et deux exemples. Quatre d'entre eux sont des
+<b>études de cas tirées de la presse</b>, à décomposer dans la grille de l'atelier 1. Les tableaux du
+support sont <b>vides</b> — voici la décomposition, cas par cas.</p>
+
+<div class="callout warn"><div class="t">Ce qui suit est une proposition, pas une correction officielle</div>
+Le support ne fournit <b>aucun corrigé</b> pour ces exercices. Les grilles ci-dessous sont une
+décomposition raisonnée à partir des citations elles-mêmes. Là où une case admet plusieurs lectures
+défendables, c'est signalé.
+<p style="margin-bottom:0">Deux détails du support&nbsp;: les exercices sont <b>numérotés deux fois
+7 et deux fois 8</b> (diapositives 51/53 et 52/65) — coquille de numérotation, sans conséquence. Et
+l'exercice 1 attend simplement <b>Risque&nbsp;= impact × vraisemblance</b>.</p>
+</div>
+
+<h3 id="cas-vocab">11.1 La grille à remplir, et l'ordre dans lequel la remplir</h3>
+
+<p>Les six lignes ne se remplissent pas dans l'ordre où elles sont écrites. L'ordre qui fonctionne&nbsp;:</p>
+
+<div class="tw"><table>
+<thead><tr><th style="width:22%">Ligne</th><th style="width:12%">Ordre</th><th>Comment la trouver dans un article de presse</th></tr></thead>
+<tbody>
+<tr><td><b>Valeur métier</b></td><td><b>1<sup>er</sup></b></td><td>Le <b>processus ou l'information</b> que l'organisation ne peut pas perdre. C'est ce qui est <i>abîmé</i>, pas ce qui est <i>cassé</i>. Un article n'en parle presque jamais directement&nbsp;: il faut le déduire du métier.</td></tr>
+<tr><td><b>Bien support</b></td><td><b>2<sup>e</sup></b></td><td>Le <b>composant concret</b> sur lequel repose la valeur métier&nbsp;: une base, un serveur, un service, une personne. C'est presque toujours ce que l'article nomme explicitement.</td></tr>
+<tr><td><b>Événement redouté</b></td><td><b>3<sup>e</sup></b></td><td>La <b>crainte du métier</b>, formulée sur <b>un seul critère</b> (D, I, C ou P). «&nbsp;La base clients est divulguée&nbsp;», pas «&nbsp;on s'est fait pirater&nbsp;».</td></tr>
+<tr><td><b>Source de risque</b></td><td><b>4<sup>e</sup></b></td><td><b>Qui ou quoi.</b> Un profil, pas un nom&nbsp;: «&nbsp;groupe cybercriminel organisé&nbsp;» est plus utile que le pseudonyme du jour.</td></tr>
+<tr><td><b>Objectif visé</b></td><td><b>5<sup>e</sup></b></td><td><b>Dans quel but.</b> C'est l'intention de la source, pas le résultat de l'attaque. Attention&nbsp;: c'est la case la plus souvent confondue avec l'événement redouté.</td></tr>
+<tr><td><b>Impacts</b></td><td><b>6<sup>e</sup></b></td><td>Les <b>conséquences</b> pour l'organisation, réparties dans les quatre familles&nbsp;: <b>fonctionnel</b>, <b>financier</b>, <b>réputationnel</b>, <b>juridique</b>.</td></tr>
+</tbody>
+</table></div>
+
+<div class="exam"><div class="t">La distinction qui fait basculer l'exercice</div>
+L'<b>objectif visé</b> appartient à l'<b>attaquant</b>&nbsp;; l'<b>événement redouté</b> appartient à
+la <b>victime</b>. Même situation, deux points de vue.
+<p style="margin-bottom:0">Dans le cas du collégien&nbsp;: l'objectif visé est «&nbsp;<b>se venger du
+collège</b>&nbsp;» — c'est ce que <i>lui</i> veut. L'événement redouté est «&nbsp;<b>les échanges avec
+les familles sont impossibles pendant plusieurs jours</b>&nbsp;» — c'est ce que <i>le collège</i>
+craint. Inverser les deux est l'erreur la plus fréquente sur cet exercice.</p>
+</div>
+
+<h3 id="cas-college">11.2 Exemple 2 — le collégien (source ANSSI)</h3>
+
+<p><i>«&nbsp;Dépité de n'avoir pu atteindre ce but, le collégien a saturé le système informatique en
+expédiant plus de 40 000 courriels, manœuvre qui a provoqué une indisponibilité pendant quatre
+jours.&nbsp;»</i> — Le Point</p>
+
+<div class="tw"><table>
+<tbody>
+<tr><td style="width:24%"><b>Source de risque</b></td><td>Un <b>adolescent</b> — profil «&nbsp;amateur&nbsp;» ou <i>script kiddie</i>&nbsp;: motivation forte, ressources faibles.</td></tr>
+<tr><td><b>Objectif visé</b></td><td><b>Se venger du collège.</b></td></tr>
+<tr><td><b>Événement redouté</b></td><td>Les échanges avec les collégiens et leurs familles sont <b>impossibles pendant plusieurs jours</b> — critère <b>disponibilité</b>.</td></tr>
+<tr><td><b>Valeur métier</b></td><td><b>Échanger des informations</b> avec les élèves et les familles.</td></tr>
+<tr><td><b>Bien support</b></td><td>Le <b>service informatique de messagerie</b> du collège.</td></tr>
+<tr><td><b>Impacts</b></td><td><b>Fonctionnel</b>&nbsp;: interruption des missions et services du collège. <b>Réputationnel</b>&nbsp;: image dégradée vis-à-vis des familles.</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout warn"><div class="t">Attention en relisant le PDF</div>
+Sur cette diapositive, la <b>mise en page décale les intitulés d'une ligne</b> par rapport aux valeurs
+— on croit lire «&nbsp;source de risque = seconde attaque&nbsp;» et «&nbsp;objectifs visés =
+adolescent&nbsp;». C'est un artefact&nbsp;: «&nbsp;Attaque&nbsp;» est l'<b>en-tête de colonne</b>. Le
+bon appariement est celui du tableau ci-dessus.
+</div>
+
+<h3 id="cas-marriott">11.3 Exercice 6 — Marriott / Starwood, 500 millions de clients</h3>
+
+<p><i>Accès non autorisés à la base de données de la filiale Starwood, duplication de la base, données
+de quelque 500 millions de clients dérobées. Les accès ont commencé en <b>2014</b> et n'ont été révélés
+qu'en <b>2018</b>. Les numéros de carte étaient chiffrés — mais les éléments de déchiffrement ont
+peut-être été compromis.</i> — 20 minutes, 30/11/2018</p>
+
+<div class="tw"><table>
+<tbody>
+<tr><td style="width:24%"><b>Source de risque</b></td><td>Un <b>groupe structuré</b>, capable de rester quatre ans sans être détecté&nbsp;: ressources élevées, activité discrète — profil étatique ou cybercriminel organisé.</td></tr>
+<tr><td><b>Objectif visé</b></td><td><b>Collecter massivement des données clients</b> — revente, exploitation ou renseignement.</td></tr>
+<tr><td><b>Événement redouté</b></td><td>Les <b>données personnelles</b> des clients sont <b>divulguées</b> — critère <b>confidentialité</b>.</td></tr>
+<tr><td><b>Valeur métier</b></td><td><b>Gérer les réservations</b> et la relation client.</td></tr>
+<tr><td><b>Bien support</b></td><td>La <b>base de données de réservation</b> de la filiale Starwood.</td></tr>
+<tr><td><b>Impacts</b></td><td><b>Juridique</b>&nbsp;: sanction RGPD. <b>Réputationnel</b>&nbsp;: perte de confiance. <b>Financier</b>&nbsp;: coûts de remédiation et de notification.</td></tr>
+</tbody>
+</table></div>
+
+<div class="exam"><div class="t">Ce que ce cas illustre à lui seul</div>
+<b>La filiale est le bien support.</b> Starwood avait été <b>racheté</b> par Marriott&nbsp;: la brèche
+est entrée par l'<b>écosystème</b>, pas par le système principal. C'est l'illustration directe de
+l'<b>atelier 3</b> — et l'argument de la <b>cotation des parties prenantes</b>.
+<p style="margin-bottom:0"><b>Le chiffrement n'annule pas l'événement redouté</b> si les clés sont
+compromises. Une mesure déclarée n'est une mesure que si son hypothèse tient.</p>
+</div>
+
+<h3 id="cas-pathe">11.4 Exercice 7 — Pathé, 19,2 M€ (fraude au président)</h3>
+
+<p><i>Des escrocs se font passer pour la direction et font verser d'importantes sommes sur un compte
+tiers, sous prétexte d'une acquisition à Dubaï. Plus de <b>19,2 millions d'euros</b> détournés en mars
+2018. L'employé incriminé aurait «&nbsp;négligé des signaux&nbsp;».</i> — Next INpact, 12/11/2018</p>
+
+<div class="tw"><table>
+<tbody>
+<tr><td style="width:24%"><b>Source de risque</b></td><td>Un <b>escroc organisé</b>&nbsp;: ressources techniques faibles, mais <b>ingénierie sociale</b> élevée et bonne connaissance de l'organigramme.</td></tr>
+<tr><td><b>Objectif visé</b></td><td><b>Détourner des fonds</b> — gain financier direct.</td></tr>
+<tr><td><b>Événement redouté</b></td><td>Un <b>virement frauduleux</b> est exécuté comme s'il était légitime — critère <b>intégrité</b> du processus de paiement.</td></tr>
+<tr><td><b>Valeur métier</b></td><td><b>Exécuter les paiements</b> de l'entreprise.</td></tr>
+<tr><td><b>Bien support</b></td><td>Le <b>collaborateur habilité</b> à ordonner les virements — et la <b>procédure</b> d'autorisation. <b>Un bien support peut être une personne ou une organisation</b>, pas seulement un serveur.</td></tr>
+<tr><td><b>Impacts</b></td><td><b>Financier</b>&nbsp;: 19,2 M€. <b>Réputationnel</b>. <b>Juridique</b>&nbsp;: contentieux consécutif au licenciement.</td></tr>
+</tbody>
+</table></div>
+
+<div class="exam"><div class="t">Le cas à ressortir si on vous demande un bien support non technique</div>
+Il n'y a <b>aucune vulnérabilité informatique</b> dans ce scénario. Le bien support est <b>humain et
+organisationnel</b>, et la mesure attendue est une <b>procédure</b> — double validation, rappel sur un
+canal indépendant — pas un pare-feu. C'est l'exemple qui justifie le fondement&nbsp;: «&nbsp;les biens
+supports peuvent être numériques, physiques <b>ou organisationnels, y compris des
+personnes</b>&nbsp;».
+</div>
+
+<h3 id="cas-qantas">11.5 Exercice 8 — Qantas, 5 millions d'enregistrements</h3>
+
+<p><i>Les données Qantas, volées depuis une base Salesforce en juin, sont publiées après l'expiration
+d'une échéance de rançon. Elles contiennent coordonnées, dates de naissance et numéros de
+grand-voyageur, mais <b>ni carte bancaire, ni passeport</b>.</i> — The Guardian, 11/10/2025</p>
+
+<div class="tw"><table>
+<tbody>
+<tr><td style="width:24%"><b>Source de risque</b></td><td>Un <b>collectif cybercriminel</b> pratiquant l'<b>extorsion sans chiffrement</b> — le levier est la publication, pas le blocage.</td></tr>
+<tr><td><b>Objectif visé</b></td><td><b>Obtenir une rançon</b> par menace de divulgation.</td></tr>
+<tr><td><b>Événement redouté</b></td><td>Les <b>données du programme de fidélité</b> sont <b>divulguées publiquement</b> — critère <b>confidentialité</b>.</td></tr>
+<tr><td><b>Valeur métier</b></td><td><b>Gérer le programme de fidélité</b> et la relation client.</td></tr>
+<tr><td><b>Bien support</b></td><td>La <b>base Salesforce</b> — un <b>service tiers en SaaS</b>, donc un bien support <b>hors du système d'information maîtrisé</b>.</td></tr>
+<tr><td><b>Impacts</b></td><td><b>Réputationnel</b> en premier. <b>Juridique</b>&nbsp;: obligations de notification. <b>Financier</b>&nbsp;: coûts de gestion de crise.</td></tr>
+</tbody>
+</table></div>
+
+<div class="exam"><div class="t">Deux enseignements à retenir de ce cas</div>
+<b>Le SaaS est un bien support comme un autre</b>, et son fournisseur est une <b>partie prenante à
+coter</b> à l'atelier 3 — forte dépendance, forte pénétration.<br>
+<b>Le délai entre le vol (juin) et la publication (octobre)</b> montre que l'événement redouté peut se
+réaliser <b>longtemps après</b> l'incident technique. Une analyse qui s'arrête à l'intrusion rate
+l'essentiel.
+</div>
+
+<h3 id="cas-nintendo">11.6 Exercice 8 bis — Nintendo, revendication non confirmée</h3>
+
+<p><i>Un groupe revendique l'accès à des actifs de production, fichiers de développement et
+sauvegardes internes. La revendication est appuyée par une capture d'écran partagée par une société de
+veille&nbsp;: «&nbsp;si elle est authentique&nbsp;», la brèche exposerait des projets de jeux en
+cours.</i> — Computing UK, 13/10/2025</p>
+
+<div class="tw"><table>
+<tbody>
+<tr><td style="width:24%"><b>Source de risque</b></td><td>Un <b>collectif hacktiviste ou cybercriminel</b> recherchant la <b>notoriété</b> autant que le gain.</td></tr>
+<tr><td><b>Objectif visé</b></td><td><b>Exfiltrer et exposer de la propriété intellectuelle</b> — réputation du groupe, pression, revente.</td></tr>
+<tr><td><b>Événement redouté</b></td><td>Les <b>projets de jeux en cours</b> et les outils propriétaires sont <b>divulgués avant leur sortie</b> — critère <b>confidentialité</b>.</td></tr>
+<tr><td><b>Valeur métier</b></td><td><b>Concevoir et développer</b> les futurs produits — la valeur métier est ici une <b>étape de projet</b>, cas explicitement prévu par la méthode.</td></tr>
+<tr><td><b>Bien support</b></td><td>Les <b>serveurs internes</b> de développement&nbsp;: dépôts de code, <i>dev builds</i>, sauvegardes.</td></tr>
+<tr><td><b>Impacts</b></td><td><b>Financier</b>&nbsp;: perte d'avantage concurrentiel et de l'effet d'annonce. <b>Réputationnel</b>. <b>Fonctionnel</b>&nbsp;: replanification des sorties.</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout ok"><div class="t">Le point intéressant de ce cas : il n'est pas confirmé</div>
+L'article dit «&nbsp;<b>si elle est authentique</b>&nbsp;». En analyse de risque, cela ne change
+rien&nbsp;: on travaille sur des <b>scénarios</b>, pas sur des faits établis. Une revendication
+invérifiée reste un scénario <b>vraisemblable</b> à coter — et c'est exactement la différence entre
+l'<b>analyse de risque</b> (prospective) et la <b>réponse à incident</b> (constatée).
+</div>
+
+<h3 id="cas-socle">11.7 Exercice 5 — qu'est-ce qui fait partie du socle&nbsp;?</h3>
+
+<p>Le support liste sept éléments et demande lesquels appartiennent au socle de sécurité&nbsp;:</p>
+
+<div class="tw"><table>
+<thead><tr><th style="width:44%">Élément</th><th>Statut</th></tr></thead>
+<tbody>
+<tr><td><b>PSSI</b> de l'organisation</td><td><b>Toujours</b> — c'est le référentiel interne de base.</td></tr>
+<tr><td><b>RGPD</b></td><td><b>Toujours</b>, dès qu'il y a des données personnelles — obligation légale.</td></tr>
+<tr><td><b>Guide d'hygiène informatique</b> de l'ANSSI</td><td><b>Toujours</b> en pratique — référentiel de bonnes pratiques.</td></tr>
+<tr><td><b>Annexe A de l'ISO 27001</b></td><td><b>Oui</b> si l'organisme est engagé dans un SMSI. Le support précise en note qu'elle traite des <b>responsabilités et rôles des employés</b>.</td></tr>
+<tr><td><b>Code de la santé publique</b></td><td><b>Selon le secteur</b> — s'impose à un établissement de santé, pas à un e-commerçant.</td></tr>
+<tr><td><b>Loi de programmation militaire</b></td><td><b>Selon le statut</b> — s'impose aux <b>OIV</b>.</td></tr>
+<tr><td><b>IGI 1300</b></td><td><b>Selon le statut</b> — dès qu'on manipule du <b>secret de la défense nationale</b>.</td></tr>
+</tbody>
+</table></div>
+
+<div class="exam"><div class="t">La réponse attendue n'est pas une liste, c'est un critère</div>
+<b>Tous</b> peuvent faire partie du socle&nbsp;; <b>aucun n'en fait partie inconditionnellement</b>,
+sauf la PSSI. Le socle est <b>contextuel</b>&nbsp;: il se compose des référentiels <b>applicables à cet
+organisme-là</b>, compte tenu de son <b>secteur</b> et de son <b>statut</b>.
+<p style="margin-bottom:0">Et le livrable de l'activité 1-4 n'est pas la liste&nbsp;: c'est
+l'<b>état d'application</b> de chaque référentiel, avec les <b>écarts</b> et leur
+<b>justification</b>.</p>
+</div>
+
+<h3 id="cas-echelle">11.8 Exercice 4 — les qualités d'une bonne échelle</h3>
+
+<div class="callout def"><div class="t">Les cinq qualités</div>
+<b>1. Adaptée au contexte</b> — une échelle de gravité pour un hôpital ne peut pas être celle d'une
+boutique en ligne.<br>
+<b>2. Discriminante</b> — si tout se cote 3, l'échelle ne sert à rien&nbsp;; elle doit <b>séparer</b>.<br>
+<b>3. Non ambiguë</b> — chaque niveau est décrit par des <b>critères observables</b>, pas par un
+adjectif. «&nbsp;Grave&nbsp;» ne veut rien dire&nbsp;; «&nbsp;interruption de plus de 24 h&nbsp;» oui.<br>
+<b>4. Partagée</b> — <b>validée par le métier</b>, pas décrétée par le RSSI. C'est le métier qui cote
+la gravité.<br>
+<b>5. Stable</b> — la même sur toute la durée de l'étude, sinon les cotations ne sont plus comparables
+entre elles.
+</div>
+
+<div class="exam"><div class="t">Le lien avec le reste de la méthode</div>
+Ces qualités expliquent pourquoi la gravité se cote de <b>G1 à G4</b> et non de 1 à 10&nbsp;: une
+échelle trop fine <b>cesse d'être discriminante</b>, parce que personne ne sait défendre l'écart entre
+un 6 et un 7. Et pourquoi le <b>nombre pair de niveaux</b> compte&nbsp;: il <b>interdit le milieu
+confortable</b> et force l'arbitrage.
+</div>
+
+<h2 id="qcm-sec"><span class="num">12.</span> QCM EBIOS RM — <span id="count-badge" class="badge acc"></span></h2>
+<p><b>Onze chapitres</b> — dix calqués sur le référentiel de compétences, plus un consacré au
+<b>contexte apporté par le cours</b> (histoire, panorama des méthodes, outils, exemples de
+l'enseignant). <b>Une seule bonne réponse par question</b>, ordre tiré au hasard, correction
+expliquée. Les statistiques sont indépendantes des autres QCM du site.</p>
+<div class="exam"><div class="t">Comment s'en servir pour viser 80 %</div>
+Lancez <b>« Tout enchaîner »</b> sur un chapitre à la fois&nbsp;: un chapitre où vous descendez sous
+<b>80 %</b> est un chapitre à relire, pas à rejouer. Quand les dix chapitres passent la barre
+individuellement, faites une série de <b>20 questions tous chapitres confondus</b> — c'est la
+simulation la plus proche de l'épreuve.
+</div>
+<div id="qcm"></div>
+
+  </main>
+</div>
+
+<button id="top" title="Haut de page">↑</button>
+<script src="data/qcm-ebiosrm.js?v=2"></script>
+<script src="assets/app.js?v=32"></script>
+<script>initQCM(window.QCM_DATA, window.QCM_CHAPTERS, 'ebiosrm');</script>
+</body>
+</html>

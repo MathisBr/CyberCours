@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Méthodologie de la sécurité (ENT5003) — fiche de révision</title>
-<link rel="stylesheet" href="assets/core.css?v=26">
+<link rel="stylesheet" href="assets/core.css?v=27">
 <link rel="stylesheet" href="assets/viz.css?v=10">
 </head>
 <body>
@@ -48,7 +48,17 @@ d'étude</b> en groupe · un <b>examen final Moodle</b>, décrit comme un <b>pro
 <div class="callout warn"><div class="t">Ce que cette fiche couvre — et ce qui manque encore</div>
 Elle est construite sur les supports disponibles&nbsp;: le <b>syllabus</b>, la présentation du module
 et la <b>Partie 1 — Normes, méthodes, approches</b> (85 diapositives), plus le tableur des
-<b>93 mesures ISO 27002</b> et l'énoncé du devoir EBIOS.
+<b>93 mesures ISO 27002</b>, l'énoncé du devoir EBIOS, et désormais les transcriptions des
+<b>séances 1 et 2</b> — <b>quatre</b> enregistrements le 14 septembre (<b>4 h 49</b>) et <b>trois</b>
+le 15 septembre (<b>3 h 12</b>), soit <b>8 h 01</b> de cours. Les apports de l'oral sont intégrés dans les chapitres
+concernés&nbsp;: <a href="#ch1-porosite">§1.3</a> et <a href="#ch1-c3">§1.4</a>,
+<a href="#ch2-consensus">§2.2</a>, <a href="#ch3-raci">§3.4</a>, <a href="#ch4-aiact">§4.2</a>,
+<a href="#ch6-perimetre">§6.1</a>, <a href="#ch7-corrige">§7.2</a> et <a href="#ch7-audit">§7.3</a>,
+<a href="#ch9-vauban">§9.3</a>, <a href="#ch10-hunting">§10.2</a>, <a href="#ch13-ecart">§13.1</a>,
+<a href="#ch15-sequence">§15.3</a>. Ceux de la séance 2 le sont aux
+<a href="#ch11-triptyque">§11.1</a> à <a href="#ch11-safety">§11.10</a>,
+<a href="#ch21-histoire">§21.5</a> à <a href="#ch21-outils">§21.7</a> et
+<a href="#ch22-exo">§22.3</a>.
 <p style="margin-bottom:0">Les chapitres <b>21 à 27</b> couvrent la <b>méthode EBIOS Risk Manager</b> à partir du <b>guide
 officiel de l'ANSSI</b> (ANSSI-PA-048), la référence citée dans la bibliographie du syllabus —
 puisque le support de la <b>journée 3</b> n'a pas encore été distribué. Ils sont signalés comme tels
@@ -57,7 +67,8 @@ et seront à confronter au support du cours.</p>
 laquelle la diapositive 41 renvoie pour l'analyse de risque&nbsp;; les items du syllabus non traités
 par les supports reçus (<i>notions fondamentales</i>, <i>de l'information au système
 d'information</i>, <i>du système d'information à la SSI</i>, <i>droit et éthique en
-cybersécurité</i>)&nbsp;; et l'<b>oral du cours</b>, qui n'a pas encore eu lieu.</p>
+cybersécurité</i>)&nbsp;; et la <b>fin du module</b> — le support de la séance 2, non encore
+distribué, et la dernière demi-journée, qui doit porter sur le <b>risque lié à l'IA</b> et l'AGI.</p>
 </div>
 
 <h3 id="essentiel-chiffres">Les chiffres qu'on ne peut pas deviner</h3>
@@ -112,7 +123,7 @@ cybersécurité</i>)&nbsp;; et l'<b>oral du cours</b>, qui n'a pas encore eu lie
 <tr><td>19</td><td>Croire qu'une partie prenante «&nbsp;dangereuse&nbsp;» est suspecte</td><td><b>Non</b>&nbsp;: le niveau de dangerosité «&nbsp;<b>ne préjuge aucunement d'une intention malveillante</b>&nbsp;». Il mesure la capacité d'une <b>source de risque</b> à <b>exploiter la relation privilégiée</b> entre cette partie prenante et l'objet de l'étude.</td><td><a href="#ch24">24</a></td></tr>
 <tr><td>20</td><td>Confondre valeur métier et bien support</td><td>La <b>valeur métier</b> est ce qu'on <b>protège</b>&nbsp;; le <b>bien support</b> est ce <b>sur quoi elle repose</b>. On cote des <b>événements redoutés</b> sur les valeurs métier, on trace des <b>scénarios opérationnels</b> sur les biens supports.</td><td><a href="#ch22">22</a></td></tr>
 <tr><td>21</td><td>Lancer l'appréciation des risques sans regarder le socle</td><td>Le guide pose une règle d'arrêt&nbsp;: «&nbsp;<b>en cas d'écarts trop significatifs, ne pas poursuivre les ateliers</b>&nbsp;». Inutile de modéliser une attaque sophistiquée si l'hygiène de base manque.</td><td><a href="#ch22">22</a></td></tr>
-<tr><td>22</td><td>Dire «&nbsp;PACS&nbsp;» et croire que c'est encore le terme</td><td>Depuis l'édition 2024, le <b>PACS</b> s'appelle <b>plan de traitement du risque</b>. Deux autres renommages&nbsp;: «&nbsp;entité responsable&nbsp;» → <b>propriétaire</b>, «&nbsp;synthèse des scénarios&nbsp;» → <b>évaluations des risques</b>.</td><td><a href="#ch21">21</a></td></tr>
+<tr><td>22</td><td>Croire qu'il faut choisir entre «&nbsp;PACS&nbsp;» et «&nbsp;plan de traitement&nbsp;»</td><td>Depuis l'édition 2024, le guide dit <b>plan de traitement du risque</b> — mais le <b>support du cours dit PACS</b> (slide 75). Les deux sont justes. Deux autres renommages&nbsp;: «&nbsp;entité responsable&nbsp;» → <b>propriétaire</b>, «&nbsp;synthèse des scénarios&nbsp;» → <b>évaluations des risques</b>.</td><td><a href="#ch21">21</a></td></tr>
 </tbody>
 </table></div>
 
@@ -222,6 +233,70 @@ exigences <b>légales</b> et <b>réglementaires</b>. Les <b>normes</b>, elles, s
 </div>
 
 <!-- ===================================================================== -->
+
+<h3 id="ch1-porosite">1.3 La porosité entre les trois cadres</h3>
+<p>Distinguer les trois cadres ne veut pas dire qu'ils sont étanches. L'enseignant a insisté sur les
+<b>passerelles</b>, et c'est un point de compréhension plus qu'un point de mémoire&nbsp;:</p>
+<ul class="key-points">
+<li><b>Une loi a souvent d'abord été une norme.</b> «&nbsp;Quand cette norme finit par s'imposer
+mondialement, elle peut devenir une loi&nbsp;» — le législateur décide de lui donner force
+obligatoire. Certaines lois ont commencé comme de simples normes techniques.</li>
+<li><b>Et la norme, elle, s'efforce d'appliquer le cadre légal.</b> Les experts veillent à ce que la
+norme qu'ils écrivent soit conforme aux lois votées.</li>
+<li><b>Une norme peut servir de méthode.</b> L'exemple donné est frappant&nbsp;: la <b>banque et la
+finance</b> refusent souvent <b>EBIOS RM</b> et appliquent <b>directement l'ISO&nbsp;27005</b> comme
+méthode d'analyse de risque.</li>
+</ul>
+
+<div class="callout def"><div class="t">La définition d'une norme, mot pour mot (ISO)</div>
+«&nbsp;Une norme fournit, pour des <b>usages communs et répétés</b>, des <b>règles</b>, des <b>lignes
+directrices</b> ou des <b>caractéristiques</b> pour des activités ou leurs résultats, garantissant un
+<b>niveau d'ordre optimal dans un contexte donné</b>.&nbsp;»
+</div>
+
+<div class="exam"><div class="t">La nuance qui vaut un point : certification ≠ obligation</div>
+«&nbsp;<b>Rien ne vous oblige légalement à être certifié ISO 27001</b>, ISO 27034 ou ISO 21434. La
+norme n'est pas une loi.&nbsp;»
+<p style="margin-bottom:0">En revanche, c'est un <b>argument commercial majeur</b>&nbsp;: entre deux
+prestataires, le client choisira celui qui est certifié ou labellisé ANSSI. <b>Ce n'est pas une
+obligation juridique, c'est une exigence du marché.</b></p>
+</div>
+
+<p>Deux normes à ajouter à la colonne «&nbsp;normes&nbsp;», citées en cours&nbsp;: <b>ISO/IEC 27034</b>
+(sécurité <b>applicative</b> — sécurité du code et du cycle de vie logiciel) et <b>ISO/SAE 21434</b>
+(cybersécurité des <b>véhicules routiers</b>). Et dans la colonne «&nbsp;obligations&nbsp;», les
+<b>II</b> et <b>IGI</b> françaises — par exemple l'<b>IGI 1300</b> sur la protection du secret de la
+défense nationale.</p>
+
+<h3 id="ch1-c3">1.4 L'exemple qui montre les trois cadres à l'œuvre : la classification Défense</h3>
+<p>Pour illustrer pourquoi il ne faut pas confondre obligation, norme et méthode, le cours prend le
+secteur de la Défense, où les équipements sont répartis en <b>trois classes de criticité</b>&nbsp;:</p>
+<div class="tw"><table>
+<thead><tr><th>Classe</th><th>Criticité</th><th>Exemple donné</th></tr></thead>
+<tbody>
+<tr><td><b>C1</b></td><td>Faiblement critique</td><td>Le système de <b>détection incendie</b> d'un site nucléaire ou militaire</td></tr>
+<tr><td><b>C2</b></td><td>Moyennement critique</td><td>La <b>téléphonie sur IP</b> — une compromission permettrait de l'écoute passive</td></tr>
+<tr><td><b>C3</b></td><td>Très critique</td><td>L'analyse de risque complète selon l'<b>ISO 27005</b> devient une <b>obligation légale absolue</b></td></tr>
+</tbody>
+</table></div>
+<div class="callout warn"><div class="t">L'écart d'échelle entre les deux analyses de risque</div>
+Dans la phase <b>Plan</b> du PDCA (ISO 27001), on réalise une analyse de risque <b>sommaire, de
+quelques pages</b>. Pour un équipement de <b>classe C3</b>, la loi impose une analyse
+<b>formelle et exhaustive de plus de 60 pages</b>, documentant chaque menace, chaque vulnérabilité et
+chaque mesure réductrice.
+<p style="margin-bottom:0"><b>Sur le même équipement C3, les trois cadres se superposent&nbsp;:</b>
+l'<b>obligation</b> impose l'analyse périodique&nbsp;; la <b>norme</b> (ISO 27005) la structure&nbsp;;
+la <b>méthode</b> (EBIOS RM) l'instancie concrètement.</p>
+</div>
+<div class="callout"><div class="t">L'anecdote du NASS, qui rend le C3 concret</div>
+Le <b>NASS</b> est le sas de contrôle d'accès des véhicules à l'entrée et à la sortie d'un site
+nucléaire. À la sortie, les détecteurs vérifient qu'aucun résidu radioactif n'est emporté. L'enseignant
+raconte être resté <b>bloqué deux heures</b> après un déclenchement.
+<p style="margin-bottom:0">Et la question qu'il pose&nbsp;: qui a le pouvoir légal de débloquer le
+NASS&nbsp;? <b>Une seule personne — le directeur du site nucléaire EDF.</b> Aucune délégation n'est
+possible, <b>car sa responsabilité pénale est engagée</b>.</p>
+</div>
+
 <h2 id="ch2"><span class="num">2.</span> Qu'est-ce qu'une norme, et pourquoi normaliser</h2>
 
 <div class="callout def"><div class="t">La définition ISO, à restituer telle quelle</div>
@@ -260,6 +335,27 @@ contractuelles</b>.</p>
 </table></div>
 
 <!-- ===================================================================== -->
+
+<h3 id="ch2-consensus">2.2 Reproductibilité et consensus — et un signal d'examen</h3>
+<p>Deux caractéristiques ont été présentées comme <b>fondamentales</b>&nbsp;:</p>
+<ul class="key-points">
+<li><b>La reproductibilité</b> — «&nbsp;sans protocole reproductible, une norme n'a <b>aucune valeur</b>
+scientifique ou technique&nbsp;».</li>
+<li><b>Le consensus</b> — et la précision qui compte&nbsp;: <b>ce n'est pas l'unanimité</b>, mais
+«&nbsp;une très large majorité d'experts, <b>de l'ordre de 90&nbsp;%</b>&nbsp;».</li>
+</ul>
+<div class="exam"><div class="t">Signalé comme question d'examen — avec une réserve de provenance</div>
+La transcription porte un encadré indiquant qu'<b>à l'examen, une question récurrente serait</b>&nbsp;:
+<i>donnez-moi deux principes qui gouvernent le processus de normalisation</i>. <b>Attention</b>&nbsp;:
+ce passage est rédigé <b>à la troisième personne</b> par l'outil de transcription et n'est rattaché à
+aucun horodatage de parole — <b>ce ne sont donc pas les mots de l'enseignant</b>, même si
+l'information est vraisemblablement fondée.
+<p style="margin-bottom:0">Les sept, à savoir réciter&nbsp;: <b>transparence</b> · <b>ouverture</b> ·
+<b>impartialité</b> · <b>consensus</b> · <b>efficacité</b> · <b>pertinence</b> · <b>cohérence</b>.
+Deux suffisent, mais il faut pouvoir les <b>expliquer</b> — par exemple <b>pertinence</b>&nbsp;: «&nbsp;une
+norme a un <b>cycle de vie</b>&nbsp;: elle naît, vit et meurt&nbsp;» quand elle n'a plus d'objet.</p>
+</div>
+
 <h2 id="ch3"><span class="num">3.</span> La directive NIS et la directive NIS 2</h2>
 
 <h3 id="ch3-nis">3.1 NIS (2016) — la première</h3>
@@ -319,6 +415,33 @@ change, c'est la <b>manière dont on vérifie</b> (proactive ou réactive) et <b
 </table></div>
 
 <!-- ===================================================================== -->
+
+<h3 id="ch3-raci">3.4 La gestion d'incident et la matrice RACI</h3>
+<p>NIS impose de <b>notifier les incidents significatifs</b>. Le cours a développé ce que cela suppose
+en interne&nbsp;: une documentation procédurale stricte — l'organigramme de crise — et l'application de
+la <b>matrice RACI</b>, absente du support mais détaillée à l'oral.</p>
+<div class="tw"><table>
+<thead><tr><th>Lettre</th><th>Signification</th><th>Qui, en cybersécurité</th></tr></thead>
+<tbody>
+<tr><td><b>R</b></td><td><i>Responsible</i> — responsable, décideur&nbsp;: celui qui <b>tranche et valide</b></td><td>Le <b>RSSI</b> ou le directeur de crise, qui décide des mesures de riposte</td></tr>
+<tr><td><b>A</b></td><td><i>Accountable</i> — acteur, exécutant&nbsp;: celui qui <b>réalise l'action</b></td><td>L'<b>administrateur système ou réseau</b> qui configure les règles de filtrage</td></tr>
+<tr><td><b>C</b></td><td><i>Consulted</i> — <b>consulté</b> avant décision</td><td>L'<b>architecte sécurité</b> ou le <b>juriste</b>, qu'il est obligatoire de consulter</td></tr>
+<tr><td><b>I</b></td><td><i>Informed</i> — <b>informé</b> après</td><td>Le <b>DSI</b>, la direction générale, le client</td></tr>
+</tbody>
+</table></div>
+<div class="callout warn"><div class="t">Le faux-ami anglais, signalé en cours</div>
+En anglais, <b><i>Responsible</i></b> désigne celui qui <b>fait le travail opérationnel</b>, tandis
+qu'<b><i>Accountable</i></b> est le <b>décisionnaire ultime</b> qui en porte la responsabilité
+juridique. <b>En pratique managériale française, on inverse souvent</b>&nbsp;: R pour
+Responsable-décideur, A pour Acteur-exécutant. Précisez le sens que vous employez.
+</div>
+<div class="callout"><div class="t">L'exemple vécu — le blocage des IP russes</div>
+Au déclenchement de la guerre en Ukraine, la RSSI d'un grand organisme de formation demande le blocage
+immédiat de toutes les adresses IP russes et biélorusses. Le prestataire <b>décide et coordonne (R)</b>,
+les <b>administrateurs réseau exécutent (A)</b>, le <b>juriste est consulté (C)</b>, la <b>direction est
+informée (I)</b> — et l'action est consignée au journal d'incidents.
+</div>
+
 <h2 id="ch4"><span class="num">4.</span> Le Cybersecurity Act</h2>
 
 <p>Règlement européen adopté en <b>2019</b>. Deux objectifs&nbsp;: <b>renforcer la cybersécurité dans
@@ -368,6 +491,33 @@ et il ne sanctionne pas — il fait <b>reconnaître</b>.
 </div>
 
 <!-- ===================================================================== -->
+
+<h3 id="ch4-aiact">4.2 L'AI Act et les deux normes ISO de l'intelligence artificielle</h3>
+<p>Entièrement absent du support, traité longuement en cours comme «&nbsp;un <b>cas d'école</b> de la
+façon dont le cadre légal s'articule avec les normes&nbsp;» — donc comme une illustration du
+<a href="#ch1">chapitre 1</a>.</p>
+<div class="tw"><table>
+<thead><tr><th>Échéance</th><th>Sur qui pèse l'obligation</th><th>Quoi</th></tr></thead>
+<tbody>
+<tr><td><b>Août 2024</b></td><td>Les <b>éditeurs de contenus</b> — journaux en ligne, médias, blogueurs professionnels</td><td>Apposer la mention <b>«&nbsp;contenu généré par IA&nbsp;»</b>. <b>L'exception</b>&nbsp;: elle saute si l'article a été <b>entièrement relu, vérifié et validé par un humain</b>, qui en assume alors juridiquement les propos.</td></tr>
+<tr><td><b>Horizon 2028</b></td><td>Les <b>fournisseurs d'IA</b> eux-mêmes — OpenAI, Google, Mistral…</td><td>Intégrer des <b>filigranes indélébiles</b> dans tout contenu généré&nbsp;: images, flux vidéo, fichiers texte.</td></tr>
+</tbody>
+</table></div>
+<p>L'AI Act classe par ailleurs les systèmes selon quatre niveaux de risque — <b>inacceptable</b>,
+<b>haut risque</b>, <b>risque limité</b>, <b>risque minimal</b>. Deux interdictions ont été
+citées&nbsp;: les <b>armes létales autonomes</b> qui tirent sans confirmation humaine, et un
+encadrement drastique de l'<b>identification biométrique à distance</b> dans l'espace public.</p>
+<div class="callout def"><div class="t">Les deux normes ISO en miroir de l'AI Act</div>
+<b>ISO/IEC 42001</b> — gestion du risque <b>intrinsèque</b> de l'IA&nbsp;: les défaillances propres au
+système, et le manque de données d'entraînement sur les <b>événements rares</b> («&nbsp;cygnes
+noirs&nbsp;»). Un modèle qui n'a jamais rencontré une situation atypique devient <b>erratique</b> en
+production.<br>
+<b>ISO/IEC 23894</b> — gestion des <b>risques sociétaux</b> et des préjudices causés aux tiers&nbsp;:
+biais discriminatoires, impacts sur la santé mentale.
+<p style="margin-bottom:0"><b>Le moyen de ne pas les confondre&nbsp;: 42001 regarde vers l'intérieur du
+système, 23894 regarde vers la société.</b></p>
+</div>
+
 <h2 id="ch5"><span class="num">5.</span> La famille ISO 27000</h2>
 
 <div class="callout def"><div class="t">Définition</div>
@@ -435,6 +585,27 @@ C'est pour cela que le choix du <b>périmètre</b> est la question centrale de l
 </div>
 
 <!-- ===================================================================== -->
+
+<h3 id="ch6-perimetre">6.1 Le piège du périmètre de certification</h3>
+<div class="callout danger"><div class="t">Présenté en cours comme « le piège absolu », et comme du vécu</div>
+Une entreprise peut être certifiée ISO 27001 <b>tout en ayant défini un périmètre réduit à une toute
+petite partie de son activité</b>.
+<p>L'image donnée&nbsp;: un immense campus universitaire — biologie, mathématiques, physique — et un
+tout petit pavillon abritant un laboratoire. L'université fait certifier <b>uniquement ce pavillon</b>,
+puis communique partout&nbsp;: «&nbsp;notre organisation est certifiée ISO 27001&nbsp;». Or
+<b>99&nbsp;% de l'université n'est pas sécurisée</b>.</p>
+<p>Pire&nbsp;: une entreprise dont les systèmes de production sont archaïques et non corrigeables peut
+monter un <b>micro-SMSI exemplaire sur un service annexe</b>, le faire certifier, et s'en servir comme
+<b>leurre commercial</b>.</p>
+<p style="margin-bottom:0"><b>La règle d'or pour un auditeur ou un RSSI</b>&nbsp;: quand une entreprise
+annonce sa certification, la première question doit <b>toujours</b> être «&nbsp;<b>quel est le périmètre
+exact de votre certification&nbsp;?</b>&nbsp;»</p>
+</div>
+<p>Deux précisions de cours à ajouter&nbsp;: la certification est délivrée pour <b>trois ans</b>, avec
+des <b>audits de surveillance annuels</b>&nbsp;; et sur le PDCA, «&nbsp;en anglais c'est <i>Act</i>, en
+français on devrait plutôt dire <b>Réagir</b>&nbsp;» — c'est l'étape où l'on <b>corrige les écarts
+constatés</b>.</p>
+
 <h2 id="ch7"><span class="num">7.</span> ISO 27002 : les 93 mesures</h2>
 
 <div class="callout def"><div class="t">Définition</div>
@@ -565,6 +736,115 @@ se justifie par un actif ou une obligation.</p>
 </div>
 
 <!-- ===================================================================== -->
+
+<h3 id="ch7-corrige">7.2 Le corrigé de l'exercice du cabinet comptable</h3>
+<p>L'exercice — sélectionner <b>10 mesures parmi les 93</b> pour un cabinet d'expertise comptable de
+<b>50 salariés</b> — a été corrigé en cours. Voici la sélection retenue par l'enseignant, avec
+<b>sa</b> justification.</p>
+<div class="tw"><table>
+<thead><tr><th style="width:9%">Réf.</th><th style="width:36%">Mesure</th><th>Sa justification</th></tr></thead>
+<tbody>
+<tr><td><code>05.15</code></td><td>Contrôle d'accès (RBAC)</td><td>Cloisonner l'accès aux bilans et dossiers clients</td></tr>
+<tr><td><code>08.24</code></td><td>Utilisation de la cryptographie</td><td>Chiffrer les disques des portables et les flux</td></tr>
+<tr><td><code>08.13</code></td><td>Sauvegarde des informations</td><td>Sauvegardes <b>3-2-1</b>, contre les rançongiciels</td></tr>
+<tr><td><code>06.06</code></td><td>Engagements de confidentialité</td><td>Clauses signées par les 50 collaborateurs</td></tr>
+<tr><td><code>07.03</code></td><td>Sécurisation des bureaux, salles et équipements</td><td>Armoires fermées à clé pour les dossiers fiscaux papier</td></tr>
+<tr><td><code>06.03</code></td><td>Sensibilisation et formation</td><td>Anti-hameçonnage, ciblage des virements et de la compta</td></tr>
+<tr><td><code>05.24</code></td><td>Gestion des incidents</td><td>Fiche réflexe et procédure d'escalade</td></tr>
+<tr><td><code>08.20</code></td><td>Mesures liées aux réseaux</td><td>Segmentation VLAN&nbsp;: isoler la compta du wifi invité</td></tr>
+<tr><td><code>08.12</code></td><td>Prévention de la fuite de données (DLP)</td><td>Empêcher l'exfiltration massive de fichiers clients</td></tr>
+<tr><td><code>05.09</code></td><td>Inventaire des actifs (CMDB)</td><td>Recenser PC, téléphones, serveurs et logiciels</td></tr>
+<tr><td><code>05.29</code></td><td><i>Bonus</i> — Sécurité de l'information durant une perturbation</td><td>PCA / PRA&nbsp;: reprise après sinistre ou rançongiciel</td></tr>
+</tbody>
+</table></div>
+<div class="exam"><div class="t">Ce que ce corrigé apprend sur ce qui est attendu</div>
+<b>Les quatre thèmes sont couverts</b>&nbsp;: 4 organisationnelles, 2 humaines, 1 physique, 3
+technologiques. C'est délibéré, et c'est le premier critère.<br>
+<b>Chaque justification est ancrée dans le métier</b>&nbsp;: «&nbsp;les dossiers fiscaux papier&nbsp;»,
+«&nbsp;le wifi invité&nbsp;», «&nbsp;les virements&nbsp;». Une justification générique ne vaut rien.<br>
+<b>Le DLP est la mesure qu'il attendait</b> et que personne n'avait proposée&nbsp;: «&nbsp;vous n'y aviez
+pas pensé, et pourtant en comptabilité c'est <b>crucial</b>&nbsp;».
+</div>
+<div class="callout"><div class="t">Sa définition du DLP</div>
+Le DLP analyse les <b>flux sortants</b> — courriels, clés USB, cloud. Si un collaborateur tente
+d'envoyer, «&nbsp;par mégarde ou par malveillance&nbsp;», un fichier contenant <b>500 numéros de cartes
+bancaires</b> ou des bilans fiscaux sur sa boîte personnelle, le DLP <b>détecte le marquage et bloque
+immédiatement l'envoi</b> en générant une alerte au RSSI.
+</div>
+<div class="callout ok"><div class="t">Donnée personnelle et donnée sensible : deux ensembles qui se croisent</div>
+<b>Personnelle mais pas sensible</b>&nbsp;: les informations publiques d'une personnalité sur Wikipédia
+— date de naissance, nom, ville natale&nbsp;; la <b>déclaration publique de patrimoine</b> d'un
+candidat à la présidentielle.<br>
+<b>Sensible mais pas personnelle</b>&nbsp;: «&nbsp;la <b>formule secrète du Coca-Cola</b>, un code
+source propriétaire, un brevet industriel non publié, une <b>clé cryptographique privée</b>&nbsp;».
+</div>
+
+
+<h3 id="ch7-officiel">7.4 La correction écrite du support — et son écart avec l'oral</h3>
+<p>Le support <code>MethodoSecu1</code> a été <b>corrigé après la séance</b>&nbsp;: deux diapositives
+ont été ajoutées, les <b>23 et 24</b>, qui donnent la correction de l'exercice avec les <b>références
+ISO</b>. Elle ne coïncide pas exactement avec ce qui a été dit à l'oral.</p>
+<div class="tw"><table>
+<thead><tr><th style="width:9%">Réf.</th><th>Les 10 mesures de la correction écrite (slide 23)</th></tr></thead>
+<tbody>
+<tr><td><code>05.01</code></td><td>Politiques de sécurité de l'information</td></tr>
+<tr><td><code>05.15</code></td><td>Contrôle d'accès</td></tr>
+<tr><td><code>05.16</code></td><td>Gestion des identités</td></tr>
+<tr><td><code>08.13</code></td><td>Sauvegarde des informations</td></tr>
+<tr><td><code>08.24</code></td><td>Chiffrement des données (transfert et stockage)</td></tr>
+<tr><td><code>07.03</code></td><td>Sécurisation des bureaux et des équipements</td></tr>
+<tr><td><code>06.03</code></td><td>Sensibilisation et formation à la sécurité de l'information</td></tr>
+<tr><td><code>05.24</code></td><td>Responsabilités et préparation de la gestion des incidents</td></tr>
+<tr><td><code>08.20</code></td><td>Mesures liées aux réseaux</td></tr>
+<tr><td><code>08.12</code></td><td>Prévention de la fuite de données</td></tr>
+</tbody>
+</table></div>
+<div class="exam"><div class="t">L'écart entre l'écrit et l'oral — deux mesures changent</div>
+Sept mesures sont <b>communes</b> aux deux versions&nbsp;: <code>05.15</code>, <code>08.13</code>,
+<code>08.24</code>, <code>07.03</code>, <code>06.03</code>, <code>05.24</code>, <code>08.20</code>,
+<code>08.12</code>.
+<p style="margin-bottom:0">L'<b>écrit</b> retient en plus <code>05.01</code> <b>politiques</b> et
+<code>05.16</code> <b>gestion des identités</b>. L'<b>oral</b> retenait à leur place <code>06.06</code>
+<b>engagements de confidentialité</b> et <code>05.09</code> <b>inventaire des actifs</b> — or
+<code>05.09</code> figure précisément dans les «&nbsp;<b>autres réponses possibles</b>&nbsp;» du
+slide 24. <b>Les deux listes sont donc admises&nbsp;: c'est la cohérence du raisonnement qui est
+évaluée, pas la liste exacte.</b></p>
+</div>
+<div class="callout"><div class="t">Les « autres réponses possibles » — slide 24</div>
+<code>05.09</code> inventaire des informations et autres actifs associés · <code>05.10</code>
+utilisation correcte des actifs · <code>08.15</code> gestion documentaire et journalisation ·
+<code>07.02</code> contrôle d'accès physique aux archives papier sensibles · <code>08.21</code>
+sécurité des services en réseaux · <code>05.30</code> planification de la continuité d'activité
+(PCA&nbsp;/&nbsp;PRA) · <code>05.36</code> conformité aux politiques et normes · <code>08.19</code>
+installation sécurisée des logiciels · <code>08.29</code> tests de sécurité dans le développement et
+l'acceptation · <code>08.34</code> protection des SI en cours d'audit et de test.
+</div>
+
+<h3 id="ch7-audit">7.3 Ce qu'un auditeur demande, mesure par mesure</h3>
+<p>Le cours traduit plusieurs mesures en <b>question d'auditeur</b>. C'est la forme la plus concrète
+sous laquelle elles peuvent être interrogées.</p>
+<ul class="key-points">
+<li><b>La matrice RBAC</b> — «&nbsp;le document fondamental qui régit l'organisation des rôles et des
+accès&nbsp;». Un tableau à double entrée&nbsp;: les <b>profils</b> (administrateur Linux, admin
+Windows, gestionnaire de paie, technicien réseau) et, en face, les <b>droits sur chaque ressource</b>.
+«&nbsp;Si l'entreprise n'est pas capable de la fournir, c'est une <b>non-conformité majeure</b>.&nbsp;»</li>
+<li><b>La CMDB</b> — «&nbsp;montrez-moi votre inventaire des actifs&nbsp;». Pas seulement les
+serveurs&nbsp;: les <b>versions de build</b>, les <b>numéros de correctifs</b> et les <b>licences
+logicielles</b>.</li>
+<li><b>La sensibilisation</b> — les <b>attestations</b> et les <b>taux de complétion</b> des formations
+et des campagnes de simulation d'hameçonnage.</li>
+<li><b>La gestion d'incident</b> — la <b>procédure d'escalade</b> documentée et sa <b>matrice
+RACI</b> (<a href="#ch3-raci">§3.4</a>).</li>
+</ul>
+<div class="callout def"><div class="t">Les trois modèles de contrôle d'accès, dans l'ordre</div>
+<b>RBAC</b> (<i>role-based</i>)&nbsp;: les droits sont assignés à des <b>rôles préétablis</b>.<br>
+<b>RuBAC</b> (<i>rule-based</i>)&nbsp;: les droits dépendent de <b>règles conditionnelles</b> — par
+exemple l'accès uniquement pendant les heures de bureau.<br>
+<b>ABAC</b> (<i>attribute-based</i>)&nbsp;: les droits dépendent des <b>attributs dynamiques</b> de
+l'utilisateur, de la ressource et de l'environnement. <b>C'est le modèle phare du zero trust</b>
+(<a href="#ch15-sequence">§15.3</a>).
+</div>
+
 <h2 id="ch8"><span class="num">8.</span> Les quatre approches de la cybersécurité</h2>
 
 <p>Le cœur conceptuel du module. Il n'y a pas <b>une</b> façon d'aborder la cybersécurité mais
@@ -765,6 +1045,53 @@ donnés&nbsp;: la <b>déception</b>, les <b>honeypots</b>, le <b>threat hunting<
 </div>
 
 <!-- ===================================================================== -->
+
+<h3 id="ch9-vauban">9.3 Vauban, l'emmental, et le cas industriel</h3>
+<div class="callout"><div class="t">La métaphore d'origine : le fort de Vauban</div>
+Une forteresse entourée de <b>lignes concentriques</b> d'obstacles — fossés, demi-lunes, bastions,
+remparts, donjon. <b>L'objectif n'est pas de rendre le système imprenable</b> — «&nbsp;cela n'existe
+pas&nbsp;» — mais de <b>ralentir l'attaquant</b>&nbsp;: chaque couche franchie lui coûte du temps et
+des ressources, et augmente la probabilité qu'il soit <b>détecté</b> avant d'atteindre le cœur.
+</div>
+<div class="exam"><div class="t">Le modèle de l'emmental — et la correction de vocabulaire</div>
+Le <b>modèle du fromage suisse</b> de <b>James Reason</b>. «&nbsp;Certains disent le modèle du
+<b>gruyère</b>, mais c'est faux&nbsp;: le gruyère n'a <b>pas</b> de trous, c'est l'<b>emmental</b> qui
+en a&nbsp;!&nbsp;»
+<p style="margin-bottom:0">Plusieurs tranches trouées superposées&nbsp;: l'attaquant passe le trou de
+la première, il est bloqué par la deuxième. La limite&nbsp;: «&nbsp;<b>si vous laissez un peu de temps
+à l'attaquant, il finira par trouver les trous dans chaque tranche</b>&nbsp;» — et les alignements
+finissent par se produire. <b>La défense en profondeur achète du temps, elle ne supprime pas le
+risque.</b></p>
+</div>
+
+<h4 style="margin:1.4em 0 .4em">Le cas industriel : CEI 62443 et la pyramide de l'automatisation</h4>
+<p>L'approche système appliquée aux systèmes industriels (ICS / SCADA), encadrés par la norme
+<b>CEI 62443</b>. Le SI industriel se structure en <b>niveaux hiérarchiques</b>&nbsp;:</p>
+<div class="tw"><table>
+<thead><tr><th>Niveau</th><th>Ce qu'on y trouve</th><th>Exemple, dans une usine d'embouteillage</th></tr></thead>
+<tbody>
+<tr><td><b>4 et 5</b> — réseau entreprise (<b>IT</b>)</td><td>ERP, facturation, commandes clients</td><td>La gestion des commandes et des fournisseurs</td></tr>
+<tr><td><b>3</b> — contrôle et supervision (<b>SCADA</b>)</td><td>IHM, postes de supervision, <i>historian</i></td><td>La salle de contrôle où l'on supervise le remplissage</td></tr>
+<tr><td><b>1 et 2</b> — contrôle-commande (<b>PLC / API</b>)</td><td>Automates programmables industriels</td><td>Les automates qui commandent le matériel</td></tr>
+<tr><td><b>0</b> — procédé physique (<b>OT</b>)</td><td>Capteurs, moteurs, vannes, tapis roulants</td><td>Capteurs de niveau, électrovannes, moteurs</td></tr>
+</tbody>
+</table></div>
+<div class="callout warn"><div class="t">La convergence IT / OT, et le conflit qu'elle crée</div>
+«&nbsp;Il y a 15 ou 20 ans, le monde industriel était totalement étanche (<b>air gap</b>). Aujourd'hui,
+pour des besoins de rentabilité et de pilotage en temps réel, on a <b>interconnecté l'IT et l'OT</b>.
+Résultat&nbsp;: un pirate qui pénètre le réseau bureautique par un simple courriel d'hameçonnage peut
+<b>rebondir vers le SCADA, puis vers les automates</b>, et dérégler physiquement les machines.&nbsp;»
+<p>Le conflit type&nbsp;: un serveur industriel sous <b>Windows XP</b> porte une faille béante. Le
+<b>RSSI</b> veut le corriger ce soir. Le <b>directeur de production</b> refuse&nbsp;: si le correctif
+plante le logiciel propriétaire, «&nbsp;l'usine s'arrête trois jours, à <b>500 000 euros de pertes par
+jour</b>&nbsp;».</p>
+<p style="margin-bottom:0"><b>La réalité du terrain, telle qu'énoncée&nbsp;: «&nbsp;dans 99&nbsp;% des
+cas d'arbitrage en milieu industriel, c'est la production qui gagne sur la sécurité.&nbsp;»</b> Le rôle
+du RSSI n'est alors <b>pas de forcer le correctif</b>, mais de proposer des <b>mesures
+compensatoires</b>&nbsp;: isoler la machine dans un <b>VLAN hermétique</b> sans accès Internet,
+restreindre les accès physiques, filtrer strictement les flux.</p>
+</div>
+
 <h2 id="ch10"><span class="num">10.</span> Approche menace : la CTI</h2>
 
 <div class="callout def"><div class="t">Définition — ANSSI</div>
@@ -837,6 +1164,41 @@ de la mineure Intelligence économique.
 </div>
 
 <!-- ===================================================================== -->
+
+<h3 id="ch10-hunting">10.2 CTI contre Threat Hunting, et la cyber déception</h3>
+<div class="exam"><div class="t">La distinction à ne pas rater</div>
+La <b>CTI</b> est «&nbsp;souvent <b>post-mortem</b>&nbsp;»&nbsp;: elle analyse les <b>attaques
+passées</b>, les signatures, les <b>indicateurs de compromission (IoC)</b>, pour alimenter le SIEM.<br>
+Le <b>Threat Hunting</b> intervient sur des attaques <b>en cours</b>, «&nbsp;quand l'adversaire est
+<b>déjà actif</b> à l'intérieur du système&nbsp;»&nbsp;: une <b>traque proactive</b> menée par des
+analystes, <b>sans attendre une alerte automatique</b>.
+<p style="margin-bottom:0"><b>Le repère temporel&nbsp;: la CTI regarde hier, le Threat Hunting regarde
+maintenant.</b></p>
+</div>
+
+<div class="callout"><div class="t">La métaphore de la Muraille de Chine</div>
+Sous la dynastie <b>Ming</b>, la Grande Muraille n'était pas un mur passif&nbsp;: elle dissimulait des
+<b>passages secrets dérobés</b>, invisibles du côté mongol. Quand de petits détachements
+s'approchaient, les soldats en sortaient pour <b>prendre les assaillants à revers</b>.
+<p style="margin-bottom:0">C'est la <b>défense active</b>&nbsp;: on ne se contente plus de bloquer, on
+cherche à <b>détecter</b>, <b>suivre les déplacements</b>, <b>ralentir</b>, <b>tromper</b>,
+<b>contenir</b> et <b>réagir</b>.</p>
+</div>
+
+<div class="tw"><table>
+<thead><tr><th style="width:24%">Famille de déception</th><th>En quoi ça consiste</th><th>Statut juridique</th></tr></thead>
+<tbody>
+<tr><td><b>Cryptique</b></td><td>Masquer la réalité&nbsp;: chiffrer, brouiller les pistes, stéganographie</td><td><b>Légitime et universellement licite</b> — «&nbsp;vous avez toujours le droit de chiffrer vos données&nbsp;»</td></tr>
+<tr><td><b>Mimétique</b></td><td>Faire passer un système pour un autre&nbsp;: faux Active Directory vulnérable, faux comptes d'administration, <b>honeypots</b>, <b>honeynets</b>, <b>honeytokens</b></td><td><b>Encadrée</b>&nbsp;: les pots de miel défensifs sont autorisés, les pièges qui <b>incitent au crime</b> ne le sont pas</td></tr>
+</tbody>
+</table></div>
+<div class="callout warn"><div class="t">L'analogie qui fixe la limite</div>
+«&nbsp;Dans l'art de la guerre, vous avez le droit de <b>camoufler un char en forêt</b> — déception
+cryptique. En revanche, peindre une <b>fausse croix rouge</b> sur un char pour le déguiser en ambulance
+est formellement <b>interdit par les conventions de Genève</b>.&nbsp;» En cybersécurité&nbsp;:
+<b>honeypots oui</b>, provocation illicite <b>non</b>.
+</div>
+
 <h2 id="ch11"><span class="num">11.</span> Approche métier : l'analyse de risque</h2>
 
 <p>«&nbsp;On considère ici la cybersécurité comme un <b>levier de protection de la valeur
@@ -864,16 +1226,306 @@ conséquences potentielles</b>, et <b>fournir une base rationnelle pour décider
 traitement</b>.
 </div>
 
-<div class="callout warn"><div class="t">Ce chapitre est volontairement court</div>
-L'analyse de risque et la méthode <b>EBIOS Risk Manager</b> font l'objet de la <b>journée 3
-entière</b>, dont le support n'a pas encore été distribué. Ce qui est certain dès maintenant&nbsp;:
-la méthode s'organise en <b>cinq ateliers</b>, c'est ce que dit l'énoncé du devoir — <b>atelier 1</b>
-pour dresser le portrait de l'organisation, <b>ateliers 2, 3 et 4</b> pour étudier les menaces,
-<b>atelier 5</b> pour le <b>traitement du risque</b>. Voir le <a href="#ch20">chapitre 20</a>.
+<div class="callout ok"><div class="t">Ce chapitre couvre toute la théorie du risque de la séance 2</div>
+Les paragraphes <a href="#ch11-triptyque">11.1</a> à <a href="#ch11-safety">11.10</a> reprennent les
+<b>3 h 12</b> de la séance du 15 septembre consacrées à la notion de risque, à l'<b>ISO 27005</b> et au
+panorama des méthodes. La <b>méthode EBIOS RM</b> elle-même est traitée aux
+<a href="#ch21">chapitres 21 à 27</a>, et le devoir au <a href="#ch20">chapitre 20</a>.
 </div>
 
 <!-- ===================================================================== -->
+
+<h3 id="ch11-triptyque">11.1 Danger, risque, dommage — la distinction qui fonde tout</h3>
+<div class="exam"><div class="t">« Le risque n'est pas un danger »</div>
+«&nbsp;Faites très attention&nbsp;: dans le langage courant, on confond constamment risque et
+danger.&nbsp;»
+<div class="tw" style="margin-top:8px"><table>
+<thead><tr><th style="width:16%">Notion</th><th style="width:36%">Ce que c'est</th><th>Sur l'exemple du verglas</th></tr></thead>
+<tbody>
+<tr><td><b>Danger</b></td><td>Une <b>propriété intrinsèque</b>, un fait physique</td><td>La plaque de verglas sur le trottoir</td></tr>
+<tr><td><b>Risque</b></td><td>Une <b>situation d'exposition</b> au danger — <b>ce n'est pas une propriété du système</b></td><td>Quelqu'un marche à proximité de la plaque</td></tr>
+<tr><td><b>Dommage</b><br>(impact)</td><td>La <b>conséquence préjudiciable concrète</b> si l'événement se réalise</td><td>La personne glisse et se casse la jambe</td></tr>
+</tbody>
+</table></div>
+<p style="margin-bottom:0">Le point qui fait la différence&nbsp;: <b>tant que personne ne passe près
+de la plaque, il n'y a aucun risque</b> — alors que le danger, lui, existe toujours. Même chose avec la
+falaise&nbsp;: elle est un danger en permanence&nbsp;; le risque n'apparaît qu'à cinquante centimètres
+du bord.</p>
+</div>
+
+<h3 id="ch11-iso31000">11.2 ISO 31000, la norme mère</h3>
+<div class="callout danger"><div class="t">L'erreur d'aiguillage à ne pas commettre</div>
+«&nbsp;La norme mère internationale en matière de gestion des risques <b>n'est pas l'ISO 27005</b>.
+<b>La norme mère, c'est l'ISO 31000.</b>&nbsp;» L'<b>ISO 27005</b> n'en est que la <b>déclinaison</b>
+pour la sécurité de l'information.
+</div>
+<p>L'ISO 31000 couvre tous les secteurs. Trois familles ont été déroulées en cours, chacune sur le
+triptyque danger / risque / dommage&nbsp;:</p>
+<div class="tw"><table>
+<thead><tr><th style="width:15%">Famille</th><th>Danger</th><th>Risque</th><th>Dommage</th></tr></thead>
+<tbody>
+<tr><td><b>Financier</b></td><td colspan="3">Le défaut de paiement d'un État — l'exemple donné est la <b>crise de la dette souveraine grecque</b>.</td></tr>
+<tr><td><b>Industriel</b></td><td>Les <b>microfissures de corrosion</b> dans les cuves des réacteurs EDF</td><td>Décider d'exploiter la centrale et de mettre le réacteur <b>sous pression</b> malgré elles</td><td>Rupture de confinement, fusion du cœur</td></tr>
+<tr><td><b>Médical</b></td><td>Les substances ou antigènes <b>injectés</b> lors d'une vaccination</td><td>La probabilité que le système immunitaire <b>réagisse mal</b></td><td>Choc anaphylactique, effets indésirables graves</td></tr>
+</tbody>
+</table></div>
+<p>Le cas industriel est le plus parlant&nbsp;: <b>tant que la centrale est à l'arrêt, le risque
+d'accident est nul</b> — les fissures, elles, sont toujours là.</p>
+
+<h3 id="ch11-formules">11.3 Les deux dimensions, et la décomposition de la vraisemblance</h3>
+<p>Le fil conducteur du cours est <b>le conducteur sur une route de campagne bordée de platanes</b>.
+La mission&nbsp;: arriver à destination. Le danger&nbsp;: les rangées de platanes. L'événement
+redouté&nbsp;: la sortie de route et la collision.</p>
+<div class="callout def"><div class="t">Les formules à connaître</div>
+<b>Risque = f (Gravité, Vraisemblance)</b> — le risque se lit toujours dans un <b>espace cartésien à
+deux dimensions</b>.<br>
+<b>Vraisemblance = Menace × Vulnérabilité</b>
+<p style="margin-bottom:0">Et la décomposition du second niveau&nbsp;: la <b>menace</b> = <b>attractivité
+de la cible</b> + <b>vecteur d'accès</b>&nbsp;; la <b>vulnérabilité</b> = <b>vulnérabilités
+intrinsèques</b> (CVE, défauts de correctif, obsolescence) + <b>complexité de l'attaque</b> (nombre
+d'étapes de la <i>kill chain</i>).</p>
+</div>
+<div class="tw"><table>
+<thead><tr><th style="width:20%">Dimension</th><th>De quoi elle dépend, sur l'exemple du platane</th></tr></thead>
+<tbody>
+<tr><td><b>Gravité</b><br>(impact)</td><td>La <b>vitesse</b> du véhicule (160 contre 50 km/h) · la <b>taille de l'arbre</b> (un noisetier souple contre un platane centenaire) · la <b>valeur de la voiture</b> (une Twingo contre une Porsche)</td></tr>
+<tr><td><b>Vraisemblance</b><br>(probabilité)</td><td>La <b>configuration des lieux</b> (un arbre isolé contre une allée de 500 platanes) · l'<b>état du conducteur</b> (fatigue, alcool) · les <b>conditions</b> (virages, feuilles mortes) · les <b>mesures préventives</b> (panneaux, glissières)</td></tr>
+</tbody>
+</table></div>
+<div class="callout ok"><div class="t">Les deux illustrations de la décomposition</div>
+<b>L'attractivité</b>&nbsp;: «&nbsp;un pirate qui cherche à rançonner va privilégier un grand groupe ou
+un hôpital plutôt qu'un <b>petit fleuriste indépendant</b>&nbsp;» — il faut que le gain vaille
+l'investissement.<br>
+<b>La complexité de l'attaque</b>&nbsp;: s'il suffit d'un paquet réseau malformé, la vulnérabilité est
+maximale&nbsp;; s'il faut franchir cinq pare-feux, dérober un jeton MFA, escalader sur l'AD et casser
+un chiffrement, «&nbsp;<b>la longueur de la chaîne décourage l'attaquant et fait chuter drastiquement
+la vraisemblance</b>&nbsp;».
+<p style="margin-bottom:0">Et le repère historique&nbsp;: la modélisation mathématique du risque
+remonte à <b>Christiaan Huygens (1659)</b>, formalisée par <b>Daniel Bernoulli (1738)</b> — le risque
+comme <b>espérance mathématique du dommage</b>.</p>
+</div>
+
+<h3 id="ch11-echelles">11.4 Construire une échelle — et pourquoi elle a quatre niveaux</h3>
+<div class="exam"><div class="t">Signalé dans la transcription comme question d'examen classique</div>
+<b>Pourquoi une échelle à 4 niveaux plutôt qu'à 3 ou 5&nbsp;?</b> — <b>pour éliminer le biais cognitif
+du juste milieu</b>.
+<p style="margin-bottom:0">Avec une échelle impaire, les participants en réunion ont «&nbsp;une
+tendance psychologique quasi systématique à choisir la valeur <b>centrale</b> pour ne pas se mouiller
+et éviter le conflit&nbsp;». Une <b>échelle paire force à trancher</b>&nbsp;: plutôt mineur (1-2) ou
+plutôt majeur (3-4). <b>Réserve de provenance</b>&nbsp;: ce passage est un encadré rédigé par l'outil
+de transcription, pas une citation horodatée.</p>
+</div>
+<p>Les <b>cinq propriétés</b> d'une bonne échelle, telles qu'énumérées en cours&nbsp;:</p>
+<ol class="key-points">
+<li><b>Non ambiguë</b> — chaque niveau doit être limpide, pour éviter les divergences d'interprétation.</li>
+<li><b>Explicite</b> — chaque échelon associé à des <b>critères factuels et mesurables</b>&nbsp;: seuils financiers, durées d'indisponibilité.</li>
+<li><b>Comprise par tous</b> — elle doit être intelligible pour les <b>métiers</b> (directeur financier, juriste, responsable d'atelier), pas seulement pour les techniciens.</li>
+<li><b>Adaptée à l'organisme</b> — «&nbsp;une perte de 50 000 € est critique pour une TPE, insignifiante pour Total ou Airbus&nbsp;».</li>
+<li><b>Graduée de manière cohérente</b> — des paliers progressifs bien distincts.</li>
+</ol>
+<div class="callout"><div class="t">L'exercice officiel du Club EBIOS — gravité ou vraisemblance ?</div>
+<div class="tw" style="margin-top:6px"><table>
+<thead><tr><th>Élément à qualifier</th><th style="width:28%">Dimension</th></tr></thead>
+<tbody>
+<tr><td>L'importance de la <b>valeur métier</b> considérée</td><td><b>Gravité</b></td></tr>
+<tr><td>L'<b>exposition</b> aux menaces considérées</td><td><b>Vraisemblance</b></td></tr>
+<tr><td>L'<b>existence de vulnérabilités</b> sur le système</td><td><b>Vraisemblance</b></td></tr>
+<tr><td>La <b>facilité d'exploitation</b> des vulnérabilités</td><td><b>Vraisemblance</b></td></tr>
+<tr><td>La <b>capacité et la motivation</b> des sources de risque</td><td><b>Vraisemblance</b></td></tr>
+<tr><td>Le <b>nombre d'impacts négatifs</b> identifiés</td><td><b>Gravité</b></td></tr>
+</tbody>
+</table></div>
+<b>La règle mémotechnique</b>&nbsp;: tout ce qui regarde <b>vers l'intérieur</b> de l'entreprise — les
+actifs, les données, les préjudices, la réputation, la survie — c'est la <b>gravité</b>. Tout ce qui
+regarde <b>vers l'extérieur et la technique</b> — l'attaquant, sa motivation, le vecteur, les failles,
+la complexité — c'est la <b>vraisemblance</b>.
+</div>
+
+<h3 id="ch11-27005">11.5 Le processus ISO 27005, et le vocabulaire qui piège</h3>
+<p>«&nbsp;C'est un point sur lequel les promotions précédentes ont souvent eu des difficultés&nbsp;:
+bien comprendre l'articulation entre <b>l'appréciation</b>, <b>l'analyse</b> et <b>l'évaluation</b> du
+risque.&nbsp;»</p>
+<div class="callout danger"><div class="t">Les deux équations du support — à connaître dans ce sens</div>
+Le support pose l'emboîtement en <b>deux niveaux</b>, et non en trois sous-étapes à plat&nbsp;:
+<p style="margin:.5em 0"><b>Appréciation du risque = analyse du risque + évaluation du risque</b><br>
+<b>Analyse du risque = identification du risque + estimation du risque</b></p>
+<p style="margin-bottom:0">Autrement dit, l'<b>analyse</b> est un terme <b>intermédiaire</b> qui
+regroupe l'identification et l'estimation&nbsp;; l'<b>appréciation</b> ajoute par-dessus
+l'<b>évaluation</b>. C'est précisément l'articulation dont l'enseignant dit que «&nbsp;les promotions
+précédentes ont souvent eu des difficultés&nbsp;» — et une question qui demanderait «&nbsp;que
+recouvre l'<i>analyse</i> du risque&nbsp;?&nbsp;» attend <b>identification + estimation</b>, pas les
+trois.</p>
+</div>
+<div class="callout def"><div class="t">Le détail des trois sous-étapes</div>
+<b>1. Identification</b> — cinq éléments&nbsp;: les <b>actifs</b> (biens essentiels et actifs
+supports) · les <b>menaces</b> et leurs sources · les <b>mesures de sécurité existantes</b> · les
+<b>vulnérabilités</b>, y compris les incidents passés et les résultats d'audit · les
+<b>conséquences</b> ou impacts.<br>
+<b>2. Estimation</b> — pour chaque risque, estimer son <b>niveau d'impact</b> et son <b>niveau de
+vraisemblance</b>, et en déduire une mesure&nbsp;: <b>risque = impact × vraisemblance</b>.<br>
+<b>3. Évaluation</b> — <b>confronter le niveau calculé au niveau d'acceptation</b> de l'organisme.
+Elle ajoute aux risques estimés la prise en compte des <b>exigences légales et réglementaires</b>, et
+produit la <b>matrice d'évaluation des risques</b>.
+</div>
+<div class="tw"><table>
+<thead><tr><th style="width:26%">Phase ISO 27005</th><th>Ce qu'on y met</th></tr></thead>
+<tbody>
+<tr><td><b>1. Établissement du contexte</b></td><td>Les <b>obligations</b> (RGPD, NIS 2, Cybersecurity Act, <b>LPM</b> si OIV, IGI) et les <b>normes sectorielles</b> — résistance thermique et aux radiations dans le spatial, alliages d'inox chirurgical dans le médical, référentiels internes Airbus ou Boeing dans l'aéronautique.<br>Le support ajoute que le contexte <b>définit l'objectif</b> de l'analyse — mise en place d'un SMSI ISO 27001, conception d'un nouveau service métier — et impose de préciser <b>trois familles de critères</b> (voir ci-dessous).</td></tr>
+<tr><td><b>2. Appréciation du risque</b></td><td>Identification → estimation → évaluation.</td></tr>
+<tr><td><b>3. Traitement du risque</b></td><td>Maintien · refus · réduction · transfert (§&nbsp;11.6).</td></tr>
+<tr><td><b>4. Acceptation du risque résiduel</b></td><td><b>Validation formelle par la direction générale</b>. Le tout entouré de <b>communication</b> et de <b>surveillance continue</b>.</td></tr>
+</tbody>
+</table></div>
+<div class="callout ok"><div class="t">Les trois critères à préciser dès l'établissement du contexte</div>
+<b>1. Critères d'évaluation du risque</b> — élaborer une <b>mesure</b> du risque à partir des éléments
+actifs&nbsp;: valeur des processus métier, criticité des actifs, exigences légales, réputation.<br>
+<b>2. Critères d'impact</b> — mesurer le niveau de <b>dommages ou de coûts</b>&nbsp;: sensibilité de
+l'actif, erreurs opérationnelles, perte d'activité, perturbations (délais, absence de personnel),
+atteinte à la réputation, exigences légales.<br>
+<b>3. Critères d'acceptation</b> — élaborer les <b>échelles</b> et les <b>seuils</b> d'acceptation, en
+accord avec les politiques, intentions, objectifs et intérêts des <b>parties prenantes</b>.
+<p style="margin-bottom:0"><b>Ne pas confondre les deux premiers</b>&nbsp;: les critères
+d'<b>évaluation</b> servent à <b>calculer</b> le risque, les critères d'<b>impact</b> à <b>mesurer le
+dommage</b>. Le troisième sert à <b>trancher</b>.</p>
+</div>
+
+<div class="exam"><div class="t">Deux règles énoncées à l'identification</div>
+<b>1. Auditer d'abord l'existant.</b> «&nbsp;Si vous oubliez de consigner les mesures de sécurité
+<b>déjà en place</b>, vous allez travailler pour rien&nbsp;: vous allez préconiser en fin d'étude des
+mesures qui existent depuis trois ans.&nbsp;»<br>
+<b>2. Un événement redouté ne concerne qu'UN SEUL besoin de sécurité à la fois.</b> Sur une borne
+Wi-Fi&nbsp;: la <b>destruction</b> porte atteinte à la <b>disponibilité</b> (ER 1), l'<b>écoute
+passive</b> à la <b>confidentialité</b> (ER 2), l'<b>altération des paquets</b> à l'<b>intégrité</b>
+(ER 3) — trois événements redoutés distincts, pas un seul.
+<p style="margin-bottom:0">Les critères visés sont notés <b>DICP</b> en cours&nbsp;: <b>D</b>isponibilité,
+<b>I</b>ntégrité, <b>C</b>onfidentialité, <b>P</b>reuve.</p>
+</div>
+
+<h3 id="ch11-traitement">11.6 Les quatre stratégies de traitement</h3>
+<div class="tw"><table>
+<thead><tr><th style="width:20%">Stratégie</th><th>En quoi elle consiste</th><th style="width:30%">L'exemple du cours</th></tr></thead>
+<tbody>
+<tr><td><b>1. Maintien</b><br>acceptation</td><td>On connaît le risque et on décide de l'<b>assumer</b>. <b>Condition obligatoire</b>&nbsp;: validation <b>signée par la direction générale</b>, dont la responsabilité est engagée.</td><td>Un risque en zone verte ou bleue de la matrice</td></tr>
+<tr><td><b>2. Refus</b><br>évitement</td><td>La solution la plus radicale&nbsp;: on <b>supprime purement et simplement l'activité</b> qui génère le risque.</td><td><b>Rabobank</b> a fermé sa filiale belge et revendu son portefeuille clients, le droit financier belge étant devenu trop risqué</td></tr>
+<tr><td><b>3. Réduction</b><br>mitigation</td><td>La plus fréquente&nbsp;: on déploie des contre-mesures pour faire baisser la gravité ou la vraisemblance — ramener un G3 en G1.</td><td>PSSI, chiffrement, MFA, durcissement, segmentation</td></tr>
+<tr><td><b>4. Transfert</b><br>partage</td><td>On délègue à un tiers plus compétent, ou on transfère l'impact financier.</td><td>L'<b>infogérance</b> chez OVHcloud ou AWS&nbsp;; la <b>cyber-assurance</b></td></tr>
+</tbody>
+</table></div>
+<div class="callout ok"><div class="t">L'analogie de la plaque d'égout, pour le refus par conception</div>
+«&nbsp;À l'origine les plaques d'égout étaient <b>carrées</b>. Insérée en diagonale, une plaque carrée
+peut <b>glisser et tomber dans le trou</b>. Les ingénieurs ont adopté les plaques <b>rondes</b>&nbsp;:
+quelle que soit l'orientation, une plaque ronde ne peut <b>mathématiquement jamais</b> tomber dans son
+trou.&nbsp;» C'est l'illustration du <b>refus du risque par conception</b>.
+</div>
+
+<h3 id="ch11-impacts">11.7 Les quatre familles d'impacts, et les trois parties prenantes</h3>
+<div class="tw"><table>
+<thead><tr><th style="width:24%">Famille d'impact</th><th>Ce qu'elle recouvre, et les cas cités</th></tr></thead>
+<tbody>
+<tr><td><b>Fonctionnel</b><br>opérationnel</td><td>Interruption d'un processus métier&nbsp;: l'usine s'arrête, les trains ne circulent plus, les médecins n'accèdent plus aux dossiers patients.</td></tr>
+<tr><td><b>Financier</b></td><td>Perte de chiffre d'affaires, <b>rançon</b>, coûts d'intervention forensique pour reconstruire le SI.</td></tr>
+<tr><td><b>Réputationnel</b></td><td><b>Ashley Madison (2015)</b> — base d'un site de rencontres extraconjugales publiée en clair&nbsp;; <b>Sony Pictures (2014)</b> — fuite de courriels de dirigeants et de scénarios non sortis.</td></tr>
+<tr><td><b>Juridique</b><br>réglementaire</td><td>Poursuites, amendes CNIL pour violation du RGPD — <b>jusqu'à 4&nbsp;% du chiffre d'affaires mondial</b>.</td></tr>
+</tbody>
+</table></div>
+<p>Et les <b>trois catégories de parties prenantes</b>, parce que «&nbsp;un attaquant utilise très
+souvent l'écosystème pour pénétrer une cible&nbsp;»&nbsp;: les <b>clients</b> · les <b>partenaires</b>
+(flux réguliers, interconnexions VPN ou API) · les <b>fournisseurs et sous-traitants</b>. Le troisième
+est «&nbsp;<b>le vecteur d'attaque le plus redoutable aujourd'hui</b>&nbsp;» — l'exemple du prestataire
+de climatisation chez <b>Target</b>, et <b>SolarWinds</b>.</p>
+
+<h3 id="ch11-audit">11.8 Audit contre analyse de risque</h3>
+<div class="exam"><div class="t">Annoncé comme une question d'entretien d'embauche</div>
+«&nbsp;C'est une <b>question piège</b> que l'on m'a posée lors de mon entretien de recrutement chez
+Sopra Steria, et que vous rencontrerez très certainement lors de <b>vos entretiens
+d'embauche</b>.&nbsp;»
+<div class="tw" style="margin-top:8px"><table>
+<thead><tr><th style="width:50%">Audit de sécurité</th><th>Analyse de risque</th></tr></thead>
+<tbody>
+<tr><td>Nécessite <b>obligatoirement un référentiel préexistant</b>&nbsp;: PSSI, DAT, norme ISO 27001, contrat</td><td>Peut <b>partir de zéro</b> — aucun document préalable obligatoire</td></tr>
+<tr><td>Travail de <b>conformité</b>&nbsp;: on vérifie si la réalité est conforme au document</td><td>Travail d'<b>investigation et d'écoute</b>&nbsp;: on interroge les métiers et le terrain</td></tr>
+<tr><td><b>Si le référentiel n'existe pas, l'auditeur ne peut pas travailler</b></td><td>L'analyste identifie les risques <b>ex nihilo</b> à partir des activités réelles</td></tr>
+</tbody>
+</table></div>
+<p style="margin-bottom:0"><b>L'anecdote qui fixe la différence</b>&nbsp;: une étudiante envoyée chez
+<b>Thales</b> pour une analyse de risque arrive alors que <b>le RSSI vient de démissionner</b> — la
+mémoire du projet a disparu. «&nbsp;Si cela avait été un <b>audit</b>, elle aurait été
+<b>bloquée</b>&nbsp;» — faute de référentiel. Comme c'était une <b>analyse de risque</b>, elle a pu
+repartir de zéro par des ateliers avec les métiers.</p>
+</div>
+
+<h3 id="ch11-panorama">11.9 Le panorama mondial des méthodes</h3>
+<div class="callout danger"><div class="t">Le tableau du support fait foi — il diffère de l'oral</div>
+Le slide 25 donne un tableau daté et sourcé. Sur <b>quatre lignes</b>, il ne dit pas la même chose que
+ce qui a été énoncé en cours. <b>En QCM, retenez la version du support.</b>
+</div>
+<div class="tw"><table>
+<thead><tr><th>Méthode / Norme</th><th>Date</th><th>Auteur</th><th>Pays</th><th>Conformité</th></tr></thead>
+<tbody>
+<tr><td><b>CRAMM</b></td><td><b>1987</b></td><td><b>Siemens</b></td><td>Royaume-Uni</td><td>BS 7799</td></tr>
+<tr><td><b>MEHARI</b></td><td><b>1995</b></td><td><b>CLUSIF</b></td><td>France</td><td>ISO 27005, (ISO 27002)</td></tr>
+<tr><td><b>OCTAVE</b></td><td><b>1999</b></td><td><b>Université Carnegie Mellon</b></td><td>États-Unis</td><td>Acceptée comme norme</td></tr>
+<tr><td><b>ISO 27005</b></td><td><b>2008</b></td><td><b>ISO/CEI</b></td><td>International</td><td>Acceptée comme norme</td></tr>
+<tr><td><b>EBIOS Risk Manager</b></td><td><b>2018</b></td><td><b>DCSSI</b></td><td>France</td><td>ISO 27005</td></tr>
+<tr><td><b>NIST SP 800-30</b></td><td><b>2020</b></td><td>NIST</td><td>États-Unis</td><td>Acceptée comme norme</td></tr>
+<tr><td><b>Cyber PHA</b></td><td><b>2009</b></td><td><b>Global Congress on Process Safety</b></td><td>International</td><td>ISO 27x, ISA 62443, NIST 800 x</td></tr>
+</tbody>
+</table></div>
+<div class="exam"><div class="t">Les quatre écarts entre le support et l'oral</div>
+<b>CRAMM</b>&nbsp;: le support dit <b>Siemens</b>, l'oral disait la <b>CCTA</b> — l'agence britannique
+est bien à l'origine de la méthode, Siemens l'a ensuite éditée.<br>
+<b>OCTAVE</b>&nbsp;: le support dit <b>Université Carnegie Mellon</b>, l'oral disait <b>CERT / SEI</b>
+— le SEI <i>est</i> un institut de Carnegie Mellon, les deux se valent.<br>
+<b>NIST SP 800-30</b>&nbsp;: le support date de <b>2020</b>, l'oral de <b>2002</b>. <b>Écart réel de
+dix-huit ans</b> — retenez 2020.<br>
+<b>Cyber PHA</b>&nbsp;: le support date de <b>2009</b> et l'attribue au <b>Global Congress on Process
+Safety</b>, l'oral disait «&nbsp;2010+, norme CEI 62443&nbsp;».
+<p style="margin-bottom:0">Et le support <b>ajoute l'ISO 27005 elle-même</b> (2008) dans le tableau,
+ce qui rappelle qu'une <b>norme</b> peut tenir lieu de <b>méthode</b> — exactement ce que font la
+banque et la finance.</p>
+</div>
+<p>Le repère chronologique le plus utile reste&nbsp;: <b>EBIOS et MEHARI sont nées la même année,
+1995</b>, comme deux réponses françaises concurrentes. Et une précision du support&nbsp;: «&nbsp;la
+plupart des méthodes sont adaptées au périmètre <b>IT</b>, mais certaines prennent en compte le
+périmètre <b>OT</b>&nbsp;: c'est le cas de <b>Cyber PHA</b>&nbsp;».</p>
+
+<h3 id="ch11-safety">11.10 Sécurité contre sûreté — <i>security</i> et <i>safety</i></h3>
+<div class="exam"><div class="t">« Une distinction terminologique majeure que vous devez impérativement maîtriser »</div>
+<b>La sécurité</b> (<i>security</i>)&nbsp;: la protection contre des <b>actes intentionnels et
+malveillants</b> d'origine humaine — cyberattaque, vol, sabotage, terrorisme.<br>
+<b>La sûreté</b> (<i>safety</i>, sûreté de fonctionnement)&nbsp;: la protection contre les
+<b>défaillances accidentelles</b>, l'usure, les pannes et les aléas <b>non intentionnels</b> — panne
+matérielle, erreur humaine non malveillante, catastrophe naturelle.
+<p style="margin-bottom:0"><b>La conséquence méthodologique, et c'est elle qui compte&nbsp;:
+EBIOS RM ne traite QUE de la sécurité</b>, c'est-à-dire des attaques intentionnelles. Pour les aléas de
+sûreté industrielle, il faut coupler avec l'<b>AMDEC</b> ou le <b>Cyber-PHA</b> (CEI 62443).</p>
+</div>
+
 <h2 id="ch12"><span class="num">12.</span> Zero trust : le constat et la définition</h2>
+
+<div class="callout"><div class="t">Les chapitres 12 à 19 sont ceux qu'a évalués le QCM Moodle</div>
+Le <b>questionnaire zero trust</b> portait sur ce périmètre — <b>slides 42 à 71</b> du support, plus
+les slides 30 à 35 qui amènent le modèle. Son format, annoncé slide 75&nbsp;: <b>20 questions</b>,
+<b>une seule bonne réponse</b> par question, <b>1 pt</b> pour une bonne réponse, <b>0</b> pour une
+mauvaise.
+<p style="margin-bottom:0">La <b>correction officielle du TP</b> qui précède ce questionnaire a été
+ajoutée au support après la séance&nbsp;: elle est reprise au <a href="#ch20-corrige">§20.3</a>.</p>
+</div>
+
+
+<div class="callout def"><div class="t">Les origines du modèle, données en cours — absentes du support</div>
+«&nbsp;Beaucoup pensent que c'est une invention marketing récente de Gartner ou Microsoft. En réalité,
+les origines sont <b>académiques</b>.&nbsp;»
+<p><b>1994</b> — thèse de <b>Stephen Paul Marsh</b> (université de <b>Stirling</b>, Écosse),
+<i>Formalising Trust as a Computational Concept</i>&nbsp;: la confiance formalisée mathématiquement
+comme une <b>variable dynamique calculable</b>.<br>
+<b>2010</b> — <b>John Kindervag</b>, chez <b>Forrester Research</b>, formalise le terme et le concept
+moderne. <b>C'est la source du couplage zero trust → Forrester.</b><br>
+<b>2020</b> — le <b>NIST</b> publie la <b>SP 800-207</b>, qui devient le standard de référence.</p>
+<p style="margin-bottom:0">Et le repère qui a fait basculer les États&nbsp;: <b>Stuxnet</b>,
+<b>2010</b> — le ver américano-israélien qui a saboté les centrifugeuses d'enrichissement d'uranium de
+<b>Natanz</b>, «&nbsp;la <b>première cyber-arme physique</b> de l'histoire&nbsp;».</p>
+</div>
 
 <h3 id="ch12-constat">12.1 Le constat</h3>
 <p>«&nbsp;Le monde d'aujourd'hui n'est plus celui d'il y a simplement 10 ans.&nbsp;» Trois évolutions
@@ -948,6 +1600,15 @@ vérification est <b>continu</b>, garantissant que <b>seuls les utilisateurs et 
 accès, même s'ils proviennent de l'intérieur de l'organisation</b>.
 </div>
 
+<div class="callout def"><div class="t">La devise du modèle, en une phrase</div>
+<b>«&nbsp;Ne jamais faire confiance, toujours vérifier&nbsp;»</b> — <i>never trust, always verify</i>.
+<p style="margin-bottom:0">C'est la formulation la plus répandue du <b>principe fondamental</b> du
+zero trust. Elle ne figure pas telle quelle dans le support, mais elle en est la synthèse exacte&nbsp;:
+la confiance n'est <b>jamais</b> acquise par l'emplacement ou par une vérification antérieure, elle
+est <b>reprouvée à chaque demande</b>. À ne pas confondre avec <b><i>assume breach</i></b>, qui est la
+<b>posture</b> — présumer que la compromission a déjà eu lieu.</p>
+</div>
+
 <div class="exam"><div class="t">Les trois mots qui distinguent le zero trust de tout le reste</div>
 <b>Dynamique</b> — le contexte est réévalué, pas acquis une fois pour toutes à la connexion.<br>
 <b>Continu</b> — la vérification ne s'arrête pas après l'authentification initiale.<br>
@@ -958,6 +1619,30 @@ chaque demande</b>.</p>
 </div>
 
 <!-- ===================================================================== -->
+
+<h3 id="ch13-ecart">13.1 L'écart entre le support et le cours — à connaître</h3>
+<div class="callout danger"><div class="t">Le troisième principe n'est pas le même des deux côtés</div>
+<b>Le support (slide 47)</b>&nbsp;: vérifier explicitement · moindre privilège · <b>surveillance
+continue</b>. <i>Assume breach</i> y est une précision <b>du premier</b> principe.<br>
+<b>Le cours oral</b>&nbsp;: «&nbsp;3 principes cardinaux&nbsp;» — vérifier explicitement · moindre
+privilège · <b>présumer la compromission (<i>assume breach</i>)</b>.
+<p style="margin-bottom:0">Les deux premiers sont identiques. Les deux versions circulent réellement —
+la seconde est la formulation de Microsoft. En QCM, si <b>surveillance continue</b> est proposé, c'est
+la réponse du support&nbsp;; si <b><i>assume breach</i></b> l'est <b>sans</b> surveillance continue,
+c'est celle du cours.</p>
+</div>
+<div class="callout def"><div class="t">JIT et JEA — les deux déclinaisons du moindre privilège</div>
+<b>JIT</b> (<i>Just-In-Time</i>)&nbsp;: l'accès n'est accordé que <b>pendant la durée nécessaire</b>.<br>
+<b>JEA</b> (<i>Just-Enough-Access</i>)&nbsp;: <b>uniquement les droits strictement minimaux</b> pour
+accomplir la tâche.
+<p style="margin-bottom:0"><b>JIT = la durée, JEA = le périmètre.</b> C'est la traduction
+opérationnelle de la «&nbsp;fenêtre temporelle&nbsp;» du slide 47.</p>
+</div>
+<p>Et le vocabulaire du troisième principe tel qu'énoncé en cours&nbsp;: on conçoit l'architecture
+«&nbsp;comme si un attaquant était <b>déjà présent</b>&nbsp;», on compartimente «&nbsp;à l'extrême pour
+réduire au minimum le <b>rayon d'impact</b> (<i>blast radius</i>)&nbsp;», on chiffre toutes les
+communications et on <b>audite chaque transaction</b>.</p>
+
 <h2 id="ch14"><span class="num">14.</span> Zero trust : les six piliers et l'architecture</h2>
 
 <div class="viz">
@@ -1048,7 +1733,7 @@ chaque demande</b>.</p>
       risques des terminaux, micro-segmentation.</span>
       <span class="more"><span class="t">Le glissement à comprendre</span>
       On passe de la <b>segmentation</b> — physique, nord-sud, couches 2-3, matérielle — à la
-      <b>micro-segmentation</b> — virtuelle, est-ouest, couche 4, logicielle (<a href="#ch18">§18.1</a>).</span>
+      <b>micro-segmentation</b> — virtuelle, est-ouest, couche 4, logicielle (<a href="#ch18-seg">§18.1</a>).</span>
     </button>
 
   </div>
@@ -1153,6 +1838,49 @@ correspondent à <b>quatre des six piliers</b>. Les deux piliers qui manquent, <
 </div>
 
 <!-- ===================================================================== -->
+
+<h3 id="ch15-sequence">15.3 Le séquencement complet, et le passage du RBAC à l'ABAC</h3>
+<p>Le cours décrit un <b>enchaînement</b> que la diapositive ne montre pas&nbsp;:</p>
+<div class="steps">
+<div class="step"><b>1.</b> Le <b>sujet</b> — utilisateur <i>et</i> terminal — émet une <b>requête d'accès</b> vers le PEP.</div>
+<div class="step"><b>2.</b> Le <b>PEP</b>, «&nbsp;garde-barrière&nbsp;» (reverse proxy, pare-feu applicatif), <b>intercepte et bloque le flux</b>, puis demande l'évaluation au PA.</div>
+<div class="step"><b>3.</b> Le <b>PE</b>, «&nbsp;moteur de <b>règles booléennes</b>&nbsp;», calcule à partir de la requête <b>et de tous les signaux de contexte</b>.</div>
+<div class="step"><b>4.</b> Le PE rend un <b>verdict</b> — autorisé ou rejeté — au PA.</div>
+<div class="step"><b>5.</b> Le <b>PA</b>, «&nbsp;chef d'orchestre&nbsp;», ordonne au PEP de <b>créer ou de détruire le canal chiffré</b> vers la ressource.</div>
+<div class="step"><b>6.</b> L'accès est accordé <b>sous surveillance</b>.</div>
+</div>
+<div class="exam"><div class="t">Le signal qui frappe le plus, et qu'il faut pouvoir citer</div>
+«&nbsp;Si le PC portable de l'employé <b>n'a pas appliqué le dernier correctif Windows</b>, l'accès à la
+base de données est <b>immédiatement refusé</b>, <b>même si le mot de passe et le MFA sont
+corrects</b>&nbsp;!&nbsp;»
+<p style="margin-bottom:0">Les autres signaux cités&nbsp;: <b>géolocalisation anormale</b> (connexion
+depuis la Chine alors que le salarié est à Toulouse), <b>heure inhabituelle</b> (3 h du matin),
+<b>analyse comportementale (UEBA)</b> — un téléchargement anormalement massif — et le <b>besoin d'en
+connaître</b>.</p>
+</div>
+<div class="callout def"><div class="t">Le besoin d'en connaître, dans les mots du cours</div>
+«&nbsp;C'est le principe fondamental de la <b>DGSE</b> ou de la <b>CIA</b>&nbsp;: vous pouvez être un
+officier supérieur accrédité Secret Défense, <b>si vous n'avez pas expressément besoin d'un dossier
+pour votre mission en cours, l'accès vous est rigoureusement interdit</b>. Le zero trust applique ce
+cloisonnement strict aux entreprises.&nbsp;»
+</div>
+
+<h4 style="margin:1.4em 0 .4em">Du RBAC à l'ABAC</h4>
+<div class="tw"><table>
+<thead><tr><th>Critère</th><th>RBAC — <i>role-based</i></th><th>ABAC — <i>attribute-based</i></th></tr></thead>
+<tbody>
+<tr><td><b>Philosophie</b></td><td>L'accès est lié à la <b>fonction</b>, statique</td><td>L'accès est lié aux <b>attributs contextuels dynamiques</b></td></tr>
+<tr><td><b>Granularité</b></td><td>Globale et <b>rigide</b>, par groupe ou profil</td><td><b>Fine</b>, individualisée et contextuelle</td></tr>
+<tr><td><b>Règle typique</b></td><td>«&nbsp;Jean est administrateur réseau, donc il a accès à tous les commutateurs.&nbsp;»</td><td>«&nbsp;Jean a accès au commutateur X <b>si</b> son poste est sain, <b>si</b> son MFA est validé, <b>si</b> l'heure est entre 8 h et 18 h, et <b>pendant 30 minutes</b>.&nbsp;»</td></tr>
+<tr><td><b>Limite</b></td><td>Si le compte est <b>volé</b>, l'attaquant a <b>tous les droits</b> du rôle</td><td>Même avec le compte volé, l'accès est <b>bloqué</b> si le contexte ne correspond pas</td></tr>
+</tbody>
+</table></div>
+<p>Les <b>quatre familles d'attributs</b> évaluées&nbsp;: ceux de l'<b>utilisateur</b> (identité, rôle,
+habilitations), de la <b>ressource</b> (classification, propriétaire), de l'<b>appareil</b> (OS,
+chiffrement, conformité EDR) et de l'<b>environnement</b> (IP, pays, heure, niveau de menace). <b>Ce
+sont les entrées du PEP, vues côté décision.</b> Un intermédiaire existe entre les deux modèles&nbsp;:
+le <b>RuBAC</b> (<i>rule-based</i>), où les droits dépendent de règles conditionnelles simples.</p>
+
 <h2 id="ch16"><span class="num">16.</span> Briques technologiques et quick wins</h2>
 
 <p>«&nbsp;Pour répondre aux attentes définies, il faut identifier les <b>solutions technologiques</b>
@@ -1255,6 +1983,18 @@ sans approbation de la DSI</b>. Exemples donnés&nbsp;: le <b>BYOD</b>, les <b>s
 <tr><td><b>Nature</b></td><td><b>Matériel</b></td><td><b>Logiciel</b></td></tr>
 </tbody>
 </table></div>
+<div class="exam"><div class="t">Ce que la micro-segmentation empêche, en une phrase</div>
+<b>Le mouvement latéral de l'attaquant.</b> La segmentation classique filtre le trafic
+<b>nord-sud</b>&nbsp;: elle ne voit pas ce qui circule <b>entre</b> les machines d'un même segment.
+La micro-segmentation filtre le trafic <b>est-ouest</b>&nbsp;: «&nbsp;deux serveurs sur la même plage
+d'adresses et le même commutateur <b>ne peuvent pas s'échanger un paquet</b> sans que la règle ait été
+validée&nbsp;».
+<p style="margin-bottom:0">C'est la réponse directe à la question du slide 32 — «&nbsp;que se passe-t-il
+lorsque l'attaquant est <b>déjà à l'intérieur</b>&nbsp;?&nbsp;» — et c'est pourquoi la correction du TP
+rattache l'<b>absence</b> de micro-segmentation à la <b>propagation latérale</b>
+(<a href="#ch20-corrige">§20.3</a>).</p>
+</div>
+
 <p><b>Réseau superposé</b>&nbsp;: un réseau bâti <b>sur un autre réseau</b>, dont les nœuds sont
 interconnectés par des <b>liens logiques</b> du réseau sous-jacent — l'exemple donné est <b>Tor</b>.<br>
 <b>SDN</b> (<i>software-defined networking</i>)&nbsp;: un modèle d'architecture qui permet de gérer les
@@ -1304,6 +2044,19 @@ est de trouver le <b>meilleur compromis entre la performance, la sécurité et l
 comme le <b>nombre de tours</b> (par exemple <b>16 cartouches</b>). Elle est <b>idéale pour la
 sécurisation des dispositifs IoT</b> et la protection des <b>réseaux de capteurs sans fil</b>.
 </div>
+<div class="callout warn"><div class="t">Le défi de la cryptographie légère — au-delà du triangle</div>
+Le support s'arrête au <b>compromis</b> performance / sécurité / coût. Il faut en tirer la conséquence
+qu'il ne dit pas&nbsp;: réduire la <b>taille de clé</b> (64 bits) et le <b>nombre de tours</b>
+(16 cartouches) <b>abaisse la marge de sécurité</b>. C'est le prix assumé — et donc <b>le défi
+principal</b> de la cryptographie légère.
+<p style="margin-bottom:0">Concrètement, une clé courte résiste mal à l'augmentation de la puissance
+de calcul, et <b>encore moins à un adversaire quantique</b>&nbsp;: l'algorithme de Grover divise par
+deux la sécurité effective d'un chiffrement symétrique. Une clé de 64 bits n'offre plus alors qu'une
+sécurité de l'ordre de <b>32 bits</b>. Le pari du support reste valable — «&nbsp;pour des relevés de
+température qui n'ont de valeur que quelques heures&nbsp;» — mais il suppose une <b>donnée à durée de
+vie courte</b>.</p>
+</div>
+
 <p><b>Le chiffrement homomorphe</b> est mis en avant pour <b>quatre raisons</b>&nbsp;:
 <b>sécurité des données</b> — il permet de <b>traiter des données chiffrées sans les
 déchiffrer</b>&nbsp;; <b>confidentialité</b> — les données sensibles restent confidentielles <b>même
@@ -1455,17 +2208,67 @@ support de la journée 3 sera distribué. Rappel&nbsp;: la <b>journée est oblig
 
 
 <!-- ===================================================================== -->
+
+<h3 id="ch20-corrige">20.3 La correction officielle du TP zero trust</h3>
+<p>Le support corrigé ajoute trois diapositives — <b>72, 73 et 74</b> — qui donnent la correction
+attendue du TP de la plateforme de streaming.</p>
+
+<h4 style="margin:1.2em 0 .4em">Slide 72 — les limites du modèle actuel</h4>
+<p>Trois failles, reprises de l'audit&nbsp;: <b>privilèges excessifs</b> — «&nbsp;certains comptes
+utilisateurs ou services (ex. <b>Upload</b>, <b>Playback</b>) disposent d'un accès trop large aux
+ressources critiques (stockage, métadonnées)&nbsp;» · <b>accès non maîtrisés</b> — VPN depuis des
+postes personnels non sécurisés · <b>risque de compromission</b> — «&nbsp;absence d'authentification
+forte et de surveillance continue&nbsp;».<br>
+<b>La conséquence énoncée</b>&nbsp;: «&nbsp;exposition accrue des services sensibles et
+<b>propagation facilitée en cas d'intrusion</b>&nbsp;».</p>
+
+<h4 style="margin:1.2em 0 .4em">Slide 73 — le tableau forces / faiblesses, le livrable demandé</h4>
+<div class="tw"><table>
+<thead><tr><th style="width:50%">Forces</th><th>Faiblesses</th></tr></thead>
+<tbody>
+<tr><td><b>Infrastructure cloud</b> — montée en charge rapide et haute disponibilité</td><td><b>Accès trop privilégiés</b> — rôles et permissions insuffisamment restreints</td></tr>
+<tr><td><b>CDN performant</b> — diffusion rapide et fiable à l'échelle mondiale</td><td><b>VPN non sécurisé</b> — les connexions depuis des postes non maîtrisés exposent l'infrastructure</td></tr>
+<tr><td><b>Multi-plateformes</b> — web, mobile, TV&nbsp;: meilleure expérience utilisateur</td><td><b>Manque de surveillance</b> — absence de monitoring centralisé pour détecter les comportements anormaux</td></tr>
+<tr><td><b>Paiement sécurisé</b> — solutions fiables et conformes aux normes</td><td><b>Absence de microsegmentation</b> — les flux ne sont pas cloisonnés, ce qui facilite la <b>propagation latérale</b></td></tr>
+</tbody>
+</table></div>
+<p><b>La recommandation qui clôt la diapositive</b>&nbsp;: «&nbsp;adopter une approche zero trust pour
+corriger les faiblesses <b>sans compromettre les forces</b> du modèle actuel&nbsp;».</p>
+
+<h4 style="margin:1.2em 0 .4em">Slide 74 — les cinq corrections attendues</h4>
+<ol class="key-points">
+<li><b>Authentification forte</b> — MFA pour tous les comptes, «&nbsp;en particulier les administrateurs et les services critiques&nbsp;».</li>
+<li><b>Principe du moindre privilège</b> — révision des rôles et permissions «&nbsp;selon les besoins réels&nbsp;».</li>
+<li><b>Microsegmentation</b> — séparation des flux <b>viewers / content providers / services internes</b>.</li>
+<li><b>Surveillance continue</b> — intégration d'un <b>SIEM</b> pour détecter comportements anormaux et accès suspects.</li>
+<li><b>Contrôle des accès distants</b> — interdiction du VPN depuis des postes non maîtrisés&nbsp;; usage de postes sécurisés ou de <b>VDI</b>.</li>
+</ol>
+<div class="exam"><div class="t">Ce que la correction officielle apprend sur le format attendu</div>
+<b>Quatre forces et quatre faiblesses</b>, pas davantage — le tableau reste court. Les faiblesses
+mêlent les <b>constats de l'audit</b> et deux <b>déductions de l'architecture</b> (surveillance,
+microsegmentation), ce qui confirme qu'on attend d'aller au-delà de la liste fournie.
+<p style="margin-bottom:0">Et la <b>5<sup>e</sup> correction</b> introduit une brique qui n'était pas
+au support de cours&nbsp;: le <b>VDI</b> (<i>virtual desktop infrastructure</i>), présenté comme
+l'alternative au VPN depuis poste personnel.</p>
+</div>
+
 <h2 id="ch21"><span class="num">21.</span> EBIOS Risk Manager : la démarche d'ensemble</h2>
 
 <div class="callout danger"><div class="t">Provenance de ce chapitre et des suivants</div>
-Les chapitres <b>21 à 27</b> ne sont <b>pas</b> tirés du support de cours — la journée 3 n'a pas encore
-eu lieu. Ils sont construits sur le <b>guide officiel de l'ANSSI</b>,
-<i>«&nbsp;EBIOS Risk Manager — la méthode&nbsp;»</i>, <b>version 1.5, ANSSI-PA-048</b>, qui est la
-référence citée dans la bibliographie du syllabus.
-<p style="margin-bottom:0"><b>Deux conséquences.</b> D'abord, tout ce qui suit est <b>fiable</b>&nbsp;:
-c'est la source normative de la méthode enseignée. Ensuite, <b>ce n'est pas la parole de
-l'enseignant</b>&nbsp;: il peut simplifier, insister ailleurs, ou utiliser ses propres exemples. À
-confronter au support de la journée 3 quand il sera distribué.</p>
+Les chapitres <b>21 à 27</b> ont d'abord été construits sur le <b>guide officiel de l'ANSSI</b>,
+<i>«&nbsp;EBIOS Risk Manager — la méthode&nbsp;»</i>, <b>version 1.5, ANSSI-PA-048</b>, avant que le
+cours ne traite la méthode.
+<p><b>La confrontation a été faite</b>, sur les transcriptions de la séance du 15 septembre&nbsp;: la
+<b>pyramide du management du risque</b> (<a href="#ch21-pyramide">§21.2</a>), l'<b>échelle de gravité
+G1 à G4</b> (<a href="#ch22-er">§22.1</a>) et l'<b>enchaînement des cinq ateliers</b>
+(<a href="#ch21-ateliers">§21.3</a>) correspondent à ce qui a été enseigné. Le contenu du guide est
+donc <b>confirmé</b>.</p>
+<p style="margin-bottom:0">Ce que le cours a <b>ajouté</b> et qui ne figure pas dans le guide&nbsp;:
+l'<b>historique de la méthode</b> (<a href="#ch21-histoire">§21.5</a>), le comparatif
+<b>EBIOS 2010 / EBIOS RM</b> (<a href="#ch21-2010">§21.6</a>) — signalé comme «&nbsp;point capital à
+retenir pour vos examens&nbsp;» — et le panorama des <b>outils labellisés</b>
+(<a href="#ch21-outils">§21.7</a>). Reste à venir&nbsp;: le <b>support</b> de la séance, non encore
+distribué.</p>
 </div>
 
 <div class="callout def"><div class="t">Ce qu'est EBIOS Risk Manager</div>
@@ -1585,11 +2388,123 @@ syllabus renvoie encore à l'édition <b>2018</b>&nbsp;— tu peux donc entendre
 <tr><td>Synthèse des scénarios de risque</td><td><b>Évaluations des risques</b></td></tr>
 </tbody>
 </table></div>
-Le sigle <b>PACS</b> reste très employé à l'oral et dans les outils. Si l'enseignant l'utilise, c'est
-le <b>plan de traitement du risque</b>.
+<b>Vérifié sur le support&nbsp;:</b> la diapositive <b>75</b> de <code>MethodoSecu2</code> s'intitule
+«&nbsp;Atelier 5 — Traitement du risque <b>et PACS</b>&nbsp;» et définit l'objectif comme
+«&nbsp;définir les mesures de sécurité dans un <b>plan d'amélioration continue de la sécurité
+(PACS)</b>&nbsp;». <b>C'est donc le terme employé par le cours.</b> Si «&nbsp;PACS&nbsp;» est proposé
+en QCM, c'est la réponse du support&nbsp;; si «&nbsp;plan de traitement du risque&nbsp;» l'est, c'est
+celle du guide. Les deux désignent la même chose.
 </div>
 
 <!-- ===================================================================== -->
+
+<h3 id="ch21-histoire">21.5 D'où vient la méthode — quatre versions en vingt-trois ans</h3>
+<div class="tw"><table>
+<thead><tr><th style="width:12%">Année</th><th>Ce qui se passe</th></tr></thead>
+<tbody>
+<tr><td><b>1995</b></td><td>Première version d'EBIOS, à la demande de la <b>DCSSI</b> — Direction centrale de la sécurité des systèmes d'information, rattachée au Premier ministre, qui deviendra l'<b>ANSSI en 2009</b>. La même année, le <b>CLUSIF</b> crée la méthode concurrente <b>MEHARI</b>.</td></tr>
+<tr><td><b>2004</b></td><td>Deuxième version, pour intégrer l'essor d'<b>Internet</b> et des réseaux IP.</td></tr>
+<tr><td><b>2010</b></td><td><b>EBIOS 2010</b>, refondue pour la <b>virtualisation</b>, les architectures décentralisées et le cloud naissant. Très exhaustive, structurée en <b>5 modules</b>.</td></tr>
+<tr><td><b>2018</b></td><td><b>EBIOS Risk Manager</b>, co-construite par l'<b>ANSSI et le Club EBIOS</b>. «&nbsp;Une <b>rupture méthodologique totale</b>&nbsp;»&nbsp;: on abandonne l'inventaire exhaustif pour une démarche <b>agile, collaborative et focalisée sur les attaques ciblées</b>.</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="ch21-2010">21.6 EBIOS 2010 contre EBIOS RM</h3>
+<div class="exam"><div class="t">« Un point capital à retenir pour vos examens et votre culture professionnelle »</div>
+C'est le signal d'examen le plus explicite de la séance 2, et il est prononcé par l'enseignant.
+<div class="tw" style="margin-top:8px"><table>
+<thead><tr><th style="width:20%">Critère</th><th>EBIOS 2010</th><th>EBIOS Risk Manager (2018)</th></tr></thead>
+<tbody>
+<tr><td><b>Philosophie</b></td><td><b>Exhaustivité</b> — recenser tous les risques possibles</td><td><b>Représentativité</b> — sélectionner les scénarios les plus crédibles</td></tr>
+<tr><td><b>Centre de gravité</b></td><td>Le <b>système d'information</b></td><td>Le <b>métier</b> et les <b>valeurs métier</b></td></tr>
+<tr><td><b>Nature des menaces</b></td><td>Simples et <b>unitaires</b> — actions atomiques</td><td>Complexes et <b>scénarisées</b> — kill chain, pivot, écosystème</td></tr>
+<tr><td><b>Périmètre</b></td><td>Intentionnels <b>et non intentionnels</b> (inondations, pannes)</td><td><b>Uniquement l'intentionnel</b> — le reste va dans le <b>socle</b></td></tr>
+<tr><td><b>Sens de la démarche</b></td><td><b>Ascendant</b> (<i>bottom-up</i>) — des briques techniques vers le haut</td><td><b>Descendant</b> (<i>top-down</i>) — des objectifs de l'attaquant vers la technique</td></tr>
+<tr><td><b>Format</b></td><td><b>5 modules</b> séquentiels rigides</td><td><b>5 ateliers</b> agiles et itératifs</td></tr>
+</tbody>
+</table></div>
+<p style="margin-bottom:0"><b>La métaphore de l'enseignant</b>&nbsp;: «&nbsp;Dans EBIOS 2010, on
+cherchait à défendre <b>les murs du château fort</b> (le SI). Dans EBIOS RM, on se fiche que les murs
+tombent&nbsp;: ce qui compte, c'est que <b>la princesse</b> — le processus métier vital — <b>survive</b>&nbsp;!&nbsp;»</p>
+</div>
+<div class="callout warn"><div class="t">EBIOS RM n'est pas adaptée aux TPE et PME</div>
+«&nbsp;Si une petite mairie ou une association de dix salariés vous demande une analyse de risque,
+<b>n'utilisez surtout pas EBIOS RM</b>&nbsp;! C'est un <b>rouleau compresseur surdimensionné</b> pour
+eux.&nbsp;» Pour les petites structures&nbsp;: le <b>guide d'hygiène informatique de l'ANSSI</b> ou une
+démarche <b>ISO 27005 simplifiée</b>. EBIOS RM vise les <b>grandes entreprises, les OIV et les systèmes
+critiques</b>.
+</div>
+<div class="callout"><div class="t">Ce que la démarche par ateliers implique, concrètement</div>
+«&nbsp;Vous ne faites <b>pas</b> une analyse de risque enfermé seul dans votre bureau en remplissant des
+tableaux Excel&nbsp;!&nbsp;» L'analyste doit être <b>psychologue et facilitateur</b>&nbsp;: à
+l'atelier 1, les métiers «&nbsp;ont besoin d'exprimer leurs frustrations&nbsp;» — <i>«&nbsp;l'année
+dernière j'ai galéré six mois parce que tel logiciel plantait&nbsp;»</i> — et le rôle de l'analyste est
+de <b>canaliser cette parole</b> pour en extraire les vrais événements redoutés.
+<p style="margin-bottom:0">Et l'itération est <b>autorisée</b>&nbsp;: si l'atelier 3 révèle un
+sous-traitant critique oublié, «&nbsp;<b>vous avez le droit de revenir modifier l'atelier 1</b>&nbsp;».</p>
+</div>
+
+<h3 id="ch21-outils">21.7 Les outils labellisés par l'ANSSI</h3>
+<p>La labellisation garantit que l'outil «&nbsp;implémente fidèlement les <b>5 ateliers</b> et permet
+d'être en conformité directe avec l'<b>ISO 27005</b>&nbsp;».</p>
+<div class="tw"><table>
+<thead><tr><th style="width:26%">Outil</th><th>Ce qui en a été dit</th></tr></thead>
+<tbody>
+<tr><td><b>Agile Risk Manager</b><br>AllForTech / Olfeo</td><td><b>L'outil des TP.</b> «&nbsp;De loin l'un des meilleurs du marché, extrêmement complet et ergonomique&nbsp;», en SaaS sur le VPS de l'école. Son directeur est un membre historique du <b>Club EBIOS</b>.</td></tr>
+<tr><td><b>Egerie Risk Manager</b></td><td>«&nbsp;Très bel outil&nbsp;», très réputé en France — mais l'éditeur a décliné la collaboration avec l'école.</td></tr>
+<tr><td><b>Famic</b> (Airbus D&amp;S)</td><td>Propriétaire, «&nbsp;extrêmement coûteux&nbsp;», réservé aux filières <b>spatiales et défense</b>.</td></tr>
+<tr><td><b>Ermes</b></td><td><b>Open source</b> et historique. Bien pour découvrir la méthode, mais «&nbsp;dépassé et plus activement maintenu&nbsp;».</td></tr>
+<tr><td><b>Risktic</b></td><td>Nouvel entrant, labellisé récemment.</td></tr>
+<tr><td><b>Oligo Risk Manager</b></td><td>Retour d'expérience <b>négatif</b>&nbsp;: «&nbsp;criblé de bugs, instable, support quasi inexistant. À éviter.&nbsp;»</td></tr>
+<tr><td><b>RSA Archer</b></td><td>Le mastodonte américain du <b>GRC</b>. «&nbsp;Très lourde et hors de prix&nbsp;» — devis initial évoqué&nbsp;: <b>400 000 €</b>.</td></tr>
+</tbody>
+</table></div>
+
+
+<h3 id="ch21-commandements">21.8 Les dix commandements d'EBIOS Risk Manager</h3>
+<p>Diapositive <b>80</b> du support de la séance 2 — une synthèse dense, faite pour être interrogée.</p>
+<div class="tw"><table>
+<thead><tr><th style="width:5%">#</th><th>Le commandement</th></tr></thead>
+<tbody>
+<tr><td><b>01</b></td><td>EBIOS RM permet de gérer <b>tous les risques numériques</b> (attaques ciblées, accidents et non humains). Les risques non délibérés n'ont pas besoin d'être modélisés sous forme de scénario&nbsp;: l'analyse par <b>conformité</b> vise à identifier des <b>écarts</b> qui contribuent à produire un ou des événements redoutés.</td></tr>
+<tr><td><b>02</b></td><td>EBIOS RM <b>gagne en efficacité</b> par rapport à EBIOS 2010&nbsp;: la <b>pertinence</b> est privilégiée sur l'<b>exhaustivité</b>, ce qui diminue fortement l'<b>entropie</b> de l'étude.</td></tr>
+<tr><td><b>03</b></td><td>Le <b>socle a comme unique objectif de traiter les risques par conformité</b>. En s'appuyant sur le principe que les basiques sont souvent suffisants pour lutter contre les menaces à large spectre et non ciblées. Pour le suite de l'étude, les scénarios de risques sont utilisés pour analyser les menaces plus sophistiquées ou plus ciblées.</td></tr>
+<tr><td><b>04</b></td><td><b>Commencer à interroger les participants sur les sources de risques</b> qu'ils imaginent directement sans chercher à se rapprocher de la formulation des exemples du guide.</td></tr>
+<tr><td><b>05</b></td><td>Le <b>niveau de ressources et de motivation</b> doit être considéré par le couple <b>source de risque / objectif visé</b> (et non seulement sur la source de risque ou l'objectif visé). De même, le <b>niveau de pertinence</b> peut être réutilisé et influer sur l'estimation d'un scénario opérationnel.</td></tr>
+<tr><td><b>06</b></td><td>La <b>création de partie prenante (PP)</b> permet d'avoir la possibilité de créer des <b>chemins d'attaques distincts</b> dans les scénarios stratégiques. Il paraît illusoire de considérer qu'il n'existe pas de partie prenante&nbsp;: cela voudrait dire que le projet est isolé <b>sans aucun écosystème</b>.</td></tr>
+<tr><td><b>07</b></td><td>On recherche une <b>évaluation relative de la menace des parties prenantes</b>, afin d'identifier les plus menaçantes. Les critères — <b>dépendance, pénétration, maturité cyber et confiance</b> — et échelles proposés doivent être adaptés même si en effet ils servent à se poser des questions.</td></tr>
+<tr><td><b>08</b></td><td>La <b>description des scénarios opérationnels sous forme de kill chain doit être adaptée</b> selon les modes opératoires qu'on veut mettre en relief.</td></tr>
+<tr><td><b>09</b></td><td>Chaque scénario stratégique détaille un ou plusieurs chemins d'attaques. Pour l'atelier 4, <b>on détaillera le scénario opérationnel d'au moins un chemin d'attaque par scénario stratégique</b>.</td></tr>
+<tr><td><b>10</b></td><td>Les <b>mesures de traitement (atelier 5) proviennent de la réflexion de chaque atelier</b> — et non pas uniquement de l'atelier 3 ou 4.</td></tr>
+</tbody>
+</table></div>
+<div class="exam"><div class="t">Trois commandements qui contredisent une idée reçue</div>
+<b>Le n° 1</b> nuance ce qu'on retient trop vite&nbsp;: EBIOS RM <b>gère</b> aussi les risques non
+délibérés — simplement, elle ne les <b>modélise pas en scénarios</b>, elle les traite par <b>écarts au
+socle</b>.<br>
+<b>Le n° 6</b>&nbsp;: «&nbsp;il paraît <b>illusoire</b> de considérer qu'il n'existe pas de partie
+prenante&nbsp;» — un projet sans écosystème n'existe pas.<br>
+<b>Le n° 10</b>&nbsp;: les mesures <b>ne naissent pas</b> à l'atelier 5, elles y sont <b>consolidées</b>
+— elles proviennent de <b>tous</b> les ateliers.
+</div>
+
+<h3 id="ch21-flash">21.9 L'approche « Flash »</h3>
+<div class="callout def"><div class="t">Une analyse en deux à trois heures</div>
+<b>Objectif</b>&nbsp;: «&nbsp;réaliser l'analyse de risques en mobilisant les acteurs pendant <b>2 à
+3 heures</b>&nbsp;».
+<p><b>Les quatre principes</b>&nbsp;: confier l'atelier à un <b>sachant</b> maîtrisant la méthode,
+l'objet d'étude et son contexte · <b>collecter et exploiter les connaissances capitalisées</b> sur des
+projets similaires · animer de façon <b>collaborative</b>, à partir d'un <b>schéma de principe</b> et
+de <b>fiches</b> synthétisant les éléments de traitement · <b>rester à un niveau d'analyse adapté</b>
+en limitant le nombre de scénarios, «&nbsp;sans se noyer dans les détails ou se focaliser sur une
+technique d'attaque&nbsp;».</p>
+<p style="margin-bottom:0"><b>Les trois bénéfices</b>&nbsp;: obtenir l'<b>adhésion du métier</b> et
+l'appropriation des risques · identifier les <b>risques les plus importants</b> · <b>prioriser</b> les
+mesures de traitement.</p>
+</div>
+<p>C'est la réponse méthodologique à la critique adressée à EBIOS RM en petite structure&nbsp;: plutôt
+que de renoncer à la méthode, on en garde la logique en comprimant radicalement le format.</p>
+
 <h2 id="ch22"><span class="num">22.</span> Atelier 1 — Cadrage et socle de sécurité</h2>
 
 <p><b>L'objectif.</b> «&nbsp;Définir le <b>cadre de l'étude</b>, son <b>périmètre métier et
@@ -1673,6 +2588,39 @@ de base n'est pas en place — il faut d'abord <b>combler le socle</b>. Les mesu
 </div>
 
 <!-- ===================================================================== -->
+
+<h3 id="ch22-exo">22.3 L'exercice du socle, et le piège de l'IGI 1300</h3>
+<p>Exercice mené en cours&nbsp;: parmi ces éléments, lesquels entrent dans le <b>socle de
+sécurité</b> d'une analyse EBIOS RM&nbsp;?</p>
+<div class="tw"><table>
+<thead><tr><th style="width:72%">Élément proposé</th><th>Dans le socle&nbsp;?</th></tr></thead>
+<tbody>
+<tr><td>La <b>PSSI</b> de l'entreprise</td><td><b>Oui</b></td></tr>
+<tr><td>Le <b>RGPD</b></td><td><b>Oui</b></td></tr>
+<tr><td>Le <b>guide d'hygiène informatique</b> de l'ANSSI</td><td><b>Oui</b></td></tr>
+<tr><td>L'<b>annexe A</b> de l'ISO/IEC 27001 — les mesures</td><td><b>Oui</b></td></tr>
+<tr><td>Le <b>code de la santé publique</b>, pour un hôpital</td><td><b>Oui</b></td></tr>
+<tr><td>La <b>LPM</b>, pour un OIV</td><td><b>Oui</b></td></tr>
+<tr><td>L'<b>IGI 1300</b> — protection du secret de la défense nationale</td><td><b>Non</b></td></tr>
+</tbody>
+</table></div>
+<div class="exam"><div class="t">Pourquoi l'IGI 1300 est l'intrus</div>
+Parce qu'elle relève de la <b>protection du secret de la défense nationale</b>, «&nbsp;qui s'impose aux
+<b>personnes physiques accréditées</b> et aux <b>locaux classifiés</b>, et <b>non</b> au système
+d'information bureautique standard de l'entreprise&nbsp;».
+<p style="margin-bottom:0">Tous les autres éléments sont des <b>référentiels applicables au SI</b> —
+c'est le critère de tri. Le socle, rappelons-le, correspond aux <b>étages 1 et 2</b> de la pyramide
+(<a href="#ch21-pyramide">§21.2</a>)&nbsp;: hygiène et conformité.</p>
+</div>
+<div class="callout"><div class="t">L'anecdote de l'habilitation Secret Défense</div>
+Convoqué chez l'officier de sécurité pour signer&nbsp;: «&nbsp;Sachez que toute divulgation
+d'information protégée, <b>même par négligence ou imprudence</b>, est punie de <b>400 000 euros
+d'amende et de 20 ans de réclusion criminelle</b>. Vous avez des devoirs stricts et des droits
+restreints.&nbsp;»
+<p style="margin-bottom:0">Et le jour du départ&nbsp;: «&nbsp;Vous n'avez plus aucun droit d'accès, mais
+vous conservez l'<b>obligation légale absolue de garder le silence pour le reste de votre vie</b>.&nbsp;»</p>
+</div>
+
 <h2 id="ch23"><span class="num">23.</span> Atelier 2 — Sources de risque</h2>
 
 <p><b>L'objectif.</b> Identifier les <b>sources de risque (SR)</b> et leurs <b>objectifs visés
@@ -1919,7 +2867,7 @@ ensuite identifiés ainsi que le <b>cadre de suivi</b> de ces risques.&nbsp;»</
 <tbody>
 <tr><td><b>Les mêmes que l'atelier 1</b>&nbsp;: Direction · Métiers · RSSI · DSI<br>
 <small>La boucle se referme&nbsp;: ceux qui ont cadré décident du traitement.</small></td>
-<td>La <b>stratégie de traitement du risque</b><br>La <b>synthèse des risques résiduels</b><br>Le <b>plan de traitement du risque</b><br>Le <b>cadre du suivi des risques</b></td></tr>
+<td>La <b>stratégie de traitement du risque</b><br>La <b>synthèse des risques résiduels</b><br>Le <b>plan de traitement du risque</b> — le <b>PACS</b> dans les termes du support<br>Le <b>cadre du suivi des risques</b> — qui passe par la mise en place d'un <b>comité de pilotage</b></td></tr>
 </tbody>
 </table></div>
 
@@ -2183,7 +3131,142 @@ pour vérifier qu'on n'a pas oublié un thème entier. Dans le tableur, chaque m
 <tr><td><code>08.34</code></td><td>Protection des systèmes d'information en cours d'audit et de test</td></tr>
 </tbody></table></div>
 <!-- ===================================================================== -->
-<h2 id="qcm-sec"><span class="num">28.</span> QCM — <span id="count-badge" class="badge acc"></span></h2>
+<h2 id="ch28"><span class="num">28.</span> Le risque lié à l'intelligence artificielle</h2>
+
+<div class="callout"><div class="t">Une troisième partie entière du support</div>
+Les diapositives <b>82 à 92</b> de <code>MethodoSecu2</code> forment la <b>partie 3</b> du support,
+annoncée en cours comme le point final du module. Le fil conducteur&nbsp;: <b>EBIOS RM ne suffit pas
+pour l'IA</b>, et il faut savoir dire pourquoi.
+</div>
+
+<h3 id="ch28-familles">28.1 Les trois familles de risques liés à l'IA</h3>
+<p>«&nbsp;L'évaluation des risques liés à l'IA peut être abordée selon <b>trois angles</b>&nbsp;» —
+et le constat qui les accompagne&nbsp;: «&nbsp;<b>aucune méthode unique ne permet aujourd'hui de
+couvrir correctement ces trois familles</b>&nbsp;».</p>
+
+<div class="viz">
+  <div class="t">Trois angles, trois méthodes différentes</div>
+  <div class="vz-grid g3">
+
+    <button class="vz-c k-red" data-hint="Nature, limite, méthodes">
+      <span class="n">Famille 1</span>
+      <h5>L'IA comme cible ou vecteur</h5>
+      <span class="q">Cyberattaques visant le système d'IA lui-même.</span>
+      <span class="more"><span class="t">Nature du risque</span>
+      <b>Empoisonnement des données d'entraînement</b> · <b>prompt injection</b> · <b>extraction ou
+      vol de modèle</b> · compromission de la <b>chaîne d'approvisionnement</b>.</span>
+      <span class="more"><span class="t">La méthode adaptée</span>
+      C'est la <b>seule des trois familles</b> où la cybersécurité classique — et donc
+      <b>EBIOS RM</b> — s'applique directement&nbsp;: il y a bien un <b>attaquant</b>, donc une source
+      de risque et un objectif visé.</span>
+    </button>
+
+    <button class="vz-c k-amber" data-hint="Nature, limite, méthodes">
+      <span class="n">Famille 2</span>
+      <h5>Les risques intrinsèques</h5>
+      <span class="q">Le risque vient du fonctionnement même du système, sans attaquant.</span>
+      <span class="more"><span class="t">Nature du risque</span>
+      <b>Hallucinations</b> · <b>biais</b> · <b>dérive du modèle</b> · <b>opacité</b> ·
+      <b>sur-confiance de l'utilisateur</b> · mauvaise calibration.</span>
+      <span class="more"><span class="t">La limite d'EBIOS RM, telle qu'énoncée</span>
+      EBIOS RM repose sur le couple <b>source de risque → objectif visé</b>. «&nbsp;En l'absence
+      d'attaquant, <b>l'atelier 2 devient inapplicable</b>. EBIOS ne comporte pas de notion d'<b>erreur
+      intrinsèque</b> (non intentionnelle) d'un système.&nbsp;»</span>
+      <span class="more"><span class="t">Ce qu'il faut employer à la place</span>
+      <b>ISO/IEC 23894</b> · <b>ISO/IEC 42001</b> · <b>NIST AI RMF</b>. Outils&nbsp;: tests de biais,
+      <i>benchmark</i> LLM, évaluation de dérive, monitoring.<br>
+      «&nbsp;Ces risques relèvent davantage de l'<b>ingénierie de l'IA</b> que de la cybersécurité
+      classique.&nbsp;»</span>
+    </button>
+
+    <button class="vz-c k-purple" data-hint="Nature, limite, méthodes">
+      <span class="n">Famille 3</span>
+      <h5>Les risques causés à des tiers</h5>
+      <span class="q">La question s'inverse.</span>
+      <span class="more"><span class="t">L'inversion, mot pour mot</span>
+      «&nbsp;Ici, la question n'est plus&nbsp;: <b>quel préjudice subit l'organisation&nbsp;?</b> mais
+      <b>quel préjudice l'organisation fait-elle subir à d'autres&nbsp;?</b>&nbsp;»</span>
+      <span class="more"><span class="t">Nature du risque</span>
+      <b>Discrimination</b> · refus injustifié d'un service · <b>atteinte aux droits fondamentaux</b> ·
+      impact sur l'emploi ou l'éducation · <b>décision automatisée défavorable</b> · atteinte à la vie
+      privée.</span>
+      <span class="more"><span class="t">Cadres et méthodes</span>
+      Cadres&nbsp;: <b>AI Act</b> · <b>RGPD</b> · droits fondamentaux de l'UE.<br>
+      Méthodes&nbsp;: <b>ISO/IEC 42005</b> · <b>AIPD</b> (DPIA) · audits d'équité et de
+      non-discrimination.<br>
+      «&nbsp;Ce domaine <b>dépasse le périmètre traditionnel de la SSI</b>.&nbsp;»</span>
+    </button>
+
+  </div>
+  <div class="vz-bar">
+    <button class="btn" data-cards="open">Tout déplier</button>
+    <button class="btn ghost" data-cards="close">Tout replier</button>
+    <span class="cnt"></span>
+  </div>
+  <div class="legend">Le raisonnement à retenir&nbsp;: <b>EBIOS RM ne couvre que la famille 1</b>,
+  parce que c'est la seule qui suppose un <b>attaquant</b>. C'est la même limite que celle qui fait
+  qu'EBIOS RM ne traite pas la <b>sûreté</b> (<a href="#ch11-safety">§11.10</a>).</div>
+</div>
+
+<h3 id="ch28-normes">28.2 Les trois normes ISO de l'IA</h3>
+<div class="tw"><table>
+<thead><tr><th style="width:18%">Norme</th><th>Ce qu'elle fait</th><th style="width:26%">Son équivalent côté cyber</th></tr></thead>
+<tbody>
+<tr><td><b>ISO/IEC 23894</b><br>gestion des risques</td><td>Lignes directrices pour <b>identifier, analyser, évaluer, traiter et surveiller</b> les risques des systèmes d'IA. «&nbsp;Contrairement à l'ISO 27005, elle <b>ne se limite pas aux risques de sécurité</b>&nbsp;»&nbsp;: elle couvre aussi les risques techniques, opérationnels, <b>éthiques, sociétaux et réglementaires</b>.</td><td>L'<b>ISO 27005</b></td></tr>
+<tr><td><b>ISO/IEC 42001</b><br>système de management</td><td>Exigences d'un <b>AI Management System (AIMS)</b>&nbsp;: gouvernance, rôles, politique IA, compétences, maîtrise du cycle de vie des modèles, amélioration continue. Elle impose d'identifier, évaluer, traiter et suivre les risques, <b>mais ne prescrit aucune méthode d'analyse</b>.</td><td>L'<b>ISO 27001</b> — «&nbsp;mettre sous contrôle l'utilisation de l'IA dans l'organisation&nbsp;»</td></tr>
+<tr><td><b>ISO/IEC 42005</b><br>analyse d'impact</td><td>Évaluer les impacts d'un système d'IA <b>sur les individus, les groupes et la société</b>. La question centrale devient&nbsp;: «&nbsp;<b>qui pourrait être affecté par cette IA, et comment&nbsp;?</b>&nbsp;»</td><td>Plutôt une <b>AIPD / DPIA</b> qu'une analyse de risque cyber</td></tr>
+</tbody>
+</table></div>
+<div class="callout ok"><div class="t">Les risques couverts par la 23894, et ses cinq principes</div>
+<b>Risques</b>&nbsp;: hallucinations · biais algorithmiques · dérive des modèles · manque
+d'explicabilité · <b>dépendance excessive de l'utilisateur</b> · erreurs de généralisation.<br>
+<b>Principes</b>&nbsp;: approche fondée sur le risque · <b>gestion du cycle de vie</b> de l'IA ·
+surveillance continue · amélioration continue · <b>gouvernance adaptée au contexte métier</b>.
+</div>
+<p><b>La démarche en cinq étapes de l'ISO 42005</b>&nbsp;: <b>(1)</b> identifier les <b>parties
+prenantes</b> · <b>(2)</b> identifier les <b>impacts possibles</b> · <b>(3)</b> évaluer leur
+<b>gravité</b> · <b>(4)</b> définir des <b>mesures de réduction</b> · <b>(5)</b> <b>documenter les
+arbitrages</b> réalisés.</p>
+
+<h3 id="ch28-huderia">28.3 HUDERIA — l'inversion de perspective</h3>
+<div class="callout def"><div class="t">D'où elle vient</div>
+Méthodologie du <b>Conseil de l'Europe</b> (Comité sur l'IA, <b>2024</b>), complétée par le <b>modèle
+COBRA</b> (2026). Elle est <b>non contraignante</b> et soutient la <b>Convention-cadre sur l'IA</b>.
+</div>
+<div class="steps">
+<div class="step"><b>1. COBRA — analyse contextuelle</b><br>
+Facteurs de risque liés à l'<b>application</b>, à la <b>conception</b>, au <b>déploiement</b>.
+<b>Triage</b> des systèmes.</div>
+<div class="step"><b>2. Parties prenantes</b><br>
+<b>Corroboration</b> des risques <b>auprès des personnes affectées</b>, selon leur <b>saillance</b>.</div>
+<div class="step"><b>3. Évaluation d'impact</b><br>
+Identification des atteintes&nbsp;; cotation par <b>gravité</b>, <b>portée</b> et
+<b>réversibilité</b>.</div>
+<div class="step"><b>4. Atténuation</b><br>
+Plan de mesures, garanties opérationnelles, <b>voies de recours</b>.</div>
+</div>
+<p>Trois caractéristiques transverses&nbsp;: <b>réexamen itératif</b> — «&nbsp;le contexte évolue,
+l'évaluation se rejoue&nbsp;» · approche <b>socio-technique</b> — technologie, choix humains et
+structures sociales · <b>documentation continue</b>.</p>
+<div class="exam"><div class="t">La phrase qui résume tout le chapitre</div>
+«&nbsp;<b>Là où EBIOS RM et l'ISO 27005 protègent les valeurs métier de l'organisation, HUDERIA évalue
+le préjudice que l'organisation peut faire subir aux droits humains, à la démocratie et à l'État de
+droit.</b>&nbsp;»
+<p style="margin-bottom:0">C'est le même renversement que celui de la <b>famille 3</b>&nbsp;: on ne
+demande plus ce que l'organisation risque, mais ce qu'elle <b>fait risquer</b>.</p>
+</div>
+<div class="callout warn"><div class="t">Ses limites en petite organisation</div>
+<b>Ce qui bloque</b>&nbsp;: elle est «&nbsp;écrite pour des <b>acteurs étatiques</b>, pas pour les
+entreprises&nbsp;», et elle est <b>énergivore</b> — «&nbsp;l'engagement des parties prenantes est hors
+de portée&nbsp;» d'une petite structure.
+<p style="margin-bottom:0"><b>Ce qu'apporterait une déclinaison</b>&nbsp;: un <b>triage d'une page</b>
+— parcours complet, allégé, ou aucun — et des <b>profils sectoriels</b> désignant les droits en jeu
+(RH, santé, collectivité). C'est le pendant, pour HUDERIA, de ce qu'est l'<b>approche Flash</b> pour
+EBIOS RM (<a href="#ch21-flash">§21.9</a>).</p>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="qcm-sec"><span class="num">29.</span> QCM — <span id="count-badge" class="badge acc"></span></h2>
 <p>Filtres par chapitre et par niveau, ordre des questions et des propositions tiré au hasard,
 correction expliquée immédiatement, mémorisation des erreurs pour pouvoir les rejouer.</p>
 <div id="qcm"></div>
@@ -2191,8 +3274,8 @@ correction expliquée immédiatement, mémorisation des erreurs pour pouvoir les
 </div>
 
 <button id="top" title="Haut de page">↑</button>
-<script src="data/qcm-ent5003.js?v=2"></script>
-<script src="assets/app.js?v=31"></script>
+<script src="data/qcm-ent5003.js?v=3"></script>
+<script src="assets/app.js?v=32"></script>
 <script>initQCM(window.QCM_DATA, window.QCM_CHAPTERS, 'ent5003');</script>
 </body>
 </html>

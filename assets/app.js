@@ -414,6 +414,13 @@
     Q.all = data || [];
     Q.chapters = chapters || {};
     Q.key = 'majcyb.' + (storageKey || 'qcm');
+    /* Un QCM dont TOUTES les questions ont une seule bonne réponse se joue au
+       bouton radio, comme sur Moodle. Le drapeau est global et non calculé
+       question par question : sinon la forme du contrôle trahirait le nombre
+       de bonnes réponses attendues dans les QCM mixtes. */
+    Q.mono = Q.all.length > 0 && Q.all.every(function (q) {
+      return q.a && q.a.length === 1;
+    });
     var host = document.getElementById('qcm');
     if (!host) return;
     host.innerHTML =
@@ -478,7 +485,9 @@
         '</div>' +
       '</div>' +
       '<p style="color:var(--fg-mute);font-size:.88rem">L\'ordre des questions et celui des propositions sont ' +
-      'entièrement tirés au hasard à chaque série. Plusieurs réponses peuvent être correctes. ' +
+      'entièrement tirés au hasard à chaque série. ' +
+      (Q.mono ? 'Chaque question comporte <b>une seule bonne réponse</b>. '
+              : 'Plusieurs réponses peuvent être correctes. ') +
       '<b>Tout enchaîner</b> lance d\'un coup toutes les questions qui correspondent aux filtres, sans limite de nombre.</p>';
 
     document.getElementById('q-start').onclick = function () { start(false); };
@@ -597,7 +606,8 @@
           '<button class="btn primary" id="q-validate" disabled>Valider</button>' +
           '<button class="btn primary hidden" id="q-next">' +
             (Q.idx + 1 < Q.serie.length ? 'Suivant ▶' : 'Voir mon score ▶') + '</button>' +
-          '<span class="q-hint">Plusieurs réponses peuvent être correctes.</span>' +
+          '<span class="q-hint">' + (Q.mono ? 'Une seule réponse est correcte.'
+                                            : 'Plusieurs réponses peuvent être correctes.') + '</span>' +
         '</div>' +
       '</div>';
     document.getElementById('qcm-run').innerHTML = html;
@@ -606,10 +616,14 @@
     Q.order.forEach(function (orig, pos) {
       var lab = el('label', 'opt');
       lab.dataset.idx = orig;
-      lab.innerHTML = '<input type="checkbox" value="' + orig + '">' +
+      lab.innerHTML = '<input type="' + (Q.mono ? 'radio" name="q-opt' : 'checkbox') + '" value="' + orig + '">' +
         '<span><b>' + LETTERS[pos] + '.</b> ' + q.o[orig] + '</span>';
       lab.querySelector('input').addEventListener('change', function () {
-        lab.classList.toggle('sel', this.checked);
+        /* En mode radio, le navigateur décoche l'autre choix sans émettre
+           d'événement : on resynchronise donc toutes les étiquettes. */
+        box.querySelectorAll('.opt').forEach(function (o) {
+          o.classList.toggle('sel', o.querySelector('input').checked);
+        });
         document.getElementById('q-validate').disabled =
           box.querySelectorAll('input:checked').length === 0;
       });
