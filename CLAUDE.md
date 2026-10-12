@@ -8,10 +8,14 @@ Site statique hors ligne, publié sur GitHub Pages. Aucun build : on ouvre les f
 index.html            accueil : coquille vide, remplie par assets/accueil.js
 catalogue.js          SOURCE UNIQUE de l'accueil : un objet par cours (voir son en-tête)
 404.html              redirige les anciennes adresses (avant le rangement par cours)
+glossaire.html        glossaire des sigles de tous les cours (assets/glossaire.js)
+compteurs.js,         GÉNÉRÉS par tools/generer.py (lancé par sitecheck) : nombre de questions
+glossaire-data.js     des QCM pour l'accueil, sigles extraits des fiches. Ne jamais les éditer.
 assets/               moteur commun : core.css, viz.css, app.js (onglets, recherche, QCM),
                       accueil.css / accueil.js, atelier.js, scenes.js
-tools/                sources.py (extraction des supports), nouveau_cours.py + modele/ (squelette),
-                      qcmcheck.py, sitecheck.py, jsdata.py (lecture des .js sans node)
+tools/                sources.py (extraction des supports), couverture.py (+ couverture_ignore.txt),
+                      nouveau_cours.py + modele/ (squelette),
+                      generer.py, qcmcheck.py, sitecheck.py, jsdata.py (lecture des .js sans node)
 <code>-<sujet>/       un dossier par cours, par exemple inf5049-controle-audit/
   fiche.html          la fiche ; d'autres pages possibles (points-examen, atelier, ebios-rm…)
   qcm.js              window.QCM_CHAPTERS + window.QCM_DATA
@@ -33,7 +37,12 @@ Une page de cours sans `#toc` n'a pas d'onglets ; un lien `page.html#qcm` ouvre 
 2. **Squelette** : `python -I tools/nouveau_cours.py CODE sujet "Titre" --couleur X --clore`
    → dossier, `fiche.html`, `qcm.js`, entrée de catalogue (résumé et programme à compléter).
 3. **Écrire** la fiche avec les composants ci-dessous, puis le QCM.
-4. **Contrôler** : `qcmcheck.py` sur le QCM, `sitecheck.py`, rendu dans le navigateur.
+4. **Couverture** : `python -I tools/couverture.py <dossier>` liste les titres de slides, sigles et
+   termes en gras des sources absents de la fiche. Trier chaque manque : notion à ajouter, ou bruit
+   à déclarer dans `tools/couverture_ignore.txt` (un nom de personne : `--empreinte "NOM"`, jamais
+   en clair). Nos productions (devoir, compte rendu) vont dans le champ `exclure` du catalogue.
+   C'est un filet par mots-clés : il ne juge pas la qualité d'une explication.
+5. **Contrôler** : `qcmcheck.py` sur le QCM, `sitecheck.py`, rendu dans le navigateur.
 
 **Ne jamais relire une fiche entière** (250 à 350 Ko, soit des dizaines de milliers de tokens) :
 `grep -n` pour situer, puis `Read` avec `offset`/`limit`, et `Edit` ciblé. Les composants sont
@@ -60,6 +69,13 @@ Tout est déjà stylé, thème sombre compris. Une fiche n'a **ni `<style>` ni `
 | Phases | `<div class="phase-band"><div class="p1"><b>Avant</b>…</div><div class="p2">…</div><div class="p3">…</div></div>` |
 | Mise en situation | `<details class="case"><summary>Cas 1 — Titre<span class="sit">Énoncé</span></summary><div>Réponse</div></details>` |
 | QCM | `<h2 id="qcm-sec">… <span id="count-badge" class="badge acc"></span></h2><div id="qcm"></div>` + `initQCM(window.QCM_DATA, window.QCM_CHAPTERS, 'cle')` |
+
+**Fourni sans rien écrire** (app.js) : tiroir « ☰ Chapitres » sous 1080 px ; recherche sans accents,
+multi-mots, avec barre d'occurrences (F3) ; QCM en quatre modes (entraînement, révision intelligente
+à répétition espacée, cartes mémoire, examen blanc chronométré), tableau de maîtrise par chapitre,
+raccourcis 1–4 / A–D, lien « Revoir ce chapitre » vers `<h2 id="chN">` (d'où la règle : les chapitres
+du QCM reprennent la numérotation `chN` des h2 de la fiche). Glossaire : un sigle est repris
+automatiquement s'il est écrit « SIGLE (développé) », « développé (SIGLE) » ou « SIGLE : développé ».
 
 Un nouveau composant réutilisable va dans `viz.css` (et `app.js` s'il est interactif, piloté par
 des attributs `data-*`), puis dans ce tableau.

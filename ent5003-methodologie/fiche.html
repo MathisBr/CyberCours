@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Méthodologie de la sécurité (ENT5003) — fiche de révision</title>
-<link rel="stylesheet" href="../assets/core.css?v=27">
+<link rel="stylesheet" href="../assets/core.css?v=28">
 <link rel="stylesheet" href="../assets/viz.css?v=11">
 </head>
 <body>
@@ -676,7 +676,9 @@ importantes</b>.</li>
 <li><b>Mesures techniques renforcées.</b> Gestion des risques, <b>supply chain</b>, tests de sécurité.</li>
 <li><b>Délais stricts de notification.</b> <b>24 h</b> pour l'alerte précoce, <b>72 h</b> pour le
 rapport complet.</li>
-<li><b>Sanctions.</b> <b>Amendes administratives</b> et pouvoirs accrus des autorités nationales.</li>
+<li><b>Sanctions.</b> <b>Amendes administratives</b> et pouvoirs accrus des autorités nationales. À
+l'oral&nbsp;: des sanctions financières «&nbsp;exemplaires&nbsp;», calquées sur le RGPD — jusqu'à
+<b>10 M€ ou 2&nbsp;% du chiffre d'affaires mondial</b> pour les entités essentielles.</li>
 </ul>
 
 <div class="exam"><div class="t">Entités essentielles contre entités importantes — le tableau à connaître</div>
@@ -711,7 +713,7 @@ change, c'est la <b>manière dont on vérifie</b> (proactive ou réactive) et <b
 
 <h3 id="ch3-raci">3.4 La gestion d'incident et la matrice RACI</h3>
 <p>NIS impose de <b>notifier les incidents significatifs</b>. Le cours a développé ce que cela suppose
-en interne&nbsp;: une documentation procédurale stricte — l'organigramme de crise — et l'application de
+en interne, la <b>gestion des incidents de sécurité de l'information (GDIS)</b>&nbsp;: une documentation procédurale stricte — l'organigramme de crise — et l'application de
 la <b>matrice RACI</b>, absente du support mais détaillée à l'oral.</p>
 <div class="tw"><table>
 <thead><tr><th>Lettre</th><th>Signification</th><th>Qui, en cybersécurité</th></tr></thead>
@@ -2334,6 +2336,9 @@ avant le réseau et l'infrastructure.</b> Ses trois caractéristiques&nbsp;: une
 cloud</b>&nbsp;; le <b>regroupement du réseau et de la sécurité réseau «&nbsp;as a Service&nbsp;»</b>
 (SD-WAN, FaaS) dans une solution cloud&nbsp;; l'accent sur le <b>pilier réseau avec le SD-WAN</b>,
 préféré à l'architecture <b>MPLS</b>.</p>
+<p>À l'oral, le SASE est décrit comme la <b>convergence, délivrée à 100&nbsp;% en service cloud</b>, du
+<b>SD-WAN</b> et de fonctions de sécurité&nbsp;: <b>FWaaS</b> (<i>Firewall as a Service</i>),
+<b>CASB</b>, <b>SWG</b> et <b>ZTNA</b>.</p>
 <div class="tw"><table>
 <thead><tr><th>Ce qui les relie</th><th>Ce qui les différencie</th></tr></thead>
 <tbody>
@@ -2349,6 +2354,16 @@ est de trouver le <b>meilleur compromis entre la performance, la sécurité et l
 comme le <b>nombre de tours</b> (par exemple <b>16 cartouches</b>). Elle est <b>idéale pour la
 sécurisation des dispositifs IoT</b> et la protection des <b>réseaux de capteurs sans fil</b>.
 </div>
+<p><b>Le rappel sur AES</b> (<i>Advanced Encryption Standard</i>), donné à l'oral&nbsp;: un chiffrement
+<b>symétrique par blocs</b> reposant sur un <b>réseau de substitution-permutation (SPN)</b>. La
+<b>substitution (S-Box)</b> apporte la <b>confusion</b> — rendre la relation entre la clé et le chiffré
+aussi complexe et non linéaire que possible&nbsp;; la <b>permutation (P-Box)</b> apporte la
+<b>diffusion</b> — étaler l'influence d'un bit de clair sur tout le bloc chiffré. Le tout est répété sur
+<b>10, 12 ou 14 tours</b> selon la taille de clé (128, 192 ou 256 bits).<br>
+<b>Le principe du chiffrement léger</b> en découle&nbsp;: <b>moins de tours</b> (par exemple 8 ou 12) ou
+des <b>clés plus courtes</b>, adaptées à la durée de vie de l'information. La force brute ne demande
+plus «&nbsp;1 milliard d'années&nbsp;» mais «&nbsp;que&nbsp;» <b>100 000 ans</b>, et le capteur consomme
+<b>10 fois moins d'énergie</b>.</p>
 <div class="callout warn"><div class="t">Le défi de la cryptographie légère — au-delà du triangle</div>
 Le support s'arrête au <b>compromis</b> performance / sécurité / coût. Il faut en tirer la conséquence
 qu'il ne dit pas&nbsp;: réduire la <b>taille de clé</b> (64 bits) et le <b>nombre de tours</b>
@@ -2367,6 +2382,13 @@ vie courte</b>.</p>
 déchiffrer</b>&nbsp;; <b>confidentialité</b> — les données sensibles restent confidentielles <b>même
 lorsqu'elles sont utilisées ou partagées avec des tiers</b>&nbsp;; <b>conformité</b>&nbsp;; et
 <b>réduction des risques</b> en <b>minimisant les points d'exposition</b>.</p>
+<p>À l'oral, deux familles&nbsp;: le <b>chiffrement partiellement homomorphe</b> ne supporte
+<b>qu'une seule opération</b> — l'addition seule, ou la multiplication seule (comme RSA)&nbsp;; le
+<b>chiffrement totalement homomorphe</b> (<b>FHE</b>, <i>Fully Homomorphic Encryption</i>) supporte
+<b>additions et multiplications</b> arbitraires. Son défi majeur est la <b>lenteur</b>&nbsp;: chaque
+multiplication ajoute du <b>bruit</b> au chiffré, qu'il faut réduire par une opération très lourde, le
+<b>bootstrapping</b>. Un calcul de <b>1 milliseconde</b> en clair peut prendre <b>1 à 2 secondes</b> en
+FHE exact — d'où un FHE pas encore déployable en temps réel à grande échelle.</p>
 
 <h3 id="ch18-ia">18.5 Zero trust et IA</h3>
 <p>«&nbsp;L'approche zero trust peut <b>gérer efficacement les risques de sécurité liés à l'IA</b> car
@@ -2418,7 +2440,7 @@ et surtout du niveau de maturité déjà atteint par le SI.</b>&nbsp;»</p>
 <tbody>
 <tr><td>
 <b>Millions de comptes utilisateurs</b> — emails, mots de passe, abonnements<br>
-<b>Contenu protégé par droit d'auteur</b> — films, séries<br>
+<b>Contenu protégé par droit d'auteur</b> et <b>DRM</b> — films, séries<br>
 <b>Paiements en ligne</b> — cartes bancaires, PayPal<br>
 <b>Accès multi-supports</b> — applications web, mobiles, Smart TV<br>
 <b>Infrastructure cloud avec CDN</b> pour distribuer les vidéos
@@ -2744,7 +2766,7 @@ celle du guide. Les deux désignent la même chose.
 <tr><td><b>1995</b></td><td>Première version d'EBIOS, à la demande de la <b>DCSSI</b> — Direction centrale de la sécurité des systèmes d'information, rattachée au Premier ministre, qui deviendra l'<b>ANSSI en 2009</b>. La même année, le <b>CLUSIF</b> crée la méthode concurrente <b>MEHARI</b>.</td></tr>
 <tr><td><b>2004</b></td><td>Deuxième version, pour intégrer l'essor d'<b>Internet</b> et des réseaux IP.</td></tr>
 <tr><td><b>2010</b></td><td><b>EBIOS 2010</b>, refondue pour la <b>virtualisation</b>, les architectures décentralisées et le cloud naissant. Très exhaustive, structurée en <b>5 modules</b>.</td></tr>
-<tr><td><b>2018</b></td><td><b>EBIOS Risk Manager</b>, co-construite par l'<b>ANSSI et le Club EBIOS</b>. «&nbsp;Une <b>rupture méthodologique totale</b>&nbsp;»&nbsp;: on abandonne l'inventaire exhaustif pour une démarche <b>agile, collaborative et focalisée sur les attaques ciblées</b>.</td></tr>
+<tr><td><b>2018</b></td><td><b>EBIOS Risk Manager</b>, co-construite par l'<b>ANSSI et le Club EBIOS</b>. «&nbsp;Une <b>rupture méthodologique totale</b>&nbsp;»&nbsp;: on abandonne l'inventaire exhaustif pour une démarche <b>agile, collaborative et focalisée sur les attaques ciblées</b> complexes (<b>APT</b>).</td></tr>
 </tbody>
 </table></div>
 
@@ -2766,6 +2788,11 @@ C'est le signal d'examen le plus explicite de la séance 2, et il est prononcé 
 cherchait à défendre <b>les murs du château fort</b> (le SI). Dans EBIOS RM, on se fiche que les murs
 tombent&nbsp;: ce qui compte, c'est que <b>la princesse</b> — le processus métier vital — <b>survive</b>&nbsp;!&nbsp;»</p>
 </div>
+<p><b>Les rudiments d'EBIOS 2010</b> — ses cinq modules (slide 28)&nbsp;: <b>1. Étude du contexte</b>
+(définir le cadre de la gestion des risques, préparer les métriques, identifier les biens) ·
+<b>2. Étude des événements redoutés</b> (les apprécier) · <b>3. Étude des scénarios de menaces</b>
+(les apprécier) · <b>4. Étude des risques</b> (apprécier les risques, identifier les objectifs de
+sécurité) · <b>5. Étude des mesures de sécurité</b> (les formaliser, puis les mettre en œuvre).</p>
 <div class="callout warn"><div class="t">EBIOS RM n'est pas adaptée aux TPE et PME</div>
 «&nbsp;Si une petite mairie ou une association de dix salariés vous demande une analyse de risque,
 <b>n'utilisez surtout pas EBIOS RM</b>&nbsp;! C'est un <b>rouleau compresseur surdimensionné</b> pour
@@ -2798,6 +2825,11 @@ d'être en conformité directe avec l'<b>ISO 27005</b>&nbsp;».</p>
 <tr><td><b>RSA Archer</b></td><td>Le mastodonte américain du <b>GRC</b>. «&nbsp;Très lourde et hors de prix&nbsp;» — devis initial évoqué&nbsp;: <b>400 000 €</b>.</td></tr>
 </tbody>
 </table></div>
+<p>Le <b>tableau du support</b> (slide 26, labellisation ANSSI en 2025) recense comme
+<b>labellisés</b>&nbsp;: ARIMES (ADACIS) · Agile Risk Manager (ALL4TEC) · EGERIE Risk Manager ·
+Fence (Airbus) · Oligo Risk Manager · Risk'n tic ERM · RSA Archer Risk Manager&nbsp;; et comme
+<b>en cours de labellisation</b>&nbsp;: <b>C2R – Cyber Risk Review</b> (SIA Partners) et Phinasoft
+Risk Manager.</p>
 
 
 <h3 id="ch21-commandements">21.8 Les dix commandements d'EBIOS Risk Manager</h3>
@@ -3235,7 +3267,7 @@ appartiennent à la cartographie de l'écosystème (atelier 3), pas au plan d'ac
 
 <p><b>L'objectif.</b> «&nbsp;Réaliser une <b>synthèse des scénarios de risque</b> identifiés et définir
 une <b>stratégie de traitement du risque</b>. Cette stratégie aboutit à la définition de <b>mesures de
-sécurité</b>, recensées dans un <b>plan de traitement du risque</b>. Les <b>risques résiduels</b> sont
+sécurité</b>, recensées dans un <b>plan de traitement du risque</b> (<b>PTR</b>). Les <b>risques résiduels</b> sont
 ensuite identifiés ainsi que le <b>cadre de suivi</b> de ces risques.&nbsp;»</p>
 
 <div class="tw"><table>
@@ -3637,8 +3669,11 @@ entreprises&nbsp;», et elle est <b>énergivore</b> — «&nbsp;l'engagement des
 de portée&nbsp;» d'une petite structure.
 <p style="margin-bottom:0"><b>Ce qu'apporterait une déclinaison</b>&nbsp;: un <b>triage d'une page</b>
 — parcours complet, allégé, ou aucun — et des <b>profils sectoriels</b> désignant les droits en jeu
-(RH, santé, collectivité). C'est le pendant, pour HUDERIA, de ce qu'est l'<b>approche Flash</b> pour
-EBIOS RM (<a href="#ch21-flash">§21.9</a>).</p>
+(RH, santé, collectivité), une <b>substitution documentée des parties prenantes</b> (réclamations,
+associations, bases d'incidents), une <b>règle de calibration explicite</b> sans indice composite, et un
+<b>format tenable</b> de deux demi-journées d'atelier plus une restitution. Références citées&nbsp;:
+<b>ISO/IEC 42005</b>, <b>FRIA</b>, <b>AIPD</b> (art. 35 RGPD). C'est le pendant, pour HUDERIA, de ce
+qu'est l'<b>approche Flash</b> pour EBIOS RM (<a href="#ch21-flash">§21.9</a>).</p>
 </div>
 
 <!-- ===================================================================== -->
@@ -3651,7 +3686,7 @@ correction expliquée immédiatement, mémorisation des erreurs pour pouvoir les
 
 <button id="top" title="Haut de page">↑</button>
 <script src="qcm.js?v=5"></script>
-<script src="../assets/app.js?v=34"></script>
+<script src="../assets/app.js?v=35"></script>
 <script>initQCM(window.QCM_DATA, window.QCM_CHAPTERS, 'ent5003');</script>
 </body>
 </html>

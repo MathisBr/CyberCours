@@ -592,6 +592,33 @@ window.QCM_DATA = [
   a:[2],
   e:"Sous la contrainte, on livre le mot de passe du volume leurre, qui contient des données crédibles mais fictives. Le volume caché reste invisible. Il ne s'agit ni d'une réinitialisation ni d'un double chiffrement." },
 
+{ id:"C77", ch:10, d:2,
+  q:"Un pentester accède sans autorisation à un système, avec l'intention sincère d'aider la victime à corriger ses failles. Son intention change-t-elle la qualification d'accès frauduleux ?",
+  o:["Oui, l'intention d'améliorer la sécurité fait disparaître l'infraction",
+     "Non : le mobile est indifférent, il suffit de savoir qu'on n'est pas autorisé",
+     "Oui, à condition de prévenir la victime dans les 48 heures",
+     "Non, mais seulement si le système était protégé par un mot de passe"],
+  a:[1],
+  e:"L'infraction d'accès frauduleux (art. 323-1 du Code pénal) suppose seulement de savoir qu'on n'est pas autorisé. Le mobile, même louable, ne compte pas. Aucun délai de prévenance ne régularise l'accès, et la présence ou l'absence d'une protection sur le système ne change rien." },
+
+{ id:"C78", ch:10, d:2,
+  q:"Quelle est la nature de l'obligation d'un prestataire de test d'intrusion envers son client ?",
+  o:["Une obligation de résultat : il garantit d'avoir trouvé toutes les failles",
+     "Une obligation de sécurité : il répond de toute attaque ultérieure",
+     "Une obligation de moyens : il s'engage à mettre en œuvre les moyens convenus, sans garantir de tout trouver",
+     "Aucune obligation, le client assumant seul le risque du test"],
+  a:[2],
+  e:"Le contrat de pentest rappelle utilement que le prestataire n'a qu'une obligation de moyens. Il ne peut pas garantir l'exhaustivité (obligation de résultat), ne répond pas des attaques futures, et reste bien tenu par le contrat : sa responsabilité contractuelle existe." },
+
+{ id:"C79", ch:10, d:3,
+  q:"Pendant un test autorisé, un pentester sort par erreur du périmètre et touche le serveur d'une autre entreprise. Envers cette entreprise, quelle responsabilité peut-il engager, en plus du risque pénal ?",
+  o:["Sa responsabilité délictuelle, puisqu'il n'a aucun contrat avec elle",
+     "Sa responsabilité contractuelle, au titre du contrat signé avec son client",
+     "Aucune, l'erreur étant couverte par l'autorisation du client",
+     "Uniquement celle de son client, seul responsable du périmètre"],
+  a:[0],
+  e:"Sans contrat avec ce tiers, c'est la responsabilité délictuelle qui joue (art. 1241 du Code civil), en plus du risque pénal : hors périmètre, l'auditeur redevient un intrus. La responsabilité contractuelle ne vaut qu'envers le client. L'autorisation du client ne couvre que ses propres systèmes, et le pentester ne peut pas se décharger entièrement sur lui." },
+
 /* ---------- 11. Conduite d'une évaluation ---------- */
 { id:"C64", ch:11, d:1,
   q:"Quel est l'ordre des phases avant l'audit ?",

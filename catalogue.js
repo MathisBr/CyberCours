@@ -8,6 +8,8 @@
 
    Champs d'un cours :
      code, titre, dossier   dossier = nom du répertoire du cours
+     sources                dossier des supports, relatif à la racine du site (tools/couverture.py)
+     exclure                motifs de fichiers à écarter des sources : nos productions (devoir, compte rendu)
      etat                   "en cours" | "terminé"
      couleur                red | amber | blue | green | purple
      resume                 une phrase
@@ -26,6 +28,8 @@ window.CATALOGUE = [
   code: "INF5049",
   titre: "Contrôle et audit en cybersécurité",
   dossier: "inf5049-controle-audit",
+  sources: "../Contrôle et audit",
+  exclure: [],
   etat: "en cours",
   couleur: "purple",
   resume: "Organiser, mener et restituer une mission d'évaluation : la technique n'en est qu'une partie.",
@@ -54,6 +58,8 @@ window.CATALOGUE = [
   code: "ENT5003",
   titre: "Méthodologie de la sécurité",
   dossier: "ent5003-methodologie",
+  sources: "../Méthodologie de la sécurité",
+  exclure: ["Devoir-*", "Guide-saisie-*", "QCM-ZeroTrust-enonces-reponses-analyse.*", "TP2-ZeroTrust-Plateforme-streaming.*", "Exo.md", "test*", "*.zip", "entrainement_qcm.html"],
   etat: "terminé",
   couleur: "amber",
   resume: "Obligations, normes et méthodes, les quatre approches de la sécurité, l'analyse de risque et EBIOS RM.",
@@ -88,6 +94,8 @@ window.CATALOGUE = [
   code: "INF5244",
   titre: "Sécurisation des interconnexions",
   dossier: "inf5244-interconnexions",
+  sources: "../Sécurisation des interconnexions",
+  exclure: [],
   etat: "terminé",
   couleur: "blue",
   resume: "Filtrage, pare-feu à état, iptables, NAT, DMZ et proxys : de la PSSI aux règles.",
@@ -120,6 +128,8 @@ window.CATALOGUE = [
   code: "INF5243",
   titre: "Sécurisation des réseaux locaux",
   dossier: "inf5243-reseaux-locaux",
+  sources: "../Sécurisation des réseaux locaux",
+  exclure: ["LAB-NAC-*", "*rempli*", "DNS_lab_*", "Fiche de R*"],
   etat: "terminé",
   couleur: "green",
   resume: "Du câble à l'architecture de sécurité : commutation, VLAN, IP, routage, DNS, 802.1X, DMZ.",

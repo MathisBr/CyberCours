@@ -23,7 +23,11 @@ from jsdata import read_global  # noqa: E402
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 sys.stdout.reconfigure(encoding="utf-8")  # accents corrects dans la console Windows
-problems = []
+# Fichiers dérivés (compteurs de l'accueil, glossaire) régénérés avant tout contrôle.
+gen = subprocess.run([sys.executable, "-I", "tools/generer.py"], capture_output=True, text=True,
+                     encoding="utf-8", errors="replace")
+print("generer.py :", (gen.stdout or gen.stderr).strip())
+problems = [] if gen.returncode == 0 else ["tools/generer.py en échec : " + gen.stderr.strip()[-300:]]
 
 
 class Refs(HTMLParser):

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>INF5049 — Contrôle et audit en cybersécurité</title>
-<link rel="stylesheet" href="../assets/core.css?v=27">
+<link rel="stylesheet" href="../assets/core.css?v=28">
 <link rel="stylesheet" href="../assets/viz.css?v=11">
 </head>
 <body>
@@ -194,8 +194,8 @@ fait. Il faut une <b>phase de test</b>, un <b>périmètre</b> vérifié, et une 
 </div>
 
 <div class="callout"><div class="t">Comment fonctionne <code>nmap -O</code></div>
-C'est du <b>fingerprinting</b>. Nmap envoie une série de sondes, dont certaines inhabituelles, sur
-différents ports et protocoles. Il observe <b>comment la machine réagit</b> et compare ces réactions
+C'est du <b>fingerprinting</b>. Nmap envoie une série de sondes TCP, UDP et ICMP, dont certaines
+inhabituelles, sur différents ports. Il observe <b>comment la machine réagit</b> et compare ces réactions
 à une <b>table de signatures</b>. Statistiquement, il en déduit l'OS : « c'est un Windows 10 de telle
 version », « c'est un Linux de telle version ». Ces sondes atypiques sont justement ce qui peut faire
 planter une pile réseau mal implémentée.
@@ -262,7 +262,10 @@ simplifiée.</p>
       <ul><li>Définir la stratégie, le budget</li><li>Définir la <b>chaîne de responsabilité</b></li><li>Gérer le risque, la sensibilisation</li></ul>
       <span class="more"><span class="t">Ce que l'auditeur y cherche</span>Pas de chaîne de responsabilité, c'est déjà un
       problème : un collaborateur face à un incident ne sait même pas qui appeler. Attention aussi : celui qui
-      <b>définit</b> la politique de sensibilisation n'est pas forcément celui qui la <b>réalise</b>.</span></button>
+      <b>définit</b> la politique de sensibilisation n'est pas forcément celui qui la <b>réalise</b>.</span>
+      <span class="more"><span class="t">Le piège de la PSSI</span>Beaucoup de dirigeants demandent une
+      <b>PSSI</b> (politique de sécurité des systèmes d'information) en passant, comme une formalité, sans mesurer
+      la charge de travail qu'elle représente. C'est à l'auditeur de leur faire mesurer cet effort.</span></button>
     <button class="vz-c k-blue"><span class="n">Organisationnel</span><h5>Conformité</h5>
       <ul><li>Maîtriser les textes réglementaires</li><li>Gérer les évaluations</li></ul>
       <span class="more"><span class="t">Pourquoi ensemble</span>Commander des évaluations est un acte <b>politique
@@ -459,7 +462,8 @@ par un juriste : ce sont des textes juridiques, évidents à la lecture mais dé
   avant, puis à oublier jusqu'au suivant. Or la conformité se construit petit à petit.</li>
   <li><b>Un auditeur d'autorité pioche au hasard</b> dans les dossiers et demande : « montrez-moi que
   vous l'avez fait ». Il faut une <b>preuve</b> pour chaque engagement, y compris la preuve qu'un
-  document existe quand il est confidentiel.</li>
+  document existe quand il est confidentiel. Exemple : la <b>CTI</b> (Commission des titres
+  d'ingénieur), qui audite périodiquement les écoles d'ingénieurs selon les textes de leur secteur.</li>
 </ul>
 </div>
 
@@ -680,8 +684,8 @@ patients dont l'aptitude dépend de leur état de santé (pilotes, plongeurs, mi
 
 <h3 id="ch10-juridique">10.1 Mesurer les risques encourus : le contrat (TP 1)</h3>
 <p>Le TP 1 porte sur <b>l'importance du contrat d'audit</b> : repérer les points juridiques qu'on aurait
-pu rater, ou qui sont les plus durs à respecter. Le support ne détaille pas les textes. Ce qui suit est
-le socle juridique général à connaître pour comprendre le TP.</p>
+pu rater, ou qui sont les plus durs à respecter. Le support ne détaille pas les textes : ce qui suit
+s'appuie sur l'article du TP consacré à la protection juridique du pentester.</p>
 
 <div class="callout danger"><div class="t">Pourquoi le contrat est vital</div>
 Sans autorisation, un test d'intrusion est une <b>infraction</b> : accès ou maintien frauduleux dans un
@@ -692,11 +696,35 @@ outils d'attaque n'est permis qu'avec un <b>motif légitime</b>, comme la recher
 informatique (art. 323-3-1).
 </div>
 
+<div class="grid c2">
+  <div class="card"><h4>Ce qui constitue l'infraction</h4>
+  <ul>
+    <li><b>L'accès</b> s'entend largement : pénétration <b>active</b>, mais aussi <b>passive</b>
+    (intercepter des données qui circulent, avec un sniffer).</li>
+    <li>Il suffit de <b>savoir qu'on n'est pas autorisé</b>. La présence ou non d'une protection sur le
+    système ne change rien.</li>
+    <li><b>Le mobile est indifférent</b> : vouloir améliorer la sécurité n'efface pas l'infraction.</li>
+    <li><b>Hors périmètre</b>, même par erreur, le pentester autorisé redevient un intrus : entrer dans
+    le réseau d'un voisin peut lui valoir des poursuites.</li>
+  </ul></div>
+  <div class="card"><h4>Trois responsabilités</h4>
+  <ul>
+    <li><b>Contractuelle</b>, envers le client, selon le partage prévu au contrat. Le prestataire n'a
+    qu'une <b>obligation de moyens</b> : il ne garantit pas de tout trouver.</li>
+    <li><b>Délictuelle</b>, envers les tiers dont le SI a été touché par erreur (art. 1241 du Code civil).</li>
+    <li><b>Pénale</b>, personnelle au pentester, ou portée par la société pour le compte de laquelle il
+    agit (art. 323-6 du Code pénal : responsabilité des personnes morales).</li>
+  </ul></div>
+</div>
+
 <div class="tw"><table>
 <thead><tr><th>Ce que le contrat doit verrouiller</th><th>Le risque s'il manque</th></tr></thead>
 <tbody>
-<tr><td><b>Qui autorise</b> : une personne qui en a réellement le pouvoir, pour <b>chaque</b> système testé</td><td>Un serveur hébergé chez un tiers (cloud, infogérant) ou un prestataire non informé : leur accord est aussi nécessaire. Le contrat client ne suffit pas.</td></tr>
-<tr><td><b>Périmètre précis</b> : adresses, applications, sites, dates et horaires</td><td>Sortir du périmètre, c'est sortir de l'autorisation.</td></tr>
+<tr><td><b>Un préambule</b> : contexte, activité du client, biens sensibles, raisons du choix du prestataire</td><td>En cas de litige, le juge ne peut pas reconstituer l'intention des parties.</td></tr>
+<tr><td><b>Qui autorise</b> : vérifier les <b>pouvoirs du signataire</b>, pour <b>chaque</b> système testé</td><td>Un signataire sans pouvoir n'autorise rien. Un serveur hébergé chez un tiers (cloud, infogérant) exige aussi <b>l'autorisation de ce tiers</b> avant les tests : le contrat client ne suffit pas.</td></tr>
+<tr><td><b>Périmètre précis</b> : schéma de la topologie, éléments identifiés par le client comme lui appartenant, adresses, dates et horaires</td><td>Sortir du périmètre, c'est sortir de l'autorisation. Les <b>délais</b> bornent aussi la durée du consentement.</td></tr>
+<tr><td><b>Une phase de validation</b> : accord exprès du client avant d'exploiter une faille importante, et <b>alerte immédiate</b> à chaque vulnérabilité découverte</td><td>Une exploitation non validée qui casse la production.</td></tr>
+<tr><td><b>Les outils et techniques</b> employés, et un <b>journal des actions</b> menées</td><td>Impossible de prouver ce qui a été fait, ou de distinguer l'auditeur d'un véritable attaquant.</td></tr>
 <tr><td><b>Méthodes autorisées et interdites</b> : déni de service, ingénierie sociale, phishing, intrusion physique</td><td>Une action non prévue (phishing, test en production) engage la responsabilité de l'auditeur.</td></tr>
 <tr><td><b>Suspension et arrêt</b>, contacts d'urgence des deux côtés</td><td>Un incident en cours de test sans personne à prévenir.</td></tr>
 <tr><td><b>Responsabilité</b> en cas de dommage, assurance</td><td>Une interruption de production provoquée par l'audit.</td></tr>
@@ -727,7 +755,8 @@ sur des SI <b>critiques ou sensibles</b>.
 
 <div class="callout"><div class="t">L'infrastructure d'un prestataire d'audit (seconde partie du TP 1)</div>
 Le référentiel PASSI exige du prestataire une infrastructure qui protège les données de ses clients.
-Les grandes lignes à savoir décrire :
+Les grandes lignes à savoir décrire (synthèse générale, pas encore confrontée au texte du référentiel
+v2.2) :
 <ul style="margin-bottom:0">
   <li>Un <b>SI dédié aux activités d'audit</b>, protégé et maîtrisé, distinct du SI bureautique.</li>
   <li><b>Cloisonnement entre les missions et les clients</b> : les données d'un client ne côtoient pas
@@ -748,11 +777,12 @@ attendue est de <b>savoir faire de la veille</b> : chercher l'outil adapté au c
 <b>quand utiliser l'IA et quand travailler à la main</b>. Le TP 2 consiste à choisir chacun un outil
 et à le confronter aux autres sur une même machine volontairement vulnérable.</p>
 
-<h3 id="ch10-pc">10.4 Préparer son PC d'audit</h3>
+<h3 id="ch10-pc">10.4 Préparer son PC d'audit (OPSEC)</h3>
 <div class="grid c2">
   <div class="card"><h4>Des outils à jour : compiler depuis les sources</h4>
-  <p><b>OpenVAS</b> est un scanner de vulnérabilités libre, utilisé pour <b>auditer un PC de
-  l'intérieur</b>. Comme un antivirus, il y a le logiciel et sa <b>base de tests de vulnérabilités</b>.</p>
+  <p><b>OpenVAS</b> est un scanner de vulnérabilités libre, le moteur de l'écosystème
+  <b>Greenbone (GVM)</b>, utilisé pour <b>auditer un PC de l'intérieur</b>. Comme un antivirus, il y a
+  le logiciel et sa <b>base de tests de vulnérabilités</b>, alimentée par un flux de mises à jour.</p>
   <p>Une VM ou un paquet précompilé a toujours un <b>retard</b> sur les dernières vulnérabilités
   intégrées au code source. Une mission démarre avec des outils <b>à jour</b> : quand c'est
   nécessaire, on <b>récupère le code source et on compile soi-même</b>.</p>
@@ -953,8 +983,8 @@ chapitres suivent ceux de la fiche.</p>
 </div>
 
 <button id="top" title="Haut de page">↑</button>
-<script src="qcm.js?v=1"></script>
-<script src="../assets/app.js?v=34"></script>
+<script src="qcm.js?v=2"></script>
+<script src="../assets/app.js?v=35"></script>
 <script>initQCM(window.QCM_DATA, window.QCM_CHAPTERS, 'inf5049');</script>
 </body>
 </html>

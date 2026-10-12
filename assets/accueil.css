@@ -113,3 +113,22 @@ html[data-theme="dark"] .cours.k-purple { --k: #b391f2; }
   #resultat { margin-left: 0; width: 100%; }
   .topbar .brand small { display: none; }
 }
+
+/* ---- Glossaire ---- */
+.gl-tools { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 18px 0 8px; }
+.gl-lettres { display: flex; flex-wrap: wrap; gap: 4px; }
+.gl-lettres a { min-width: 28px; text-align: center; padding: 3px 6px; border-radius: 7px; border: 1px solid var(--border); background: var(--bg-soft); color: var(--fg-soft); text-decoration: none; font-weight: 700; font-size: .82rem; }
+.gl-lettres a:hover { border-color: var(--accent); color: var(--accent); }
+.gl-l { margin: 22px 0 6px; font-size: 1.1rem; color: var(--accent); border: 0; padding: 0; scroll-margin-top: 70px; }
+.gl { margin: 0; display: grid; gap: 6px; }
+.gl-e { display: grid; grid-template-columns: 120px 1fr; gap: 12px; align-items: baseline; padding: 8px 12px; border-radius: 9px; background: var(--bg-soft); border: 1px solid var(--border-soft); }
+.gl-e dt { font-family: var(--mono); font-weight: 700; }
+.gl-e dd { margin: 0; color: var(--fg-soft); }
+.gl-c { display: inline-block; margin-left: 6px; font-size: .68rem; font-weight: 700; letter-spacing: .04em; padding: 1px 7px; border-radius: 999px; text-decoration: none; border: 1px solid currentColor; }
+.gl-c.k-red { color: var(--d-red); } .gl-c.k-amber { color: var(--d-amber); } .gl-c.k-blue { color: var(--d-blue); }
+.gl-c.k-green { color: var(--d-green); } .gl-c.k-purple { color: var(--d-purple); }
+html[data-theme="dark"] .gl-c { filter: brightness(1.6); }
+@media (max-width: 560px) { .gl-e { grid-template-columns: 1fr; gap: 2px; } }
+
+/* ---- Liens transverses de l'accueil ---- */
+.home-liens { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }

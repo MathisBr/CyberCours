@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sécurisation des réseaux locaux (INF5243) — fiche complète</title>
-<link rel="stylesheet" href="../assets/core.css?v=27">
+<link rel="stylesheet" href="../assets/core.css?v=28">
 </head>
 <body>
 
@@ -1476,6 +1476,11 @@ le port 22 vers le serveur B — rien d'autre.
 </ul>
 <p>C'est le prolongement logique du raisonnement sur les VLANs : segmenter, puis filtrer entre les
 segments, puis ne plus accorder de confiance implicite à l'appartenance à un segment.</p>
+<p>Le support résume l'évolution de la sécurité interne en deux formules : <b>802.1X + VLAN</b>
+(isolation par services : administration, VoIP, caméras…) → MLS + VLAN + PF interne ; puis la
+<b>micro-segmentation</b> (segments individuels associés aux applications, les « bulles
+applicatives ») → <b>MLS + VLAN + PF interne + IAM</b> (<i>Identity and Access Management</i>)
+= « zero trust ».</p>
 
 <!-- ===================================================================== -->
 <h2 id="ch21"><span class="num">21.</span> Qui normalise quoi : IEEE, IETF, ISOC, ICANN</h2>
@@ -2611,6 +2616,14 @@ résolveur validant n'accepte plus que les réponses <b>signées par l'autorité
 et jette les autres.
 </div>
 
+<ul class="key-points">
+<li><b>La chaîne de confiance</b> — chaque zone publie ses clés (<b>DNSKEY</b>) : la <b>ZSK</b>
+(<i>Zone Signing Key</i>) signe les enregistrements, une signature <b>RRSIG</b> par ensemble
+d'enregistrements ; la <b>KSK</b> (<i>Key Signing Key</i>) signe les clés. La zone parente publie un
+<b>DS</b>, empreinte de la KSK de la zone fille : racine → <code>.fr</code> → <code>esiea.fr</code>.
+La KSK de la racine sert d'<b>ancre de confiance</b> aux résolveurs validants.</li>
+</ul>
+
 <div class="tw"><table>
 <thead><tr><th>Ce que DNSSEC apporte</th><th>Ce que DNSSEC n'apporte pas</th></tr></thead>
 <tbody>
@@ -3007,6 +3020,10 @@ l'identifiant</b> : on a le « quiconque ».
 module à acheter, et l'utilisateur ne voit aucun changement.
 </div>
 
+<p>Le support fixe le cadre : enregistrer les flux et les <b>imputer</b> aux utilisateurs <b>dans le
+respect de la vie privée</b> (<b>CNIL</b>), et vérifier que le système de journalisation est conforme
+à la loi (<b>RGPD / GDPR</b> – CNIL).</p>
+
 <h2 id="ch33"><span class="num">33.</span> NAC et portail captif — le lab Alcasar</h2>
 
 <h3 id="ch33-pourquoi">33.1 Pourquoi l'AD ne suffit pas</h3>
@@ -3283,6 +3300,10 @@ résoudre le moindre nom.
 <p style="margin:.5em 0 0">S'y ajoutent les options : nom de domaine local, serveur NTP, serveur
 TFTP/PXE pour le démarrage réseau.</p>
 </div>
+
+<p>Le bail s'obtient en <b>quatre étapes</b>, le processus <b>DORA</b> : <b>D</b>iscover (le client
+diffuse pour trouver un serveur), <b>O</b>ffer (le serveur propose), <b>R</b>equest (le client
+demande l'offre retenue), <b>A</b>ck (le serveur confirme le bail).</p>
 
 <p>Ce triptyque explique pourquoi le DHCP est une cible de choix : celui qui répond à la place du
 serveur légitime choisit <b>la passerelle</b> et <b>le résolveur DNS</b> de sa victime. C'est-à-dire
@@ -3586,7 +3607,9 @@ toujours l'adressage.
 
 <p><b>Eduroam</b> (<i>Education Roaming</i>) est le réseau Wi-Fi partagé des universités et centres de
 recherche de plus de cent pays. C'est une <b>fédération hiérarchique de serveurs mandataires
-RADIUS</b>.</p>
+RADIUS</b>. Chaque institution y joue deux rôles : <b>fournisseur d'identité</b> (<b>IdP</b>,
+<i>Identity Provider</i>), qui authentifie ses propres utilisateurs, et <b>fournisseur de service</b>
+(<b>SP</b>, <i>Service Provider</i>), qui offre l'accès Wi-Fi aux visiteurs.</p>
 
 <div class="example"><div class="t">Exemple concret — un étudiant de l'école en Finlande</div>
 <ol style="margin-bottom:0">
@@ -3706,6 +3729,9 @@ jamais en frontal d'un réseau. Sous Linux, chaque distribution a le sien — UF
 ou Shorewall chez RedHat et Fedora. En laboratoire, c'est une plaie : ces surcouches génèrent des
 milliers de règles qui bloquent silencieusement les trames de test non conventionnelles. Le premier
 réflexe en TP est de les purger pour maîtriser ses flux.</p>
+<p>En entreprise, les pare-feu personnels se mettent à jour depuis un <b>serveur pivot</b> local et,
+reliés en réseau, constituent une <b>plateforme de protection des points de terminaison</b>
+(<b>EPP</b>, <i>Endpoint Protection Platform</i>).</p>
 
 <div class="callout def"><div class="t">EDR — <i>Endpoint Detection and Response</i></div>
 Ce n'est pas une invention magique, c'est la <b>convergence de trois briques</b> sur le même poste :
@@ -3885,7 +3911,9 @@ Pour relier le siège et ses agences, l'offre courante est un <b>routeur MPLS</b
 l'opérateur, <b>doublé d'IPsec</b>. Le MPLS assure un transport privé et une qualité de service
 garantie ; IPsec assure que l'opérateur lui-même ne lit rien. Les architectures récentes remplacent
 le maillage par un <b>point de présence</b> (POP) qui concentre les accès VPN vers le data center et
-les clouds privé et public.
+les clouds privé et public. Leur configuration est simplifiée par le <b>SD-WAN</b>
+(<i>Software Defined WAN</i>), qui pilote routeurs, MLS, concentrateurs VPN et pare-feu, physiques ou
+virtuels, depuis un outil de gestion centralisée.
 </div>
 
 <div class="callout warn"><div class="t">Les trois niveaux de sensibilité — architecture d'ambassade</div>
@@ -4722,7 +4750,7 @@ chapitre.</p>
 
 <button id="top" title="Haut de page">↑</button>
 <script src="qcm.js?v=24"></script>
-<script src="../assets/app.js?v=34"></script>
+<script src="../assets/app.js?v=35"></script>
 <script src="scenes-data.js?v=23"></script>
 <script src="../assets/scenes.js?v=23"></script>
 <script>initQCM(window.QCM_DATA, window.QCM_CHAPTERS, 'inf5243');</script>

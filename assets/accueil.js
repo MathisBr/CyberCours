@@ -123,14 +123,17 @@
     if (n) small.textContent = a._vues + ' / ' + n + ' déjà vues';
     a.querySelector('.bar i').style.width = n ? Math.min(100, Math.round(a._vues / n * 100)) + '%' : '0%';
   }
-  /* Chaque fichier de QCM définit window.QCM_DATA : on les charge un par un
-     et on lit la longueur entre deux chargements. Fonctionne aussi hors ligne. */
+  /* Les compteurs viennent de compteurs.js (généré). À défaut, chaque fichier de QCM
+     définit window.QCM_DATA : on les charge un par un et on lit la longueur. */
   function compterQCM() {
     var liens = Array.prototype.slice.call(document.querySelectorAll('a[data-qcm]'));
     var cache = {};
     (function suivant(k) {
       if (k >= liens.length) return;
       var a = liens[k], src = a.getAttribute('data-qcm');
+      /* Compteur pré-calculé par tools/generer.py : pas besoin de charger le QCM. */
+      var pre = (window.QCM_COMPTES || {})[src];
+      if (pre !== undefined) cache[src] = pre;
       if (cache[src] !== undefined) { a._total = cache[src]; peindreQCM(a); suivant(k + 1); return; }
       window.QCM_DATA = undefined;
       var s = document.createElement('script');

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glossaire des sigles</title>
+<link rel="stylesheet" href="assets/core.css?v=28">
+<link rel="stylesheet" href="assets/accueil.css?v=3">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><span class="dot"></span> Glossaire <small>· tous les cours</small></div>
+  <div class="spacer"></div>
+  <input id="filtre" type="search" placeholder="Sigle ou mot du développé…  ( / )" aria-label="Filtrer le glossaire">
+  <a class="home" href="index.html">← Accueil</a>
+  <button class="btn ghost" onclick="toggleTheme()" title="Thème clair / sombre">◐</button>
+</header>
+
+<main class="home">
+  <div class="home-head">
+    <h1>Glossaire des sigles</h1>
+    <p>Chaque sigle défini dans une fiche, avec son développé et un lien vers le passage du cours.
+    Généré automatiquement à partir des fiches.</p>
+  </div>
+  <div class="gl-tools">
+    <nav class="gl-lettres" id="lettres" aria-label="Aller à la lettre"></nav>
+    <span id="resultat" aria-live="polite"></span>
+  </div>
+  <div id="glossaire"></div>
+  <noscript><p>Le glossaire nécessite JavaScript.</p></noscript>
+</main>
+
+<script src="catalogue.js?v=1"></script>
+<script src="glossaire-data.js?v=1"></script>
+<script src="assets/app.js?v=35"></script>
+<script src="assets/glossaire.js?v=1"></script>
+</body>
+</html>

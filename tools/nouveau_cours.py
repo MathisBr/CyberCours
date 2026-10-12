@@ -7,6 +7,7 @@ Usage :
   sujet     suffixe du dossier, en minuscules avec tirets, par exemple forensic
   --couleur red | amber | blue | green | purple (défaut : purple)
   --clore   passe les cours « en cours » existants à « terminé »
+  --sources dossier des supports relatif à la racine du site, par exemple "../Forensic"
 
 Exemple :
   python -I tools/nouveau_cours.py INF5050 forensic "Investigation numérique" --couleur red --clore
@@ -29,6 +30,7 @@ ap.add_argument("sujet")
 ap.add_argument("titre")
 ap.add_argument("--couleur", default="purple", choices=["red", "amber", "blue", "green", "purple"])
 ap.add_argument("--clore", action="store_true")
+ap.add_argument("--sources", default="", help='dossier des supports, ex. "../Forensic"')
 a = ap.parse_args()
 
 code = a.code.upper()
@@ -55,6 +57,7 @@ entree = f'''{{
   code: "{code}",
   titre: "{a.titre}",
   dossier: "{dossier}",
+  sources: "{a.sources}",
   etat: "en cours",
   couleur: "{a.couleur}",
   resume: "À compléter : une phrase sur le fil rouge du cours.",

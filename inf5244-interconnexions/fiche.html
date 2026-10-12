@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sécurisation des interconnexions (INF5244) — fiche de révision</title>
-<link rel="stylesheet" href="../assets/core.css?v=27">
+<link rel="stylesheet" href="../assets/core.css?v=28">
 <link rel="stylesheet" href="../assets/viz.css?v=11">
 </head>
 <body>
@@ -1187,7 +1187,7 @@ précédé de sa règle <code>LOG</code> si on veut le tracer</li>
 <div class="callout warn"><div class="t">Une règle à la volée n'est pas une configuration</div>
 On peut ajouter une ligne permissive en direct pour débloquer un test — mais il faut
 <b>ré-exécuter le script propre ensuite</b>, sinon la ligne trop permissive reste. C'est
-exactement le mécanisme du « provisoire qui dure » (§15.1), à l'échelle d'une session de travail.
+exactement le mécanisme du « provisoire qui dure » (§14.1), à l'échelle d'une session de travail.
 </div>
 <div class="callout danger"><div class="t">L'avertissement de la séance</div>
 Un étudiant a fait générer ses commandes par une IA <b>sans les relire</b>&nbsp;: le script exécuté a
@@ -2102,6 +2102,16 @@ Une DMZ est une zone dont on <b>assume qu'elle sera compromise</b>. Tout ce qui 
 considéré comme <b>déjà entre les mains de l'attaquant</b>&nbsp;: un annuaire d'authentification, une
 base de production ou un secret de chiffrement n'y ont rien à faire — y compris « juste pour un test ».
 </div>
+<div class="example"><div class="t">RETEX : l'Active Directory oublié en DMZ</div>
+Lors d'une investigation post-incident sur une DMZ ministérielle, on découvre au milieu de la DMZ un
+serveur Samba configuré en <b>contrôleur de domaine Active Directory (AD)</b> complet. Des développeurs
+l'avaient monté des années plus tôt pour des tests d'authentification, puis l'avaient <b>oublié</b>,
+sans mise à jour ni surveillance. L'attaquant qui a pris la DMZ a obtenu <b>tout l'annuaire</b>&nbsp;:
+identifiants, hashs de mots de passe, coordonnées personnelles de l'ensemble des agents.
+<p style="margin-bottom:0"><b>La leçon&nbsp;: « le provisoire qui dure est le pire ennemi de la
+sécurité. »</b> Tout test rapide ou contournement provisoire doit être <b>tracé, documenté, et détruit</b>
+une fois le test fini.</p>
+</div>
 
 <h3 id="ch14-asa">14.2 Les niveaux de sécurité (Cisco ASA)</h3>
 <p>Chaque interface reçoit un <i>security level</i> de <b>0 à 100</b>&nbsp;: <b>100 = Inside</b>,
@@ -2139,7 +2149,10 @@ les sessions d'administration à partir des logs.</li>
 <div class="callout"><div class="t">Victime sacrificielle et pot de miel</div>
 Une <b>victime sacrificielle</b> est une machine <b>réelle et utile</b> placée en zone exposée
 (application en développement, service tiers non audité), dont on <b>assume par avance la
-compromission</b>&nbsp;: c'est une concession.
+compromission</b>&nbsp;: c'est une concession. Deux mesures l'accompagnent&nbsp;: un <b>isolement
+étanche</b> (aucun droit d'accès vers le réseau interne, pour qu'elle n'entraîne rien dans sa chute) et
+un <b>replaquage automatique</b> (un template ou une image « golden master » permet de la détruire et
+de la reconstruire instantanément à l'état sain).
 Un <b>honeypot</b> est une machine <b>factice</b>, sans usage métier, destinée à attirer et observer
 l'attaquant&nbsp;: c'est un capteur.
 </div>
@@ -3294,7 +3307,7 @@ correction expliquée immédiatement, mémorisation des erreurs pour pouvoir les
 
 <button id="top" title="Haut de page">↑</button>
 <script src="qcm.js?v=11"></script>
-<script src="../assets/app.js?v=34"></script>
+<script src="../assets/app.js?v=35"></script>
 <script>initQCM(window.QCM_DATA, window.QCM_CHAPTERS, 'inf5244');</script>
 </body>
 </html>

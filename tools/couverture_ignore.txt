@@ -1,0 +1,306 @@
+# Termes signalés par tools/couverture.py et jugés hors notion (bruit), un par ligne :
+#   dossier-du-cours | terme      ou      * | terme   (pour tous les cours)
+# Ne JAMAIS y écrire de nom de personne : le dépôt est public. Pour un nom, utiliser son empreinte :
+#   python -I tools/couverture.py --empreinte "NOM"   ->   * | h:…
+
+* | OK
+* | PDF
+* | LAB
+* | BD
+* | ESIEA
+* | BLOC
+* | CYB
+* | S9
+inf5049-controle-audit | CFST
+inf5049-controle-audit | Retour sur les méthodologies de cybersécurité
+inf5049-controle-audit | Formules diplomatiques de protection
+inf5049-controle-audit | Identification de la valeur et des objectifs
+inf5049-controle-audit | L'efficacité comparée
+inf5049-controle-audit | L'illusion de l'informaticien
+inf5049-controle-audit | La répartition des rôles en binôme
+inf5049-controle-audit | La traçabilité décisionnelle
+inf5049-controle-audit | Le mythe du 100 % technique
+inf5049-controle-audit | Le risque douanier
+inf5049-controle-audit | Les méthodologies
+inf5049-controle-audit | Les pratiques modernes
+inf5049-controle-audit | Principe fondamental de la cybersécurité
+inf5049-controle-audit | Rigueur professionnelle
+inf5049-controle-audit | Risque relationnel majeur
+inf5049-controle-audit | Règle absolue
+inf5049-controle-audit | 75 % des vulnérabilités réelles
+inf5244-interconnexions | 1.2 Sch´ema
+inf5244-interconnexions | Table des mati`eres
+inf5244-interconnexions | CALID
+inf5244-interconnexions | GUI
+inf5244-interconnexions | IO
+inf5244-interconnexions | PRIV
+inf5244-interconnexions | PUB
+inf5244-interconnexions | R1
+inf5244-interconnexions | VM
+inf5244-interconnexions | Advens
+inf5244-interconnexions | Anomalie flagrante
+inf5244-interconnexions | Automatisation et Persistance
+inf5244-interconnexions | Commande impérative d'activation
+inf5244-interconnexions | Configuration VirtualBox
+inf5244-interconnexions | Conséquence impérative pour les exceptions
+inf5244-interconnexions | Contexte
+inf5244-interconnexions | Dégradation critique du CPU
+inf5244-interconnexions | EnCase
+inf5244-interconnexions | Inconvénient
+inf5244-interconnexions | Inconvénients
+inf5244-interconnexions | Interdiction architecturale
+inf5244-interconnexions | IoC - Indicators of Compromise
+inf5244-interconnexions | L'anecdote de l'IA en TP
+inf5244-interconnexions | L'ergonomie opérationnelle
+inf5244-interconnexions | La condition impérative
+inf5244-interconnexions | La conformité réglementaire et légale
+inf5244-interconnexions | La posture de l'analyste sécurité
+inf5244-interconnexions | Le danger du paiement de rançon
+inf5244-interconnexions | Mesures compensatoires obligatoires
+inf5244-interconnexions | Minimisation de la surface d'attaque
+inf5244-interconnexions | Moyens & Temporalité
+inf5244-interconnexions | Objectifs
+inf5244-interconnexions | Perspectives pour la Séance 2
+inf5244-interconnexions | Postulat
+inf5244-interconnexions | Pourquoi les logs manquent dans le SIEM ?
+inf5244-interconnexions | RÈGLE ARCHITECTURALE
+inf5244-interconnexions | Réaction du Client
+inf5244-interconnexions | Réalité technique
+inf5244-interconnexions | SafeSearch de Google
+inf5244-interconnexions | Stratégie défensive
+inf5244-interconnexions | Test et validation
+* | h:025155e9d6f3
+ent5003-methodologie | Comparaison NIS vs NIS 2
+ent5003-methodologie | Ressources internationales
+ent5003-methodologie | A9
+ent5003-methodologie | ARM
+ent5003-methodologie | BIOS
+ent5003-methodologie | CA1
+ent5003-methodologie | CA2
+ent5003-methodologie | CA3
+ent5003-methodologie | CA4
+ent5003-methodologie | CD
+ent5003-methodologie | CEA
+ent5003-methodologie | DG
+ent5003-methodologie | DHCP
+ent5003-methodologie | DNS
+ent5003-methodologie | EAI
+ent5003-methodologie | ETL
+ent5003-methodologie | FIDO2
+ent5003-methodologie | IBAN
+ent5003-methodologie | LR
+ent5003-methodologie | M1
+ent5003-methodologie | M10
+ent5003-methodologie | M2
+ent5003-methodologie | M3
+ent5003-methodologie | M4
+ent5003-methodologie | M5
+ent5003-methodologie | M7
+ent5003-methodologie | M8
+ent5003-methodologie | M9
+ent5003-methodologie | ODBC
+ent5003-methodologie | PSP
+ent5003-methodologie | R03
+ent5003-methodologie | R04
+ent5003-methodologie | R05
+ent5003-methodologie | R08
+ent5003-methodologie | ROM
+ent5003-methodologie | SS1
+ent5003-methodologie | SS2
+ent5003-methodologie | SS3
+ent5003-methodologie | SS4
+ent5003-methodologie | TD
+ent5003-methodologie | TIP
+ent5003-methodologie | UEFI
+ent5003-methodologie | ZT
+ent5003-methodologie | 3. Partir de la contrainte
+ent5003-methodologie | 4 catégories thématiques
+ent5003-methodologie | Anecdote vécue chez Thales
+ent5003-methodologie | CHI / Threat Hunting
+ent5003-methodologie | Différence philosophique
+ent5003-methodologie | Exemple de la Rabobank en Belgique
+ent5003-methodologie | Fichier audio source
+ent5003-methodologie | L'explosion de la surface d'attaque
+ent5003-methodologie | L'industrialisation du cybercrime
+ent5003-methodologie | La sélection est massivement préventive
+ent5003-methodologie | Le Single Sign-On (SSO)
+ent5003-methodologie | Le calvaire du double VPN
+ent5003-methodologie | Le contexte environnemental
+ent5003-methodologie | Le déploiement des agents EDR
+ent5003-methodologie | Le souvenir tragique de l'enseignant
+ent5003-methodologie | Le tournant historique de Stuxnet (2010)
+ent5003-methodologie | Ne surévaluez pas en G4
+ent5003-methodologie | Niveau Substantiel (Substantial)
+ent5003-methodologie | Niveau Élevé (High)
+ent5003-methodologie | Niveau Élémentaire (Basic)
+ent5003-methodologie | Origine de la rivalité
+ent5003-methodologie | Pilier Identités : 24 % des efforts
+ent5003-methodologie | Plan (Planifier)
+ent5003-methodologie | Pourquoi la labellisation ANSSI est-elle cruciale ?
+ent5003-methodologie | Règle mémo-technique d'or
+ent5003-methodologie | Secteur médical / pharmaceutique
+ent5003-methodologie | Statistique clé de Microsoft
+ent5003-methodologie | Surveillance de masse
+ent5003-methodologie | Sécuriser la migration vers le Cloud
+ent5003-methodologie | Thématiques abordées
+ent5003-methodologie | Élargissement considérable du périmètre
+ent5003-methodologie | h:185a5b0df0f3
+inf5243-reseaux-locaux | 1 FR - La théorie
+inf5243-reseaux-locaux | 3 EN - Theory
+inf5243-reseaux-locaux | 5.9. Les outils de statistique
+inf5243-reseaux-locaux | 6.EN : Proxmox (English)
+inf5243-reseaux-locaux | ALLIED TELESYN RESEARCH LTD
+inf5243-reseaux-locaux | English
+inf5243-reseaux-locaux | Réseaux informatiques
+inf5243-reseaux-locaux | Table des matières
+inf5243-reseaux-locaux | Tutoriel ALCASAR – ALCASAR Tutorial
+inf5243-reseaux-locaux | ADM
+inf5243-reseaux-locaux | AIM
+inf5243-reseaux-locaux | AIX
+inf5243-reseaux-locaux | AJAX
+inf5243-reseaux-locaux | AKA
+inf5243-reseaux-locaux | ALG
+inf5243-reseaux-locaux | AM
+inf5243-reseaux-locaux | ANRT
+inf5243-reseaux-locaux | AS2556
+inf5243-reseaux-locaux | BIMI
+inf5243-reseaux-locaux | BTS
+inf5243-reseaux-locaux | BY
+inf5243-reseaux-locaux | CAST
+inf5243-reseaux-locaux | CG
+inf5243-reseaux-locaux | CH
+inf5243-reseaux-locaux | CMS
+inf5243-reseaux-locaux | CP
+inf5243-reseaux-locaux | CSNA
+inf5243-reseaux-locaux | CSNE
+inf5243-reseaux-locaux | CSNI
+inf5243-reseaux-locaux | CVE
+inf5243-reseaux-locaux | DA
+inf5243-reseaux-locaux | DDOS
+inf5243-reseaux-locaux | DEB
+inf5243-reseaux-locaux | DEM
+inf5243-reseaux-locaux | DNS1
+inf5243-reseaux-locaux | DNS2
+inf5243-reseaux-locaux | DSL
+inf5243-reseaux-locaux | DTD
+inf5243-reseaux-locaux | DTM
+inf5243-reseaux-locaux | DVD
+inf5243-reseaux-locaux | EFI
+inf5243-reseaux-locaux | EHLO
+inf5243-reseaux-locaux | EKE
+inf5243-reseaux-locaux | ESTACA
+inf5243-reseaux-locaux | FC
+inf5243-reseaux-locaux | FD
+inf5243-reseaux-locaux | FROM
+inf5243-reseaux-locaux | FS
+inf5243-reseaux-locaux | FSF
+inf5243-reseaux-locaux | FTPS
+inf5243-reseaux-locaux | GDH
+inf5243-reseaux-locaux | GET
+inf5243-reseaux-locaux | GG
+inf5243-reseaux-locaux | GMT
+inf5243-reseaux-locaux | GNU
+inf5243-reseaux-locaux | GPLV3
+inf5243-reseaux-locaux | GPON
+inf5243-reseaux-locaux | GPRS
+inf5243-reseaux-locaux | GRUB2
+inf5243-reseaux-locaux | HD
+inf5243-reseaux-locaux | HEX
+inf5243-reseaux-locaux | HUBS
+inf5243-reseaux-locaux | I2P
+inf5243-reseaux-locaux | IA
+inf5243-reseaux-locaux | ICQ
+inf5243-reseaux-locaux | IMAP
+inf5243-reseaux-locaux | IMF
+inf5243-reseaux-locaux | IND
+inf5243-reseaux-locaux | IPC
+inf5243-reseaux-locaux | IPX
+inf5243-reseaux-locaux | ISP
+inf5243-reseaux-locaux | IV
+inf5243-reseaux-locaux | J1
+inf5243-reseaux-locaux | J2
+inf5243-reseaux-locaux | J3
+inf5243-reseaux-locaux | J4
+inf5243-reseaux-locaux | JPEG
+inf5243-reseaux-locaux | KVM
+inf5243-reseaux-locaux | LAN3
+inf5243-reseaux-locaux | LENGTH
+inf5243-reseaux-locaux | LIFE
+inf5243-reseaux-locaux | LIMITS
+inf5243-reseaux-locaux | LISTEN
+inf5243-reseaux-locaux | LTD
+inf5243-reseaux-locaux | M1
+inf5243-reseaux-locaux | M2
+inf5243-reseaux-locaux | M3
+inf5243-reseaux-locaux | MASK
+inf5243-reseaux-locaux | MFA
+inf5243-reseaux-locaux | MIME
+inf5243-reseaux-locaux | MSCHAP
+inf5243-reseaux-locaux | NAV
+inf5243-reseaux-locaux | NB
+inf5243-reseaux-locaux | NOI
+inf5243-reseaux-locaux | NOOB
+inf5243-reseaux-locaux | NRA
+inf5243-reseaux-locaux | NRO
+inf5243-reseaux-locaux | NSD
+inf5243-reseaux-locaux | NSS
+inf5243-reseaux-locaux | ORIGIN
+inf5243-reseaux-locaux | OTP
+inf5243-reseaux-locaux | OUR
+inf5243-reseaux-locaux | P3P
+inf5243-reseaux-locaux | PASS
+inf5243-reseaux-locaux | PASV
+inf5243-reseaux-locaux | PCA
+inf5243-reseaux-locaux | PER
+inf5243-reseaux-locaux | POC
+inf5243-reseaux-locaux | POTP
+inf5243-reseaux-locaux | PPP
+inf5243-reseaux-locaux | PSH
+inf5243-reseaux-locaux | PSK
+inf5243-reseaux-locaux | QEMU
+inf5243-reseaux-locaux | R1
+inf5243-reseaux-locaux | R2
+inf5243-reseaux-locaux | R3
+inf5243-reseaux-locaux | R4
+inf5243-reseaux-locaux | RCE
+inf5243-reseaux-locaux | RCPT
+inf5243-reseaux-locaux | RDAP
+inf5243-reseaux-locaux | REV
+inf5243-reseaux-locaux | RLE
+inf5243-reseaux-locaux | RNIS
+inf5243-reseaux-locaux | RPM
+inf5243-reseaux-locaux | RRL
+inf5243-reseaux-locaux | SEQ
+inf5243-reseaux-locaux | SFTP
+inf5243-reseaux-locaux | SGBD
+inf5243-reseaux-locaux | SIM
+inf5243-reseaux-locaux | SIRET
+inf5243-reseaux-locaux | SOCKS4
+inf5243-reseaux-locaux | STLS
+inf5243-reseaux-locaux | SUBNET
+inf5243-reseaux-locaux | SW
+inf5243-reseaux-locaux | TEAP
+inf5243-reseaux-locaux | TOS
+inf5243-reseaux-locaux | UA
+inf5243-reseaux-locaux | UE
+inf5243-reseaux-locaux | US
+inf5243-reseaux-locaux | V4
+inf5243-reseaux-locaux | VDI
+inf5243-reseaux-locaux | VPS
+inf5243-reseaux-locaux | WLAN
+inf5243-reseaux-locaux | WSL
+inf5243-reseaux-locaux | XP
+inf5243-reseaux-locaux | XX
+inf5243-reseaux-locaux | ZIP
+inf5243-reseaux-locaux | ACLs
+inf5243-reseaux-locaux | Accélération par mise en cache
+inf5243-reseaux-locaux | DMZ (zones démilitarisées)
+inf5243-reseaux-locaux | Déportation des logs
+inf5243-reseaux-locaux | Impact majeur
+inf5243-reseaux-locaux | Loopback
+inf5243-reseaux-locaux | Maître / Esclave
+inf5243-reseaux-locaux | Quotas volumétriques et temporels
+inf5243-reseaux-locaux | RIR (5 mondiaux)
+inf5243-reseaux-locaux | Réalisée impérativement avec des tunnels
+inf5243-reseaux-locaux | Sanctions pénales
+inf5243-reseaux-locaux | h:262ae0303a64
