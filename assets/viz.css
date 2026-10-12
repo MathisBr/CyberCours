@@ -330,3 +330,51 @@ html.viz-anim .viz:not(.seen) .vz-c { opacity: 0; transform: translateY(10px); }
 .viz.seen .vz-c:nth-child(4) { transition-delay: .28s; }
 .viz.seen .vz-c:nth-child(5) { transition-delay: .36s; }
 .viz.seen .vz-c:nth-child(6) { transition-delay: .44s; }
+
+/* ============================================================
+   Composants génériques (documentés dans CLAUDE.md, « Composants »)
+   ============================================================ */
+
+/* Barre de répartition : <div class="split"><span class="a" style="flex-basis:35%">…</span>
+   <span class="b" style="flex-basis:65%">…</span></div> + légende .split-cap */
+.split { display: flex; height: 34px; border-radius: 999px; overflow: hidden; border: 1px solid var(--border); margin: 10px 0 4px; font-size: .8rem; font-weight: 700; }
+.split > span { display: flex; align-items: center; justify-content: center; color: #fff; white-space: nowrap; overflow: hidden; padding: 0 8px; }
+.split .a { background: var(--d-red); }
+.split .b { background: var(--d-blue); }
+.split .c { background: var(--d-green); }
+.split .d { background: var(--d-amber); }
+.split-cap { display: flex; justify-content: space-between; gap: 12px; font-size: .78rem; color: var(--fg-mute); }
+
+/* Sélecteur à jauges : boutons (data-m = valeurs des jauges, en %) → jauges + texte de l'option.
+   Un .pick-out par bouton, dans le même ordre. Piloté par setupPicks() dans app.js. */
+.pick-btns { display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0 14px; }
+.pick-btns button { flex: 1 1 140px; font: inherit; font-weight: 700; padding: 10px 12px; border-radius: 10px; cursor: pointer; border: 2px solid var(--border); background: var(--bg-soft); color: var(--fg); }
+.pick-btns button.gris { background: var(--bg-alt); }
+.pick-btns button.sombre { background: var(--code-bg); color: var(--code-fg); }
+.pick-btns button[aria-pressed="true"] { outline: 3px solid var(--accent); outline-offset: 2px; }
+.meter { display: grid; grid-template-columns: 210px 1fr; gap: 6px 12px; align-items: center; font-size: .85rem; }
+.meter .bar { height: 12px; background: var(--bg-alt); border-radius: 999px; overflow: hidden; border: 1px solid var(--border-soft); }
+.meter .bar i { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 999px; transition: width .6s cubic-bezier(.22,.9,.3,1); }
+.meter .bar i.alt { background: var(--d-amber); }
+.pick-out { margin-top: 12px; font-size: .9rem; padding: 10px 14px; border-radius: 9px; background: var(--bg-alt); border-left: 3px solid var(--accent); }
+@media (max-width: 560px) { .meter { grid-template-columns: 1fr; } }
+
+/* Bandeau de phases : <div class="phase-band"><div class="p1"><b>Avant</b>…</div>…</div> */
+.phase-band { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin: 6px 0 14px; }
+.phase-band > div { border-radius: 10px; padding: 10px 12px; font-size: .84rem; border: 1px solid var(--border); background: var(--bg-soft); }
+.phase-band b { display: block; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
+.phase-band .p1 b { color: var(--d-blue); }
+.phase-band .p2 b { color: var(--d-amber); }
+.phase-band .p3 b { color: var(--d-green); }
+.phase-band .p4 b { color: var(--d-purple); }
+/* Pastille dans une étape : <span class="who">avant</span> */
+.step .who { display: inline-block; font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; padding: 1px 7px; border-radius: 999px; margin-left: 6px; background: var(--bg-soft); border: 1px solid var(--border); color: var(--fg-soft); }
+
+/* Mise en situation à déplier : <details class="case"><summary>Titre<span class="sit">énoncé</span></summary><div>réponse</div></details> */
+details.case { border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-soft); margin: 12px 0; }
+details.case > summary { cursor: pointer; padding: 12px 16px; font-weight: 600; list-style: none; }
+details.case > summary::-webkit-details-marker { display: none; }
+details.case > summary::before { content: "▸ "; color: var(--accent); }
+details.case[open] > summary::before { content: "▾ "; }
+details.case > div { padding: 0 16px 14px; border-top: 1px dashed var(--border); }
+details.case .sit { font-weight: 400; color: var(--fg-soft); display: block; margin-top: 4px; }

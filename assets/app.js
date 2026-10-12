@@ -175,6 +175,7 @@
     revealAllSteps(SECTIONS[i].el);
     watchViz(SECTIONS[i].el);
     setupCards(SECTIONS[i].el);
+    setupPicks(SECTIONS[i].el);
 
     if (anchorId) {
       var t = document.getElementById(anchorId);
@@ -353,6 +354,31 @@
      Délégation : un clic sur .vz-c bascule son détail. Le repli initial est
      posé ici et non dans le HTML, pour que le contenu reste intégralement
      lisible si ce script ne tourne pas. */
+  /* Sélecteur à jauges (.pick) : chaque bouton porte data-m="v1,v2,…" (largeurs des
+     jauges en %) et correspond, dans l'ordre, à un .pick-out. Sans JS, tous les
+     textes restent visibles ; avec, seul celui de l'option choisie s'affiche. */
+  function choosePick(box, k) {
+    var btns = box.querySelectorAll('.pick-btns button');
+    var outs = box.querySelectorAll('.pick-out');
+    var bars = box.querySelectorAll('.meter .bar i');
+    var vals = (btns[k].getAttribute('data-m') || '').split(',');
+    btns.forEach(function (b, i) { b.setAttribute('aria-pressed', i === k ? 'true' : 'false'); });
+    outs.forEach(function (o, i) { o.classList.toggle('hidden', i !== k); });
+    bars.forEach(function (b, i) { b.style.width = (parseFloat(vals[i]) || 0) + '%'; });
+  }
+  function setupPicks(scope) {
+    (scope || document).querySelectorAll('.pick:not([data-ready])').forEach(function (box) {
+      box.setAttribute('data-ready', '1');
+      choosePick(box, 0);
+    });
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('.pick-btns button');
+    if (!b) return;
+    var box = b.closest('.pick');
+    choosePick(box, Array.prototype.indexOf.call(box.querySelectorAll('.pick-btns button'), b));
+  });
+
   function setupCards(scope) {
     var cards = (scope || document).querySelectorAll('.vz-c:not([data-open])');
     for (var i = 0; i < cards.length; i++) {
@@ -759,6 +785,7 @@
       openFromHash();
       paintProgress();
     }
+    setupPicks();
     setupSearch();
     setupTop();
     window.addEventListener('hashchange', openFromHash);

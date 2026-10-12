@@ -48,7 +48,7 @@ def parse(path):
 
 pages = sorted(
     os.path.join(d, f).replace("\\", "/").lstrip("./")
-    for d, _, fs in os.walk(".") if ".git" not in d
+    for d, _, fs in os.walk(".") if ".git" not in d and not d.replace("\\", "/").startswith("./tools")
     for f in fs if f.endswith(".html")
 )
 parsed = {p: parse(p) for p in pages}

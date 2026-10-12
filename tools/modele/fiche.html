@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{CODE}} — {{TITRE}}</title>
+<link rel="stylesheet" href="../assets/core.css?v=27">
+<link rel="stylesheet" href="../assets/viz.css?v=11">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><span class="dot"></span> {{CODE}} <small>· {{TITRE_COURT}}</small></div>
+  <div class="spacer"></div>
+  <input id="search" type="search" placeholder="Rechercher…  (Ctrl+K)">
+  <a class="home" href="../index.html">← Accueil</a>
+  <button class="btn ghost" onclick="toggleTheme()" title="Thème clair / sombre">◐</button>
+  <button class="btn ghost" onclick="window.print()" title="Imprimer / PDF">⎙</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar"><h4>Parcours</h4><div id="toc"></div></nav>
+  <main class="content">
+<h1>{{TITRE}}</h1>
+<p class="lead">
+<!-- Deux ou trois phrases : de quoi parle le cours, et son fil rouge. -->
+</p>
+
+<!-- Chaque <h2 id> devient un onglet ; chaque <h3 id> une entrée du menu. -->
+<!-- Composants disponibles : CLAUDE.md, section « Composants ». -->
+
+<!-- ===================================================================== -->
+<h2 id="essentiel">★ L'essentiel — à relire la veille</h2>
+
+<div class="exam"><div class="t">Le format de l'examen</div>
+<!-- Ce que l'enseignant a annoncé, avec ses mots. -->
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch1"><span class="num">1.</span> Premier chapitre</h2>
+
+<!-- ===================================================================== -->
+<h2 id="qcm-sec"><span class="num">N.</span> QCM — <span id="count-badge" class="badge acc"></span></h2>
+<p><b>Une seule bonne réponse par question</b>, ordre tiré au hasard, correction expliquée.</p>
+<div id="qcm"></div>
+
+  </main>
+</div>
+
+<button id="top" title="Haut de page">↑</button>
+<script src="qcm.js?v=1"></script>
+<script src="../assets/app.js?v=34"></script>
+<script>initQCM(window.QCM_DATA, window.QCM_CHAPTERS, '{{CLE}}');</script>
+</body>
+</html>

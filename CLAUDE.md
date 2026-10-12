@@ -10,7 +10,8 @@ catalogue.js          SOURCE UNIQUE de l'accueil : un objet par cours (voir son 
 404.html              redirige les anciennes adresses (avant le rangement par cours)
 assets/               moteur commun : core.css, viz.css, app.js (onglets, recherche, QCM),
                       accueil.css / accueil.js, atelier.js, scenes.js
-tools/                qcmcheck.py, sitecheck.py, jsdata.py (lecture des .js sans node)
+tools/                sources.py (extraction des supports), nouveau_cours.py + modele/ (squelette),
+                      qcmcheck.py, sitecheck.py, jsdata.py (lecture des .js sans node)
 <code>-<sujet>/       un dossier par cours, par exemple inf5049-controle-audit/
   fiche.html          la fiche ; d'autres pages possibles (points-examen, atelier, ebios-rm…)
   qcm.js              window.QCM_CHAPTERS + window.QCM_DATA
@@ -21,14 +22,47 @@ Dans un dossier de cours, les chemins sont relatifs : `../assets/…`, `../index
 La progression de lecture est rangée sous `majcyb.seen.<dossier>/<page>` (dérivé du chemin),
 les statistiques de QCM sous `majcyb.<clé passée à initQCM>`, la dernière page sous `majcyb.last`.
 
-### Ajouter un cours
-
-1. Créer `<code>-<sujet>/` avec `fiche.html` et `qcm.js` (copier l'en-tête d'une fiche existante).
-2. Ajouter son entrée dans `catalogue.js` (état `en cours` = carte en pleine largeur en tête).
-3. `python -I tools/sitecheck.py` : doit afficher « ARCHITECTURE : aucun problème ».
-
 Le nombre de questions affiché à l'accueil est compté en chargeant le QCM : rien à synchroniser.
 Une page de cours sans `#toc` n'a pas d'onglets ; un lien `page.html#qcm` ouvre l'onglet du QCM.
+
+## Nouvelle matière : la marche à suivre (économe en tokens)
+
+1. **Sources** : `python -I tools/sources.py "../<Matière>" "<scratchpad>/src"` → lire `INDEX.md`,
+   les `.txt`, les `planches-N.png` (seules les pages contenant une image y figurent : leur texte
+   n'est PAS dans les `.txt`), puis les transcriptions (par morceaux au-delà de ~90 Ko).
+2. **Squelette** : `python -I tools/nouveau_cours.py CODE sujet "Titre" --couleur X --clore`
+   → dossier, `fiche.html`, `qcm.js`, entrée de catalogue (résumé et programme à compléter).
+3. **Écrire** la fiche avec les composants ci-dessous, puis le QCM.
+4. **Contrôler** : `qcmcheck.py` sur le QCM, `sitecheck.py`, rendu dans le navigateur.
+
+**Ne jamais relire une fiche entière** (250 à 350 Ko, soit des dizaines de milliers de tokens) :
+`grep -n` pour situer, puis `Read` avec `offset`/`limit`, et `Edit` ciblé. Les composants sont
+documentés ci-dessous : inutile d'ouvrir une autre fiche pour les retrouver.
+
+## Composants (assets/core.css, viz.css, app.js)
+
+Tout est déjà stylé, thème sombre compris. Une fiche n'a **ni `<style>` ni `<script>` propres**.
+
+| Besoin | Code |
+|---|---|
+| Onglet / sous-menu | `<h2 id="chN"><span class="num">N.</span> Titre</h2>` · `<h3 id="chN-x">N.x Titre</h3>` |
+| Encadré | `<div class="callout def\|warn\|danger\|ok"><div class="t">Titre</div>…</div>` (sans classe = bleu) |
+| Point d'examen | `<div class="exam"><div class="t">Titre</div>…</div>` |
+| Exemple / RETEX | `<div class="example"><div class="t">Titre</div>…</div>` |
+| Liste à puces forte | `<div class="key-points"><li>…</li></div>` |
+| Cartes côte à côte | `<div class="grid c2\|c3"><div class="card"><h4>Titre</h4>…</div></div>` |
+| Tableau | `<div class="tw"><table><thead>…</thead><tbody>…</tbody></table></div>` |
+| Étapes animées | `<div class="steps" id="anim-x"><div class="step"><b>1. Titre</b> <span class="who">avant</span><br>…</div></div>` + bouton `<button class="btn primary" onclick="playSteps('anim-x')">▶ Lancer l'animation</button>` |
+| Cartes cliquables | `<div class="viz"><div class="t">Titre</div><div class="vz-grid g3"><button class="vz-c k-red\|amber\|blue\|green\|purple"><span class="n">Surtitre</span><h5>Titre</h5><span class="q">Résumé</span><span class="more"><span class="t">Détail</span>…</span></button></div><div class="vz-bar"><button class="btn" data-cards="open">Tout déplier</button><button class="btn ghost" data-cards="close">Tout replier</button><span class="cnt"></span></div></div>` |
+| Schéma SVG | `<div class="viz"><div class="t">…</div><svg viewBox="0 0 900 H">` ; groupes `<g class="vz-step">` révélés un à un ; formes `vz-ok\|vz-bad\|vz-filt\|vz-dec\|vz-box` ; texte `vz-lbl\|vz-sub` (+ `vz-t-ok\|bad\|filt`) |
+| Répartition | `<div class="split"><span class="a" style="flex-basis:35%">…</span><span class="b" style="flex-basis:65%">…</span></div><div class="split-cap"><span>…</span><span>…</span></div>` |
+| Sélecteur à jauges | `<div class="pick"><div class="pick-btns"><button data-m="100,25">A</button><button class="gris\|sombre" data-m="8,100">B</button></div><div class="meter"><span>Jauge 1</span><div class="bar"><i></i></div>…</div><div class="pick-out">texte A</div><div class="pick-out">texte B</div></div>` |
+| Phases | `<div class="phase-band"><div class="p1"><b>Avant</b>…</div><div class="p2">…</div><div class="p3">…</div></div>` |
+| Mise en situation | `<details class="case"><summary>Cas 1 — Titre<span class="sit">Énoncé</span></summary><div>Réponse</div></details>` |
+| QCM | `<h2 id="qcm-sec">… <span id="count-badge" class="badge acc"></span></h2><div id="qcm"></div>` + `initQCM(window.QCM_DATA, window.QCM_CHAPTERS, 'cle')` |
+
+Un nouveau composant réutilisable va dans `viz.css` (et `app.js` s'il est interactif, piloté par
+des attributs `data-*`), puis dans ce tableau.
 
 ## Règle n° 1 — un QCM sert à connaître le cours, pas le cours
 

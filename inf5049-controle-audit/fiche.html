@@ -5,45 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>INF5049 — Contrôle et audit en cybersécurité</title>
 <link rel="stylesheet" href="../assets/core.css?v=27">
-<link rel="stylesheet" href="../assets/viz.css?v=10">
-<style>
-/* ---- Composants propres à cette fiche ---- */
-.split { display: flex; height: 34px; border-radius: 999px; overflow: hidden; border: 1px solid var(--border); margin: 10px 0 4px; font-size: .8rem; font-weight: 700; }
-.split > span { display: flex; align-items: center; justify-content: center; color: #fff; transition: flex-basis .8s cubic-bezier(.22,.9,.3,1); white-space: nowrap; overflow: hidden; }
-.split .tech { background: var(--d-red); }
-.split .hum  { background: var(--d-blue); }
-.split-cap { display: flex; justify-content: space-between; font-size: .78rem; color: var(--fg-mute); }
-
-.box-pick { display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0 14px; }
-.box-pick button { flex: 1 1 140px; font: inherit; font-weight: 700; padding: 10px 12px; border-radius: 10px; cursor: pointer; border: 2px solid var(--border); background: var(--bg-soft); color: var(--fg); }
-.box-pick button[data-k="blanche"] { border-color: var(--border); }
-.box-pick button[data-k="grise"]   { background: linear-gradient(var(--bg-alt), var(--bg-alt)); }
-.box-pick button[data-k="noire"]   { background: var(--code-bg); color: var(--code-fg); }
-.box-pick button[aria-pressed="true"] { outline: 3px solid var(--accent); outline-offset: 2px; }
-.meter { display: grid; grid-template-columns: 210px 1fr; gap: 6px 12px; align-items: center; font-size: .85rem; }
-.meter .bar { height: 12px; background: var(--bg-alt); border-radius: 999px; overflow: hidden; border: 1px solid var(--border-soft); }
-.meter .bar i { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 999px; transition: width .6s cubic-bezier(.22,.9,.3,1); }
-.meter .bar i.alt { background: var(--d-amber); }
-.box-out { margin-top: 12px; font-size: .9rem; padding: 10px 14px; border-radius: 9px; background: var(--bg-alt); border-left: 3px solid var(--accent); }
-@media (max-width: 560px) { .meter { grid-template-columns: 1fr; } }
-
-.phase-band { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 6px 0 14px; }
-.phase-band > div { border-radius: 10px; padding: 10px 12px; font-size: .84rem; border: 1px solid var(--border); background: var(--bg-soft); }
-.phase-band b { display: block; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
-.phase-band .av b { color: var(--d-blue); }
-.phase-band .pe b { color: var(--d-amber); }
-.phase-band .ap b { color: var(--d-green); }
-@media (max-width: 640px) { .phase-band { grid-template-columns: 1fr; } }
-.step .who { display: inline-block; font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; padding: 1px 7px; border-radius: 999px; margin-left: 6px; background: var(--bg-soft); border: 1px solid var(--border); color: var(--fg-soft); }
-
-details.case { border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-soft); margin: 12px 0; }
-details.case > summary { cursor: pointer; padding: 12px 16px; font-weight: 600; list-style: none; }
-details.case > summary::-webkit-details-marker { display: none; }
-details.case > summary::before { content: "▸ "; color: var(--accent); }
-details.case[open] > summary::before { content: "▾ "; }
-details.case > div { padding: 0 16px 14px; border-top: 1px dashed var(--border); }
-details.case .sit { font-weight: 400; color: var(--fg-soft); display: block; margin-top: 4px; }
-</style>
+<link rel="stylesheet" href="../assets/viz.css?v=11">
 </head>
 <body>
 
@@ -390,7 +352,7 @@ externaliser à grands frais. Pour elle, un <b>PRA bien fait</b> est la bonne r�
 
 <div class="viz">
   <div class="t">Combien de temps passe-t-on vraiment sur la technique ?</div>
-  <div class="split" id="split"><span class="tech" style="flex-basis:35%">technique 30 à 40 %</span><span class="hum" style="flex-basis:65%">cadrage, interviews, justification, rapport, restitution</span></div>
+  <div class="split"><span class="a" style="flex-basis:35%">technique 30 à 40 %</span><span class="b" style="flex-basis:65%">cadrage, interviews, justification, rapport, restitution</span></div>
   <div class="split-cap"><span>50 % au mieux, dans les cas les plus favorables</span><span>« tout le reste, c'est de l'administratif »</span></div>
 </div>
 
@@ -676,17 +638,21 @@ patients dont l'aptitude dépend de leur état de santé (pilotes, plongeurs, mi
 <h3 id="ch9-boites">9.3 Trois situations de départ</h3>
 <div class="viz">
   <div class="t">Choisissez une situation</div>
-  <div class="box-pick" id="boxPick">
-    <button data-k="blanche" aria-pressed="true">Boîte blanche</button>
-    <button data-k="grise" aria-pressed="false">Boîte grise</button>
-    <button data-k="noire" aria-pressed="false">Boîte noire</button>
+  <div class="pick">
+    <div class="pick-btns">
+      <button data-m="100,100,25">Boîte blanche</button>
+      <button class="gris" data-m="50,35,60">Boîte grise</button>
+      <button class="sombre" data-m="8,8,100">Boîte noire</button>
+    </div>
+    <div class="meter">
+      <span>Informations données à l'auditeur</span><div class="bar"><i></i></div>
+      <span>Personnes informées chez le client</span><div class="bar"><i class="alt"></i></div>
+      <span>Réalisme de la situation</span><div class="bar"><i></i></div>
+    </div>
+    <div class="pick-out"><b>Boîte blanche.</b> L'auditeur dispose de toutes les informations nécessaires et les personnes concernées sont informées. L'audité espère un résultat <b>complet et fiable</b>.</div>
+    <div class="pick-out"><b>Boîte grise.</b> L'auditeur dispose de quelques informations utiles, et seules quelques personnes sont informées. L'audité espère des réponses <b>qualitatives à une question plus ciblée</b>.</div>
+    <div class="pick-out"><b>Boîte noire.</b> L'auditeur ne connaît que l'identité de la cible, et très peu de personnes sont informées. L'audité veut <b>mesurer son niveau dans un contexte plus réaliste</b>.</div>
   </div>
-  <div class="meter">
-    <span>Informations données à l'auditeur</span><div class="bar"><i id="m-info"></i></div>
-    <span>Personnes informées chez le client</span><div class="bar"><i id="m-pers" class="alt"></i></div>
-    <span>Réalisme de la situation</span><div class="bar"><i id="m-real"></i></div>
-  </div>
-  <div class="box-out" id="boxOut"></div>
 </div>
 
 <div class="tw"><table>
@@ -809,9 +775,9 @@ et à le confronter aux autres sur une même machine volontairement vulnérable.
 <p>Le déroulé type d'une mission menée par un labo d'école (CNS) avec un senior et des juniors.</p>
 
 <div class="phase-band">
-  <div class="av"><b>Avant l'audit</b>Vendre, contractualiser, se préparer</div>
-  <div class="pe"><b>Pendant l'audit</b>Visiter, investiguer, rédiger</div>
-  <div class="ap"><b>Après l'audit</b>Clôturer, nettoyer</div>
+  <div class="p1"><b>Avant l'audit</b>Vendre, contractualiser, se préparer</div>
+  <div class="p2"><b>Pendant l'audit</b>Visiter, investiguer, rédiger</div>
+  <div class="p3"><b>Après l'audit</b>Clôturer, nettoyer</div>
 </div>
 
 <div class="viz">
@@ -988,35 +954,7 @@ chapitres suivent ceux de la fiche.</p>
 
 <button id="top" title="Haut de page">↑</button>
 <script src="qcm.js?v=1"></script>
-<script src="../assets/app.js?v=33"></script>
+<script src="../assets/app.js?v=34"></script>
 <script>initQCM(window.QCM_DATA, window.QCM_CHAPTERS, 'inf5049');</script>
-<script>
-(function () {
-  var D = {
-    blanche: { info: 100, pers: 100, real: 25,
-      txt: "<b>Boîte blanche.</b> L'auditeur dispose de toutes les informations nécessaires et les personnes concernées sont informées. L'audité espère un résultat <b>complet et fiable</b>." },
-    grise: { info: 50, pers: 35, real: 60,
-      txt: "<b>Boîte grise.</b> L'auditeur dispose de quelques informations utiles, et seules quelques personnes sont informées. L'audité espère des réponses <b>qualitatives à une question plus ciblée</b>." },
-    noire: { info: 8, pers: 8, real: 100,
-      txt: "<b>Boîte noire.</b> L'auditeur ne connaît que l'identité de la cible, et très peu de personnes sont informées. L'audité veut <b>mesurer son niveau dans un contexte plus réaliste</b>." }
-  };
-  var pick = document.getElementById('boxPick');
-  if (!pick) return;
-  function show(k) {
-    var d = D[k];
-    document.getElementById('m-info').style.width = d.info + '%';
-    document.getElementById('m-pers').style.width = d.pers + '%';
-    document.getElementById('m-real').style.width = d.real + '%';
-    document.getElementById('boxOut').innerHTML = d.txt;
-    pick.querySelectorAll('button').forEach(function (b) {
-      b.setAttribute('aria-pressed', b.getAttribute('data-k') === k ? 'true' : 'false');
-    });
-  }
-  pick.addEventListener('click', function (e) {
-    var b = e.target.closest('button'); if (b) show(b.getAttribute('data-k'));
-  });
-  show('blanche');
-})();
-</script>
 </body>
 </html>
