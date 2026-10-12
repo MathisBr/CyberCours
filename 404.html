@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page déplacée</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font-family: system-ui, sans-serif; max-width: 560px; margin: 15vh auto; padding: 0 16px; line-height: 1.5; background: Canvas; color: CanvasText; }
+</style>
+<script>
+/* GitHub Pages sert ce fichier pour toute adresse inconnue. Les pages ont été
+   rangées dans un dossier par cours : on redirige les anciennes adresses. */
+(function () {
+  var MOVED = {
+    'inf5243-fiche-complete.html': 'inf5243-reseaux-locaux/fiche.html',
+    'inf5244-fiche-complete.html': 'inf5244-interconnexions/fiche.html',
+    'points-examen-inf5244.html': 'inf5244-interconnexions/points-examen.html',
+    'atelier-inf5244.html': 'inf5244-interconnexions/atelier.html',
+    'ent5003-fiche-complete.html': 'ent5003-methodologie/fiche.html',
+    'ebios-rm-attestation.html': 'ent5003-methodologie/ebios-rm.html',
+    'inf5049-fiche-complete.html': 'inf5049-controle-audit/fiche.html'
+  };
+  var parts = location.pathname.split('/');
+  var name = parts.pop();
+  /* Seules les anciennes adresses connues sont redirigées : rediriger une adresse
+     inconnue vers son dossier pourrait renvoyer ici et boucler. */
+  if (MOVED[name]) location.replace(parts.join('/') + '/' + MOVED[name] + location.hash);
+})();
+</script>
+</head>
+<body>
+<p>Page introuvable : elle a peut-être été déplacée lors du rangement par cours.</p>
+<p><a id="home" href="/">Retour à l'accueil des révisions</a></p>
+<script>
+  /* Sur GitHub Pages, le site vit sous /<dépôt>/ : l'accueil est le premier segment. */
+  var seg = location.pathname.split('/')[1];
+  if (seg && location.hostname.slice(-10) === 'github.io') document.getElementById('home').href = '/' + seg + '/';
+</script>
+</body>
+</html>

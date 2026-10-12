@@ -3,7 +3,7 @@
      1. Restitution   : rappel libre, auto-évalué
      2. Règles        : énoncé généré → règle iptables, corrigée par jetons
      3. Trouve l'erreur : configuration fautive → diagnostic
-   Autonome : ne dépend que des données de data/atelier-inf5244.js.
+   Autonome : ne dépend que des données de inf5244-interconnexions/atelier-data.js.
    ============================================================ */
 (function () {
   'use strict';

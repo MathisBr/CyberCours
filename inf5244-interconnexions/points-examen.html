@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>INF5244 — Ce que le prof a signalé pour l'examen</title>
-<link rel="stylesheet" href="assets/core.css?v=27">
+<link rel="stylesheet" href="../assets/core.css?v=27">
 <style>
 .px-wrap { max-width: 960px; margin: 0 auto; padding: 0 18px 60px; }
 
@@ -51,9 +51,9 @@
 <header class="topbar">
   <div class="brand"><span class="dot"></span> INF5244 <small>· signaux d'examen</small></div>
   <div class="spacer"></div>
-  <a class="home" href="inf5244-fiche-complete.html">← La fiche</a>
-  <a class="home" href="atelier-inf5244.html">Atelier</a>
-  <a class="home" href="index.html">Accueil</a>
+  <a class="home" href="fiche.html">← La fiche</a>
+  <a class="home" href="atelier.html">Atelier</a>
+  <a class="home" href="../index.html">Accueil</a>
   <button class="btn ghost" onclick="toggleTheme()" title="Thème clair / sombre">◐</button>
 </header>
 
@@ -105,7 +105,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   quelle destination, quel protocole, quels ports, quelle action</b>. La syntaxe n'est qu'un
   véhicule&nbsp;— c'est pour ça qu'il a choisi le mode texte&nbsp;: «&nbsp;comme vous n'avez pas des
   cases à cocher, <b>vous êtes obligés de prendre une décision pour écrire la ligne</b>&nbsp;».
-  <a class="lien" href="inf5244-fiche-complete.html#ch8">→ §8, l'entonnoir de sélection</a></div>
+  <a class="lien" href="fiche.html#ch8">→ §8, l'entonnoir de sélection</a></div>
 </div>
 
 <div class="px-item fort">
@@ -129,7 +129,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   <p><b>Le corollaire qu'il ajoute</b>&nbsp;: sans passerelle, un <code>ping</code> peut arriver à
   l'aller si une route existe, mais <b>l'<i>echo-reply</i> ne reviendra jamais</b> — la machine cible
   ne sait pas où renvoyer.</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch4-gateway">→ §4.2, la décision d'acheminement</a></div>
+  <a class="lien" href="fiche.html#ch4-gateway">→ §4.2, la décision d'acheminement</a></div>
 </div>
 
 <div class="px-item">
@@ -150,7 +150,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   serveur en root&nbsp;» et croit à une attaque externe. Son exemple vécu&nbsp;: un plan d'adressage
   calqué sur les numéros de régiment, et des outils de géolocalisation qui affichaient
   «&nbsp;l'Iran qui discutait avec la Corée&nbsp;» sur un réseau interne coupé d'Internet.</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch4-rfc1918">→ §4.4, RFC 1918</a></div>
+  <a class="lien" href="fiche.html#ch4-rfc1918">→ §4.4, RFC 1918</a></div>
 </div>
 
 <div class="px-item">
@@ -164,7 +164,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   et les <b>réponses trop longues</b>, notamment avec DNSSEC.
   <p><b>Le symptôme à reconnaître</b> si on n'a ouvert que l'UDP&nbsp;: «&nbsp;le DNS marche, sauf
   pour certaines requêtes&nbsp;» — les grosses réponses tombent, le reste passe.</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch6-dns">→ §6.2, DNS</a></div>
+  <a class="lien" href="fiche.html#ch6-dns">→ §6.2, DNS</a></div>
 </div>
 
 <div class="px-item">
@@ -183,7 +183,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   d'abord</b> et on bascule en <code>DROP</code> <b>en dernier</b>, sous peine de se couper
   soi-même&nbsp;; et chaque ouverture devient une <b>exception explicite</b>, donc justifiable et
   auditable.</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch11-politique">→ §11.1, la politique par défaut</a></div>
+  <a class="lien" href="fiche.html#ch11-politique">→ §11.1, la politique par défaut</a></div>
 </div>
 
 <div class="px-item">
@@ -202,7 +202,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   laquelle la machine <b>route sans filtrer</b>.</p>
   <p>C'est le principe de <b>panne sans danger</b> (<i>fail-safe</i>)&nbsp;: après une défaillance,
   le système se replie sur un <b>état fermé</b>, jamais ouvert.</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch3">→ §3, les principes fondamentaux</a></div>
+  <a class="lien" href="fiche.html#ch3">→ §3, les principes fondamentaux</a></div>
 </div>
 
 <div class="px-item">
@@ -221,7 +221,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   retour à la main devient <b>ingérable et source d'erreurs</b>&nbsp;» — d'où le passage au suivi de
   connexion, où <b>une seule règle</b> <code>ESTABLISHED,RELATED</code> remplace toutes les règles
   retour.</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch9-regles">→ §9.4, les premières règles</a></div>
+  <a class="lien" href="fiche.html#ch9-regles">→ §9.4, les premières règles</a></div>
 </div>
 
 <div class="px-item">
@@ -239,7 +239,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   où il part, plus personne n'administre.
   <p>À mettre en regard des <b>8 principes</b> de sécurité&nbsp;: les principes disent ce qu'il
   faudrait faire, ces cinq contraintes disent <b>pourquoi on ne le fait pas toujours</b>.</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch16">→ §16, de la politique à la règle</a></div>
+  <a class="lien" href="fiche.html#ch16">→ §16, de la politique à la règle</a></div>
 </div>
 
 <div class="px-item fort">
@@ -259,7 +259,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   client affiche sa page web, mais s'il pingue le pare-feu, <b>poubelle silencieuse, le pare-feu est
   furtif</b>&nbsp;; et s'il pingue le serveur d'en face, ça ne passe pas non plus, parce qu'on n'a
   autorisé <b>que le TCP 80</b>, pas l'ICMP.</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch7">→ §7, décision de routage et chaînes</a></div>
+  <a class="lien" href="fiche.html#ch7">→ §7, décision de routage et chaînes</a></div>
 </div>
 
 <div class="px-item">
@@ -276,7 +276,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   bonnes et où rien ne passe quand même</b>. Devant un énoncé «&nbsp;la politique est en
   <code>ACCEPT</code>, les règles existent, et rien ne traverse&nbsp;», la réponse n'est <b>pas</b>
   dans <code>iptables</code>.</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch9-forward">→ §9.2, activer le routage</a></div>
+  <a class="lien" href="fiche.html#ch9-forward">→ §9.2, activer le routage</a></div>
 </div>
 
 <!-- ============================================================== -->
@@ -298,7 +298,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   éphémère), <b>UDP</b>, <b>ICMP</b> (types et codes, pas de ports), <b>DNS</b> (UDP <i>et</i> TCP)
   et <b>DHCP</b> (67/68) — ce ne sont pas des rappels de culture générale, ce sont <b>les
   identifiants sur lesquels la règle va porter</b>.</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch5">→ §5 et §6, les protocoles</a></div>
+  <a class="lien" href="fiche.html#ch5">→ §5 et §6, les protocoles</a></div>
 </div>
 
 <div class="px-item fort">
@@ -322,7 +322,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   opération, mais <code>MASQUERADE</code> <b>interroge l'interface à chaque flux</b> — obligatoire
   en DHCP, plus coûteux&nbsp;; <code>SNAT --to-source</code> écrit une adresse <b>fixe</b>, plus
   rapide.</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch12">→ §12, la translation d'adresses</a></div>
+  <a class="lien" href="fiche.html#ch12">→ §12, la translation d'adresses</a></div>
 </div>
 
 <div class="px-item">
@@ -342,7 +342,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   («&nbsp;un client légitime ne passera pas par Tor pour venir faire des affaires chez moi&nbsp;») —
   et par le <b>géofiltrage</b>&nbsp;: sans activité à l'étranger, on restreint à la France et on gère
   les exceptions proprement.</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch8">→ §8, écrire une règle</a></div>
+  <a class="lien" href="fiche.html#ch8">→ §8, écrire une règle</a></div>
 </div>
 
 <div class="px-item fort">
@@ -364,7 +364,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   générer des gigaoctets de logs en quelques minutes, c'est une <b>attaque par épuisement de
   disque</b>. Enfin, on place une règle de log <b>sans critère tout à la fin</b> de la chaîne pour
   attraper ce qui va tomber dans le <code>DROP</code> par défaut.</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch11-log">→ §11.3, la journalisation</a></div>
+  <a class="lien" href="fiche.html#ch11-log">→ §11.3, la journalisation</a></div>
 </div>
 
 <div class="px-item">
@@ -382,7 +382,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   <p><b>Le cloisonnement à retenir</b>&nbsp;: on ne filtre pas dans <code>nat</code>, on ne translate
   pas dans <code>filter</code>. Et l'option <b><code>-t</code> est implicite</b>&nbsp;: sans elle,
   c'est <code>filter</code>.</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch7-vocab">→ §7.2, tables et chaînes</a></div>
+  <a class="lien" href="fiche.html#ch7-vocab">→ §7.2, tables et chaînes</a></div>
 </div>
 
 <div class="px-item">
@@ -397,7 +397,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   <code>-F</code> · <code>-t nat -F</code> · <code>-t mangle -F</code> · <code>-X</code>.
   <p><b>Et l'ordre compte</b>&nbsp;: <code>-X</code> ne supprime que les chaînes <b>vides et non
   référencées</b>, donc <b><code>-F</code> d'abord, <code>-X</code> ensuite</b>.</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch7-vocab">→ §7.2</a></div>
+  <a class="lien" href="fiche.html#ch7-vocab">→ §7.2</a></div>
 </div>
 
 <div class="px-item">
@@ -414,7 +414,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   s'arrête au premier match, donc <b>l'exception va AVANT la règle générale</b>. Une règle masquée
   par une règle plus large placée avant <b>n'attrape jamais rien</b>, et ça se voit à son
   <b>compteur resté à zéro</b>.</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch11-ordre">→ §11.2, l'ordre des règles</a></div>
+  <a class="lien" href="fiche.html#ch11-ordre">→ §11.2, l'ordre des règles</a></div>
 </div>
 
 <div class="px-item">
@@ -434,7 +434,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   (<i>Smurf</i>).</p>
   <p>Le symptôme d'un blocage total d'ICMP&nbsp;: «&nbsp;<b>le ping passe mais les gros transferts se
   figent</b>&nbsp;».</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch6-icmp">→ §6.3, ICMP</a></div>
+  <a class="lien" href="fiche.html#ch6-icmp">→ §6.3, ICMP</a></div>
 </div>
 
 <div class="px-item">
@@ -452,7 +452,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   ressemble à une session ordinaire.</p>
   <p><b>Le symptôme à reconnaître</b>&nbsp;: une machine en <code>169.254.x.x</code> n'a
   <b>joint aucun serveur DHCP</b>.</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch6-dhcp">→ §6.4, DHCP</a></div>
+  <a class="lien" href="fiche.html#ch6-dhcp">→ §6.4, DHCP</a></div>
 </div>
 
 <div class="px-item">
@@ -470,7 +470,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   monolithique regroupant plusieurs ports, <b>des lignes distinctes et commentées</b> —
   «&nbsp;<b>avantage capital</b>&nbsp;», les <b>compteurs de chaque règle</b> isolent immédiatement le
   protocole en panne (le 80 fonctionne, le 443 reste à zéro).</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch9-antispoof">→ §9.6, l'anti-spoofing</a></div>
+  <a class="lien" href="fiche.html#ch9-antispoof">→ §9.6, l'anti-spoofing</a></div>
 </div>
 
 <div class="px-item fort">
@@ -490,7 +490,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   <p><b>La parade</b>&nbsp;: <code>ESTABLISHED,RELATED</code>. Rejoué après, le pare-feu consulte sa
   table <code>conntrack</code>, <b>n'y trouve aucune session correspondante</b>, et le paquet forgé
   tombe dans le <code>DROP</code> par défaut.</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch10-faille">→ §10.1, la faille du stateless</a></div>
+  <a class="lien" href="fiche.html#ch10-faille">→ §10.1, la faille du stateless</a></div>
 </div>
 
 <div class="px-item fort">
@@ -513,7 +513,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   <p><b>Le piège symétrique</b>&nbsp;: une politique qui n'accepte <b>que</b>
   <code>ESTABLISHED</code>, <b>sans aucune règle <code>NEW</code></b>, ne laisse <b>rien</b>
   passer — aucune session ne devient jamais établie.</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch10-principe">→ §10.2, le pare-feu à état</a></div>
+  <a class="lien" href="fiche.html#ch10-principe">→ §10.2, le pare-feu à état</a></div>
 </div>
 
 <div class="px-item">
@@ -528,7 +528,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   <p><b>Le prix à payer</b>&nbsp;: <code>MASQUERADE</code> interroge l'interface à chaque nouveau
   flux, donc il <b>consomme du CPU</b>&nbsp;; <code>SNAT</code>, dont l'adresse est figée, est
   <b>plus rapide</b>.</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch12-masq">→ §12.2, SNAT ou MASQUERADE</a></div>
+  <a class="lien" href="fiche.html#ch12-masq">→ §12.2, SNAT ou MASQUERADE</a></div>
 </div>
 
 <div class="px-item fort">
@@ -545,7 +545,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   <b><code>-d 10.0.0.100 --dport 8080</code></b>, jamais l'adresse publique ni le port 80.</p>
   <p><b>Le symptôme</b>&nbsp;: «&nbsp;le DNAT marche — son compteur monte — mais rien ne passe&nbsp;».
   C'est le piège qu'il signale <b>trois fois</b> dans le module.</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch12">→ §12, le NAT</a></div>
+  <a class="lien" href="fiche.html#ch12">→ §12, le NAT</a></div>
 </div>
 
 <div class="px-item">
@@ -561,7 +561,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   mode texte pour le module.
   <p>Traduction pour l'examen&nbsp;: face à un script, <b>on justifie ligne par ligne</b>. C'est
   exactement l'exercice qu'il annonce.</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch15-fwb">→ §15.6, les consoles graphiques</a></div>
+  <a class="lien" href="fiche.html#ch15-fwb">→ §15.6, les consoles graphiques</a></div>
 </div>
 
 <!-- ============================================================== -->
@@ -600,7 +600,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   <p><b>Le piège symétrique</b>, qu'un étudiant lui pose juste après&nbsp;: une politique qui
   n'accepte <b>que</b> <code>ESTABLISHED</code> ne laisse <b>rien</b> passer, faute de règle
   <code>NEW</code> pour l'aller.</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch10">→ §10, le pare-feu à état</a></div>
+  <a class="lien" href="fiche.html#ch10">→ §10, le pare-feu à état</a></div>
 </div>
 
 <div class="px-item">
@@ -620,7 +620,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   <p><b>Le moyen mnémotechnique</b> qu'il donne pour l'emplacement&nbsp;: <b>S</b>NAT →
   po<b>S</b>trouting · <b>D</b>NAT → prerouting, la <b>D</b>estination se décide <b>avant</b> le
   routage.</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch12-retour">→ §12.3, pourquoi pas de règle retour</a></div>
+  <a class="lien" href="fiche.html#ch12-retour">→ §12.3, pourquoi pas de règle retour</a></div>
 </div>
 
 <div class="px-item">
@@ -638,7 +638,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   <b>Wireshark</b>.
   <p><b>Ce que ça vaut à l'examen</b>&nbsp;: c'est une <b>méthode de diagnostic</b> présentable telle
   quelle. On isole la couche fautive en la <b>neutralisant temporairement</b>, au lieu de deviner.</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch18-diag">→ §18.2, « ça ne marche pas »</a></div>
+  <a class="lien" href="fiche.html#ch18-diag">→ §18.2, « ça ne marche pas »</a></div>
 </div>
 
 <div class="px-item fort">
@@ -661,7 +661,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   <p><b>À noter</b>&nbsp;: c'est le seul moment du module où il annonce «&nbsp;la bonne
   réponse&nbsp;» avant de l'énoncer. Le mélange délibéré des deux formes dans l'exercice d'audit
   (§15.5) confirme qu'il tient à cette nuance.</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch12-masq">→ §12.2, SNAT ou MASQUERADE</a></div>
+  <a class="lien" href="fiche.html#ch12-masq">→ §12.2, SNAT ou MASQUERADE</a></div>
 </div>
 
 <div class="px-item fort">
@@ -684,7 +684,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   <b>comprendre, commenter, sécuriser</b>. On ne demande pas d'écrire un script depuis une page
   blanche&nbsp;: on donne un script et on demande de l'analyser. C'est le TD du §15.5, dont la
   <b>correction officielle est fournie</b> — script commenté et trois schémas de flux.</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch13-piege">→ §13.7, le piège du proxy transparent</a></div>
+  <a class="lien" href="fiche.html#ch13-piege">→ §13.7, le piège du proxy transparent</a></div>
 </div>
 
 <div class="px-item">
@@ -702,7 +702,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   dépend des règles du pare-feu&nbsp;!</b>&nbsp;» Configurer le navigateur ne fait que <b>baliser la
   route</b>&nbsp;; sans le filtrage cohérent derrière, l'utilisateur décoche la case et sort en
   direct.</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch13-transparent">→ §13.6, proxy explicite ou transparent</a></div>
+  <a class="lien" href="fiche.html#ch13-transparent">→ §13.6, proxy explicite ou transparent</a></div>
 </div>
 
 <div class="px-item">
@@ -722,7 +722,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   mécanisme.</p>
   <p>Il redit la même chose en séance 3 partie 3 à propos de <b>Firewall Builder</b>&nbsp;:
   «&nbsp;<b>n'essayez pas à tout prix de faire rentrer de l'iptables dedans</b>&nbsp;».</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch15-exploit">→ §15.4, l'autre taxonomie du NAT</a></div>
+  <a class="lien" href="fiche.html#ch15-exploit">→ §15.4, l'autre taxonomie du NAT</a></div>
 </div>
 
 <div class="px-item">
@@ -740,7 +740,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   <p><b>Et la mise en garde qui va avec</b>&nbsp;: la <b>perte de rigueur intellectuelle</b>. Dans un
   script, chaque ligne oblige à un choix&nbsp;; devant une console, on glisse à «&nbsp;<i>ça ne
   marchait pas&nbsp;? J'inverse ces deux lignes à la souris et je recompile</i>&nbsp;».</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch15-fwb">→ §15.6, Firewall Builder</a></div>
+  <a class="lien" href="fiche.html#ch15-fwb">→ §15.6, Firewall Builder</a></div>
 </div>
 
 <div class="px-item">
@@ -757,7 +757,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   (<code>192.168.1.100</code>)&nbsp;: les clients ordinaires <b>n'y ont pas accès</b>. <b>5.</b>
   <code>-P OUTPUT ACCEPT</code>, contrairement au TD précédent&nbsp;: choix assumé, plus simple mais
   <b>moins strict</b>.
-  <a class="lien" href="inf5244-fiche-complete.html#ch15-td">→ §15.5, la correction officielle du TD</a></div>
+  <a class="lien" href="fiche.html#ch15-td">→ §15.5, la correction officielle du TD</a></div>
 </div>
 
 <div class="px-item fort">
@@ -781,7 +781,7 @@ les étudiants</b>&nbsp;: la passerelle par défaut.&nbsp;» puis «&nbsp;<b>Rè
   <p><b>Pourquoi ça marche</b>&nbsp;: le schéma externalise les trois informations qu'on perd de vue
   en écrivant directement — <b>le sens</b> du flux, <b>la chaîne</b> concernée, et <b>l'état des
   adresses</b> à l'endroit du filtrage.</p>
-  <a class="lien" href="inf5244-fiche-complete.html#ch18-schema">→ §18.3, faire le schéma avant</a></div>
+  <a class="lien" href="fiche.html#ch18-schema">→ §18.3, faire le schéma avant</a></div>
 </div>
 
 <!-- ============================================================== -->
@@ -809,6 +809,6 @@ Relecture intégrale de la parole de l'enseignant · 12 enregistrements, séance
 
 </main>
 
-<script src="assets/app.js?v=32"></script>
+<script src="../assets/app.js?v=33"></script>
 </body>
 </html>

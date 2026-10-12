@@ -46,7 +46,9 @@
     return true;
   }
   var LETTERS = 'ABCDEFGH';
-  var PAGE = (location.pathname.split('/').pop() || 'page').replace('.html', '');
+  /* Identifiant de page = « dossier-du-cours/page » : deux cours peuvent avoir
+     chacun leur fiche.html sans que leurs progressions se mélangent. */
+  var PAGE = location.pathname.split('/').slice(-2).join('/').replace(/\.html$/, '') || 'page';
 
   /* ================= Onglets ================= */
   var SECTIONS = [];
@@ -119,6 +121,20 @@
     });
   }
 
+  /* Dernière page ouverte, lue par l'accueil pour proposer « Reprendre ».
+     Le chemin est relatif à la racine du site : dossier/page.html#section. */
+  function rememberLast(g) {
+    try {
+      localStorage.setItem('majcyb.last', JSON.stringify({
+        href: PAGE + '.html#' + g.el.id,
+        page: PAGE,
+        doc: document.title,
+        section: g.title,
+        t: Date.now()
+      }));
+    } catch (e) { /* stockage indisponible : l'accueil n'affichera simplement pas de reprise */ }
+  }
+
   /* progression de lecture */
   function visited() {
     try { return JSON.parse(localStorage.getItem('majcyb.seen.' + PAGE)) || []; }
@@ -152,6 +168,7 @@
 
     markVisited(SECTIONS[i].el.id);
     localStorage.setItem('majcyb.tab.' + PAGE, SECTIONS[i].el.id);
+    rememberLast(SECTIONS[i]);
 
     if (history.replaceState) history.replaceState(null, '', '#' + (anchorId || SECTIONS[i].el.id));
 
@@ -737,6 +754,8 @@
         p.innerHTML = '<div class="progress"><i id="read-bar"></i></div><small id="read-lab"></small>';
         side.insertBefore(p, side.firstChild);
       }
+      /* Le nombre total de chapitres permet à l'accueil d'afficher « 8 / 17 lus ». */
+      localStorage.setItem('majcyb.secs.' + PAGE, String(SECTIONS.length));
       openFromHash();
       paintProgress();
     }

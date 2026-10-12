@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>INF5049 — Contrôle et audit en cybersécurité</title>
+<link rel="stylesheet" href="../assets/core.css?v=27">
+<link rel="stylesheet" href="../assets/viz.css?v=10">
+<style>
+/* ---- Composants propres à cette fiche ---- */
+.split { display: flex; height: 34px; border-radius: 999px; overflow: hidden; border: 1px solid var(--border); margin: 10px 0 4px; font-size: .8rem; font-weight: 700; }
+.split > span { display: flex; align-items: center; justify-content: center; color: #fff; transition: flex-basis .8s cubic-bezier(.22,.9,.3,1); white-space: nowrap; overflow: hidden; }
+.split .tech { background: var(--d-red); }
+.split .hum  { background: var(--d-blue); }
+.split-cap { display: flex; justify-content: space-between; font-size: .78rem; color: var(--fg-mute); }
+
+.box-pick { display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0 14px; }
+.box-pick button { flex: 1 1 140px; font: inherit; font-weight: 700; padding: 10px 12px; border-radius: 10px; cursor: pointer; border: 2px solid var(--border); background: var(--bg-soft); color: var(--fg); }
+.box-pick button[data-k="blanche"] { border-color: var(--border); }
+.box-pick button[data-k="grise"]   { background: linear-gradient(var(--bg-alt), var(--bg-alt)); }
+.box-pick button[data-k="noire"]   { background: var(--code-bg); color: var(--code-fg); }
+.box-pick button[aria-pressed="true"] { outline: 3px solid var(--accent); outline-offset: 2px; }
+.meter { display: grid; grid-template-columns: 210px 1fr; gap: 6px 12px; align-items: center; font-size: .85rem; }
+.meter .bar { height: 12px; background: var(--bg-alt); border-radius: 999px; overflow: hidden; border: 1px solid var(--border-soft); }
+.meter .bar i { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 999px; transition: width .6s cubic-bezier(.22,.9,.3,1); }
+.meter .bar i.alt { background: var(--d-amber); }
+.box-out { margin-top: 12px; font-size: .9rem; padding: 10px 14px; border-radius: 9px; background: var(--bg-alt); border-left: 3px solid var(--accent); }
+@media (max-width: 560px) { .meter { grid-template-columns: 1fr; } }
+
+.phase-band { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 6px 0 14px; }
+.phase-band > div { border-radius: 10px; padding: 10px 12px; font-size: .84rem; border: 1px solid var(--border); background: var(--bg-soft); }
+.phase-band b { display: block; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
+.phase-band .av b { color: var(--d-blue); }
+.phase-band .pe b { color: var(--d-amber); }
+.phase-band .ap b { color: var(--d-green); }
+@media (max-width: 640px) { .phase-band { grid-template-columns: 1fr; } }
+.step .who { display: inline-block; font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; padding: 1px 7px; border-radius: 999px; margin-left: 6px; background: var(--bg-soft); border: 1px solid var(--border); color: var(--fg-soft); }
+
+details.case { border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-soft); margin: 12px 0; }
+details.case > summary { cursor: pointer; padding: 12px 16px; font-weight: 600; list-style: none; }
+details.case > summary::-webkit-details-marker { display: none; }
+details.case > summary::before { content: "▸ "; color: var(--accent); }
+details.case[open] > summary::before { content: "▾ "; }
+details.case > div { padding: 0 16px 14px; border-top: 1px dashed var(--border); }
+details.case .sit { font-weight: 400; color: var(--fg-soft); display: block; margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><span class="dot"></span> INF5049 <small>· contrôle et audit en cybersécurité</small></div>
+  <div class="spacer"></div>
+  <input id="search" type="search" placeholder="Rechercher…  (Ctrl+K)">
+  <a class="home" href="../index.html">← Accueil</a>
+  <button class="btn ghost" onclick="toggleTheme()" title="Thème clair / sombre">◐</button>
+  <button class="btn ghost" onclick="window.print()" title="Imprimer / PDF">⎙</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar"><h4>Parcours</h4><div id="toc"></div></nav>
+  <main class="content">
+<h1>Contrôle et audit en cybersécurité</h1>
+<p class="lead">
+Le cours porte en réalité sur toutes les <b>missions d'évaluation</b> en cybersécurité : contrôle,
+audit, pentest… Son fil rouge : <b>une évaluation ne se résume pas à la technique</b>. Ce qui fait
+réussir une mission, c'est de comprendre le client, de bien la cadrer, de bien l'organiser et de bien
+la restituer.
+</p>
+
+<!-- ===================================================================== -->
+<h2 id="essentiel">★ L'essentiel — à relire la veille</h2>
+
+<div class="exam"><div class="t">Le format de l'interro, tel qu'annoncé</div>
+<ul>
+  <li>Une interro <b>plutôt théorique</b>, sur 20 : <b>questions de cours</b>, <b>questions de
+  compréhension des TP</b>, <b>évaluation d'une vulnérabilité</b>.</li>
+  <li>L'exercice type : <b>« je vais fantasmer un problème et vous devrez me le commenter, me
+  l'expliquer, comme si c'était un rapport d'audit »</b>. D'où le
+  <a href="#ch14">§14 — mises en situation</a>.</li>
+  <li><b>Malus</b> si les TP ne sont pas faits. Pour OpenVAS, il faudra <b>prouver</b> qu'il a été
+  compilé depuis les sources : <b>−5 points</b> en cas de triche (une VM toute faite).</li>
+  <li>Le syllabus, lui, parle d'un contrôle mixte : un travail de synthèse sur environnement virtualisé
+  et un examen Moodle sans documents.</li>
+</ul>
+</div>
+
+<div class="callout ok"><div class="t">Les phrases soulignées en cours</div>
+<ul style="margin-bottom:0">
+  <li><b>« Organiser, planifier, mener : c'est hyper important. C'est la clé. »</b> Une mission
+  partie « en freestyle » échoue.</li>
+  <li><b>Le rapport</b> : on est évalué sur le rendu et les livrables. Un mauvais rapport donne une
+  mauvaise réputation.</li>
+  <li>Ne pas identifier <b>les lois et les normes du domaine</b> du client est une <b>faute
+  professionnelle</b>.</li>
+  <li><b>Lire les textes internes</b> du client avant toute action qui touche les personnes (phishing).</li>
+  <li><b>La technique ne représente que 30 à 40 % d'une mission</b>, 50 % au mieux. Le reste :
+  cadrage, interviews, justification, rapport, restitution.</li>
+</ul>
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>Notion</th><th>À savoir en une ligne</th></tr></thead>
+<tbody>
+<tr><td><b>Contrôle</b></td><td>Vérifier un état <b>au regard d'une norme</b>, point par point. Décision binaire oui / non, systématique.</td></tr>
+<tr><td><b>Audit</b> (ANSSI)</td><td>Processus <b>systématique, indépendant et documenté</b> pour obtenir des <b>preuves</b> et les évaluer objectivement par rapport aux exigences d'un référentiel.</td></tr>
+<tr><td><b>Évaluation</b></td><td>Terme générique du cours pour toutes les missions (contrôle, audit, pentest…). Évaluer, c'est aussi porter un <b>avis</b> : attention, l'audité se sent jugé.</td></tr>
+<tr><td><b>Principe élémentaire</b></td><td>Évaluer la protection d'un SI, c'est <b>mesurer son niveau de sécurité face aux risques identifiés</b>.</td></tr>
+<tr><td><b>3 principes de la cyber</b></td><td><b>Protéger</b> (SSI / cyberprotection) · <b>Défendre</b> (LID) · <b>Agir</b> (LIO, LII). L'audit relève de la <b>LID</b> : on reste dans le « défendre ».</td></tr>
+<tr><td><b>3 types d'évaluation</b></td><td><b>Évaluation du risque</b> (interne, préalable) · <b>Contrôle / audit de conformité</b> (par rapport à un texte précis) · <b>Audit</b> (par rapport à l'état de l'art).</td></tr>
+<tr><td><b>3 situations de départ</b></td><td><b>Boîte blanche</b> (tout savoir, tout le monde informé) · <b>grise</b> (quelques infos, peu de personnes informées) · <b>noire</b> (seulement l'identité de la cible, presque personne informé).</td></tr>
+<tr><td><b>3 rôles</b></td><td><b>Manager</b> : négocie et cadre (coûts, périmètre, durée, livrables) · <b>Senior</b> : contrôle besoin, périmètre et livrables, mène les interviews et la partie réglementaire · <b>Junior</b> : partie technique et livrables.</td></tr>
+<tr><td><b>PCA / PRA</b></td><td><b>Continuité</b> : l'activité ne s'arrête pas (redondance, deux sites distincts). <b>Reprise</b> : on accepte l'arrêt, puis on restaure et on redémarre.</td></tr>
+<tr><td><b>PASSI</b></td><td>Prestataire d'Audit de la Sécurité des SI : <b>qualification ANSSI</b> de la société et de ses auditeurs. <b>Imposée pour les OIV et les OSE</b>. Référentiel v2.2 du 1<sup>er</sup> août 2024.</td></tr>
+<tr><td><b>Déroulé d'une mission</b></td><td><b>Avant</b> : commercial → contrat → préparation et OSINT. <b>Pendant</b> : visite sur site → investigation → rapport. <b>Après</b> : réunion de clôture (PV) → nettoyage des traces (30 jours).</td></tr>
+</tbody></table></div>
+
+<!-- ===================================================================== -->
+<h2 id="ch1"><span class="num">1.</span> Contrôle, audit, évaluation</h2>
+
+<div class="grid c2">
+  <div class="callout def"><div class="t">Contrôle</div>
+  <b>Larousse :</b> action de contrôler quelque chose ou quelqu'un, de vérifier son état ou sa
+  situation <b>au regard d'une norme</b>.
+  <p style="margin-bottom:0"><b>Variante du cours :</b> examen qui consiste à <b>mesurer</b> un élément
+  (activité, produit, processus, document, comportement…) pour constater s'il est <b>conforme</b> à
+  des règles, normes, objectifs ou critères prédéfinis.</p></div>
+  <div class="callout def"><div class="t">Audit</div>
+  <b>ANSSI (cyberdico) :</b> processus <b>systématique, indépendant et documenté</b> en vue d'obtenir
+  des <b>preuves</b> et de les évaluer de manière <b>objective</b> pour déterminer dans quelle mesure les
+  exigences d'un <b>référentiel</b> sont satisfaites.
+  <p style="margin-bottom:0"><b>Variante du cours :</b> examen <b>méthodique, indépendant et
+  documenté</b> d'une organisation, d'un processus, d'un système, d'un produit ou d'une activité
+  par rapport à des critères établis (normes, règlements, procédures internes, objectifs, bonnes
+  pratiques).</p></div>
+</div>
+
+<div class="callout def"><div class="t">Évaluer</div>
+<b>Larousse :</b> action de déterminer la <b>valeur</b> de quelque chose. Dans ce cours,
+<b>« évaluation » désigne toutes les missions</b> de type contrôle, audit, pentest, etc. Le cours
+s'appelle « audit », mais il porte en fait sur les <b>missions de cybersécurité</b> en général.
+</div>
+
+<h3 id="ch1-diff">1.1 Ce qui les distingue vraiment</h3>
+<div class="tw"><table>
+<thead><tr><th></th><th>Contrôle</th><th>Audit</th><th>Évaluation (au sens « avis »)</th></tr></thead>
+<tbody>
+<tr><td><b>Question posée</b></td><td>« Le texte exige ça : l'avez-vous fait ? »</td><td>« Où en êtes-vous par rapport au référentiel, et pourquoi ? »</td><td>« Que vaut ce que vous faites ? »</td></tr>
+<tr><td><b>Démarche</b></td><td>Point par point, <b>systématique, séquentielle</b>. Réponse oui / non.</td><td>Méthodique, objectif annoncé au client, <b>contexte compris</b>, avis argumenté.</td><td>Jugement qualitatif sur une organisation, un niveau, voire une personne.</td></tr>
+<tr><td><b>Exemple</b></td><td>Contrôle de conformité NIS 2 : chaque exigence, cochée ou non.</td><td>Audit de sécurité d'un SI avec analyse des écarts et recommandations.</td><td>Avis demandé sur le niveau d'une équipe ou d'un prestataire.</td></tr>
+<tr><td><b>Exigence clé</b></td><td>Avoir le référentiel exact.</td><td><b>Preuves reproductibles</b> : si l'audité dit « prouve-le », il faut pouvoir reproduire le problème. C'est la crédibilité de l'auditeur qui est en jeu.</td><td>Diplomatie : l'audité <b>se sent jugé</b> même quand on lui dit le contraire.</td></tr>
+</tbody></table></div>
+
+<div class="key-points">
+  <li><b>En entreprise, on fait surtout des contrôles</b> : on se contrôle par rapport à un référentiel.
+  Un vrai audit de soi-même est rare, parce qu'on serait <b>juge et partie</b>. L'audit demande
+  l'<b>indépendance</b>.</li>
+  <li><b>L'audit est plus humain et plus valorisant</b> que le contrôle, mais il exige des normes,
+  de la méthode et de la <b>documentation</b>.</li>
+  <li><b>Le glissement vers l'évaluation de la personne</b> arrive parfois sans le vouloir. Un
+  administrateur ou un développeur audité vit l'audit comme un jugement de son travail. Une remarque
+  ironique, anodine à l'oral, devient dans un rapport écrit une raison pour la direction de le
+  sanctionner. <b>Pas d'humour dans un rapport.</b></li>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch2"><span class="num">2.</span> Cybersécurité : protéger, défendre, agir</h2>
+
+<div class="callout def"><div class="t">Cybersécurité (ANSSI, glossaire)</div>
+État d'un système d'information qui <b>résiste aux cyberattaques et aux pannes accidentelles</b>
+survenant dans le cyberespace. Elle est assurée par la <b>cyberprotection</b> et, dans le cas d'un
+État, par la <b>cyberdéfense</b>.
+</div>
+
+<div class="viz">
+  <div class="t">Les trois principes — cliquez sur une carte</div>
+  <div class="vz-grid g3">
+    <button class="vz-c k-green">
+      <span class="n">Protéger</span>
+      <h5>SSI — cyberprotection</h5>
+      <span class="en">sécurité des systèmes d'information</span>
+      <span class="q">Rendre le SI résistant</span>
+      <span class="more"><span class="t">Ce qu'elle regroupe</span>
+      <b>Sécurité informatique</b> (système et applicatif, réseau et services réseau, plan de reprise
+      informatique, virologie et cryptologie), <b>sécurité du personnel</b>, <b>sécurité des
+      équipements</b>, <b>organisation, réglementation, juridique</b>, le <b>chiffre</b>, la SPC.</span>
+    </button>
+    <button class="vz-c k-blue">
+      <span class="n">Défendre</span>
+      <h5>LID — lutte informatique défensive</h5>
+      <span class="en">c'est ici que se place l'audit</span>
+      <span class="q">Surveiller, contrôler, s'entraîner</span>
+      <span class="more"><span class="t">Ses quatre volets</span>
+      Cybersurveillance (détection d'incidents et d'attaques) · veille technologique sur les capacités
+      offensives · <b>contrôles, évaluations et audits de sécurité</b> · formation et entraînement.</span>
+      <span class="more"><span class="t">À retenir</span>
+      La LID chevauche la cyberprotection : elle s'appuie notamment sur la sécurité des équipements.</span>
+    </button>
+    <button class="vz-c k-red">
+      <span class="n">Agir</span>
+      <h5>LIO et LII</h5>
+      <span class="en">offensive · influence</span>
+      <span class="q">Attaquer, influencer</span>
+      <span class="more"><span class="t">LIO — lutte informatique offensive</span>
+      Renseignement · recherche de vulnérabilités · élaboration de scénarios · conception d'outils
+      dédiés (<b>OTW, One Time Weapon</b> : une arme conçue pour un seul usage).</span>
+      <span class="more"><span class="t">LII — lutte informatique d'influence</span>
+      <b>OSINT</b> (Open Source INTelligence) · infiltration et usurpation.</span>
+    </button>
+  </div>
+  <div class="vz-bar">
+    <button class="btn" data-cards="open">Tout déplier</button>
+    <button class="btn ghost" data-cards="close">Tout replier</button>
+    <span class="cnt"></span>
+  </div>
+  <div class="legend">La <b>L.I.</b> (lutte informatique) regroupe <b>LID, LIO et LII</b>. Elle recoupe
+  la cyberprotection par la <b>sécurité des équipements</b> et le <b>chiffre</b>.</div>
+</div>
+
+<h3 id="ch2-defendre">2.1 L'auditeur reste dans le « défendre »</h3>
+<p>Même un pentest d'audit relève de la <b>défense</b> : il a un cadre, des règles, un rapport. Ce n'est
+pas de la LIO, où l'on cherche à faire mal. <b>Une mission d'évaluation n'a jamais le droit de casser
+la production</b> : si c'est l'auditeur qui provoque l'incident, la mission s'arrête et le client est
+humilié devant ses équipes.</p>
+
+<div class="example"><div class="t">Retour d'expérience : le scan qui imprime</div>
+Un scan Nmap avec l'option <code>-O</code> (détection de l'OS) est lancé sur une plage d'adresses
+sans vérifier ce qu'elle contient. Une <b>imprimante</b> s'y trouve. Bombardée de trames atypiques,
+elle plante et se met à imprimer des caractères aléatoires jusqu'à épuiser son papier.
+<p style="margin-bottom:0"><b>La leçon :</b> on ne lance pas une commande sans comprendre ce qu'elle
+fait. Il faut une <b>phase de test</b>, un <b>périmètre</b> vérifié, et une attention particulière aux
+équipements fragiles : imprimantes, systèmes embarqués, industriels.</p>
+</div>
+
+<div class="callout"><div class="t">Comment fonctionne <code>nmap -O</code></div>
+C'est du <b>fingerprinting</b>. Nmap envoie une série de sondes, dont certaines inhabituelles, sur
+différents ports et protocoles. Il observe <b>comment la machine réagit</b> et compare ces réactions
+à une <b>table de signatures</b>. Statistiquement, il en déduit l'OS : « c'est un Windows 10 de telle
+version », « c'est un Linux de telle version ». Ces sondes atypiques sont justement ce qui peut faire
+planter une pile réseau mal implémentée.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch3"><span class="num">3.</span> Évaluer face au risque : méthodes et traçabilité</h2>
+
+<div class="callout danger"><div class="t">Principe élémentaire de l'évaluation</div>
+<b>Évaluer la protection d'un SI, c'est mesurer son niveau de sécurité face aux risques
+identifiés.</b>
+<p style="margin-bottom:0">Conséquence directe : si le client ne sait pas répondre à <b>« qu'est-ce
+qui est le plus important pour vous ? qu'est-ce que vous risquez ? »</b>, on ne fait pas de technique.
+On s'arrête et on commence par là. Sinon l'audit porte sur une entreprise imaginaire et ne lui sert
+à rien.</p>
+</div>
+
+<div class="grid c2">
+  <div class="card"><h4>Méthodes françaises</h4>
+  <ul>
+    <li><b>EBIOS Risk Manager</b> — ANSSI</li>
+    <li><b>MEHARI</b> — Clusif</li>
+  </ul>
+  <p style="font-size:.88rem;color:var(--fg-soft);margin-bottom:0">Très lourdes : peu d'entreprises vont
+  jusqu'au bout. On rencontre surtout des <b>versions allégées</b> ou adaptées.</p></div>
+  <div class="card"><h4>Autres méthodes</h4>
+  <ul>
+    <li><b>ISO/CEI 27005</b> (gestion des risques, famille 27000)</li>
+    <li><b>EU Risk Management Framework</b> — ENISA</li>
+    <li><b>Cybersecurity Framework (CSF)</b> — NIST</li>
+    <li><b>Risk Management Framework (RMF)</b> — NIST</li>
+  </ul></div>
+</div>
+
+<div class="callout warn"><div class="t">Les normes ISO 27000 sont payantes</div>
+Les exemplaires achetés par une entreprise sont <b>nominatifs et marqués (fingerprintés)</b>. Faire
+circuler le document « pour rendre service » expose directement celui qui le fait fuiter.
+</div>
+
+<h3 id="ch3-feros">3.1 Tracer les décisions, y compris les options écartées</h3>
+<p>Peu importe la méthode, du moment qu'elle est <b>adaptée à la cible</b> et mène à l'objectif. En
+revanche, il faut toujours <b>écrire l'objectif de sécurité et pourquoi on a pris chaque décision</b>.
+C'est l'idée des <b>FEROS</b> (<i>Fiches d'Expression Rationnelle des Objectifs de Sécurité</i>) : pour
+chaque projet, formaliser ses objectifs de sécurité.</p>
+
+<div class="exam"><div class="t">Ce qu'on oublie toujours</div>
+On note ce qu'on a retenu et pourquoi, mais on oublie de noter <b>ce qu'on a écarté, et pourquoi</b>.
+Or c'est ce qui manque lors de l'<b>analyse post-mortem</b> d'un incident. On croit qu'« on n'y avait
+pas pensé », alors qu'on y avait pensé et qu'on l'avait écarté pour une bonne raison.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch4"><span class="num">4.</span> La carte des missions de sécurité</h2>
+
+<p>Une <b>vue haute et synthétique</b> de toutes les actions liées à la gestion du risque. Elle sert à
+<b>situer la mission</b> et à repérer ce qui manque chez le client. Dans la réalité, peu de clients ont
+fait ce travail : <b>c'est souvent à l'auditeur de les convaincre</b> de le faire, au moins en version
+simplifiée.</p>
+
+<div class="viz">
+  <div class="t">Bleu = missions organisationnelles ou politiques · Rouge = missions techniques, souvent confiées aux juniors · Vert = à faire en continu</div>
+  <div class="vz-grid">
+    <button class="vz-c k-blue"><span class="n">Organisationnel</span><h5>Stratégie et gouvernance</h5>
+      <ul><li>Définir la stratégie, le budget</li><li>Définir la <b>chaîne de responsabilité</b></li><li>Gérer le risque, la sensibilisation</li></ul>
+      <span class="more"><span class="t">Ce que l'auditeur y cherche</span>Pas de chaîne de responsabilité, c'est déjà un
+      problème : un collaborateur face à un incident ne sait même pas qui appeler. Attention aussi : celui qui
+      <b>définit</b> la politique de sensibilisation n'est pas forcément celui qui la <b>réalise</b>.</span></button>
+    <button class="vz-c k-blue"><span class="n">Organisationnel</span><h5>Conformité</h5>
+      <ul><li>Maîtriser les textes réglementaires</li><li>Gérer les évaluations</li></ul>
+      <span class="more"><span class="t">Pourquoi ensemble</span>Commander des évaluations est un acte <b>politique
+      et juridique</b>. La plupart des évaluations payées par une entreprise le sont parce qu'elle y est
+      <b>obligée</b> : accéder à un contrat, exporter, répondre à une loi. D'où beaucoup d'« audits-cases à
+      cocher » dont le client ignore les résultats… jusqu'au jour de l'incident.</span></button>
+    <button class="vz-c k-blue"><span class="n">Organisationnel</span><h5>Gestion des projets</h5>
+      <ul><li>Analyses de risques</li><li>Sécurité par conception</li><li>Définir et contrôler les architectures IT</li></ul>
+      <span class="more"><span class="t">Qui le fait</span>Les chefs de projet et l'interne. On y appelle rarement un
+      prestataire externe.</span></button>
+    <button class="vz-c k-blue"><span class="n">Organisationnel</span><h5>Gestion de crises</h5>
+      <ul><li>Définir le <b>PCA / BCP</b> ou le <b>PRA / DRP</b></li><li>Assurer la détection d'incidents</li><li>Gérer les crises</li></ul>
+      <span class="more"><span class="t">Le point clé</span>PCA et PRA se préparent <b>en amont</b>. Y réfléchir quand
+      la crise arrive, c'est trop tard. La détection d'incidents, c'est le terrain du SOC.</span></button>
+    <button class="vz-c k-green"><span class="n">Transverse</span><h5>À réaliser régulièrement</h5>
+      <ul><li>Communiquer : réunions, interviews, documentation</li><li>Analyser les configurations</li><li>Sauvegarder, tester régulièrement, faire de la veille</li></ul>
+      <span class="more"><span class="t">Souvent oublié</span><b>La communication.</b> Des équipes en silos ont parfois
+      de bonnes idées mais ne les partagent pas : de l'information se perd. Une bonne communication repose sur une
+      chaîne de responsabilité et des rôles bien définis.</span></button>
+    <button class="vz-c k-red"><span class="n">Technique</span><h5>Sécurité opérationnelle</h5>
+      <ul><li>Tenir à jour les <b>inventaires</b> (matériel et applications)</li><li>Gérer les identités et les accès</li><li>DevSecOps et MCS (mises à jour, CVE)</li><li>Assurer le plan de sauvegarde</li></ul>
+      <span class="more"><span class="t">Sur le terrain</span>Le travail des admins système, réseau et sécurité au
+      quotidien. MCS = maintien en condition de sécurité.</span></button>
+    <button class="vz-c k-red"><span class="n">Technique</span><h5>Sécurité des réseaux</h5>
+      <ul><li>Définir et maîtriser les architectures (isolation, partitionnement, exposition)</li><li>Maîtriser le plan d'adressage, les matrices de flux</li><li>Contrôler les accès intersites, externes et distants (VPN)</li></ul></button>
+    <button class="vz-c k-red"><span class="n">Technique</span><h5>Sécurité physique</h5>
+      <ul><li>Maîtriser le périmètre de sécurité</li><li>Contrôle des accès</li><li>Vidéosurveillance, protection</li></ul>
+      <span class="more"><span class="t">Pourquoi la regarder en premier</span>On se blinde de pare-feux, mais on entre
+      dans le bâtiment par une fenêtre ouverte ou une porte bloquée. D'où le <b>tour du site la veille au soir</b>
+      (fenêtres, portes, accès), et des salles serveurs parfois installées n'importe où.</span></button>
+  </div>
+  <div class="vz-bar">
+    <button class="btn" data-cards="open">Tout déplier</button>
+    <button class="btn ghost" data-cards="close">Tout replier</button>
+    <span class="cnt"></span>
+  </div>
+</div>
+
+<h3 id="ch4-pca">4.1 PCA ou PRA : continuer ou reprendre</h3>
+<div class="viz">
+  <div class="t">Face au même sinistre, deux stratégies</div>
+  <svg viewBox="0 0 900 230" role="img" aria-label="PCA : l'activité continue grâce au second site qui prend le relais. PRA : l'activité s'arrête, on purge, on restaure depuis les sauvegardes puis on redémarre.">
+    <g class="vz-step">
+      <text class="vz-lbl vz-t-ok" x="20" y="40">PCA</text>
+      <text class="vz-sub" x="20" y="56">continuité</text>
+      <rect x="110" y="26" width="300" height="30" rx="6" class="vz-ok"/>
+      <text class="vz-sub" x="260" y="45" text-anchor="middle">site A — activité normale</text>
+      <rect x="410" y="26" width="460" height="30" rx="6" class="vz-ok"/>
+      <text class="vz-sub" x="640" y="45" text-anchor="middle">site B prend le relais — l'activité ne s'arrête pas</text>
+      <line x1="410" y1="16" x2="410" y2="70" style="stroke:var(--d-red);stroke-width:2;stroke-dasharray:4 3"/>
+      <text class="vz-sub vz-t-bad" x="410" y="84" text-anchor="middle">sinistre</text>
+    </g>
+    <g class="vz-step">
+      <text class="vz-lbl vz-t-filt" x="20" y="150">PRA</text>
+      <text class="vz-sub" x="20" y="166">reprise</text>
+      <rect x="110" y="136" width="300" height="30" rx="6" class="vz-ok"/>
+      <text class="vz-sub" x="260" y="155" text-anchor="middle">activité normale</text>
+      <rect x="410" y="136" width="250" height="30" rx="6" class="vz-bad"/>
+      <text class="vz-sub" x="535" y="155" text-anchor="middle">arrêt accepté : couper, purger, restaurer</text>
+      <rect x="660" y="136" width="210" height="30" rx="6" class="vz-filt"/>
+      <text class="vz-sub" x="765" y="155" text-anchor="middle">redémarrage</text>
+      <line x1="410" y1="126" x2="410" y2="180" style="stroke:var(--d-red);stroke-width:2;stroke-dasharray:4 3"/>
+      <text class="vz-sub vz-t-bad" x="410" y="194" text-anchor="middle">sinistre</text>
+    </g>
+  </svg>
+</div>
+
+<div class="tw"><table>
+<thead><tr><th></th><th>PCA — plan de continuité d'activité</th><th>PRA — plan de reprise d'activité</th></tr></thead>
+<tbody>
+<tr><td><b>Objectif</b></td><td>L'activité <b>ne s'arrête pas</b>.</td><td>On <b>accepte l'arrêt</b>, puis on reprend.</td></tr>
+<tr><td><b>Moyens</b></td><td>Sauvegardes et réplication <b>à chaud</b>, un serveur qui reprend dès que l'autre tombe. Exige <b>deux sites physiques séparés</b> : ni la même arrivée électrique, ni le même accès Internet.</td><td>Sauvegardes <b>à froid</b> (bandes…). On coupe les serveurs, on laisse passer l'attaque, on répare, on restaure, on redémarre.</td></tr>
+<tr><td><b>Coût</b></td><td>Très élevé.</td><td>Bien moindre.</td></tr>
+<tr><td><b>Pour qui</b></td><td>Les activités qui ne supportent aucune interruption.</td><td>Une entreprise dont le SI n'est pas le cœur de métier peut vivre une coupure.</td></tr>
+</tbody></table></div>
+<p>On parle aussi de <b>PCI / PRI</b> pour leur volet informatique. En anglais : <b>BCP</b> (Business
+Continuity Plan) et <b>DRP</b> (Disaster Recovery Plan).</p>
+
+<div class="exam"><div class="t">Le raisonnement attendu d'un auditeur</div>
+Vérifier que le choix est <b>cohérent avec les moyens et le métier</b> du client. Une PME mono-site qui
+prétend avoir un PCA n'en a pas : sans second site, il n'y a pas de continuité possible, sauf à tout
+externaliser à grands frais. Pour elle, un <b>PRA bien fait</b> est la bonne réponse.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch5"><span class="num">5.</span> Les rôles dans une mission et la part réelle de technique</h2>
+
+<div class="viz">
+  <div class="t">Combien de temps passe-t-on vraiment sur la technique ?</div>
+  <div class="split" id="split"><span class="tech" style="flex-basis:35%">technique 30 à 40 %</span><span class="hum" style="flex-basis:65%">cadrage, interviews, justification, rapport, restitution</span></div>
+  <div class="split-cap"><span>50 % au mieux, dans les cas les plus favorables</span><span>« tout le reste, c'est de l'administratif »</span></div>
+</div>
+
+<p>Les <b>objectifs du cours</b>, dans leur « version vraie » :</p>
+<div class="key-points">
+  <li><b>Maîtriser les étapes clés de l'organisation d'une mission.</b> Partir « en freestyle » ne
+  marche plus : tout bouge trop vite, l'IA en tête.</li>
+  <li><b>Prendre conscience que les évaluations ne sont pas que de la technique.</b></li>
+  <li><b>Comprendre l'utilité des différents types d'évaluation</b>, pour savoir <b>conseiller</b> le
+  client. Exemple : inutile de pentester un serveur si tout le monde a le même mot de passe. On fait
+  d'abord les bases, le pentest viendra ensuite.</li>
+  <li><b>Savoir se placer dans une mission</b> : manager, senior ou junior.</li>
+</div>
+
+<div class="viz">
+  <div class="t">Les trois rôles — cliquez pour le détail</div>
+  <div class="vz-grid g3">
+    <button class="vz-c k-purple"><span class="n">Cadre la mission</span><h5>Manager</h5>
+      <span class="q">Négocie avec le commanditaire</span>
+      <ul><li>Coûts, périmètre, durée, livrables</li></ul>
+      <span class="more"><span class="t">À distinguer</span>La partie purement commerciale (trouver le client) relève de
+      l'avant-vente. Le manager cadre ensuite la mission. Source classique de friction : un commercial a vendu
+      quelque chose que l'équipe ne sait pas faire.</span></button>
+    <button class="vz-c k-blue"><span class="n">Le plus expérimenté</span><h5>Auditeur senior</h5>
+      <span class="q">Contrôle le besoin, le périmètre et les livrables</span>
+      <ul><li>Mène les <b>interviews</b></li><li>Partie <b>réglementaire et organisationnelle</b></li></ul>
+      <span class="more"><span class="t">Son levier</span>Les interviews : avec l'expérience, on y trouve
+      <b>environ 75 % des problèmes</b>, et vite. Mais <b>sans preuve</b>.</span></button>
+    <button class="vz-c k-red"><span class="n">Le plus jeune</span><h5>Auditeur junior</h5>
+      <span class="q">Partie technique</span>
+      <ul><li>Scans, analyse, recherche de <b>preuves</b></li><li>Généralement les livrables</li></ul>
+      <span class="more"><span class="t">Son levier</span>La technique <b>prouve</b>. En théorie elle peut aller jusqu'à
+      100 %, mais c'est utopique : en quelques jours sur place, on ne peut pas tout fouiller.</span></button>
+  </div>
+  <div class="vz-bar">
+    <button class="btn" data-cards="open">Tout déplier</button>
+    <button class="btn ghost" data-cards="close">Tout replier</button>
+    <span class="cnt"></span>
+  </div>
+</div>
+
+<h3 id="ch5-interview">5.1 L'interview : la technique la plus rentable</h3>
+<p>Le binôme se complète : l'un cherche les <b>preuves techniques</b>, l'autre fait <b>parler les
+gens</b>. Le soir, on confronte ce que chacun a trouvé. Les missions étant courtes, savoir à qui parler
+et comment est souvent plus rentable qu'un scan exhaustif.</p>
+
+<div class="callout ok"><div class="t">Comment une interview fait remonter les vrais problèmes</div>
+<ul style="margin-bottom:0">
+  <li><b>Les questions directes sur les failles ne donnent rien.</b> On met la personne en confiance :
+  on s'intéresse à sa charge de travail, à ses contraintes.</li>
+  <li>Puis on la place dans une <b>situation de pression</b> : « Comment tu fais quand tu pars en
+  vacances ? Qui te remplace ? » C'est là qu'apparaissent les <b>mots de passe génériques
+  partagés</b>, les <b>accès VPN non déclarés</b>, les contournements.</li>
+  <li><b>Principe :</b> quand tout va bien, il n'y a pas de problème. Les failles naissent de
+  <b>ce que font les gens quand ils sont sous pression</b>.</li>
+  <li><b>Créer de l'empathie</b> : adapter son vocabulaire à celui de l'interlocuteur (« je vois »,
+  « j'imagine », « je pense »…), sa posture, sa tenue.</li>
+</ul>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch6"><span class="num">6.</span> Le cadre réglementaire</h2>
+
+<p>Selon son secteur, une entité est <b>obligée</b> de faire réaliser des audits. L'auditeur doit
+connaître les textes qui s'imposent <b>au secteur de son client</b>. Les lire, ou se les faire expliquer
+par un juriste : ce sont des textes juridiques, évidents à la lecture mais délicats à appliquer.</p>
+
+<div class="tw"><table>
+<thead><tr><th>Type d'entité</th><th>Texte / référence</th><th>Audit imposé ?</th></tr></thead>
+<tbody>
+<tr><td><b>OIV</b> — opérateurs d'importance vitale</td><td>Code de la défense (LPM)</td><td>Oui, <b>périodique</b></td></tr>
+<tr><td><b>OSE</b> — opérateurs de services essentiels</td><td>NIS 2 / décret 2018-384</td><td>Oui, <b>périodique et par des PASSI</b></td></tr>
+<tr><td><b>Banques, assurances</b></td><td><b>DORA</b></td><td>Oui : <b>internes + externes + TLPT</b></td></tr>
+<tr><td><b>Santé</b></td><td>Arrêté de 2018</td><td>Oui, pour la <b>certification HDS</b></td></tr>
+<tr><td><b>Prestataires cloud</b></td><td><b>SecNumCloud</b></td><td>Oui, par un <b>organisme qualifié</b></td></tr>
+</tbody></table></div>
+
+<div class="grid c2">
+  <div class="card"><h4>Les sigles</h4>
+  <ul>
+    <li><b>NIS 2</b> : directive européenne sur la sécurité des réseaux et des systèmes d'information, qui
+    élargit fortement les entités soumises à des obligations.</li>
+    <li><b>DORA</b> : Digital Operational Resilience Act, règlement européen sur la résilience
+    opérationnelle numérique du secteur financier.</li>
+    <li><b>TLPT</b> : Threat-Led Penetration Testing, tests d'intrusion fondés sur la menace imposés par
+    DORA.</li>
+    <li><b>HDS</b> : hébergeur de données de santé.</li>
+    <li><b>SecNumCloud</b> : qualification ANSSI des offres cloud.</li>
+  </ul></div>
+  <div class="card"><h4>Ce qui arrive</h4>
+  <ul>
+    <li><b>NIS 2</b> : le gros chantier de l'année pour les entreprises.</li>
+    <li><b>CRA — Cyber Resilience Act</b> : règlement européen sur les produits comportant des éléments
+    numériques. Il impose que les applications, plugins et sous-composants fassent l'objet d'une
+    <b>veille active et d'une maintenance active</b>.</li>
+    <li><b>RGPD</b> : à lire au moins une fois, il est assez court. Il impose notamment des
+    <b>durées de conservation</b>, ce qui complique la gestion des archives.</li>
+  </ul></div>
+</div>
+
+<div class="callout warn"><div class="t">Deux leçons sur les audits imposés</div>
+<ul style="margin-bottom:0">
+  <li><b>L'effort doit durer entre deux audits.</b> Un audit périodique pousse à tout faire juste
+  avant, puis à oublier jusqu'au suivant. Or la conformité se construit petit à petit.</li>
+  <li><b>Un auditeur d'autorité pioche au hasard</b> dans les dossiers et demande : « montrez-moi que
+  vous l'avez fait ». Il faut une <b>preuve</b> pour chaque engagement, y compris la preuve qu'un
+  document existe quand il est confidentiel.</li>
+</ul>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch7"><span class="num">7.</span> Comprendre le client et la mission</h2>
+
+<div class="callout danger"><div class="t">L'évidence</div>
+<b>Pour réussir une évaluation, il faut comprendre le besoin, le contexte, et poser les bonnes
+questions.</b> Sans comprendre l'entreprise et ses risques, on ne sait même pas si une information
+recueillie est importante.
+</div>
+
+<h3 id="ch7-qui">7.1 Qui est le client ?</h3>
+<div class="tw"><table>
+<thead><tr><th>Axe</th><th>Les questions</th><th>Pourquoi</th></tr></thead>
+<tbody>
+<tr><td><b>Domaine d'activité</b></td><td>Domaine sensible (santé, défense…) ? Lois ou normes propres au domaine ?</td><td>Comprendre la <b>sensibilité</b>, c'est mieux identifier les vulnérabilités. Toute entreprise peut être une cible détournée. <b>Ne pas identifier les lois du domaine est une faute professionnelle</b>, même si le client a un juriste.</td></tr>
+<tr><td><b>Origine</b></td><td>Client français ? Textes d'un autre pays ou de l'UE à prendre en compte ?</td><td>Beaucoup d'entreprises ignorent qu'elles sont soumises à un texte européen : il faut le leur dire.</td></tr>
+<tr><td><b>Maturité</b></td><td>Comprend-il son besoin ? A-t-il des <b>textes internes</b> à respecter ?</td><td>Aux premiers niveaux, le client comprend rarement son besoin : jusqu'où est-il inconscient ? Et <b>lire les textes internes</b>.</td></tr>
+<tr><td><b>Localisation</b></td><td>Déplacement classique (douane, fatigue) ? Accès à Internet et aux ressources sur place ?</td><td>Préparer le matériel, ne pas compter sur le Wi-Fi de l'hôtel, anticiper les douanes (§10.4).</td></tr>
+</tbody></table></div>
+
+<h3 id="ch7-veut">7.2 Que veut le client ?</h3>
+<div class="grid c2">
+  <div class="card"><h4>Objectifs généralement avoués</h4>
+  <ul>
+    <li>Peur de se faire attaquer après un incident survenu ailleurs</li>
+    <li>Besoin d'affichage pour <b>rassurer ses propres clients</b></li>
+    <li>Contrainte <b>contractuelle</b> pour gagner un nouveau client</li>
+    <li>Simple volonté de s'améliorer</li>
+    <li>État des lieux à une <b>prise de fonctions</b> ou lors d'un <b>rachat d'entreprise</b></li>
+  </ul></div>
+  <div class="card" style="border-color:var(--danger)"><h4 style="color:var(--danger)">Objectifs souvent cachés</h4>
+  <ul>
+    <li>Évaluer le niveau de son <b>personnel ou de son prestataire</b></li>
+    <li>Volonté de <b>se séparer</b> de son personnel ou de son prestataire</li>
+    <li>Obligation imposée d'en haut (RSSI du groupe, État…)</li>
+  </ul>
+  <p style="font-size:.88rem;color:var(--fg-soft);margin-bottom:0">Ne pas les détecter, c'est risquer de
+  servir d'instrument à un licenciement ou de déclencher une crise humaine.</p></div>
+</div>
+
+<h3 id="ch7-valeur">7.3 Trouver ce qui a vraiment de la valeur</h3>
+<p>La question posée à tous : <b>« Quelles sont vos valeurs ? Qu'est-ce qui est le plus important pour
+vous ? »</b> On la pose au dirigeant, au DSI, au responsable de production… et <b>on compare</b> les
+réponses. Un décalage est normal, chacun valorisant ce qu'il fait au quotidien, mais il est révélateur.</p>
+
+<div class="exam"><div class="t">Le piège de l'informaticien</div>
+L'informaticien croit que le plus important, c'est ce qu'il gère au quotidien : l'Active Directory, le
+site web, son application. Le dirigeant pense souvent tout autrement.
+<p style="margin-bottom:0"><b>Exemple :</b> pour une agence immobilière, le bien le plus précieux n'est
+ni le site web (de l'affichage) ni les clients déjà sous mandat (ils ont signé). C'est la <b>liste des
+prospects</b> : les futurs vendeurs qui n'ont pas encore signé. Un concurrent qui l'obtient peut les
+démarcher et faire perdre directement du chiffre d'affaires.</p>
+</div>
+
+<p>Comprendre le métier suppose de <b>travailler son vocabulaire avant la visite</b>. Sinon, dès la
+réunion de présentation, on ne comprend pas ce dont le client parle. Des données qui semblent anodines
+peuvent aussi être sensibles : chez un professionnel de santé, une fuite peut nuire à la carrière de
+patients dont l'aptitude dépend de leur état de santé (pilotes, plongeurs, militaires).</p>
+
+<!-- ===================================================================== -->
+<h2 id="ch8"><span class="num">8.</span> Limites de la mission et livrables</h2>
+
+<h3 id="ch8-perimetre">8.1 Le périmètre et les informations de base</h3>
+<div class="grid c2">
+  <div class="card"><h4>Quel est le périmètre ?</h4>
+  <ul>
+    <li><b>La cible</b> : SI complet ou un seul élément (application, serveur…) ? Contexte industriel ou
+    bureautique ?</li>
+    <li><b>En production ?</b> Attention aux pénalités financières en cas d'interruption.</li>
+    <li>La cible peut-elle être <b>réinitialisée</b> (repartir de zéro) ?</li>
+    <li><b>Hébergement</b> sur site ? Serveur dédié, IP partagée ?</li>
+  </ul></div>
+  <div class="card"><h4>Informations de base</h4>
+  <ul>
+    <li><b>Durée</b> de la mission</li>
+    <li>Mission <b>sous surveillance</b> (locaux dédiés, contrôles visuels) ?</li>
+    <li>Une <b>clause de suspension</b>, voire d'arrêt ?</li>
+  </ul></div>
+</div>
+
+<h3 id="ch8-humain">8.2 Les contraintes humaines</h3>
+<div class="tw"><table>
+<thead><tr><th>Qui</th><th>Les questions à se poser</th></tr></thead>
+<tbody>
+<tr><td><b>Collaborateurs non techniques</b></td><td>Les textes internes autorisent-ils à les impliquer (phishing « sauvage ») ? Y a-t-il un risque de <b>crise interne</b> (dépression, victimisation) ?</td></tr>
+<tr><td><b>Collaborateurs techniques</b></td><td>Sont-ils impliqués positivement ? Problèmes de <b>compétences</b> ou de <b>disponibilité</b> ? Conflits contractuels ou humains ?</td></tr>
+<tr><td><b>Prestataire</b></td><td>Est-il <b>informé</b> de l'audit ? <b>Son contrat permet-il cet audit ?</b> Fait-il de la rétention d'information, preuve de mauvaise foi ? Conflits ?</td></tr>
+</tbody></table></div>
+
+<h3 id="ch8-livrables">8.3 Les livrables</h3>
+<div class="grid c3">
+  <div class="card"><h4>Compte rendu à chaud</h4>
+  <p style="margin-bottom:0">À la fin de la mission ou <b>de chaque journée</b>.</p></div>
+  <div class="card"><h4>Rapport écrit</h4>
+  <ul>
+    <li><b>Papier</b> avec envoi sécurisé : en main propre, recommandé, double enveloppe.</li>
+    <li><b>Électronique</b> : chiffré et/ou par dépôt sécurisé.</li>
+  </ul></div>
+  <div class="card"><h4>Restitution orale finale</h4>
+  <ul>
+    <li><b>Comité restreint</b> (commanditaire et quelques internes) : la plus authentique.</li>
+    <li><b>Direction (codir)</b> : plus politique et vulgarisée.</li>
+    <li><b>Avec les acteurs concernés</b>, internes ou non : la plus risquée et la plus technique.</li>
+  </ul></div>
+</div>
+
+<div class="grid c2">
+  <div class="card"><h4>Contenu négociable des livrables</h4>
+  <ul>
+    <li>Liste des problèmes constatés</li>
+    <li>Liste des remédiations possibles</li>
+    <li>Priorisation des actions à mener</li>
+    <li>Accompagnement post-évaluation : sensibilisation, formation, résolution. Attention, c'est un
+    <b>risque éthique</b> : l'auditeur qui vend ensuite la correction n'est plus tout à fait
+    indépendant.</li>
+  </ul></div>
+  <div class="card"><h4>Nettoyage des traces</h4>
+  <ul>
+    <li><b>Délai de conservation</b> des traces avant destruction</li>
+    <li><b>Modalités de conservation</b> des livrables</li>
+  </ul>
+  <p style="font-size:.88rem;color:var(--fg-soft);margin-bottom:0">À fixer dans le contrat dès le
+  départ.</p></div>
+</div>
+
+<div class="callout warn"><div class="t">RETEX : les problèmes nés d'une mauvaise préparation</div>
+<ul style="margin-bottom:0">
+  <li><b>Non-paiement</b> après la contestation d'un livrable mal défini.</li>
+  <li><b>Mauvaise lecture du contexte sociétal</b> : objectif caché de licencier un collaborateur ;
+  sabotage ou détresse d'un technicien ; réaction disproportionnée des non-techniques.</li>
+  <li><b>Mauvaise prise en compte du domaine</b> : missions du client mal comprises ; découverte de
+  textes qui remettent en cause tout ou partie de la mission.</li>
+  <li><b>Mauvaise prise en compte du contexte</b> : périmètre faux, équipement inadapté, surprises
+  locales, auditeur inadapté (pression, prérequis techniques ou linguistiques).</li>
+</ul>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch9"><span class="num">9.</span> Types d'évaluation et situations de départ</h2>
+
+<h3 id="ch9-mots">9.1 Les mots-clés à connaître</h3>
+<div class="tw"><table>
+<thead><tr><th>Famille</th><th>Exemples</th></tr></thead>
+<tbody>
+<tr><td><b>Organisationnelles</b></td><td>Audit de (cyber)sécurité, audit de conformité, évaluation des risques, évaluation de la maturité</td></tr>
+<tr><td><b>Techniques</b></td><td>Test d'intrusion (pentest), analyse des vulnérabilités, audit de code, audit de configuration, audit d'architecture</td></tr>
+<tr><td><b>Opérationnelles</b></td><td>Red teaming, simulation de crise</td></tr>
+</tbody></table></div>
+
+<h3 id="ch9-trois">9.2 Au fond, seulement trois types</h3>
+<div class="viz">
+  <div class="t">Ce qui les distingue : la référence par rapport à laquelle on évalue</div>
+  <div class="vz-grid g3">
+    <button class="vz-c k-purple"><span class="n">Référence : les risques de l'entreprise</span><h5>Évaluation du risque</h5>
+      <span class="q">Analyse interne, préalable et indispensable</span>
+      <span class="more"><span class="t">Pourquoi en premier</span>Sans elle, on ne sait pas ce qu'on protège ni ce qu'on
+      cherche. Elle conditionne tout le reste (EBIOS RM, MEHARI…).</span></button>
+    <button class="vz-c k-amber"><span class="n">Référence : un texte précis</span><h5>Contrôle ou audit de conformité</h5>
+      <span class="q">Par rapport à une norme ou un texte donné</span>
+      <span class="more"><span class="t">Exemple</span>Vérifier les exigences de NIS 2, d'une norme ISO 27001 ou d'une
+      politique interne.</span></button>
+    <button class="vz-c k-blue"><span class="n">Référence : l'état de l'art</span><h5>Audit</h5>
+      <span class="q">Par rapport aux bonnes pratiques du moment</span>
+      <span class="more"><span class="t">Exemple</span>Un audit de sécurité ou un pentest qui juge le SI à l'aune de ce
+      qui se fait de mieux, pas d'un texte.</span></button>
+  </div>
+  <div class="vz-bar">
+    <button class="btn" data-cards="open">Tout déplier</button>
+    <button class="btn ghost" data-cards="close">Tout replier</button>
+    <span class="cnt"></span>
+  </div>
+</div>
+
+<h3 id="ch9-boites">9.3 Trois situations de départ</h3>
+<div class="viz">
+  <div class="t">Choisissez une situation</div>
+  <div class="box-pick" id="boxPick">
+    <button data-k="blanche" aria-pressed="true">Boîte blanche</button>
+    <button data-k="grise" aria-pressed="false">Boîte grise</button>
+    <button data-k="noire" aria-pressed="false">Boîte noire</button>
+  </div>
+  <div class="meter">
+    <span>Informations données à l'auditeur</span><div class="bar"><i id="m-info"></i></div>
+    <span>Personnes informées chez le client</span><div class="bar"><i id="m-pers" class="alt"></i></div>
+    <span>Réalisme de la situation</span><div class="bar"><i id="m-real"></i></div>
+  </div>
+  <div class="box-out" id="boxOut"></div>
+</div>
+
+<div class="tw"><table>
+<thead><tr><th></th><th>Boîte blanche</th><th>Boîte grise</th><th>Boîte noire</th></tr></thead>
+<tbody>
+<tr><td><b>Ce que sait l'auditeur</b></td><td><b>Toutes</b> les informations nécessaires</td><td><b>Quelques</b> informations utiles</td><td>Seulement l'<b>identité de la cible</b></td></tr>
+<tr><td><b>Qui est informé</b></td><td>Les personnes concernées</td><td>Seulement quelques-unes</td><td>Très peu de personnes</td></tr>
+<tr><td><b>Ce qu'espère l'audité</b></td><td>Un résultat <b>complet et fiable</b></td><td>Des réponses <b>qualitatives</b> à une question plus <b>ciblée</b></td><td><b>Mesurer son niveau</b> dans un contexte plus <b>réaliste</b></td></tr>
+</tbody></table></div>
+
+<!-- ===================================================================== -->
+<h2 id="ch10"><span class="num">10.</span> Bien se préparer</h2>
+
+<div class="callout ok"><div class="t">La préparation est essentielle</div>
+<ul style="margin-bottom:0">
+  <li>Rédiger un <b>contrat validé par un juriste</b>, au moins la trame de base.</li>
+  <li>Prévoir un <b>temps d'appropriation</b> si le domaine est nouveau, pour ne pas être « hors sol »
+  pendant la visite (vocabulaire inconnu).</li>
+  <li>Disposer de <b>procédures sérieuses, testées mais adaptables</b>.</li>
+  <li>Préparer les auditeurs sur les plans <b>humain</b> (comportement, tenue), <b>organisationnel</b>
+  (procédures, précautions) et <b>technique</b>.</li>
+  <li>Préparer le <b>matériel</b> (et ne pas compter sur le Wi-Fi de l'hôtel).</li>
+</ul>
+</div>
+
+<h3 id="ch10-juridique">10.1 Mesurer les risques encourus : le contrat (TP 1)</h3>
+<p>Le TP 1 porte sur <b>l'importance du contrat d'audit</b> : repérer les points juridiques qu'on aurait
+pu rater, ou qui sont les plus durs à respecter. Le support ne détaille pas les textes. Ce qui suit est
+le socle juridique général à connaître pour comprendre le TP.</p>
+
+<div class="callout danger"><div class="t">Pourquoi le contrat est vital</div>
+Sans autorisation, un test d'intrusion est une <b>infraction</b> : accès ou maintien frauduleux dans un
+système de traitement automatisé de données (<b>art. 323-1 du Code pénal</b>), et entrave ou atteinte
+aux données si le test perturbe ou modifie quelque chose (art. 323-2 et 323-3). C'est
+l'<b>autorisation écrite</b> de celui qui a le droit de la donner qui rend le test légal. Détenir des
+outils d'attaque n'est permis qu'avec un <b>motif légitime</b>, comme la recherche ou la sécurité
+informatique (art. 323-3-1).
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>Ce que le contrat doit verrouiller</th><th>Le risque s'il manque</th></tr></thead>
+<tbody>
+<tr><td><b>Qui autorise</b> : une personne qui en a réellement le pouvoir, pour <b>chaque</b> système testé</td><td>Un serveur hébergé chez un tiers (cloud, infogérant) ou un prestataire non informé : leur accord est aussi nécessaire. Le contrat client ne suffit pas.</td></tr>
+<tr><td><b>Périmètre précis</b> : adresses, applications, sites, dates et horaires</td><td>Sortir du périmètre, c'est sortir de l'autorisation.</td></tr>
+<tr><td><b>Méthodes autorisées et interdites</b> : déni de service, ingénierie sociale, phishing, intrusion physique</td><td>Une action non prévue (phishing, test en production) engage la responsabilité de l'auditeur.</td></tr>
+<tr><td><b>Suspension et arrêt</b>, contacts d'urgence des deux côtés</td><td>Un incident en cours de test sans personne à prévenir.</td></tr>
+<tr><td><b>Responsabilité</b> en cas de dommage, assurance</td><td>Une interruption de production provoquée par l'audit.</td></tr>
+<tr><td><b>Confidentialité, données rencontrées, conservation et destruction</b> des traces et des livrables</td><td>L'auditeur détient des données sensibles, voire personnelles (RGPD), et des mots de passe qu'il n'aurait jamais dû voir.</td></tr>
+<tr><td><b>Livrables définis</b> : contenu, forme, mode de remise</td><td>Contestation du livrable et non-paiement.</td></tr>
+</tbody></table></div>
+
+<h3 id="ch10-passi">10.2 Focus sur les PASSI</h3>
+<div class="callout def"><div class="t">PASSI — Prestataire d'Audit de la Sécurité des Systèmes d'Information</div>
+<b>Qualification délivrée par l'ANSSI</b>. Elle garantit qu'un organisme dispose des
+<b>compétences</b>, des <b>moyens organisationnels</b> et des <b>garanties</b> suffisantes pour intervenir
+sur des SI <b>critiques ou sensibles</b>.
+<ul style="margin-bottom:0">
+  <li>Elle concerne la <b>société</b> (personne morale), <b>son SI</b>, <b>ses procédures</b> et <b>ses
+  auditeurs</b> (personnes physiques).</li>
+  <li>Le recours à un PASSI est <b>imposé pour les OIV et les OSE</b> (LPM).</li>
+  <li>Référentiel d'exigences <b>version 2.2 du 1<sup>er</sup> août 2024</b>. La liste des PASSI est
+  publiée par l'ANSSI.</li>
+</ul>
+</div>
+
+<div class="grid c2">
+  <div class="card"><h4>Difficultés pour les sociétés d'audit</h4>
+  <ul><li>Coût élevé pour devenir PASSI</li><li>Contraintes techniques fortes</li><li>Procédures organisationnelles rigides</li><li>Procédure de qualification critiquable sur le plan éthique</li></ul></div>
+  <div class="card"><h4>Difficultés pour les clients</h4>
+  <ul><li>Liste de prestataires limitée</li><li>Tarifs plus élevés, pour compenser l'investissement</li></ul></div>
+</div>
+
+<div class="callout"><div class="t">L'infrastructure d'un prestataire d'audit (seconde partie du TP 1)</div>
+Le référentiel PASSI exige du prestataire une infrastructure qui protège les données de ses clients.
+Les grandes lignes à savoir décrire :
+<ul style="margin-bottom:0">
+  <li>Un <b>SI dédié aux activités d'audit</b>, protégé et maîtrisé, distinct du SI bureautique.</li>
+  <li><b>Cloisonnement entre les missions et les clients</b> : les données d'un client ne côtoient pas
+  celles d'un autre.</li>
+  <li><b>Postes d'audit dédiés</b>, maîtrisés, remis à zéro entre deux missions, avec des
+  <b>outils maîtrisés et à jour</b>.</li>
+  <li><b>Chiffrement</b> des données d'audit, au stockage comme au transport.</li>
+  <li><b>Locaux sécurisés</b> à accès contrôlé.</li>
+  <li><b>Destruction</b> des données à l'issue de la mission, selon la convention.</li>
+  <li>Côté organisation : <b>convention d'audit</b> signée, auditeurs <b>qualifiés</b> et tenus à la
+  <b>confidentialité</b>, traçabilité des actions.</li>
+</ul>
+</div>
+
+<h3 id="ch10-veille">10.3 Se former et faire de la veille (TP 2)</h3>
+<p>Les outils évoluent si vite, IA comprise, qu'aucun n'est durablement « le meilleur ». La compétence
+attendue est de <b>savoir faire de la veille</b> : chercher l'outil adapté au contexte, et savoir
+<b>quand utiliser l'IA et quand travailler à la main</b>. Le TP 2 consiste à choisir chacun un outil
+et à le confronter aux autres sur une même machine volontairement vulnérable.</p>
+
+<h3 id="ch10-pc">10.4 Préparer son PC d'audit</h3>
+<div class="grid c2">
+  <div class="card"><h4>Des outils à jour : compiler depuis les sources</h4>
+  <p><b>OpenVAS</b> est un scanner de vulnérabilités libre, utilisé pour <b>auditer un PC de
+  l'intérieur</b>. Comme un antivirus, il y a le logiciel et sa <b>base de tests de vulnérabilités</b>.</p>
+  <p>Une VM ou un paquet précompilé a toujours un <b>retard</b> sur les dernières vulnérabilités
+  intégrées au code source. Une mission démarre avec des outils <b>à jour</b> : quand c'est
+  nécessaire, on <b>récupère le code source et on compile soi-même</b>.</p>
+  <p style="margin-bottom:0">La vraie difficulté : <b>savoir lire les messages d'erreur</b>. Mieux vaut
+  l'apprendre en TP que juste avant une mission facturée cher.</p></div>
+  <div class="card"><h4>Voyager avec du matériel d'audit</h4>
+  <p>Certaines <b>douanes</b> peuvent exiger d'allumer un PC et d'en fournir les mots de passe.</p>
+  <ul>
+    <li><b>Aujourd'hui :</b> partir avec un <b>PC vierge</b>. Les données repartent au fil de l'eau
+    vers le labo par <b>VPN</b> et ne restent pas sur la machine.</li>
+    <li><b>Autrefois :</b> un conteneur chiffré <b>à double mot de passe</b> (TrueCrypt, ancêtre de
+    VeraCrypt). Le premier ouvre un <b>volume leurre</b> crédible, le second le <b>volume caché</b>. Il
+    fallait dimensionner les deux pour que l'espace occupé par le volume caché ne se remarque pas.</li>
+  </ul></div>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch11"><span class="num">11.</span> Conduite d'une évaluation : avant, pendant, après</h2>
+
+<p>Le déroulé type d'une mission menée par un labo d'école (CNS) avec un senior et des juniors.</p>
+
+<div class="phase-band">
+  <div class="av"><b>Avant l'audit</b>Vendre, contractualiser, se préparer</div>
+  <div class="pe"><b>Pendant l'audit</b>Visiter, investiguer, rédiger</div>
+  <div class="ap"><b>Après l'audit</b>Clôturer, nettoyer</div>
+</div>
+
+<div class="viz">
+  <div class="t">Les étapes, dans l'ordre</div>
+  <div class="vz-bar" style="margin:0 0 6px"><button class="btn primary" onclick="playSteps('anim-mission')">▶ Lancer l'animation</button><button class="btn ghost" onclick="resetSteps('anim-mission')">Tout afficher</button></div>
+  <div class="steps" id="anim-mission">
+    <div class="step"><b>1. Phase commerciale</b> <span class="who">avant</span><br>Réunion de présentation du labo, de ses particularités et de ses offres.</div>
+    <div class="step"><b>2. Phase contractuelle</b> <span class="who">avant</span><br>Rédaction et <b>signature du contrat par tous les intervenants</b> : auditeurs senior et junior côté prestataire, commanditaire et responsable technique côté client.</div>
+    <div class="step"><b>3. Phase préparatoire et OSINT</b> <span class="who">avant</span><br>Comprendre le contexte et le client : <b>lire les documents</b>, faire de l'<b>OSINT</b>, se préparer.</div>
+    <div class="step"><b>4. Visite sur site — le senior</b> <span class="who">pendant</span><br><b>Tour du site la veille</b>, entretien collectif (avec le junior), puis <b>entretiens individuels</b>. <b>Compte rendu à chaud le soir.</b></div>
+    <div class="step"><b>5. Visite sur site — le junior</b> <span class="who">pendant</span><br>Tour du site la veille, entretien collectif (avec le senior), puis <b>actions techniques obligatoires</b>. <b>Compte rendu à chaud le soir.</b></div>
+    <div class="step"><b>6. Investigation depuis le labo</b> <span class="who">pendant</span><br>Analyse technique à distance, <b>comptes rendus hebdomadaires</b>. <b>Rédaction du rapport et gestion des preuves au fil de l'eau.</b></div>
+    <div class="step"><b>7. Rédiger le rapport</b> <span class="who">pendant</span><br>Rédiger, <b>démontrer</b>, prendre des décisions, <b>proposer</b>. <b>Maîtriser l'impact des mots utilisés.</b></div>
+    <div class="step"><b>8. Réunion de clôture</b> <span class="who">après</span><br><b>Soutenance orale</b> du rapport par le junior, <b>signature du PV de clôture</b> obtenue par le senior. La mission est clôturée.</div>
+    <div class="step"><b>9. Nettoyage du labo</b> <span class="who">après</span><br><b>Suppression des traces</b> informatiques et des documents de travail, <b>30 jours après la réunion de clôture</b>, comme prévu au contrat.</div>
+  </div>
+</div>
+
+<div class="callout"><div class="t">Pourquoi auditer à distance après une courte visite</div>
+Un auditeur sur place est pesant pour le client : il faut l'escorter partout, lui réserver un bureau,
+lui apporter chaque document demandé. Et l'auditeur travaille sous le regard permanent de l'audité.
+D'où le schéma : <b>un ou deux jours sur site</b>, indispensables pour l'empathie, la relation et la
+visite des locaux, puis un <b>PC relais</b> laissé chez le client pour <b>auditer depuis le labo</b>,
+sans pression physique.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch12"><span class="num">12.</span> Posture, communication et restitution</h2>
+
+<h3 id="ch12-prive">12.1 Une découverte privée ne va pas dans le rapport</h3>
+<p>Le rapport <b>circule</b> : DSI, direction, parfois au-delà. Une information <b>intime ou
+compromettante</b> sur une personne, par exemple trouvée en OSINT, ne s'y écrit jamais.</p>
+<div class="steps">
+  <div class="step"><b>1. Se demander si c'est un risque pour l'entreprise.</b> Peut-elle servir à faire
+  pression sur la personne, et donc sur la société (chantage, ingénierie sociale) ? Si non, on n'en parle
+  même pas.</div>
+  <div class="step"><b>2. Si oui, ne rien écrire « en dur ».</b> Personne d'autre ne doit pouvoir lire
+  l'information.</div>
+  <div class="step"><b>3. Demander un entretien <i>off</i>, séparé de la restitution.</b> Pas un « j'ai
+  autre chose à vous dire » à la fin de la réunion, qui jetterait la suspicion devant tout le monde.</div>
+  <div class="step"><b>4. Présenter le fait et le risque, sans jugement</b>, en s'adaptant à
+  l'interlocuteur. La décision lui appartient.</div>
+</div>
+
+<h3 id="ch12-ecrit">12.2 Les écrits restent : le parapluie</h3>
+<div class="callout def"><div class="t">Le principe</div>
+<b>La cybersécurité ne supprime pas tous les risques.</b> On a conscience d'un risque, on met en place des
+mesures, et on est <b>conscient des risques résiduels</b>. C'est le dirigeant qui paie et qui décide.
+Le rôle de l'auditeur est de <b>dire</b> le risque, et de l'<b>écrire</b>.
+</div>
+<div class="key-points">
+  <li><b>Pour convaincre</b> un décideur réticent, trouver l'<b>exemple d'une entreprise comparable
+  qui a subi exactement ce risque</b>. Sans exemple concret, l'argument est faible : une mesure de
+  sécurité est une assurance qui coûte cher.</li>
+  <li><b>Si le décideur refuse</b> : envoyer une <b>synthèse écrite</b> des risques et des options, et
+  <b>demander la confirmation de son choix</b>. Il assume ainsi le risque résiduel, et l'auditeur est
+  couvert. Pour un risque non traité, prévoir au moins des <b>contrôles réguliers</b>.</li>
+  <li><b>Attention</b> : « sauf erreur de ma part… », « j'attends toujours votre réponse… » sont
+  perçus comme agressifs. Le faire avec tact : « mon rôle est de vous le dire, la décision vous
+  appartient, voici une synthèse à relire à tête reposée ».</li>
+</div>
+
+<div class="callout warn"><div class="t">Le mail écrit sous la colère</div>
+<ul style="margin-bottom:0">
+  <li><b>Ne jamais renseigner le destinataire en premier.</b></li>
+  <li>Écrire un premier jet sans filtre pour évacuer la colère.</li>
+  <li><b>Faire une pause</b> (café, repas), puis relire à tête reposée.</li>
+  <li>Décider en conscience, ton factuel, puis seulement ajouter le destinataire.</li>
+</ul>
+</div>
+
+<h3 id="ch12-phishing">12.3 Les tests qui touchent les personnes</h3>
+<p>Une campagne de phishing peut dégénérer. Un scénario trop crédible peut déclencher une <b>chasse aux
+sorcières</b> interne, ou faire recevoir aux auditeurs de <b>vrais mots de passe sensibles</b> qu'ils
+n'auraient jamais dû voir. D'où la règle :</p>
+<div class="exam"><div class="t">Avant toute action sur les personnes</div>
+<b>Lire les textes internes</b> pour savoir ce qu'on a le droit de faire et comment. Au moindre doute,
+<b>consulter le juriste</b>. Mesurer l'impact humain du scénario, et prévoir de pouvoir <b>arrêter</b> la
+campagne.
+</div>
+
+<h3 id="ch12-statut">12.4 S'adapter à l'interlocuteur</h3>
+<p>Le même message ne se présente pas de la même façon à tous. Certains interlocuteurs rejettent un avis
+à cause du <b>statut</b> de celui qui le donne (« vous êtes stagiaire »). On s'adapte, on parle en
+privé plutôt que devant les autres, on évite de mettre la personne en difficulté, et on garde une trace
+écrite. <b>Rester éthique</b> en toutes circonstances, et assumer ses erreurs.</p>
+
+<!-- ===================================================================== -->
+<h2 id="ch13"><span class="num">13.</span> Les règles d'or</h2>
+
+<div class="steps">
+  <div class="step"><b>Avoir un organisme structuré</b> : procédures, outils, veille.</div>
+  <div class="step"><b>Bien cadrer la mission</b> : le périmètre.</div>
+  <div class="step"><b>Prendre le temps de comprendre le client</b> : lire, apprendre son vocabulaire, faire de l'OSINT.</div>
+  <div class="step"><b>Préparer son PC d'audit</b> : choisir ses outils, anticiper.</div>
+  <div class="step"><b>Collecter les preuves et tenir un journal de bord.</b></div>
+  <div class="step"><b>Prendre plaisir à choisir les mots</b>, à communiquer.</div>
+  <div class="step"><b>Tout nettoyer</b>, même ce qui est « cool ».</div>
+  <div class="step"><b>Rester éthique.</b></div>
+  <div class="step"><b>Être fier de son travail</b> et espérer une évolution du client.</div>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch14"><span class="num">14.</span> S'entraîner : commenter une situation en auditeur</h2>
+
+<p>L'interro proposera un problème à commenter <b>comme dans un rapport d'audit</b>. Pour chaque cas :
+lisez la situation, formulez votre analyse, puis dépliez la réponse. La trame d'une bonne réponse :
+<b>constat → risque pour l'entreprise → recommandation priorisée → ce qu'il faut tracer</b>.</p>
+
+<details class="case"><summary>Cas 1 — Le client réclame un pentest<span class="sit">Une PME demande un test d'intrusion de son serveur principal. Lors du premier échange, on apprend que tous les salariés partagent le même mot de passe et qu'il n'existe aucun inventaire.</span></summary>
+<div><p><b>Analyse :</b> un pentest maintenant serait de l'argent mal dépensé. Il trouverait des failles
+évidentes que des mesures d'hygiène corrigent à moindre coût.</p>
+<p><b>Recommandation :</b> conseiller d'abord un <b>contrôle des bases</b> (comptes et mots de passe,
+inventaire, mises à jour), puis un pentest une fois ce socle en place. Savoir conseiller le bon type
+d'évaluation fait partie du métier. Rappeler aussi qu'il faut d'abord savoir <b>ce qui a de la valeur</b>
+(évaluation du risque).</p></div></details>
+
+<details class="case"><summary>Cas 2 — « Nous avons un PCA »<span class="sit">Une entreprise mono-site, dont le cœur de métier n'est pas l'informatique, affirme avoir un plan de continuité. Ses sauvegardes sont sur bandes, dans le même bâtiment.</span></summary>
+<div><p><b>Constat :</b> ce n'est pas un PCA. Sans second site physique distinct, l'activité ne peut pas
+continuer pendant un sinistre. C'est au mieux un PRA, et un PRA fragile : des sauvegardes dans le même
+bâtiment disparaissent avec lui.</p>
+<p><b>Recommandation :</b> assumer un <b>PRA</b>, cohérent avec ses moyens et son métier ; mettre une
+copie des sauvegardes <b>hors site</b> ; tester la restauration. Tracer le choix « pas de PCA » et sa
+raison (coût disproportionné).</p></div></details>
+
+<details class="case"><summary>Cas 3 — Une découverte OSINT gênante<span class="sit">Pendant la phase OSINT, l'auditeur trouve le dirigeant inscrit, avec sa photo professionnelle, sur un site de rencontres compromettant.</span></summary>
+<div><p><b>Analyse :</b> la vie privée n'est pas l'affaire de l'auditeur. Mais l'information est
+publique et peut servir à faire <b>pression</b> sur le dirigeant, donc sur l'entreprise (chantage,
+ingénierie sociale) : c'est un risque.</p>
+<p><b>Ce qu'il faut faire :</b> <b>ne rien écrire dans le rapport</b>, qui circule. Demander un
+<b>entretien en privé</b>, séparé de la restitution, exposer le fait et le risque sans jugement, lui
+laisser la décision.</p></div></details>
+
+<details class="case"><summary>Cas 4 — Le dirigeant refuse la mesure<span class="sit">L'auditeur recommande de chiffrer les sauvegardes et de les isoler. Le dirigeant refuse : trop cher, « ça ne nous arrivera pas ».</span></summary>
+<div><p><b>Analyse :</b> c'est son droit, c'est lui qui paie et qui porte le risque. La cybersécurité ne
+supprime pas tous les risques : elle les rend <b>conscients</b>.</p>
+<p><b>Ce qu'il faut faire :</b> chercher l'<b>exemple d'une entreprise comparable</b> touchée par ce
+risque. Si le refus persiste, envoyer une <b>synthèse écrite</b> (risque, options, coût) et demander la
+<b>confirmation écrite du choix</b> : le risque résiduel est accepté par le décideur. Proposer des
+<b>contrôles réguliers</b> à défaut de la mesure.</p></div></details>
+
+<details class="case"><summary>Cas 5 — Le scan de la plage d'adresses<span class="sit">Un auditeur lance un scan agressif avec détection d'OS sur toute une plage d'un site industriel. Un automate s'arrête et la ligne de production stoppe.</span></summary>
+<div><p><b>Analyse :</b> faute de l'auditeur. Les sondes atypiques du fingerprinting peuvent faire
+planter des équipements fragiles (imprimantes, automates, embarqué). L'auditeur reste dans le
+« défendre » : il n'a jamais le droit de casser la production.</p>
+<p><b>Ce qu'il fallait faire :</b> vérifier le <b>périmètre</b> et ce qu'il contient, se demander si
+l'on est <b>en production</b>, exclure ou traiter à part les équipements sensibles, <b>tester</b> d'abord,
+et prévoir au contrat la <b>suspension</b> et les contacts d'urgence.</p></div></details>
+
+<details class="case"><summary>Cas 6 — Un audit commandé pour de mauvaises raisons<span class="sit">Un directeur commande un audit centré sur « la qualité du travail de l'administrateur système ». En interview, l'administrateur paraît épuisé et méfiant.</span></summary>
+<div><p><b>Analyse :</b> signe possible d'un <b>objectif caché</b> : évaluer la personne, voire préparer
+son départ. Il y a un risque de crise humaine et un risque éthique pour l'auditeur.</p>
+<p><b>Ce qu'il faut faire :</b> recadrer la mission sur les <b>systèmes et les processus</b>, pas sur la
+personne ; rester factuel et sans humour dans le rapport ; signaler les causes organisationnelles
+(charge, absence de remplaçant, mots de passe partagés faute d'organisation).</p></div></details>
+
+<details class="case"><summary>Cas 7 — Le serveur chez l'hébergeur<span class="sit">Le client signe la convention pour un test d'intrusion de son application. L'application tourne chez un hébergeur cloud qui n'a pas été prévenu.</span></summary>
+<div><p><b>Analyse :</b> le client n'a pas forcément le pouvoir d'autoriser des tests sur une
+infrastructure qui ne lui appartient pas. Tester sans l'accord de l'hébergeur, c'est sortir de
+l'autorisation (accès frauduleux, art. 323-1 du Code pénal), et violer peut-être le contrat
+d'hébergement.</p>
+<p><b>Ce qu'il faut faire :</b> obtenir l'<b>accord de l'hébergeur</b> ou vérifier ses conditions de
+test, l'inscrire au contrat avec le périmètre exact. Plus généralement : un prestataire concerné
+est-il informé, et son contrat permet-il l'audit ?</p></div></details>
+
+<!-- ===================================================================== -->
+<h2 id="qcm-sec"><span class="num">15.</span> QCM — <span id="count-badge" class="badge acc"></span></h2>
+<p><b>Une seule bonne réponse par question</b>, ordre tiré au hasard, correction expliquée. Les
+chapitres suivent ceux de la fiche.</p>
+<div id="qcm"></div>
+
+  </main>
+</div>
+
+<button id="top" title="Haut de page">↑</button>
+<script src="qcm.js?v=1"></script>
+<script src="../assets/app.js?v=33"></script>
+<script>initQCM(window.QCM_DATA, window.QCM_CHAPTERS, 'inf5049');</script>
+<script>
+(function () {
+  var D = {
+    blanche: { info: 100, pers: 100, real: 25,
+      txt: "<b>Boîte blanche.</b> L'auditeur dispose de toutes les informations nécessaires et les personnes concernées sont informées. L'audité espère un résultat <b>complet et fiable</b>." },
+    grise: { info: 50, pers: 35, real: 60,
+      txt: "<b>Boîte grise.</b> L'auditeur dispose de quelques informations utiles, et seules quelques personnes sont informées. L'audité espère des réponses <b>qualitatives à une question plus ciblée</b>." },
+    noire: { info: 8, pers: 8, real: 100,
+      txt: "<b>Boîte noire.</b> L'auditeur ne connaît que l'identité de la cible, et très peu de personnes sont informées. L'audité veut <b>mesurer son niveau dans un contexte plus réaliste</b>." }
+  };
+  var pick = document.getElementById('boxPick');
+  if (!pick) return;
+  function show(k) {
+    var d = D[k];
+    document.getElementById('m-info').style.width = d.info + '%';
+    document.getElementById('m-pers').style.width = d.pers + '%';
+    document.getElementById('m-real').style.width = d.real + '%';
+    document.getElementById('boxOut').innerHTML = d.txt;
+    pick.querySelectorAll('button').forEach(function (b) {
+      b.setAttribute('aria-pressed', b.getAttribute('data-k') === k ? 'true' : 'false');
+    });
+  }
+  pick.addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (b) show(b.getAttribute('data-k'));
+  });
+  show('blanche');
+})();
+</script>
+</body>
+</html>

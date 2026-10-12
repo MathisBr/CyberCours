@@ -1,0 +1,115 @@
+/* ============================================================
+   Page d'accueil — sélection d'un cours et de ses ressources.
+   S'appuie sur les jetons de core.css (couleurs, rayons, thèmes).
+   ============================================================ */
+.home { max-width: 1080px; margin: 0 auto; padding: 0 16px 40px; }
+.home-head { padding: 34px 0 6px; }
+.home-head h1 { font-size: 2.1rem; margin: 0 0 6px; letter-spacing: -.02em; }
+.home-head p { color: var(--fg-soft); margin: 0; }
+
+#filtre {
+  flex: 0 1 340px; min-width: 0; padding: 8px 12px; border-radius: 9px; border: 1px solid var(--border);
+  background: var(--bg); color: var(--fg); font-family: inherit; font-size: .9rem;
+}
+
+/* ---- Reprendre ---- */
+.reprise {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  margin: 22px 0 4px; padding: 14px 18px; border-radius: var(--radius);
+  background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  color: var(--fg); text-decoration: none;
+}
+.reprise:hover { border-color: var(--accent); }
+.reprise .lbl { font-size: .72rem; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; color: var(--accent); }
+.reprise .txt { flex: 1; min-width: 200px; }
+.reprise .txt b { display: block; }
+.reprise .txt small { color: var(--fg-soft); }
+.reprise .go { font-weight: 700; color: var(--accent); white-space: nowrap; }
+
+/* ---- Barre d'outils ---- */
+.home-tools { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 22px 0 12px; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chips button {
+  font: inherit; font-size: .84rem; font-weight: 600; cursor: pointer;
+  padding: 6px 13px; border-radius: 999px; border: 1px solid var(--border);
+  background: var(--bg-soft); color: var(--fg-soft);
+}
+.chips button:hover { border-color: var(--accent); color: var(--fg); }
+.chips button[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.chips button span { opacity: .65; font-weight: 500; margin-left: 4px; }
+#resultat { margin-left: auto; font-size: .82rem; color: var(--fg-mute); }
+
+/* ---- Grille des cours ---- */
+.course-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 440px), 1fr)); }
+.cours {
+  --k: var(--accent);
+  display: flex; flex-direction: column; gap: 12px;
+  background: var(--bg-soft); border: 1px solid var(--border); border-radius: var(--radius);
+  border-top: 4px solid var(--k); padding: 18px 20px 16px; box-shadow: var(--shadow);
+}
+.cours.k-red { --k: var(--d-red); }
+.cours.k-amber { --k: var(--d-amber); }
+.cours.k-blue { --k: var(--d-blue); }
+.cours.k-green { --k: var(--d-green); }
+.cours.k-purple { --k: var(--d-purple); }
+html[data-theme="dark"] .cours.k-red { --k: #f0707e; }
+html[data-theme="dark"] .cours.k-amber { --k: #e3a54a; }
+html[data-theme="dark"] .cours.k-blue { --k: #6aa8ff; }
+html[data-theme="dark"] .cours.k-green { --k: #4cc38a; }
+html[data-theme="dark"] .cours.k-purple { --k: #b391f2; }
+.cours.vedette { grid-column: 1 / -1; }
+
+.cours-top { display: flex; align-items: center; gap: 8px; }
+.cours-top .code { font-family: var(--mono); font-size: .78rem; font-weight: 700; color: var(--k); letter-spacing: .05em; }
+.etat { font-size: .68rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; }
+.etat.en-cours { background: var(--k); color: var(--bg-soft); }
+.etat.termine { background: var(--bg-alt); color: var(--fg-mute); border: 1px solid var(--border); }
+.cours h2 { margin: 0; font-size: 1.28rem; line-height: 1.25; border: 0; padding: 0; }
+.cours .resume { margin: 0; color: var(--fg-soft); font-size: .92rem; }
+
+/* ---- Ressources ---- */
+.ress { display: grid; gap: 8px; }
+.cours.vedette .ress { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+.res {
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 4px 12px;
+  padding: 11px 14px; border-radius: 10px; text-decoration: none; color: var(--fg);
+  background: var(--bg-alt); border: 1px solid transparent; transition: border-color .15s, transform .15s;
+}
+.res:hover, .res:focus-visible { border-color: var(--k); transform: translateX(2px); }
+.res:focus-visible { outline: 2px solid var(--k); outline-offset: 2px; }
+.res .tag {
+  font-size: .64rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase;
+  padding: 3px 7px; border-radius: 6px; color: var(--k); background: var(--bg-soft);
+  border: 1px solid color-mix(in srgb, var(--k) 40%, transparent); min-width: 64px; text-align: center;
+}
+.res .rt { min-width: 0; }
+.res .rt b { display: block; font-size: .93rem; }
+.res .rt small { display: block; color: var(--fg-mute); font-size: .8rem; line-height: 1.35; }
+.res .meta { font-size: .78rem; color: var(--fg-soft); text-align: right; white-space: nowrap; }
+.res .bar { grid-column: 1 / -1; height: 4px; border-radius: 999px; background: var(--border-soft); overflow: hidden; }
+.res .bar i { display: block; height: 100%; width: 0; background: var(--k); border-radius: 999px; transition: width .6s ease; }
+
+/* ---- Programme ---- */
+.prog { border-top: 1px dashed var(--border); padding-top: 8px; }
+.prog summary { cursor: pointer; font-size: .84rem; font-weight: 600; color: var(--fg-soft); list-style: none; }
+.prog summary::-webkit-details-marker { display: none; }
+.prog summary::before { content: "▸ "; color: var(--k); }
+.prog[open] summary::before { content: "▾ "; }
+.prog ul { margin: 8px 0 0; padding-left: 18px; columns: 2 240px; column-gap: 26px; font-size: .84rem; color: var(--fg-soft); line-height: 1.6; }
+.prog li { break-inside: avoid; }
+.prog li.hit { color: var(--fg); font-weight: 600; }
+.prog li.hit::marker { color: var(--k); }
+
+.vide { grid-column: 1 / -1; text-align: center; color: var(--fg-mute); padding: 40px 0; }
+.home-foot { text-align: center; color: var(--fg-mute); font-size: .82rem; margin-top: 40px; }
+
+@media (max-width: 560px) {
+  /* Marque et thème sur la première ligne, filtre en pleine largeur dessous. */
+  .topbar { flex-wrap: wrap; row-gap: 8px; }
+  #filtre { order: 3; flex: 1 1 100%; }
+  .home-head h1 { font-size: 1.6rem; }
+  .res { grid-template-columns: 1fr auto; }
+  .res .tag { grid-column: 1 / -1; justify-self: start; }
+  #resultat { margin-left: 0; width: 100%; }
+  .topbar .brand small { display: none; }
+}

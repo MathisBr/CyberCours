@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Méthodologie de la sécurité (ENT5003) — fiche de révision</title>
-<link rel="stylesheet" href="assets/core.css?v=27">
-<link rel="stylesheet" href="assets/viz.css?v=10">
+<link rel="stylesheet" href="../assets/core.css?v=27">
+<link rel="stylesheet" href="../assets/viz.css?v=10">
 </head>
 <body>
 
@@ -13,7 +13,7 @@
   <div class="brand"><span class="dot"></span> ENT5003 <small>· Méthodologie de la sécurité</small></div>
   <div class="spacer"></div>
   <input id="search" type="search" placeholder="Rechercher…  (Ctrl+K)">
-  <a class="home" href="index.html">← Accueil</a>
+  <a class="home" href="../index.html">← Accueil</a>
   <button class="btn ghost" onclick="toggleTheme()" title="Thème clair / sombre">◐</button>
   <button class="btn ghost" onclick="window.print()" title="Imprimer / PDF">⎙</button>
 </header>
@@ -177,6 +177,264 @@ fiabilité cyber = <b>maturité</b> × <b>confiance</b>.<br>
 </div>
 
 <!-- ===================================================================== -->
+<!-- ===================================================================== -->
+<h2 id="partiel">★ Le partiel — format et méthode</h2>
+
+<div class="exam"><div class="t">Ce que l'enseignant a annoncé</div>
+<b>Un peu de QCM, mais pas beaucoup.</b> · Des <b>questions à réponse libre</b>. · <b>Une question de
+synthèse sur 8 ou 10 points</b> — une <b>mise en situation</b>, avec la consigne «&nbsp;que
+conseillez-vous de faire dans cette situation&nbsp;?&nbsp;». · <b>Il peut y avoir une question sur
+l'IA.</b>
+<p style="margin-bottom:0">Traduction&nbsp;: <b>la moitié de la note tient sur une seule
+question</b>, et ce n'est pas une question de restitution. C'est une question de <b>méthode</b> — on
+vous note sur votre capacité à <b>dérouler une démarche</b>, pas à réciter des définitions.</p>
+</div>
+
+<h3 id="partiel-plan">★.1 Le plan en six temps pour la question de synthèse</h3>
+
+<p>Quelle que soit la situation décrite — une PME, un hôpital, une collectivité, une startup qui
+déploie de l'IA — <b>le même plan fonctionne</b>. Apprenez-le, il vous évite la page blanche et il
+structure visiblement la copie.</p>
+
+<div class="tw"><table>
+<thead><tr><th style="width:5%">#</th><th style="width:26%">Temps</th><th>Ce que vous écrivez</th></tr></thead>
+<tbody>
+<tr><td><b>1</b></td><td><b>Qualifier l'organisation</b></td><td>Secteur, taille, statut, données traitées, dépendances. <b>Ce sont ces quatre éléments qui déterminent tout le reste</b> — et c'est ce que la mise en situation vous donne en creux. Une phrase&nbsp;: «&nbsp;Nous avons affaire à un <i>[type]</i> qui traite <i>[données]</i>, dépend de <i>[tiers]</i> et relève probablement de <i>[statut]</i>.&nbsp;»</td></tr>
+<tr><td><b>2</b></td><td><b>Poser le cadre applicable</b></td><td>Le <b>triple cadre</b>&nbsp;: les <b>obligations</b> (RGPD toujours si données personnelles · <b>NIS 2</b> selon secteur et taille · <b>LPM</b> si OIV · <b>DORA</b> si finance · code de la santé publique si santé), les <b>normes</b> (ISO 27001 pour le SMSI, ISO 27002 pour les 93 mesures), les <b>méthodes</b> (EBIOS RM). <b>Ne jamais sauter cette étape</b>&nbsp;: c'est elle qui distingue une réponse d'étudiant d'une réponse de consultant.</td></tr>
+<tr><td><b>3</b></td><td><b>Choisir l'approche</b></td><td>Rappeler les <b>quatre approches</b> — système, menace, métier, donnée — et dire <b>laquelle vous prenez d'abord et pourquoi</b>. Réponse quasi toujours gagnante&nbsp;: <b>commencer par l'approche métier</b>, parce qu'on ne sait pas quoi protéger tant qu'on n'a pas identifié ce qui a de la valeur. Et préciser qu'on ne les oppose pas&nbsp;: elles se complètent.</td></tr>
+<tr><td><b>4</b></td><td><b>Conduire l'analyse de risque</b></td><td><b>EBIOS RM</b>, les cinq ateliers nommés avec ce que chacun produit. Si la structure est petite ou pressée&nbsp;: proposer l'<b>approche Flash</b> (ateliers 1 et 5, socle de sécurité et plan d'action) en disant que c'est un choix assumé de profondeur, pas un raccourci.</td></tr>
+<tr><td><b>5</b></td><td><b>Proposer des mesures hiérarchisées</b></td><td>D'abord les <b>quick wins</b> (MFA, sauvegardes testées, mises à jour, sensibilisation, moindre privilège), ensuite les mesures structurantes (segmentation, bastion, journalisation, SOC). <b>Chaque mesure rattachée au risque qu'elle traite</b> — une mesure sans risque nommé ne vaut aucun point.</td></tr>
+<tr><td><b>6</b></td><td><b>Poser la gouvernance et les limites</b></td><td><b>Comité de pilotage</b>, <b>indicateurs</b>, <b>réexamen</b> — l'analyse est un cycle. Puis nommer le <b>risque résiduel</b> qui subsiste et dire qu'il doit être <b>accepté formellement par la direction</b>. <b>Promettre le risque zéro est la faute la plus grave</b> de cette question.</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout ok"><div class="t">Le moyen mnémotechnique</div>
+<b>Qui · Quoi m'oblige · Par où j'attaque le problème · Qu'est-ce que je risque · Que je fais · Qui
+suit.</b>
+<p style="margin-bottom:0">Ou plus court&nbsp;: <b>contexte → cadre → approche → risques → mesures →
+gouvernance</b>. Six paragraphes, trois à cinq phrases chacun&nbsp: c'est le format d'une réponse
+à 8-10 points.</p>
+</div>
+
+<h3 id="partiel-phrases">★.2 Les phrases qui font la différence</h3>
+
+<p>Trois formules à placer&nbsp;: elles montrent que vous avez compris l'esprit du cours, pas seulement
+son contenu.</p>
+
+<div class="callout def"><div class="t">À l'ouverture</div>
+«&nbsp;<b>Les mesures à mettre en place dépendent de l'activité, de l'organisation, de la
+réglementation et des contraintes de l'écosystème.</b> Je commence donc par qualifier ces quatre
+éléments avant de proposer quoi que ce soit.&nbsp;»
+<p style="margin-bottom:0">C'est presque mot pour mot la phrase d'ouverture du cours. Elle vous
+achète la crédibilité pour tout le reste.</p>
+</div>
+
+<div class="callout def"><div class="t">Au moment de proposer des mesures</div>
+«&nbsp;<b>On ne sécurise pas un système, on sécurise une activité.</b> Je hiérarchise donc les mesures
+par le risque métier qu'elles réduisent, et non par leur intérêt technique.&nbsp;»
+</div>
+
+<div class="callout def"><div class="t">En conclusion</div>
+«&nbsp;<b>Le risque zéro n'existe pas.</b> L'objectif n'est pas de supprimer le risque mais de le
+ramener à un niveau que la direction accepte <b>formellement</b>, en connaissance de cause, et de le
+réexaminer à échéance fixe.&nbsp;»
+</div>
+
+<h3 id="partiel-pieges">★.3 Les cinq pièges de la question de synthèse</h3>
+
+<div class="callout danger"><div class="t">Ce qui coûte des points</div>
+<b>1. Sauter au technique.</b> Répondre «&nbsp;il faut un pare-feu, un EDR et un SOC&nbsp;» sans avoir
+qualifié l'organisation ni identifié ce qui a de la valeur. C'est l'erreur la plus fréquente et la plus
+lourde.<br>
+<b>2. Oublier le cadre réglementaire.</b> Aucune situation d'entreprise n'est hors cadre. S'il y a des
+données personnelles, il y a le RGPD. Le dire prend une ligne et rapporte.<br>
+<b>3. Tout miser sur une seule approche.</b> Proposer du zero trust partout, ou seulement de la
+défense en profondeur. L'enseignant insiste&nbsp;: <b>les quatre approches se complètent</b>, et mettre
+une emphase excessive sur une seule est une faiblesse.<br>
+<b>4. Promettre le risque zéro.</b> Ou ne pas parler du risque résiduel du tout.<br>
+<b>5. Des mesures orphelines.</b> Une liste de mesures qui ne dit pas quel risque chacune traite. Le
+lien <b>risque → mesure</b> est exactement ce qu'on vous note.
+</div>
+
+<h3 id="partiel-situations">★.4 Trois mises en situation types, le plan appliqué</h3>
+
+<p>Les situations plausibles vu le contenu du cours. Entraînez-vous à dérouler les six temps sur
+chacune&nbsp;: ce qui change, c'est le <b>cadre</b> et les <b>valeurs métier</b>, pas la méthode.</p>
+
+<div class="tw"><table>
+<thead><tr><th style="width:22%">Situation</th><th style="width:26%">Ce qui change au temps 2 (cadre)</th><th>Les mesures à citer en priorité</th></tr></thead>
+<tbody>
+<tr><td><b>PME industrielle</b> de 80 personnes, victime d'un rançongiciel</td><td>RGPD · probablement <b>hors NIS 2</b> (trop petite, sauf sous-traitance critique) · normes sectorielles du donneur d'ordre · si automates&nbsp;: <b>périmètre OT</b>, penser <b>Cyber PHA</b> et <b>CEI 62443</b></td><td><b>Sauvegardes immuables et testées</b> (le rançongiciel se traite par la restauration avant tout) · <b>MFA</b> sur les accès distants · <b>cloisonnement IT/OT</b> · <b>plan de continuité</b>. Approche Flash&nbsp;: la structure n'a pas les moyens des cinq ateliers.</td></tr>
+<tr><td><b>Établissement de santé</b> ou <b>collectivité</b></td><td><b>RGPD</b> et <b>données de santé</b> · <b>NIS 2 entité essentielle</b> · <b>code de la santé publique</b> · <b>HDS</b> pour l'hébergement · éventuellement <b>OIV / LPM</b></td><td><b>Continuité de la prise en charge</b> avant tout — la valeur métier est le soin, pas le SI · <b>cloisonnement</b> des systèmes biomédicaux · <b>journalisation</b> et détection · <b>plan blanc numérique</b>. Ici la gravité maximale a une composante <b>humaine</b>, à dire explicitement.</td></tr>
+<tr><td><b>Startup</b> qui déploie un <b>service fondé sur l'IA</b></td><td>RGPD (dont <b>décisions automatisées</b>) · <b>AI Act</b> selon le niveau de risque · <b>ISO/CEI 42001</b> pour le management de l'IA · <b>ISO/CEI 23894</b> pour le risque IA · <b>ISO/CEI 42005</b> pour l'analyse d'impact</td><td>Les <b>trois familles de risque IA</b> (§28) · <b>filtrage des entrées et sorties</b> du modèle · <b>traçabilité des décisions</b> · <b>maîtrise des données d'entraînement</b> · <b>supervision humaine</b> sur les décisions à effet juridique. Dire que l'IA ne remplace pas l'analyse de risque&nbsp;: elle en devient un objet.</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="partiel-ia">★.5 La question sur l'IA</h3>
+
+<p>Si elle tombe, elle portera probablement sur l'un de ces trois angles. Le chapitre <a href="#ch28">§28</a>
+les traite en détail&nbsp;; voici de quoi répondre en trois phrases chacun.</p>
+
+<div class="tw"><table>
+<thead><tr><th style="width:34%">Angle probable</th><th>La réponse courte</th></tr></thead>
+<tbody>
+<tr><td><b>Quels risques l'IA fait-elle peser&nbsp;?</b></td><td><b>Trois familles.</b> <b>1.</b> L'IA comme <b>cible ou vecteur</b> d'attaque — empoisonnement des données d'entraînement, <i>prompt injection</i>, vol de modèle, attaques assistées par IA. <b>2.</b> Les risques <b>intrinsèques</b> — hallucinations, biais, dérive du modèle, opacité, sur-confiance de l'utilisateur&nbsp;; <b>ils n'ont pas d'attaquant</b>, c'est ce qui les distingue. <b>3.</b> Les risques <b>causés à des tiers</b> — discrimination, atteinte aux droits fondamentaux.</td></tr>
+<tr><td><b>Comment traite-t-on le risque IA&nbsp;?</b></td><td>Avec les <b>mêmes méthodes</b>, sur un <b>objet nouveau</b>. <b>ISO/CEI 23894</b> pour la gestion du risque IA, <b>ISO/CEI 42001</b> pour le système de management de l'IA (l'équivalent de l'ISO 27001), <b>ISO/CEI 42005</b> pour l'analyse d'impact. Et <b>HUDERIA</b> pour l'impact sur les <b>droits humains, la démocratie et l'État de droit</b> — c'est le cadre du Conseil de l'Europe, il évalue les tiers, pas l'organisation.</td></tr>
+<tr><td><b>En quoi le risque IA diffère-t-il du risque cyber&nbsp;?</b></td><td>Le risque cyber suppose un <b>attaquant</b>&nbsp;; une partie du risque IA n'en a <b>aucun</b> — un modèle qui hallucine ou qui dérive n'est attaqué par personne. Et les <b>victimes</b> ne sont pas les mêmes&nbsp;: le risque cyber frappe l'organisation, le risque IA peut frapper des <b>tiers</b> qui n'ont jamais interagi avec elle. D'où des référentiels distincts.</td></tr>
+</tbody>
+</table></div>
+
+<div class="exam"><div class="t">Si la question de synthèse combine IA et analyse de risque</div>
+C'est le scénario le plus probable vu l'insistance du cours. La bonne réponse&nbsp;: <b>on ne change pas
+de méthode</b>. On conduit EBIOS RM normalement, mais <b>le modèle d'IA devient un bien support</b>, et
+<b>les personnes affectées par ses décisions deviennent des parties prenantes</b> de l'écosystème.
+<p style="margin-bottom:0">Ce qui change vraiment, c'est l'<b>atelier 1</b>&nbsp;: le socle de sécurité
+s'enrichit de l'AI Act et des normes 42001 / 23894, et il faut une <b>analyse d'impact sur les tiers</b>
+(42005, HUDERIA) qu'une analyse cyber classique ne produit pas.</p>
+</div>
+
+<h3 id="partiel-libres">★.6 Les questions à réponse libre — la liste à savoir dérouler</h3>
+
+<p>Une réponse libre se note sur la <b>précision</b>, pas sur la longueur. Pour chacune de ces notions,
+vous devez pouvoir écrire <b>trois à cinq lignes justes</b> sans hésiter.</p>
+
+<div class="tw"><table>
+<thead><tr><th style="width:30%">Notion</th><th>Le noyau de la réponse</th></tr></thead>
+<tbody>
+<tr><td><b>Le triple cadre</b></td><td><b>Obligations</b> (ce qui s'impose) · <b>normes</b> (ce sur quoi on s'aligne) · <b>méthodes</b> (comment on s'y prend). Ne pas confondre&nbsp;: une norme n'oblige pas, sauf si un texte la rend obligatoire ou si un client l'exige.</td></tr>
+<tr><td><b>ISO 27001 vs ISO 27002</b></td><td><b>27001</b> = le <b>SMSI</b>, certifiable, cycle <b>PDCA</b>. <b>27002</b> = le <b>catalogue de 93 mesures</b> (version 2022, contre 114 en 2013), non certifiable&nbsp;: c'est un guide de mise en œuvre.</td></tr>
+<tr><td><b>Les quatre approches</b></td><td>Centrée <b>système</b> (défense en profondeur) · centrée <b>menace</b> (CTI) · centrée <b>métier</b> (analyse de risque) · centrée <b>donnée</b> (zero trust). Elles se complètent&nbsp;; en privilégier une seule est une faiblesse.</td></tr>
+<tr><td><b>Défense en profondeur</b></td><td>Des <b>couches successives</b> et <b>indépendantes</b>&nbsp;: si l'une tombe, les autres tiennent. Ses <b>deux hypothèses contestées</b>&nbsp;: que l'attaquant est à l'extérieur, et que le défenseur est passif. La première mène au <b>zero trust</b>, la seconde à la <b>défense active</b>.</td></tr>
+<tr><td><b>Zero trust</b></td><td><b>Ne jamais faire confiance, toujours vérifier.</b> Trois principes&nbsp;: <b>vérification explicite</b>, <b>moindre privilège</b>, <b>présumer la compromission</b>. La confiance ne se déduit plus de l'<b>emplacement réseau</b>&nbsp;: elle se réévalue à chaque demande d'accès.</td></tr>
+<tr><td><b>PEP / PDP</b></td><td>Le <b>point de décision</b> (PDP) décide, le <b>point d'application</b> (PEP) applique. Le PEP se nourrit de quatre entrées&nbsp;: <b>identité</b>, <b>terminal</b>, <b>politique</b>, <b>protection</b>.</td></tr>
+<tr><td><b>Risque, gravité, vraisemblance</b></td><td><b>Risque = impact × vraisemblance.</b> La <b>gravité</b> se cote sur ce que l'organisation a à perdre, la <b>vraisemblance</b> sur la facilité du chemin d'attaque. Une mesure agit presque toujours sur la <b>vraisemblance</b>, rarement sur la gravité.</td></tr>
+<tr><td><b>Appréciation du risque</b></td><td><b>Appréciation = analyse + évaluation</b>, et <b>analyse = identification + estimation</b>. Deux niveaux, pas trois étapes à plat — c'est le point où les promotions précédentes se trompent.</td></tr>
+<tr><td><b>EBIOS RM en une phrase</b></td><td>La méthode d'<b>appréciation et de traitement du risque numérique</b> publiée par l'<b>ANSSI</b>, maintenue avec le <b>Club EBIOS</b>. Elle identifie les risques <b>les plus représentatifs</b>, pas tous&nbsp;; elle est centrée <b>métier</b>&nbsp;; elle s'applique à une entreprise, un SI <b>ou</b> un système industriel.</td></tr>
+<tr><td><b>Les cinq ateliers</b></td><td><b>1</b> cadrage et socle · <b>2</b> sources de risque · <b>3</b> scénarios stratégiques · <b>4</b> scénarios opérationnels · <b>5</b> traitement. <b>Chaque atelier produit un résultat exploitable</b> — on n'attend pas la fin pour en tirer quelque chose.</td></tr>
+<tr><td><b>Valeur métier vs bien support</b></td><td>La <b>valeur métier</b> est un <b>processus ou une information</b> — ce qui a de la valeur pour le métier. Le <b>bien support</b> est le <b>composant concret</b> qui la porte&nbsp;: numérique, physique <b>ou organisationnel, y compris des personnes</b>.</td></tr>
+<tr><td><b>Le socle de sécurité</b></td><td>L'ensemble des <b>référentiels applicables</b> au périmètre — normes, lois, PSSI. Son livrable n'est <b>pas la liste</b> mais les <b>écarts</b> et leur <b>justification</b>.</td></tr>
+<tr><td><b>Le risque IA</b></td><td>Voir §★.5 ci-dessus&nbsp;: trois familles, dont une <b>sans attaquant</b>.</td></tr>
+</tbody>
+</table></div>
+
+<!-- ===================================================================== -->
+<h2 id="qcm60">★★ Les soixante questions déjà tombées</h2>
+
+<p>La fusion exacte des <b>deux QCM déjà passés</b>&nbsp;: les <b>20 questions du QCM zero trust</b>
+(1 point chacune, 15 septembre) et les <b>40 questions du QCM d'attestation EBIOS RM</b> (0,5 point
+chacune, 16 septembre). Énoncés et réponses officielles, sans reformulation.</p>
+
+<div class="exam"><div class="t">Pourquoi cette section vaut le temps qu'on y passe</div>
+Ce sont les <b>seules questions dont on sait qu'elles viennent du même auteur que l'examen</b>. Elles ne
+retomberont pas telles quelles, mais elles disent trois choses&nbsp;: le <b>niveau de précision</b>
+attendu, le <b>vocabulaire exact</b> employé, et les <b>formats de piège</b> favoris.
+<p style="margin-bottom:0"><b>Le format de loin le plus fréquent&nbsp;: la liste tronquée.</b> On vous
+propose quatre listes, trois sont amputées d'un élément ou en contiennent un de trop. Réflexe&nbsp;:
+<b>compter les éléments avant de lire leur contenu</b>. Second format&nbsp;: la question
+<b>négative</b> — «&nbsp;lequel ne décrit <i>pas</i>&nbsp;», «&nbsp;lequel n'alimente <i>pas</i>&nbsp;».
+Quatre des vingt questions zero trust étaient de ce type.</p>
+</div>
+
+<h3 id="qcm60-zt">★★.1 QCM zero trust — les 20 questions</h3>
+
+<div class="tw"><table>
+<thead><tr><th style="width:4%">N°</th><th style="width:30%">Question</th><th style="width:28%">Réponse officielle</th><th>Ce qu'il fallait savoir</th></tr></thead>
+<tbody>
+<tr><td><b>1</b></td><td>Lequel de ces principes ne décrit pas une mise en œuvre correcte du modèle zero trust&nbsp;?</td><td><b>L'abandon du principe de défense en profondeur</b></td><td>Le support dit «&nbsp;<b>dépasser</b>&nbsp;» la défense en profondeur, jamais l'abandonner. Les trois distracteurs — bascule progressive, limitation du nombre de solutions, dépendance entre piliers — sont des recommandations explicites du cours.</td></tr>
+<tr><td><b>2</b></td><td>Lequel de ces principes ne décrit pas le modèle zero trust&nbsp;?</td><td><b>La volonté de limiter les solutions de sécurité</b></td><td>Les principes sont <b>vérification explicite</b>, <b>moindre privilège</b>, <b>présumer la compromission</b>. Limiter le nombre de solutions est ce qui <b>relie</b> zero trust et SASE — un objectif, pas un principe fondateur.</td></tr>
+<tr><td><b>3</b></td><td>Quel est le principal avantage de la cryptographie homomorphe dans une architecture zero trust&nbsp;?</td><td><b>Permettre le calcul sur des données chiffrées</b></td><td>«&nbsp;Traiter des données chiffrées <b>sans les déchiffrer</b>.&nbsp;» La <b>vitesse</b> est au contraire sa principale limite — c'est le distracteur à ne pas prendre.</td></tr>
+<tr><td><b>4</b></td><td>Quel est le principal défi de l'implémentation de la cryptographie légère dans une architecture zero trust&nbsp;?</td><td><b>La sécurité face aux attaques quantiques</b></td><td>Le triangle de la <i>lightweight cryptography</i> se paie sur la <b>robustesse</b>&nbsp;: clés courtes et peu de tours abaissent la marge de sécurité. Le <b>coût</b> est justement ce que la LWC cherche à réduire.</td></tr>
+<tr><td><b>5</b></td><td>Qu'est-ce qui distingue le modèle zero trust d'une ZTA&nbsp;?</td><td><b>La ZTA résume le modèle de contrôle d'accès de l'architecture zero trust</b></td><td><b>Zero trust</b> est le principe global, la <b>ZTA</b> son application à l'accès aux ressources, le <b>ZTNA</b> la mise en œuvre réseau. Le distracteur «&nbsp;c'est juste l'acronyme&nbsp;» est précisément le piège que le support signale.</td></tr>
+<tr><td><b>6</b></td><td>Qu'est-ce qui différencie le zero trust du SASE&nbsp;?</td><td><b>Le zero trust met l'accent sur l'identité et le terminal, le SASE sur le réseau et l'infrastructure</b></td><td>Phrase reprise mot pour mot du support. Et attention&nbsp;: le <b>ZTNA est un composant du SASE</b>, les deux ne s'opposent pas.</td></tr>
+<tr><td><b>7</b></td><td>Que signifie MDM&nbsp;?</td><td><b>Mobile Device Management — déployer, administrer et sécuriser la flotte mobile</b></td><td>Brique du <b>pilier terminaux</b>. Question de vocabulaire pur&nbsp;: elle se joue en deux secondes ou pas du tout.</td></tr>
+<tr><td><b>8</b></td><td>Quelles sont les quatre entrées du point d'application de la politique (PEP)&nbsp;?</td><td><b>Identité, terminal, politique, protection</b></td><td>Les trois distracteurs sont des <b>listes tronquées</b> — c'est le format de question le plus fréquent du QCM. Comptez les éléments avant de lire le contenu.</td></tr>
+<tr><td><b>9</b></td><td>Quel composant prend les décisions d'accès&nbsp;?</td><td><b>Le moteur de politique (PE)</b></td><td>«&nbsp;Le PE <b>prend</b> les décisions d'accès.&nbsp;» Le <b>PEP applique</b>, le <b>PA configure</b> les PEP. Trois rôles à ne pas intervertir.</td></tr>
+<tr><td><b>10</b></td><td>Que permet l'authentification continue&nbsp;?</td><td><b>La détection en temps réel des accès non autorisés</b></td><td>La vérification est <b>continue</b>, «&nbsp;garantissant que seuls les utilisateurs autorisés ont accès, même s'ils proviennent de l'intérieur du réseau&nbsp;».</td></tr>
+<tr><td><b>11</b></td><td>Quel est l'objectif principal du MFA dans une architecture zero trust&nbsp;?</td><td><b>Renforcer la sécurité des accès</b></td><td>Le <i>quick win</i> type&nbsp;: «&nbsp;le MFA réduit de <b>plus de 99&nbsp;%</b> les attaques sur l'identité&nbsp;».</td></tr>
+<tr><td><b>12</b></td><td>Contre quoi la micro-segmentation protège-t-elle en priorité&nbsp;?</td><td><b>Le déplacement latéral d'un attaquant</b></td><td>Elle filtre le trafic <b>est-ouest</b>, c'est-à-dire les communications internes — donc le déplacement d'un attaquant <b>déjà entré</b>.</td></tr>
+<tr><td><b>13</b></td><td>Quelle formule résume le modèle zero trust&nbsp;?</td><td><b>Ne jamais faire confiance, toujours vérifier</b></td><td><i>Never trust, always verify.</i> La formule ne figure pas telle quelle dans le support, mais elle en est la synthèse.</td></tr>
+<tr><td><b>14</b></td><td>À quoi sert la surveillance continue dans une architecture zero trust&nbsp;?</td><td><b>À obtenir de la visibilité et alimenter les décisions d'accès</b></td><td>«&nbsp;Inspecter et enregistrer toutes les activités en utilisant l'<b>analyse des données de sécurité</b>&nbsp;» — ce qui alimente ensuite le moteur de politique.</td></tr>
+<tr><td><b>15</b></td><td>Que fait le point d'application de la politique (PEP)&nbsp;?</td><td><b>Il applique les décisions d'accès</b></td><td><i>Enforcement</i> = <b>application</b>, jamais décision. C'est le miroir exact de la question 9&nbsp;: les deux portent sur le même couple PE / PEP.</td></tr>
+<tr><td><b>16</b></td><td>Quel modèle de contrôle d'accès décide à partir d'attributs dynamiques&nbsp;?</td><td><b>L'ABAC (Attribute-Based Access Control)</b></td><td>Décision sur <b>attributs dynamiques</b>&nbsp;: contexte, identité, appareil, heure, localisation. Le <b>RBAC</b> est le modèle <b>statique</b> par rôles.</td></tr>
+<tr><td><b>17</b></td><td>Quel est l'objectif de l'authentification sans mot de passe&nbsp;?</td><td><b>Renforcer la sécurité des accès</b></td><td>«&nbsp;L'exemple typique est le MFA, ou mieux l'<b>authentification sans mot de passe</b>.&nbsp;» Même logique que la question 11&nbsp;: la réponse attendue est l'objectif de sécurité, pas le confort.</td></tr>
+<tr><td><b>18</b></td><td>À quel usage la cryptographie légère est-elle particulièrement adaptée&nbsp;?</td><td><b>La sécurisation des dispositifs IoT et des réseaux de capteurs sans fil</b></td><td>«&nbsp;<b>Idéale</b> pour la sécurisation des dispositifs IoT et la protection des réseaux de capteurs sans fil.&nbsp;»</td></tr>
+<tr><td><b>19</b></td><td>Lequel de ces éléments relève de la segmentation classique et non de la micro-segmentation&nbsp;?</td><td><b>Les VLAN et les pare-feu</b></td><td>VLAN et pare-feu, c'est la segmentation <b>classique</b>&nbsp;: couches 2-3, matériel, trafic <b>nord-sud</b>. Les trois autres propositions relèvent de la micro-segmentation.</td></tr>
+<tr><td><b>20</b></td><td>Lequel de ces éléments ne relève pas du pilier «&nbsp;données&nbsp;»&nbsp;?</td><td><b>La micro-segmentation</b></td><td>Le pilier données = <b>inventorisation, classification, chiffrement, sauvegarde et restauration</b>. La micro-segmentation appartient au pilier <b>réseau</b>.</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout warn"><div class="t">Les quatre questions qui se répondaient deux à deux</div>
+<b>9 et 15</b> portaient sur le <b>même couple PE / PEP</b>, une fois dans chaque sens&nbsp;: le moteur
+<b>décide</b>, le point d'application <b>applique</b>. <b>11 et 17</b> portaient toutes les deux sur
+l'<b>objectif du MFA et du <i>passwordless</i></b>, et attendaient la même réponse&nbsp;: renforcer la
+sécurité des accès.
+<p style="margin-bottom:0">Autrement dit, <b>quatre points sur vingt</b> se jouaient sur deux notions.
+C'est le rendement de la révision ciblée.</p>
+</div>
+
+<h3 id="qcm60-eb">★★.2 QCM d'attestation EBIOS RM — les 40 questions</h3>
+
+<p>Structure très régulière&nbsp;: <b>questions 1 à 11</b> sur la méthode en général, puis <b>un bloc
+par atelier</b> — 12 à 18 pour l'atelier 1, 19 à 23 pour l'atelier 2, 24 à 28 pour l'atelier 3, 29 à 34
+pour l'atelier 4, 35 à 40 pour l'atelier 5.</p>
+
+<div class="tw"><table>
+<thead><tr><th style="width:4%">N°</th><th style="width:48%">Question</th><th>Réponse officielle</th></tr></thead>
+<tbody>
+<tr><td><b>1</b></td><td>La méthode EBIOS RM permet de :</td><td><b>Réaliser une analyse de risques cyber</b></td></tr>
+<tr><td><b>2</b></td><td>La méthode EBIOS RM s'applique sur le périmètre :</td><td><b>Les trois — entreprise, système d'information, système industriel</b></td></tr>
+<tr><td><b>3</b></td><td>La méthode EBIOS RM propose d'identifier :</td><td><b>Les risques cyber les plus représentatifs sur le périmètre identifié</b></td></tr>
+<tr><td><b>4</b></td><td>La méthode EBIOS RM centre l'analyse de risques :</td><td><b>Sur les métiers</b></td></tr>
+<tr><td><b>5</b></td><td>La méthode EBIOS RM permet d'avoir des résultats exploitables :</td><td><b>À la sortie de chaque atelier</b></td></tr>
+<tr><td><b>6</b></td><td>La méthode EBIOS est maintenue :</td><td><b>Par l'ANSSI, avec le soutien du Club EBIOS</b></td></tr>
+<tr><td><b>7</b></td><td>Quelles sont les 4 valeurs de la méthode EBIOS RM ?</td><td><b>Concrète&nbsp;; Efficiente&nbsp;; Convaincante&nbsp;; Collaborative</b></td></tr>
+<tr><td><b>8</b></td><td>Quels sont les deux attributs permettant d'évaluer un risque ?</td><td><b>Gravité et vraisemblance</b></td></tr>
+<tr><td><b>9</b></td><td>Quelle est la différence entre EBIOS RM et l'ISO 27005 ?</td><td><b>L'ISO 27005 est une norme, et EBIOS RM une méthode</b></td></tr>
+<tr><td><b>10</b></td><td>Les 5 ateliers de la méthode :</td><td><b>Sont tous utiles, mais à sélectionner en fonction du contexte</b></td></tr>
+<tr><td><b>11</b></td><td>Qu'est-ce que ne permet pas de faire un outil comme Agile Risk Manager ?</td><td><b>Il ne permet pas d'être certifié ISO 27005</b></td></tr>
+<tr><td><b>12</b></td><td>L'objectif principal du premier atelier est de :</td><td><b>Définir le cadre de l'analyse et le socle de sécurité</b></td></tr>
+<tr><td><b>13</b></td><td>Une mission représente :</td><td><b>La fonction, la finalité, la raison d'être de l'objet de l'étude, en termes métier</b></td></tr>
+<tr><td><b>14</b></td><td>Les valeurs métier sont :</td><td><b>Des données et des processus</b></td></tr>
+<tr><td><b>15</b></td><td>Les valeurs métier sont choisies :</td><td><b>En fonction de leur valeur réelle, concrète</b></td></tr>
+<tr><td><b>16</b></td><td>Les biens supports sont rattachés :</td><td><b>Aux valeurs métier identifiées en amont, pour avoir le périmètre le plus précis possible</b></td></tr>
+<tr><td><b>17</b></td><td>Un événement redouté est associé à :</td><td><b>Une valeur métier, et porte atteinte à un critère ou besoin de sécurité de cette valeur métier</b></td></tr>
+<tr><td><b>18</b></td><td>Le socle de sécurité est composé :</td><td><b>De tous les référentiels (normes, lois, PSSI, etc.) s'appliquant au sein du périmètre</b></td></tr>
+<tr><td><b>19</b></td><td>L'objectif principal de l'atelier 2 est d'avoir une vision :</td><td><b>Représentative des sources de risque potentielles et de leurs objectifs visés</b></td></tr>
+<tr><td><b>20</b></td><td>Les couples sources de risque / objectifs visés sont évalués grâce à trois critères :</td><td><b>Motivation, ressources, activité</b></td></tr>
+<tr><td><b>21</b></td><td>La motivation exprime :</td><td><b>La capacité d'une source de risque à surmonter l'échec lors d'une tentative infructueuse</b></td></tr>
+<tr><td><b>22</b></td><td>Le niveau de ressources exprime :</td><td><b>Les ressources techniques, financières et humaines dont dispose une source de risque</b></td></tr>
+<tr><td><b>23</b></td><td>Comment choisit-on les couples SR/OV à conserver en fin d'atelier 2 ?</td><td><b>On choisit les plus représentatifs, en s'appuyant sur la pertinence et sur les profils d'attaquant</b></td></tr>
+<tr><td><b>24</b></td><td>L'objectif principal de l'atelier 3 est d'avoir une vision :</td><td><b>De l'écosystème et des chemins généraux suivis par une source de risque pour atteindre l'objectif visé</b></td></tr>
+<tr><td><b>25</b></td><td>Lors du travail sur l'écosystème, que cherche-t-on à identifier en première intention ?</td><td><b>Les parties prenantes, c'est-à-dire les acteurs interagissant avec le périmètre de l'analyse</b></td></tr>
+<tr><td><b>26</b></td><td>Quels sont les 4 critères utilisés pour l'évaluation de chaque partie prenante ?</td><td><b>Dépendance, pénétration, maturité cyber, confiance</b></td></tr>
+<tr><td><b>27</b></td><td>Que signifie le fait qu'une partie prenante ait un niveau de menace élevé ?</td><td><b>C'est un vecteur d'attaque potentiel, à exploiter dans la construction des scénarios stratégiques</b></td></tr>
+<tr><td><b>28</b></td><td>Que représente un scénario stratégique ?</td><td><b>Une vision orientée événements du ou des chemins d'attaque choisis par une source de risque pour atteindre l'objectif visé</b></td></tr>
+<tr><td><b>29</b></td><td>L'objectif principal de l'atelier 4 est d'avoir une vision :</td><td><b>Des modes opératoires techniques exploités par une source de risque pour atteindre son objectif</b></td></tr>
+<tr><td><b>30</b></td><td>Les scénarios opérationnels sont construits autour :</td><td><b>D'une Cyber Kill Chain</b></td></tr>
+<tr><td><b>31</b></td><td>La vraisemblance des scénarios opérationnels peut être calculée de trois manières :</td><td><b>Standard, avancée, expresse</b></td></tr>
+<tr><td><b>32</b></td><td>Le mode d'évaluation de la vraisemblance le plus simple s'appuie sur :</td><td><b>Une évaluation générale de la vraisemblance du scénario, sans détail par action élémentaire</b></td></tr>
+<tr><td><b>33</b></td><td>Le mode d'évaluation de la vraisemblance standard s'appuie sur :</td><td><b>Une évaluation de la vraisemblance de chaque action élémentaire</b></td></tr>
+<tr><td><b>34</b></td><td>Quels frameworks peuvent être utilisés pour construire les scénarios opérationnels ?</td><td><b>Le framework MITRE ATT&amp;CK</b></td></tr>
+<tr><td><b>35</b></td><td>L'objectif principal de l'atelier 5 est :</td><td><b>D'identifier les mesures de sécurité permettant de réduire le niveau des risques identifiés</b></td></tr>
+<tr><td><b>36</b></td><td>Qu'est-ce que le PACS ?</td><td><b>Le Plan d'Amélioration Continue de la Sécurité</b></td></tr>
+<tr><td><b>37</b></td><td>Lequel de ces éléments n'alimente pas la construction du PACS ?</td><td><b>Les risques résiduels</b></td></tr>
+<tr><td><b>38</b></td><td>Quelles sont les options principales de traitement d'un risque ?</td><td><b>Réduire, accepter, refuser, partager</b></td></tr>
+<tr><td><b>39</b></td><td>Laquelle de ces caractéristiques est absente du choix d'une mesure de sécurité dans un PACS ?</td><td><b>Les parties prenantes</b></td></tr>
+<tr><td><b>40</b></td><td>Une fois le PACS construit, que fait-on ?</td><td><b>On évalue le risque résiduel et on itère l'analyse le cas échéant</b></td></tr>
+</tbody>
+</table></div>
+
+<div class="callout ok"><div class="t">Ce que la structure du QCM EBIOS révèle</div>
+<b>Chaque atelier ouvre sur la même question</b>&nbsp;: «&nbsp;l'objectif principal de l'atelier N est
+d'avoir une vision…&nbsp;». Si vous ne deviez retenir qu'une chose par atelier, ce serait
+<b>cette phrase-là</b>&nbsp;: cadre et socle · sources de risque et objectifs visés · écosystème et
+chemins généraux · modes opératoires techniques · mesures de réduction.
+<p style="margin-bottom:0">Et les questions <b>37 et 39</b> sont toutes deux des questions
+<b>négatives sur l'atelier 5</b> — ce qui n'alimente pas le PACS (les résiduels), ce qui ne caractérise
+pas une mesure (les parties prenantes). L'atelier 5 est celui où l'on confond le plus facilement
+<b>entrée</b> et <b>sortie</b>.</p>
+</div>
+
 <h2 id="ch1"><span class="num">1.</span> Le triple cadre : obligations, normes, méthodes</h2>
 
 <p>La question de départ du cours n'est pas technique&nbsp;: <b>comment intégrer la cybersécurité au
@@ -193,7 +451,42 @@ redoute&nbsp;? · <b>5.</b> Quelles sont les normes qui s'appliquent à mon orga
 l'État (<b>PSSIE</b>, <b>RGS</b>).</p>
 </div>
 
-<h3 id="ch1-cadres">1.1 Les trois cadres</h3>
+<h3 id="ch1-ressources">1.1 Les ressources de la cybersécurité</h3>
+
+<p>Le syllabus du cours ouvre sur une liste d'organismes. Elle a l'air anodine, mais c'est une
+<b>question à réponse libre toute prête</b> — «&nbsp;citez les principales ressources en
+cybersécurité&nbsp;» — et elle vous sert aussi à sourcer vos réponses ailleurs.</p>
+
+<div class="tw"><table>
+<thead><tr><th style="width:15%">Sigle</th><th style="width:33%">Nom complet</th><th>Ce qu'on y trouve</th></tr></thead>
+<tbody>
+<tr><td colspan="3" style="background:#EAF0F7"><b>France — gouvernemental</b></td></tr>
+<tr><td><b>ANSSI</b></td><td>Agence nationale de la sécurité des systèmes d'information</td><td>Le référent national&nbsp;: guides, référentiels, <b>EBIOS RM</b>, guide d'hygiène, labellisation des produits et prestataires.</td></tr>
+<tr><td><b>CERT-FR</b></td><td>Centre gouvernemental de veille, d'alerte et de réponse aux attaques informatiques</td><td>Les <b>bulletins d'alerte et d'actualité</b>, les avis de vulnérabilité. C'est la source à citer pour l'<b>approche centrée menace</b>.</td></tr>
+<tr><td><b>ACYMA</b></td><td>Groupement d'intérêt public Action contre la cybermalveillance</td><td><b>cybermalveillance.gouv.fr</b>&nbsp;: assistance aux victimes, sensibilisation, et le dispositif d'aide aux <b>PME et collectivités</b>.</td></tr>
+<tr><td><b>MININT</b></td><td>Ministère de l'Intérieur — DGSI</td><td>Volet judiciaire et contre-ingérence économique.</td></tr>
+<tr><td><b>CNIL</b></td><td>Commission nationale de l'informatique et des libertés</td><td>Autorité de contrôle du <b>RGPD</b>&nbsp;: sanctions, référentiels, guides de sécurité des données personnelles.</td></tr>
+<tr><td colspan="3" style="background:#EAF0F7"><b>International</b></td></tr>
+<tr><td><b>ENISA</b></td><td>European Union Agency for Cybersecurity</td><td>L'agence européenne&nbsp;: elle porte le <b>cadre de certification</b> du Cybersecurity Act et le panorama annuel des menaces.</td></tr>
+<tr><td><b>CISA</b></td><td>Cybersecurity &amp; Infrastructure Security Agency (États-Unis)</td><td>Alertes et catalogue des vulnérabilités activement exploitées (<i>KEV</i>).</td></tr>
+<tr><td><b>NIST</b></td><td>National Institute of Standards and Technology (États-Unis)</td><td><b>SP 800-207</b> pour le zero trust, <b>SP 800-30</b> pour l'analyse de risque, le <i>Cybersecurity Framework</i>.</td></tr>
+<tr><td><b>MITRE</b></td><td>MITRE Corporation</td><td><b>ATT&amp;CK</b> pour les modes opératoires — cité au QCM EBIOS comme support des scénarios opérationnels — et <b>CVE</b> pour les vulnérabilités.</td></tr>
+<tr><td><b>CIS</b></td><td>Center for Internet Security</td><td>Les <b>CIS Controls</b> et les <b>CIS Benchmarks</b> de durcissement.</td></tr>
+<tr><td><b>ISO</b></td><td>Organisation internationale de normalisation</td><td>La famille <b>ISO 27000</b>, et les normes IA <b>42001 / 23894 / 42005</b>.</td></tr>
+<tr><td><b>ISACA</b></td><td>Information Systems Audit and Control Association</td><td>Gouvernance et audit du SI&nbsp;: <b>COBIT</b>, certifications CISA et CISM.</td></tr>
+<tr><td><b>INTERPOL</b></td><td>Organisation internationale de police criminelle</td><td>Coopération policière sur la cybercriminalité transfrontalière.</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout ok"><div class="t">Comment les ranger dans votre tête</div>
+<b>Trois familles.</b> Ceux qui <b>publient des référentiels</b> — ANSSI, NIST, ISO, CIS, ISACA. Ceux
+qui <b>alertent</b> — CERT-FR, CISA, ENISA, MITRE. Ceux qui <b>sanctionnent ou assistent</b> — CNIL,
+ACYMA, MININT, INTERPOL.
+<p style="margin-bottom:0">Cette grille n'est pas dans le support, mais elle vous permet d'en citer
+cinq sans hésiter quelle que soit la question posée.</p>
+</div>
+
+<h3 id="ch1-cadres">1.2 Les trois cadres</h3>
 <div class="tw"><table>
 <thead><tr><th>Cadre</th><th>Ce que c'est</th></tr></thead>
 <tbody>
@@ -203,7 +496,7 @@ l'État (<b>PSSIE</b>, <b>RGS</b>).</p>
 </tbody>
 </table></div>
 
-<h3 id="ch1-exemples">1.2 Les exemples à connaître, dans les trois colonnes</h3>
+<h3 id="ch1-exemples">1.3 Les exemples à connaître, dans les trois colonnes</h3>
 <div class="tw"><table>
 <thead><tr><th>Domaine</th><th>Obligation</th><th>Norme</th><th>Méthode</th></tr></thead>
 <tbody>
@@ -234,7 +527,7 @@ exigences <b>légales</b> et <b>réglementaires</b>. Les <b>normes</b>, elles, s
 
 <!-- ===================================================================== -->
 
-<h3 id="ch1-porosite">1.3 La porosité entre les trois cadres</h3>
+<h3 id="ch1-porosite">1.4 La porosité entre les trois cadres</h3>
 <p>Distinguer les trois cadres ne veut pas dire qu'ils sont étanches. L'enseignant a insisté sur les
 <b>passerelles</b>, et c'est un point de compréhension plus qu'un point de mémoire&nbsp;:</p>
 <ul class="key-points">
@@ -268,7 +561,7 @@ obligation juridique, c'est une exigence du marché.</b></p>
 <b>II</b> et <b>IGI</b> françaises — par exemple l'<b>IGI 1300</b> sur la protection du secret de la
 défense nationale.</p>
 
-<h3 id="ch1-c3">1.4 L'exemple qui montre les trois cadres à l'œuvre : la classification Défense</h3>
+<h3 id="ch1-c3">1.5 L'exemple qui montre les trois cadres à l'œuvre : la classification Défense</h3>
 <p>Pour illustrer pourquoi il ne faut pas confondre obligation, norme et méthode, le cours prend le
 secteur de la Défense, où les équipements sont répartis en <b>trois classes de criticité</b>&nbsp;:</p>
 <div class="tw"><table>
@@ -1503,6 +1796,18 @@ sûreté industrielle, il faut coupler avec l'<b>AMDEC</b> ou le <b>Cyber-PHA</b
 
 <h2 id="ch12"><span class="num">12.</span> Zero trust : le constat et la définition</h2>
 
+<div class="callout def"><div class="t">La digression du support : deux visions de la confiance</div>
+Le support ouvre le modèle par une analogie judiciaire — «&nbsp;quand la cybersécurité s'inspire de
+traditions moyenâgeuses&nbsp;»&nbsp;:
+<p style="margin:.5em 0">Dans le <b>procès médiéval</b>, l'accusé est présumé <b>coupable</b> jusqu'à
+preuve du contraire. Dans le <b>procès moderne</b>, il est présumé <b>innocent</b>.</p>
+<p style="margin-bottom:0"><b>Le zero trust adopte la vision médiévale</b>&nbsp;: chaque tentative de
+connexion est considérée comme <b>illégitime jusqu'à preuve du contraire</b>. C'est la formulation la
+plus parlante du modèle, et elle rend inutile tout le vocabulaire technique&nbsp;: on renverse la
+<b>charge de la preuve</b>. Le modèle périmétrique présume l'innocence de ce qui est à
+l'intérieur&nbsp;; le zero trust ne présume rien.</p>
+</div>
+
 <div class="callout"><div class="t">Les chapitres 12 à 19 sont ceux qu'a évalués le QCM Moodle</div>
 Le <b>questionnaire zero trust</b> portait sur ce périmètre — <b>slides 42 à 71</b> du support, plus
 les slides 30 à 35 qui amènent le modèle. Son format, annoncé slide 75&nbsp;: <b>20 questions</b>,
@@ -2254,6 +2559,40 @@ l'alternative au VPN depuis poste personnel.</p>
 
 <h2 id="ch21"><span class="num">21.</span> EBIOS Risk Manager : la démarche d'ensemble</h2>
 
+<div class="exam"><div class="t">La carte d'identité de la méthode — sept faits tombés au QCM d'attestation</div>
+<b>Ce qu'elle permet</b>&nbsp;: réaliser une <b>analyse de risques cyber</b> — ni un audit de qualité du
+SI, ni une détection des risques sociaux ou environnementaux.<br>
+<b>Son périmètre</b>&nbsp;: une <b>entreprise</b>, un <b>système d'information</b> <i>ou</i> un
+<b>système industriel</b> — <b>les trois</b>, et pas seulement l'un d'eux.<br>
+<b>Ce qu'elle identifie</b>&nbsp;: les risques <b>les plus représentatifs</b> du périmètre, <b>pas
+l'exhaustivité</b> des risques cyber.<br>
+<b>Sur quoi elle se centre</b>&nbsp;: sur les <b>métiers</b> — pas sur les experts cyber, pas sur les
+juristes.<br>
+<b>Quand elle produit des résultats</b>&nbsp;: <b>à la sortie de chaque atelier</b>. On n'attend pas
+l'atelier 5 pour en tirer quelque chose.<br>
+<b>Qui la maintient</b>&nbsp;: l'<b>ANSSI</b>, <b>avec le soutien du Club EBIOS</b> — ni l'ANSSI seule,
+ni le Club seul.<br>
+<b>Ses cinq ateliers</b>&nbsp;: ils sont <b>tous utiles, mais à sélectionner selon le contexte</b>
+(c'est ce qui autorise l'approche Flash).
+</div>
+
+<div class="callout def"><div class="t">Les quatre valeurs de la méthode</div>
+<b>Concrète</b> · <b>Efficiente</b> · <b>Convaincante</b> · <b>Collaborative</b>.
+<p style="margin-bottom:0">Quatre mots en C-E-C-C. Les distracteurs classiques mélangent des adjectifs
+plausibles — «&nbsp;cohérente, efficace, complète, coercitive&nbsp;» ou «&nbsp;complète, communicante,
+contextuelle, coconstruite&nbsp;». Retenez que <b>« complète » n'en fait pas partie</b>&nbsp;: ce serait
+contradictoire avec une méthode qui assume de ne retenir que les risques les plus représentatifs.</p>
+</div>
+
+<div class="callout warn"><div class="t">EBIOS RM et l'ISO 27005 — la formulation exacte</div>
+<b>L'ISO 27005 est une <i>norme</i>, EBIOS RM est une <i>méthode</i>.</b> La norme dit <b>quoi</b>
+faire, la méthode dit <b>comment</b>. EBIOS RM est <b>conforme</b> à l'ISO 27005, ce qui n'en fait ni un
+sous-ensemble ni un concurrent.
+<p style="margin-bottom:0">Corollaire à connaître&nbsp;: un outil comme <b>Agile Risk Manager</b> vous
+aide à conduire la méthode, mais <b>il ne permet pas d'être certifié ISO 27005</b> — et de toute façon
+l'ISO 27005 n'est pas une norme certifiable, contrairement à l'ISO 27001.</p>
+</div>
+
 <div class="callout danger"><div class="t">Provenance de ce chapitre et des suivants</div>
 Les chapitres <b>21 à 27</b> ont d'abord été construits sur le <b>guide officiel de l'ANSSI</b>,
 <i>«&nbsp;EBIOS Risk Manager — la méthode&nbsp;»</i>, <b>version 1.5, ANSSI-PA-048</b>, avant que le
@@ -2771,6 +3110,25 @@ ou la réduction de l'interconnexion.</p>
 <!-- ===================================================================== -->
 <h2 id="ch25"><span class="num">25.</span> Atelier 4 — Scénarios opérationnels</h2>
 
+<div class="exam"><div class="t">Les trois modes de calcul de la vraisemblance</div>
+Le QCM d'attestation les nomme précisément&nbsp;: <b>expresse</b>, <b>standard</b>, <b>avancée</b>.
+<p style="margin:.5em 0"><b>Expresse</b> — une évaluation <b>globale du scénario</b>, sans détail par
+action élémentaire. Le mode le plus simple.<br>
+<b>Standard</b> — une évaluation de la vraisemblance <b>de chaque action élémentaire</b>.<br>
+<b>Avancée</b> — pour chaque action élémentaire, on cote la <b>difficulté technique</b> <i>et</i> la
+<b>probabilité de succès</b>.</p>
+<p style="margin-bottom:0">La progression est logique&nbsp;: on passe du scénario entier à l'action, puis
+de l'action à ses deux composantes. Les distracteurs habituels inventent «&nbsp;rapide&nbsp;» ou
+«&nbsp;complexe&nbsp;» — <b>aucun des deux n'existe</b>.</p>
+</div>
+
+<div class="callout ok"><div class="t">Deux cadres à citer</div>
+Les scénarios opérationnels se construisent autour d'une <b>Cyber Kill Chain</b> — pas d'une chaîne
+d'événements redoutés, pas d'événements intermédiaires.
+<p style="margin-bottom:0">Et le référentiel à nommer si on vous demande sur quoi s'appuyer pour
+détailler les modes opératoires&nbsp;: <b>MITRE ATT&amp;CK</b>.</p>
+</div>
+
 <p><b>L'objectif.</b> Construire les <b>scénarios opérationnels</b>&nbsp;: ils «&nbsp;schématisent les
 <b>modes opératoires</b> que pourraient mettre en œuvre les sources de risque pour <b>réaliser les
 scénarios stratégiques</b>&nbsp;». Même démarche que l'atelier 3, mais <b>centrée sur les biens
@@ -2856,6 +3214,24 @@ opérationnel associé</b>&nbsp;». C'est l'unité qu'on cote en <b>gravité × 
 
 <!-- ===================================================================== -->
 <h2 id="ch26"><span class="num">26.</span> Atelier 5 — Traitement du risque</h2>
+
+<div class="exam"><div class="t">Le vocabulaire du traitement — deux formulations, la même chose</div>
+Le QCM d'attestation retient&nbsp;: <b>Réduire · Accepter · Refuser · Partager</b>.
+<p style="margin:.5em 0">Le guide ANSSI et le support de cours emploient&nbsp;: <b>réduire · maintenir ·
+refuser · transférer</b>. <b>Accepter = maintenir</b> et <b>partager = transférer</b> — si les deux
+listes vous sont proposées, elles sont toutes les deux justes. Sachez lire les deux.</p>
+<p style="margin-bottom:0"><b>Ce que le PACS n'inclut pas.</b> Les <b>risques résiduels</b> n'alimentent
+<b>pas</b> la construction du plan&nbsp;: ils en sont le <b>résultat</b>. On bâtit le PACS à partir des
+risques, des mesures issues des ateliers 1, 3 et 4 et de la stratégie de traitement — puis on
+<b>réévalue</b> le résiduel. Confondre l'entrée et la sortie est le piège classique sur cet atelier.</p>
+</div>
+
+<div class="callout warn"><div class="t">Ce qui caractérise une mesure dans le PACS</div>
+Une mesure porte&nbsp;: un <b>intitulé</b>, un <b>responsable</b>, une <b>échéance</b>, un <b>coût</b> ou
+une difficulté de mise en œuvre, et le ou les <b>risques traités</b>.
+<p style="margin-bottom:0">Elle ne porte <b>pas</b> de <b>parties prenantes</b> — celles-ci
+appartiennent à la cartographie de l'écosystème (atelier 3), pas au plan d'action.</p>
+</div>
 
 <p><b>L'objectif.</b> «&nbsp;Réaliser une <b>synthèse des scénarios de risque</b> identifiés et définir
 une <b>stratégie de traitement du risque</b>. Cette stratégie aboutit à la définition de <b>mesures de
@@ -3274,8 +3650,8 @@ correction expliquée immédiatement, mémorisation des erreurs pour pouvoir les
 </div>
 
 <button id="top" title="Haut de page">↑</button>
-<script src="data/qcm-ent5003.js?v=3"></script>
-<script src="assets/app.js?v=32"></script>
+<script src="qcm.js?v=5"></script>
+<script src="../assets/app.js?v=33"></script>
 <script>initQCM(window.QCM_DATA, window.QCM_CHAPTERS, 'ent5003');</script>
 </body>
 </html>

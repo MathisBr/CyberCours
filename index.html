@@ -5,175 +5,45 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Révisions — Majeure Cybersécurité S9</title>
 <link rel="stylesheet" href="assets/core.css?v=27">
+<link rel="stylesheet" href="assets/accueil.css?v=2">
 </head>
 <body>
 
 <header class="topbar">
   <div class="brand"><span class="dot"></span> Majeure Cybersécurité <small>· S9</small></div>
   <div class="spacer"></div>
-  <button class="btn ghost" onclick="toggleTheme()" title="Thème clair / sombre">◐ Thème</button>
+  <input id="filtre" type="search" placeholder="Filtrer : code, cours, notion…  ( / )" aria-label="Filtrer les cours">
+  <button class="btn ghost" onclick="toggleTheme()" title="Thème clair / sombre">◐</button>
 </header>
 
-<main class="content" style="max-width:1000px;margin:0 auto">
-
-<div class="hero">
-  <h1>Révisions — Majeure Cybersécurité</h1>
-  <p class="lead">
-    Supports de révision construits à partir des <b>enregistrements des cours</b> et des
-    <b>supports officiels</b>. Tout fonctionne hors ligne.
-  </p>
-</div>
-
-<!-- ===================== INF5244 ===================== -->
-<h2 style="margin-top:30px">INF5244 — Sécurisation des interconnexions</h2>
-
-<a class="course-card" href="inf5244-fiche-complete.html" style="display:block">
-  <div class="code">Séances 1 à 3 · 19 chapitres + 2 annexes · supports, TD et exercice d’audit</div>
-  <h3>Fiche de révision — filtrage, pare-feu et architectures</h3>
-  <p style="color:var(--fg-soft);font-size:.92rem">Le contenu des trois séances, du support officiel et du TD, plus un QCM de
-  <b>162 questions</b> filtrable chapitre par chapitre.</p>
-  <div class="grid c2" style="margin:.6em 0 0">
-    <ul>
-      <li>Le quintuplet, les 4 missions du pare-feu</li>
-      <li>Les 8 principes fondamentaux de sécurité</li>
-      <li>MAC, passerelle par défaut, RFC 1918</li>
-      <li>TCP, UDP, ICMP et DNS</li>
-    </ul>
-    <ul>
-      <li>Netfilter : INPUT, FORWARD, OUTPUT</li>
-      <li>Syntaxe iptables, maquette et premières règles</li>
-      <li>Critères d'une règle, pare-feu à état, NAT</li>
-      <li>DMZ, bastion, niveaux de sécurité, UTM</li>
-      <li>PSSI → matrice des flux → règles</li>
-      <li>Journalisation (LOG), chaînes utilisateur, ip6tables</li>
-      <li>Faille du stateless (hping3), conntrack, NAT complet</li>
-      <li><b>Proxy explicite et transparent</b>, reverse proxy, WAF</li>
-      <li><b>Consoles graphiques</b> et <b>exercice d’audit corrigé</b></li>
-      <li>Menaces, Wireshark, diagnostic, <b>le schéma au brouillon</b></li>
-      <li><b>Récap « l'essentiel »</b> et <b>annexe des ports</b></li>
-    </ul>
+<main class="home">
+  <div class="home-head">
+    <h1>Révisions — Majeure Cybersécurité</h1>
+    <p>Une fiche et un QCM par cours, construits sur les supports et les enregistrements des séances.</p>
   </div>
-  <p style="margin-bottom:0"><span class="badge acc">Ouvrir la fiche</span></p>
-</a>
 
-<a class="course-card" href="points-examen-inf5244.html" style="margin-top:14px;display:block">
-  <div class="code">Sa parole, relue intégralement · séances 1 à 3</div>
-  <h3>Ce que le prof a signalé pour l’examen</h3>
-  <p style="color:var(--fg-soft);font-size:.92rem"><b>35 passages</b> où l’enseignant désigne
-  lui-même ce qu’il attend — « je peux vous poser une question là-dessus », « pour
-  l’examen », « règle capitale », « la bonne réponse c’est ». Sous chaque
-  citation, <b>la réponse à savoir donner</b>.</p>
-  <ul>
-    <li><b>Séance 1</b> — 10 passages · passerelle par défaut, RFC 1918, politique par défaut</li>
-    <li><b>Séance 2</b> — 15 passages · « ne vous jetez pas sur le NAT », LOG avant ACCEPT, l’état</li>
-    <li><b>Séance 3</b> — 10 passages · le seul sujet annoncé comme interrogeable, le brouillon</li>
-  </ul>
-  <p style="margin-bottom:0"><span class="badge acc">Voir les signaux</span></p>
-</a>
+  <div id="reprise"></div>
 
-<a class="course-card" href="atelier-inf5244.html" style="margin-top:14px;display:block">
-  <div class="code">Atelier interactif · entraînement actif</div>
-  <h3>Atelier — restituer, écrire une règle, trouver l'erreur</h3>
-  <p style="color:var(--fg-soft);font-size:.92rem">Le QCM entraîne la <b>reconnaissance</b>&nbsp;;
-  l'examen demande de la <b>production</b>. Ces trois ateliers travaillent ce que le QCM ne peut pas
-  atteindre.</p>
-  <ul>
-    <li><b>Restituer</b> — 30 listes à écrire de mémoire, auto-évaluées</li>
-    <li><b>Écrire une règle</b> — énoncés générés à l'infini, correction critère par critère</li>
-    <li><b>Trouver l'erreur</b> — 24 configurations fautives à diagnostiquer</li>
-  </ul>
-  <p style="margin-bottom:0"><span class="badge acc">S'entraîner</span></p>
-</a>
-
-<!-- ===================== ENT5003 ===================== -->
-<h2 style="margin-top:34px">ENT5003 — Méthodologie de la sécurité</h2>
-
-<a class="course-card" href="ent5003-fiche-complete.html" style="display:block">
-  <div class="code">Normes, approches, zero trust · analyse de risque · EBIOS RM · risque IA · supports et transcriptions</div>
-  <h3>Fiche de révision — cadre normatif, approches et zero trust</h3>
-  <p style="color:var(--fg-soft);font-size:.92rem">Le cours de méthodologie&nbsp;: à quoi une
-  organisation est tenue, sur quels référentiels elle s’appuie, et les <b>quatre angles de vue</b>
-  possibles sur la sécurité, jusqu'à l'analyse de risque et EBIOS RM. Construite sur les supports
-  <b>et les 8 h de transcriptions</b> des deux séances. Avec un QCM de <b>197 questions</b>.</p>
-  <div class="grid c2" style="margin:.6em 0 0">
-    <ul>
-      <li>Obligations, normes et méthodes — et leurs pièges</li>
-      <li>Les 7 principes de la normalisation</li>
-      <li><b>NIS et NIS 2</b> : essentielles contre importantes</li>
-      <li><b>Cybersecurity Act</b> et les 3 niveaux d’assurance</li>
-      <li>ISO 27001 : le SMSI, le PDCA et sa limite</li>
-      <li><b>ISO 27002 : les 93 mesures</b> et leurs attributs</li>
-    </ul>
-    <ul>
-      <li>Les <b>4 approches</b> : système, donnée, menace, métier</li>
-      <li><b>EBIOS Risk Manager</b> : les 5 ateliers en détail</li>
-      <li>Défense en profondeur et ses deux limites</li>
-      <li>CTI : la menace et le cycle du renseignement</li>
-      <li><b>Zero trust</b> : principes, 6 piliers, PEP</li>
-      <li>Briques, quick wins, ZTNA, SASE</li>
-      <li><b>Danger / risque / dommage</b>, ISO 31000, les formules</li>
-      <li><b>ISO 27005</b> : le processus et les 4 stratégies de traitement</li>
-      <li><b>EBIOS 2010 contre EBIOS RM</b> — signalé pour l'examen</li>
-      <li><b>Le risque IA</b> : 3 familles, ISO 23894 / 42001 / 42005, HUDERIA</li>
-      <li>Le <b>devoir EBIOS RM</b> et ce qui est évalué</li>
-    </ul>
+  <div class="home-tools">
+    <div class="chips" id="chips" role="group" aria-label="Filtrer par état"></div>
+    <span id="resultat" aria-live="polite"></span>
   </div>
-  <p style="margin-bottom:0"><span class="badge acc">Ouvrir la fiche</span></p>
-</a>
 
-<a class="course-card" href="ebios-rm-attestation.html" style="margin-top:14px;display:block">
-  <div class="code">QCM Moodle de la formation EBIOS RM · seuil 80 % · attestation de formation</div>
-  <h3>Préparation à l'attestation EBIOS Risk Manager</h3>
-  <p style="color:var(--fg-soft);font-size:.92rem">Le second QCM du module, celui qui conditionne
-  l'<b>attestation</b>. À 80 %, une impasse sur un atelier suffit à faire échouer&nbsp;: la page vise
-  la <b>couverture uniforme</b> des cinq ateliers, avec un QCM dédié de <b>111 questions</b>.</p>
-  <ul>
-    <li><b>Le format</b> — ce qui est établi, et ce que les sources publiques ne disent pas</li>
-    <li><b>Le référentiel de compétences</b> du Club EBIOS — les 3 thèmes</li>
-    <li><b>Les 5 fondements</b> — une compétence exigée par le support officiel de l'ANSSI</li>
-    <li><b>Les 5 ateliers</b> — objectif, participants, entrées, sorties, activités</li>
-    <li><b>Ce qui circule</b> d'un atelier à l'autre, et <b>12 confusions</b> à désamorcer</li>
-    <li><b>Les 10 commandements</b>, l'approche Flash et le <b>risque IA</b> du support</li>
-  </ul>
-  <p style="margin-bottom:0"><span class="badge acc">Viser les 80 %</span></p>
-</a>
+  <div id="cours" class="course-grid"></div>
 
-<!-- ===================== INF5243 ===================== -->
-<h2 style="margin-top:34px">INF5243 — Sécurisation des réseaux locaux</h2>
+  <noscript>
+    <p>JavaScript est désactivé. Accès direct aux fiches :
+    <a href="inf5049-controle-audit/fiche.html">INF5049</a> ·
+    <a href="ent5003-methodologie/fiche.html">ENT5003</a> ·
+    <a href="inf5244-interconnexions/fiche.html">INF5244</a> ·
+    <a href="inf5243-reseaux-locaux/fiche.html">INF5243</a></p>
+  </noscript>
 
-<a class="course-card" href="inf5243-fiche-complete.html" style="display:block">
-  <div class="code">Fiche unifiée · séances 1 à 3 · 12 h 45</div>
-  <h3>Fiche complète — tout le cours en un seul document</h3>
-  <p style="color:var(--fg-soft);font-size:.92rem">La fusion des trois séances&nbsp;: 45 chapitres dans
-  l'ordre logique du cours, du câble jusqu'à l'architecture de sécurité, plus un QCM unique de
-  <b>474 questions</b> filtrable chapitre par chapitre.</p>
-  <div class="grid c2" style="margin:.6em 0 0">
-    <ul>
-      <li>Support physique, fibre, câblage, PoE</li>
-      <li>Carte réseau, trame Ethernet, Wi-Fi</li>
-      <li>Commutation, CAM, ebtables, stacking, SDN</li>
-      <li>VLANs, attaques VLAN, PVLAN, menace interne</li>
-      <li>SNMP, port mirroring, pare-feu et Zero Trust</li>
-      <li>DHCP snooping, durcissement, AAA / RADIUS / 802.1X</li>
-    </ul>
-    <ul>
-      <li>Normalisation, IPv4, IPv6, subnetting, NAT</li>
-      <li>Routage, ICMP, sockets, TCP, scan SYN</li>
-      <li>DNS, DNSSEC, TLS et inspection profonde</li>
-      <li>CPCE, imputabilité, NAC et lab Alcasar</li>
-      <li>DMZ, bastion, reverse proxy, WAF, NIDS, VPN</li>
-      <li>Quiz corrigé, labs, glossaire</li>
-    </ul>
-  </div>
-  <p style="margin-bottom:0"><span class="badge acc">Ouvrir la fiche complète</span></p>
-</a>
-
-<p style="text-align:center;color:var(--fg-mute);font-size:.85rem;margin-top:44px">
-Fonctionne hors ligne · Conservez le dossier complet (<code>assets/</code> et <code>data/</code>).
-</p>
-
+  <p class="home-foot">Fonctionne hors ligne : conservez le dossier complet.</p>
 </main>
 
-<script src="assets/app.js?v=32"></script>
+<script src="catalogue.js?v=1"></script>
+<script src="assets/app.js?v=33"></script>
+<script src="assets/accueil.js?v=1"></script>
 </body>
 </html>
