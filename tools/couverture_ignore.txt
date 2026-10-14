@@ -304,3 +304,83 @@ inf5243-reseaux-locaux | RIR (5 mondiaux)
 inf5243-reseaux-locaux | Réalisée impérativement avec des tunnels
 inf5243-reseaux-locaux | Sanctions pénales
 inf5243-reseaux-locaux | h:262ae0303a64
+inf5049-controle-audit | ADN
+inf5049-controle-audit | ESN
+inf5049-controle-audit | OVH
+inf5049-controle-audit | SFR
+inf5049-controle-audit | SOFT
+inf5049-controle-audit | USB
+inf5049-controle-audit | Ce que doit contenir le rapport
+inf5049-controle-audit | Code vestimentaire adapté
+inf5049-controle-audit | Désamorcer la pression accumulée
+inf5049-controle-audit | Indépendance et intégrité
+inf5049-controle-audit | Le mécanisme de malhonnêteté technique
+inf5049-controle-audit | Les trois approches d'audit
+inf5049-controle-audit | Libérer la parole
+inf5049-controle-audit | Ressources à étudier
+inf5049-controle-audit | Règles d'or logistiques
+inf5049-controle-audit | Vulnérabilité lors des déplacements
+inf5049-controle-audit | 1 Preamble :
+inf5049-controle-audit | 3. Create a new task with the target
+inf5049-controle-audit | 4 Your tasks
+inf5049-controle-audit | 5 Installation
+inf5049-controle-audit | 6.2 User account creation (Web Interface)
+inf5049-controle-audit | 6.3.2 Create and run a new task
+inf5049-controle-audit | 6.4 Report
+inf5049-controle-audit | 8.2 Annex II - Credential Linux
+inf5049-controle-audit | 8.3 Annex III – Credential Windows
+inf5049-controle-audit | 8.3.5 Credential mode
+inf5049-controle-audit | Extra dependencies installation
+inf5049-controle-audit | Table of contents
+inf5049-controle-audit | APT
+inf5049-controle-audit | BE
+inf5049-controle-audit | CAM
+inf5049-controle-audit | CIDR
+inf5049-controle-audit | CSE
+inf5049-controle-audit | CSV
+inf5049-controle-audit | EOF
+inf5049-controle-audit | FR
+inf5049-controle-audit | GNU
+inf5049-controle-audit | GSD
+inf5049-controle-audit | HOME
+inf5049-controle-audit | HT
+inf5049-controle-audit | HTTP
+inf5049-controle-audit | II
+inf5049-controle-audit | IV
+inf5049-controle-audit | LISTEN
+inf5049-controle-audit | RPM
+inf5049-controle-audit | SQL
+inf5049-controle-audit | TLS
+inf5049-controle-audit | TO
+inf5049-controle-audit | TODO
+inf5049-controle-audit | TV
+inf5049-controle-audit | URL
+inf5049-controle-audit | WIFI
+inf5049-controle-audit | XML
+inf5049-controle-audit | XSL
+inf5049-controle-audit | ZAP
+inf5049-controle-audit | Autorisation formelle et explicite
+inf5049-controle-audit | Clauses d'exclusion abusives
+inf5049-controle-audit | Codification rigoureuse des vulnérabilités
+inf5049-controle-audit | Criticité / Gravité
+inf5049-controle-audit | Critères de remédiation
+inf5049-controle-audit | Division opérationnelle du binôme
+inf5049-controle-audit | Débriefing du soir à l'hôtel
+inf5049-controle-audit | Entretien collectif initial
+inf5049-controle-audit | Gestion des annexes brutes
+inf5049-controle-audit | Grille d'évaluation exhaustive
+inf5049-controle-audit | Impératif de compilation
+inf5049-controle-audit | Inestimabilité du préjudice immatériel
+inf5049-controle-audit | Le positionnement du Labo ESIEA
+inf5049-controle-audit | Le principe de la câlinothérapie
+inf5049-controle-audit | Le risque de dérapage de périmètre
+inf5049-controle-audit | Le risque de partialité
+inf5049-controle-audit | Matrice de qualification des vulnérabilités
+inf5049-controle-audit | Planning des restitutions
+inf5049-controle-audit | Position du DSI au CODIR
+inf5049-controle-audit | Question d'un étudiant
+inf5049-controle-audit | Suivi et pointage Teams
+inf5049-controle-audit | Typologie des profils à interviewer
+inf5049-controle-audit | Visite la veille en immersion
+inf5049-controle-audit | h:9f1c9ed30e18
+inf5049-controle-audit | h:9732c83e3e03

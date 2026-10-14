@@ -13,7 +13,7 @@ compteurs.js,         GÉNÉRÉS par tools/generer.py (lancé par sitecheck) : n
 glossaire-data.js     des QCM pour l'accueil, sigles extraits des fiches. Ne jamais les éditer.
 assets/               moteur commun : core.css, viz.css, app.js (onglets, recherche, QCM),
                       accueil.css / accueil.js, atelier.js, scenes.js
-tools/                sources.py (extraction des supports), couverture.py (+ couverture_ignore.txt),
+tools/                sources.py (extraction des supports), couverture.py (+ couverture_ignore.txt), signaux.py,
                       nouveau_cours.py + modele/ (squelette),
                       generer.py, qcmcheck.py, sitecheck.py, jsdata.py (lecture des .js sans node)
 <code>-<sujet>/       un dossier par cours, par exemple inf5049-controle-audit/
@@ -42,7 +42,11 @@ Une page de cours sans `#toc` n'a pas d'onglets ; un lien `page.html#qcm` ouvre 
    à déclarer dans `tools/couverture_ignore.txt` (un nom de personne : `--empreinte "NOM"`, jamais
    en clair). Nos productions (devoir, compte rendu) vont dans le champ `exclure` du catalogue.
    C'est un filet par mots-clés : il ne juge pas la qualité d'une explication.
-5. **Contrôler** : `qcmcheck.py` sur le QCM, `sitecheck.py`, rendu dans le navigateur.
+5. **Signaux d'examen** : `python -I tools/signaux.py "../<Matière>/Transcriptions"` relève les passages
+   où l'enseignant insiste (« c'est au partiel », « super important », « si je vous pose une question »).
+   Ne garder que ses déclarations explicites, dans `<dossier>/points-examen.html` (composant `.px-item`
+   de viz.css), avec la réponse attendue et un lien vers la fiche ; les reprendre dans « L'essentiel ».
+6. **Contrôler** : `qcmcheck.py` sur le QCM, `sitecheck.py`, rendu dans le navigateur.
 
 **Ne jamais relire une fiche entière** (250 à 350 Ko, soit des dizaines de milliers de tokens) :
 `grep -n` pour situer, puis `Read` avec `offset`/`limit`, et `Edit` ciblé. Les composants sont
@@ -166,6 +170,8 @@ correspondant** dans les pages HTML, sinon le navigateur sert l'ancien fichier d
 
 - `python -I tools/sitecheck.py` : « ARCHITECTURE : aucun problème » (liens, ancres, catalogue,
   clés initQCM, fichiers orphelins) ; il lance aussi qcmcheck sur chaque QCM.
+  Il signale aussi une page **tronquée** (sans </html> final) : le dossier est synchronisé par
+  OpenCloud, et une écriture a déjà été coupée en plein milieu. La restaurer depuis git.
 - `python -I tools/qcmcheck.py <dossier>/qcm.js` à zéro problème pour tout QCM produit ou modifié
   (pas de virgule finale, ids uniques, aucun indice de forme, moins de 80 % de bonnes réponses
   les plus longues).

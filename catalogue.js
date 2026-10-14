@@ -29,7 +29,7 @@ window.CATALOGUE = [
   titre: "Contrôle et audit en cybersécurité",
   dossier: "inf5049-controle-audit",
   sources: "../Contrôle et audit",
-  exclure: [],
+  exclure: ["TP2_Infrastructure_et_outils*", "guide_compilation_*", "problème_OpenVAS*", "Documentation_Compilation_*", "Rapport_Partie*", "TP3 - *", "TP3_Rapport_*", "TP3_Notes_*"],
   etat: "en cours",
   couleur: "purple",
   resume: "Organiser, mener et restituer une mission d'évaluation : la technique n'en est qu'une partie.",
@@ -45,12 +45,18 @@ window.CATALOGUE = [
     "Contrat d'audit, PASSI, PC d'audit, OpenVAS",
     "Avant, pendant, après : le déroulé d'une mission",
     "Posture, restitution, écrits parapluie",
-    "7 mises en situation au format de l'interro"
+    "Clause d'arrêt, double enveloppe, contenu du rapport",
+    "Veille outils, banc d'essai Metasploitable",
+    "Évaluer une vulnérabilité, plan du rapport",
+    "arp-scan, nmap, OpenVAS, scan authentifié",
+    "10 mises en situation au format de l'interro"
   ],
   ressources: [
     { type: "fiche", page: "fiche.html", titre: "Fiche de révision",
-      desc: "Support, TP 1 et séance 1, avec mises en situation",
-      qcm: { src: "qcm.js", cle: "inf5049" } }
+      desc: "Support, TP 1 à 3, séances 1 et 2, avec 10 mises en situation",
+      qcm: { src: "qcm.js", cle: "inf5049" } },
+    { type: "examen", page: "points-examen.html", titre: "Ce que le prof a signalé",
+      desc: "28 passages des séances 1 et 2, avec la réponse attendue" }
   ]
 },
 

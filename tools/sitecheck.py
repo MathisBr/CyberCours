@@ -56,6 +56,12 @@ pages = sorted(
     for f in fs if f.endswith(".html")
 )
 parsed = {p: parse(p) for p in pages}
+
+# Page tronquée (écriture interrompue, conflit de synchronisation du dossier) : elle doit finir
+# par </html>, sinon la fin du contenu, le QCM et les scripts ont disparu.
+for p in pages:
+    if not open(p, encoding="utf-8").read().rstrip().endswith("</html>"):
+        problems.append(f"{p} : fichier tronqué (ne se termine pas par </html>) — restaurer la fin depuis git")
 referenced = set()
 
 for page, p in parsed.items():

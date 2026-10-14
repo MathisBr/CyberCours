@@ -378,3 +378,44 @@ details.case > summary::before { content: "▸ "; color: var(--accent); }
 details.case[open] > summary::before { content: "▾ "; }
 details.case > div { padding: 0 16px 14px; border-top: 1px dashed var(--border); }
 details.case .sit { font-weight: 400; color: var(--fg-soft); display: block; margin-top: 4px; }
+
+/* Page « Ce que le prof a signalé » : une citation (.px-item), sa source (.src) et la réponse
+   à savoir donner (.rep). Partagée par les pages points-examen.html des cours. */
+.px-wrap { max-width: 960px; margin: 0 auto; padding: 0 18px 60px; }
+
+.px-item {
+  background: var(--bg-soft); border: 1px solid var(--border); border-left: 3px solid var(--accent);
+  border-radius: var(--radius); box-shadow: var(--shadow); padding: 18px 22px; margin: 0 0 16px;
+}
+.px-item.fort { border-left-width: 5px; }
+.px-item > .src {
+  font-family: var(--mono); font-size: .73rem; text-transform: uppercase; letter-spacing: .07em;
+  color: var(--fg-mute); margin-bottom: 9px; display: flex; gap: 10px; flex-wrap: wrap;
+  align-items: baseline;
+}
+.px-item > .src .th {
+  text-transform: none; letter-spacing: 0; color: var(--fg-soft); font-family: var(--sans);
+  font-size: .82rem; font-weight: 600;
+}
+.px-item blockquote {
+  margin: 0; padding: 0; border: 0; font-style: normal;
+  font-size: 1.03rem; line-height: 1.63; color: var(--fg);
+}
+.px-item blockquote::before { content: "« "; color: var(--fg-mute); }
+.px-item blockquote::after  { content: " »"; color: var(--fg-mute); }
+.px-item blockquote em { color: var(--fg-mute); font-style: normal; }
+.px-item .rep {
+  margin-top: 14px; padding: 13px 16px; border-radius: 9px;
+  background: var(--bg-alt); border-left: 3px solid var(--ok);
+  font-size: .94rem; line-height: 1.62;
+}
+.px-item .rep > .t {
+  font-weight: 700; font-size: .72rem; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--fg-mute); margin-bottom: 5px;
+}
+.px-item .rep p { margin: 8px 0 0; }
+.px-item .rep .lien { display: block; margin-top: 9px; font-size: .86rem; }
+.px-seance {
+  margin: 34px 0 14px; font-size: .78rem; text-transform: uppercase; letter-spacing: .09em;
+  color: var(--fg-mute); font-weight: 700; border-bottom: 1px solid var(--border); padding-bottom: 6px;
+}
