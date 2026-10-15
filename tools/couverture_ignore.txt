@@ -384,3 +384,33 @@ inf5049-controle-audit | Typologie des profils à interviewer
 inf5049-controle-audit | Visite la veille en immersion
 inf5049-controle-audit | h:9f1c9ed30e18
 inf5049-controle-audit | h:9732c83e3e03
+inf5049-controle-audit | LLM
+inf5049-controle-audit | NDA
+inf5049-controle-audit | OCD
+inf5049-controle-audit | 1h20 de débat et d'échanges stratégiques
+inf5049-controle-audit | Cadrer strictement la mission
+inf5049-controle-audit | Clarté et logique
+inf5049-controle-audit | Contraste visuel et lisibilité
+inf5049-controle-audit | Déroulement type
+inf5049-controle-audit | Gestion du timing et de l'agressivité (-T)
+inf5049-controle-audit | Indicateurs macroscopiques
+inf5049-controle-audit | L'adaptation aux contextes d'entreprise
+inf5049-controle-audit | L'analyse systémique
+inf5049-controle-audit | L'illusion de la boîte grise
+inf5049-controle-audit | L'illusion du gain de temps
+inf5049-controle-audit | L'importance des mentions de confidentialité
+inf5049-controle-audit | La preuve formelle (PoC)
+inf5049-controle-audit | La question de la fiabilité des scanners
+inf5049-controle-audit | La responsabilité incombe au management
+inf5049-controle-audit | La tentation du blâme facile
+inf5049-controle-audit | Le piège du court-circuitage
+inf5049-controle-audit | Modalités et contraintes temporelles
+inf5049-controle-audit | Port TCP/21 (vsftpd 2.3.4)
+inf5049-controle-audit | Pourquoi l'enseignant impose-t-il ce calvaire ?
+inf5049-controle-audit | Rappel des motivations
+inf5049-controle-audit | Recommandation stratégique de l'auditeur
+inf5049-controle-audit | Style reconnaissable et décrédibilisation
+inf5049-controle-audit | Synthèse des 5 vulnérabilités majeures
+inf5049-controle-audit | Vulnérabilités critiques présentées
+inf5049-controle-audit | Étape 3 (Matrice de flux)
+inf5049-controle-audit | Évolution sereine vs urgence

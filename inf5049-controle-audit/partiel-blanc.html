@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>INF5049 — Partiel blanc</title>
+<link rel="stylesheet" href="../assets/core.css?v=28">
+<link rel="stylesheet" href="../assets/viz.css?v=12">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><span class="dot"></span> INF5049 <small>· partiel blanc</small></div>
+  <div class="spacer"></div>
+  <a class="home" href="fiche.html">← La fiche</a>
+  <a class="home" href="../index.html">Accueil</a>
+  <button class="btn ghost" onclick="toggleTheme()" title="Thème clair / sombre">◐</button>
+</header>
+
+<main class="px-wrap">
+
+<div class="hero" style="margin-top:22px">
+  <h1>Partiel blanc — une heure, sur papier</h1>
+  <p class="lead">Construit sur le format annoncé à la séance 3 : <b>questions réseau</b>, <b>questions sur
+  les conseils du cours</b>, <b>mise en situation</b>. Chaque question part d'un passage que l'enseignant a
+  signalé, ou d'une question des TP. Prenez une feuille, un brouillon, lancez le chrono, et n'ouvrez les
+  corrigés qu'à la fin.</p>
+</div>
+
+<div class="callout"><div class="t">Conditions</div>
+<p>Une heure, sans document. Temps conseillé : <b>10 minutes</b> pour la partie 1, <b>12 minutes</b> pour
+la partie 2, <b>35 minutes</b> pour la partie 3, dont 5 de brouillon. Le barème est <b>indicatif</b> :
+c'est une estimation, pas celui de l'enseignant.</p>
+<p style="margin-bottom:0"><button class="btn" id="chrono-go">Lancer le chrono (60 min)</button>
+<button class="btn ghost" id="chrono-stop">Arrêter</button>
+<b id="chrono" style="margin-left:10px;font-size:1.2rem">60:00</b></p>
+</div>
+
+<div class="callout danger"><div class="t">Ce qui sera regardé (ses mots)</div>
+Ni l'orthographe ni le style. <b>La cohérence</b> : « décrivez-moi un problème, donnez-moi une
+remédiation, soyez cohérents ». Sujet, verbe, complément ; pas de double négation ; aucune
+contradiction ; un scénario crédible du début à la fin.
+</div>
+
+<!-- ============================ PARTIE 1 ============================ -->
+<div class="px-seance">Partie 1 — Réseau (6 points, 10 minutes)</div>
+
+<div class="px-item"><div class="src">Question 1.1 <span class="th">0,5 pt</span></div>
+<p>À quoi sert arp-scan, et sur quel protocole repose-t-il ?</p>
+<details><summary>Corrigé</summary><div class="rep">
+À découvrir les appareils connectés à un <b>réseau local (LAN)</b>, avec le protocole <b>ARP</b>
+(Address Resolution Protocol). Il ne relève que les adresses MAC (couche 2), sur le segment local.
+<a class="lien" href="fiche.html#ch14-correction">→ Fiche §14.2</a></div></details></div>
+
+<div class="px-item"><div class="src">Question 1.2 <span class="th">0,5 pt</span></div>
+<p>Quelle commande arp-scan avez-vous utilisée pour scanner votre réseau local, et pourquoi ces
+options ?</p>
+<details><summary>Corrigé</summary><div class="rep">
+<code>arp-scan -I &lt;interface&gt; -l</code> : <code>-I</code> choisit la carte réseau, <code>-l</code>
+génère automatiquement les adresses à scanner d'après la configuration de cette carte.
+<a class="lien" href="fiche.html#ch14-correction">→ Fiche §14.2</a></div></details></div>
+
+<div class="px-item"><div class="src">Question 1.3 <span class="th">0,5 pt</span></div>
+<p>Quels fichiers présents sur le PC arp-scan utilise-t-il, et à quoi servent-ils ?</p>
+<details><summary>Corrigé</summary><div class="rep">
+<code>ieee-oui.txt</code>, <code>ieee-iab.txt</code> et <code>mac-vendor.txt</code>, dans
+<code>/usr/share/arp-scan</code> : ils associent le préfixe d'une adresse MAC à son constructeur.
+<a class="lien" href="fiche.html#ch14-correction">→ Fiche §14.2</a></div></details></div>
+
+<div class="px-item"><div class="src">Question 1.4 <span class="th">0,5 pt</span></div>
+<p>Quelle est la différence entre arp-scan et nmap ?</p>
+<details><summary>Corrigé</summary><div class="rep">
+Leur objectif. arp-scan sert surtout à <b>découvrir les appareils présents</b> sur un réseau local ;
+nmap permet aussi d'<b>analyser leurs ports ouverts et les services réseau</b> accessibles, et pas
+seulement sur le segment local.
+<a class="lien" href="fiche.html#ch14-outils">→ Fiche §14.1</a></div></details></div>
+
+<div class="px-item"><div class="src">Question 1.5 <span class="th">1 pt</span></div>
+<p>Dans le TP 3, pourquoi modifier le fichier <code>nmap-services</code> ? Quel intérêt en entreprise ?</p>
+<details><summary>Corrigé</summary><div class="rep">
+Il associe un numéro de port à un nom de service ; il se trouve dans <code>/usr/share/nmap/</code>. En
+entreprise, les applications internes écoutent sur des ports non standard que l'outil affiche comme
+inconnus, ou sous le nom d'un autre service : le rapport devient incompréhensible. En déclarant le nom
+de l'application métier, tous les rapports affichent le bon nom. Très utile en milieu industriel.
+<a class="lien" href="fiche.html#ch14-outils">→ Fiche §14.1</a></div></details></div>
+
+<div class="px-item"><div class="src">Question 1.6 <span class="th">1,5 pt</span></div>
+<p>Donnez le protocole associé à chaque port : 21, 22, 23, 25, 53, 80, 443, 445, 3306, 3389.</p>
+<details><summary>Corrigé</summary><div class="rep">
+21 FTP · 22 SSH · 23 Telnet · 25 SMTP · 53 DNS · 80 HTTP · 443 HTTPS · 445 SMB · 3306 MySQL · 3389 RDP.
+Bonus d'auditeur : FTP, Telnet et HTTP circulent en clair ; Telnet se remplace par SSH.
+<a class="lien" href="fiche.html#ch14-ports">→ Fiche §14.3</a></div></details></div>
+
+<div class="px-item"><div class="src">Question 1.7 <span class="th">0,5 pt</span></div>
+<p>Un scan de vulnérabilités authentifié ne remonte presque rien sur un poste. Est-ce rassurant ?
+Comment le vérifier ?</p>
+<details><summary>Corrigé</summary><div class="rep">
+Pas forcément : le scan peut <b>ne jamais être entré</b> et n'avoir fait qu'une analyse de surface. On
+le prouve par une <b>capture Wireshark</b> du début du scan (l'échange d'authentification) et par les
+<b>journaux de la cible</b> (authentification sous Linux, SMB sous Windows).
+<a class="lien" href="fiche.html#ch14-credentials">→ Fiche §14.6</a></div></details></div>
+
+<div class="px-item"><div class="src">Question 1.8 <span class="th">1 pt</span></div>
+<p>Pourquoi un audit d'entreprise commence-t-il par le réseau, et dans quel ordre l'étudie-t-on ?</p>
+<details><summary>Corrigé</summary><div class="rep">
+« Réseau, réseau, réseau » : tout y passe, tout y fuit, et les entreprises n'en ont pas une vue à jour.
+Ordre : <b>cartographie globale et rôle des machines</b> (où est l'AD, les gros serveurs) → services
+encore utiles ? → <b>les flux</b> (qui accède à quoi, cloisonnement, DMZ, liaisons entre sites) →
+équipements de sécurité → les machines, en commençant par l'Active Directory puis les sauvegardes.
+<a class="lien" href="fiche.html#ch14-macro">→ Fiche §14.4</a></div></details></div>
+
+<!-- ============================ PARTIE 2 ============================ -->
+<div class="px-seance">Partie 2 — Questions de cours (6 points, 12 minutes)</div>
+
+<div class="px-item"><div class="src">Question 2.1 <span class="th">0,5 pt</span></div>
+<p>Quelle différence entre un contrôle et un audit ?</p>
+<details><summary>Corrigé</summary><div class="rep">
+Le <b>contrôle</b> vérifie un état au regard d'une norme, point par point, avec une réponse oui ou non.
+L'<b>audit</b> (définition ANSSI) est un processus systématique, indépendant et documenté pour obtenir
+des preuves et les évaluer objectivement par rapport à un référentiel ; il porte un avis.
+<a class="lien" href="fiche.html#ch1">→ Fiche §1</a></div></details></div>
+
+<div class="px-item"><div class="src">Question 2.2 <span class="th">0,5 pt</span></div>
+<p>Un étudiant répond « ça dépend du contexte ». Pourquoi n'a-t-il aucun point, et que fallait-il
+écrire ?</p>
+<details><summary>Corrigé</summary><div class="rep">
+C'est vrai, mais ce n'est que le début de la réponse. Il faut <b>décrire le contexte</b> retenu (métier,
+exposition, ce qui a de la valeur) et <b>conclure</b> : la même faille peut être anodine ici, critique
+ailleurs.
+<a class="lien" href="fiche.html#ch13-contexte">→ Fiche §13.1</a></div></details></div>
+
+<div class="px-item"><div class="src">Question 2.3 <span class="th">0,5 pt</span></div>
+<p>Quelle est la première chose à vérifier en arrivant chez un client, et quelles sont les deux
+questions à poser à tous les niveaux ?</p>
+<details><summary>Corrigé</summary><div class="rep">
+<b>Les sauvegardes</b>, et la preuve qu'on sait <b>restaurer</b> : le risque zéro n'existe pas, l'auditeur
+lui-même peut provoquer un incident. Les deux questions : combien de temps de panne pouvez-vous
+tolérer ? combien de données pouvez-vous perdre ?
+<a class="lien" href="fiche.html#ch5-interview">→ Fiche §5.1</a></div></details></div>
+
+<div class="px-item"><div class="src">Question 2.4 <span class="th">1 pt</span></div>
+<p>Citez les critères qui accompagnent une recommandation, et expliquez comment ils servent à
+prioriser.</p>
+<details><summary>Corrigé</summary><div class="rep">
+Séance 2 : <b>prix</b>, <b>compétences</b>, <b>impact sur les utilisateurs</b>, <b>durée</b>. TP 3 :
+<b>difficulté</b>, <b>gravité</b>, <b>coût</b>, <b>impact</b>. Ce qui est bon marché, simple et rapide se
+fait tout de suite ; ce qui coûte ou dure se planifie et se budgète. Sans ces critères, les
+recommandations sont rejetées en bloc. Puis le tableau de correspondance problèmes × recommandations.
+<a class="lien" href="fiche.html#ch13-recos">→ Fiche §13.3</a></div></details></div>
+
+<div class="px-item"><div class="src">Question 2.5 <span class="th">1 pt</span></div>
+<p>Une réunion de restitution devant le codir : combien de temps, combien de constats, que met-on sur
+les diapositives, que n'y met-on pas ?</p>
+<details><summary>Corrigé</summary><div class="rep">
+Environ <b>deux heures</b> : <b>4 à 5 constats majeurs au plus</b>, une quarantaine de minutes de
+présentation, puis le débat sur la suite. On y met : la mention « Diffusion restreinte », les
+motivations, les points forts d'abord, les chiffres par domaine, le coût des remédiations, des constats
+courts, la conséquence concrète en mots simples. On n'y met pas : de commandes (responsabilité, et
+l'auditeur n'est pas payé pour remédier), de jargon, de score sans son échelle.
+<a class="lien" href="fiche.html#ch13-restituer">→ Fiche §13.5</a></div></details></div>
+
+<div class="px-item"><div class="src">Question 2.6 <span class="th">0,5 pt</span></div>
+<p>En réunion, le DSI conteste un constat : « c'est votre outil qui invente ». Comment l'éviter et y
+répondre ?</p>
+<details><summary>Corrigé</summary><div class="rep">
+Ne présenter que des constats vérifiés, chacun avec une <b>preuve datée</b> (bandeau « capture réalisée
+le … à … »), ou proposer de le refaire en direct, avec une vidéo de secours. Un constat qu'on n'a pas
+réussi à reproduire ne se présente pas. Rester calme : le DSI se sent jugé.
+<a class="lien" href="fiche.html#ch13-restituer">→ Fiche §13.5</a></div></details></div>
+
+<div class="px-item"><div class="src">Question 2.7 <span class="th">0,5 pt</span></div>
+<p>Pendant la mission, vous constatez que des données sortent en ce moment vers une adresse inconnue.
+Que faites-vous ?</p>
+<details><summary>Corrigé</summary><div class="rep">
+On applique la <b>clause d'arrêt</b> : on cesse les tests (sinon on mélange ses traces et celles de
+l'attaquant), on prévient tout de suite le commanditaire par le contact d'urgence, on préserve son
+journal de bord et ses preuves, et on laisse la main à la réponse à incident.
+<a class="lien" href="fiche.html#ch16-cas">→ Fiche §16, cas 8</a></div></details></div>
+
+<div class="px-item"><div class="src">Question 2.8 <span class="th">1 pt</span></div>
+<p>TP 1 : pourquoi le contrat est-il vital pour l'auditeur ? Citez quatre points qu'il doit
+verrouiller.</p>
+<details><summary>Corrigé</summary><div class="rep">
+Sans <b>autorisation écrite</b> de celui qui a le pouvoir de la donner, l'accès est une infraction (art.
+323-1 du Code pénal), quel que soit le mobile. À verrouiller : qui autorise (pouvoirs du signataire,
+accord d'un hébergeur tiers) ; le périmètre précis et les dates ; les phases de validation avant
+d'exploiter une faille ; la suspension, l'arrêt et les contacts d'urgence ; la responsabilité et
+l'assurance ; la confidentialité et la destruction des traces ; les livrables.
+<a class="lien" href="fiche.html#ch10-juridique">→ Fiche §10.1</a></div></details></div>
+
+<div class="px-item"><div class="src">Question 2.9 <span class="th">0,5 pt</span></div>
+<p>Pourquoi le labo travaille-t-il en machines virtuelles pour ses audits ?</p>
+<details><summary>Corrigé</summary><div class="rep">
+Une VM préparée en début de saison se copie et se met à jour par delta ; les données du client y
+restent <b>cloisonnées</b>, et le nettoyage de fin de mission consiste à la supprimer. Sur un PC physique
+mêlé de données personnelles, prétendre avoir tout nettoyé est « un mensonge ».
+<a class="lien" href="fiche.html#ch10-pc">→ Fiche §10.4</a></div></details></div>
+
+<!-- ============================ PARTIE 3 ============================ -->
+<div class="px-seance">Partie 3 — Mise en situation (8 points, 35 minutes)</div>
+
+<div class="callout"><div class="t">Le contexte (entreprise fictive)</div>
+<p><b>Grimolux</b> fabrique du mobilier de jardin. L'entreprise familiale compte 140 salariés : une usine,
+et un siège commercial à 15 km. Le fils du fondateur vient de prendre la direction. Un concurrent a été
+paralysé trois semaines par un rançongiciel l'an dernier ; le nouveau directeur commande un audit
+« pour être tranquille », et le banquier de l'entreprise le lui a suggéré.</p>
+<p>L'informatique repose sur une seule personne, qui gère aussi la téléphonie. L'annuaire et les
+fichiers partagés sont sur un serveur rangé dans un placard du siège. Le comptable emporte chaque
+vendredi un disque USB de sauvegarde chez lui. Le Wi-Fi des visiteurs est le même réseau que celui des
+bureaux. Les commerciaux, souvent en télétravail, se connectent aux postes du siège avec un outil de
+prise en main à distance et un compte partagé. Le site de vente en ligne est hébergé par une agence web.
+Le pic d'activité est au printemps : les salons professionnels et les commandes de la saison.</p>
+</div>
+
+<div class="px-item fort"><div class="src">Question 3.1 <span class="th">2 pts</span></div>
+<p>Quel est le besoin du client ? Distinguez le besoin officiel et ce qu'il ne dit pas, puis ce qui a
+de la valeur pour lui.</p>
+<details><summary>Corrigé</summary><div class="rep">
+<b>Officiel</b> : être rassuré après l'attaque du concurrent ; répondre au banquier. <b>Non dit</b> : un
+nouveau dirigeant qui veut un état des lieux de ce dont il hérite (un levier possible sur l'organisation
+existante : rester sur les systèmes et les processus, pas sur les personnes) ; et un besoin inconscient,
+<b>continuer à produire et à vendre au printemps</b>. <b>Valeurs</b> : les commandes et la facturation, les
+fichiers clients et les plans des produits, la capacité à livrer pendant la saison. Tolérance à l'arrêt
+très faible au printemps.
+<a class="lien" href="fiche.html#ch7">→ Fiche §7 : comprendre le client</a></div></details></div>
+
+<div class="px-item fort"><div class="src">Question 3.2 <span class="th">3 pts</span></div>
+<p>Décrivez deux vulnérabilités crédibles dans ce contexte, dont au moins une non technique. Pour
+chacune : le constat, pourquoi c'est un problème pour Grimolux, son domaine et sa gravité.</p>
+<details><summary>Corrigé</summary><div class="rep">
+<p><b>O-Maj-01 — Tout repose sur une seule personne.</b> Constat : un seul informaticien, aussi chargé de
+la téléphonie, sans remplaçant ni documentation connue. Problème : s'il est absent ou part, plus personne
+ne sait administrer le serveur ni restaurer ; et il n'a pas le temps de maintenir la sécurité. Ce n'est
+pas sa faute : c'est une question de moyens, qui relève de la direction.</p>
+<p><b>T-Maj-01 — Les sauvegardes.</b> Constat : un seul disque USB, emporté au domicile du comptable,
+jamais testé à notre connaissance. Problème : la copie de la semaine peut être perdue, volée ou déjà
+chiffrée si elle était branchée pendant une attaque ; on perdrait jusqu'à une semaine de commandes en
+pleine saison. Et des données de l'entreprise dorment chez un particulier.</p>
+<p style="margin-bottom:0">Autres pistes acceptables, si elles restent cohérentes : le Wi-Fi des visiteurs
+sur le réseau des bureaux (T, majeur : un visiteur atteint le serveur) ; le compte partagé des commerciaux
+(O et T : impossible de savoir qui s'est connecté, et un mot de passe volé ouvre le siège) ; un serveur
+dans un placard (E).</p>
+<a class="lien" href="fiche.html#ch13-classer">→ Fiche §13.2 : classer</a></div></details></div>
+
+<div class="px-item fort"><div class="src">Question 3.3 <span class="th">3 pts</span></div>
+<p>Proposez une remédiation pour chacune, avec ses critères et sa priorité, puis dites comment vous
+présentez cela au directeur.</p>
+<details><summary>Corrigé</summary><div class="rep">
+<p><b>Pour O-Maj-01</b> : documenter l'installation et les procédures (restauration comprise), désigner
+un appui chez un prestataire, dégager du temps pour la sécurité et former l'informaticien. Prix moyen
+(heures de prestataire) ; compétences moyennes ; impact utilisateurs nul ; quelques semaines. Priorité 2,
+lancée avant le printemps.</p>
+<p><b>Pour T-Maj-01</b> : au moins deux supports en rotation, l'un toujours <b>débranché et hors du
+site</b> dans un lieu de l'entreprise (pas au domicile d'un salarié), chiffrés ; un <b>test de
+restauration</b> régulier. Prix faible ; compétences faibles ; impact nul ; quelques jours. Précaution :
+vérifier d'abord ce que contient la sauvegarde actuelle avant de changer le dispositif. Priorité 1,
+tout de suite.</p>
+<p style="margin-bottom:0"><b>Présentation</b> : les points forts d'abord ; puis le risque en mots
+simples (« si un virus chiffre le serveur au printemps, vous perdez une semaine de commandes et vous ne
+savez pas si vous pouvez repartir ») ; le coût et l'ordre de marche ; pas de commande technique, pas
+d'accusation de l'informaticien. La décision revient au directeur ; s'il refuse, je lui demande de
+confirmer son choix par écrit.</p>
+<a class="lien" href="fiche.html#ch13-recos">→ Fiche §13.3 et §13.5</a></div></details></div>
+
+<div class="callout warn"><div class="t">Ce qui fait perdre des points à la partie 3</div>
+<ul style="margin-bottom:0">
+  <li>Changer de scénario en route, ou se contredire (« majeur » puis « pas urgent »).</li>
+  <li>Conclure « j'ai vérifié, tout va bien » : il faut jouer l'exercice.</li>
+  <li>Un problème sans conséquence concrète pour <b>cette</b> entreprise.</li>
+  <li>Une remédiation sans critères, sans précaution, ou qui accuse une personne.</li>
+  <li>Une culture fausse (un problème Linux sur un parc Windows), ou un délire technique hors de
+  propos.</li>
+</ul>
+</div>
+
+<p style="margin:28px 0 40px">Pour aller plus loin : <a href="points-examen.html">ce que le prof a
+signalé</a> · <a href="fiche.html#ch16-sujet">un autre sujet corrigé</a> · <a href="fiche.html#qcm-sec">le
+QCM</a>.</p>
+
+</main>
+
+<button id="top" title="Haut de page">↑</button>
+<script src="../assets/app.js?v=35"></script>
+<script>
+(function () {
+  var fin = 0, t = null, el = document.getElementById('chrono');
+  function tic() {
+    var r = Math.max(0, Math.round((fin - Date.now()) / 1000));
+    el.textContent = String(Math.floor(r / 60)).padStart(2, '0') + ':' + String(r % 60).padStart(2, '0');
+    if (r === 0) { clearInterval(t); el.textContent = 'Terminé'; }
+  }
+  document.getElementById('chrono-go').onclick = function () {
+    clearInterval(t); fin = Date.now() + 3600000; tic(); t = setInterval(tic, 1000);
+  };
+  document.getElementById('chrono-stop').onclick = function () { clearInterval(t); };
+})();
+</script>
+</body>
+</html>

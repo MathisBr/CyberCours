@@ -32,18 +32,42 @@ la restituer.
 <!-- ===================================================================== -->
 <h2 id="essentiel">★ L'essentiel — à relire la veille</h2>
 
-<div class="exam"><div class="t">Le format de l'interro, tel qu'annoncé</div>
+<div class="exam"><div class="t">Le format du partiel, annoncé à la séance 3 (il fait foi)</div>
 <ul>
-  <li>Une interro <b>plutôt théorique</b>, sur 20 : <b>questions de cours</b>, <b>questions de
-  compréhension des TP</b>, <b>évaluation d'une vulnérabilité</b>.</li>
-  <li>L'exercice type : <b>« je vais fantasmer un problème et vous devrez me le commenter, me
-  l'expliquer, comme si c'était un rapport d'audit »</b>. D'où le
-  <a href="#ch16">§16 — mises en situation</a>.</li>
-  <li><b>Malus</b> si les TP ne sont pas faits. Pour OpenVAS, il faudra <b>prouver</b> qu'il a été
-  compilé depuis les sources : <b>−5 points</b> en cas de triche (une VM toute faite).</li>
-  <li>Le syllabus, lui, parle d'un contrôle mixte : un travail de synthèse sur environnement virtualisé
-  et un examen Moodle sans documents.</li>
-  <li>Durée annoncée : <b>une heure</b>. La preuve de la compilation d'OpenVAS est vérifiée à côté.</li>
+  <li><b>Vendredi 16 octobre, 10 h 30 : une heure, sur papier</b>, sans PC (20 minutes de plus pour le
+  tiers-temps). Une feuille de <b>brouillon</b> est fournie.</li>
+  <li><b>1. Des questions réseau</b> : nmap, arp-scan, ports bien connus. « Vous l'avez réellement
+  compris, vous l'avez testé ? Vous ne pouvez pas vous perdre. » Elles reprennent la
+  <a href="#ch14-correction">correction du TP 3</a> projetée en cours. On sait ou on ne sait pas : ça va
+  vite.</li>
+  <li><b>2. Des questions sur les échanges du cours</b> : « est-ce que vous m'avez bien écouté, est-ce que
+  vous avez ressenti les conseils que je vous ai donnés ? » Posture, client, critères des
+  recommandations, restitution.</li>
+  <li><b>3. Une mise en situation</b> : une société fictive (« Plopinov »), son contexte, puis <b>trois
+  questions</b>. Il faudra <b>inventer une vulnérabilité</b>, technique ou non, la décrire et donner sa
+  remédiation. Compter <b>30 à 40 minutes</b>, au moins la moitié de l'épreuve. Méthode et sujet corrigé :
+  <a href="#ch16-methode">§16</a>. Pour s'entraîner en conditions : <a href="partiel-blanc.html"><b>le partiel
+  blanc</b></a>.</li>
+  <li><b>Les TP ne donnent que des malus</b> s'ils n'ont pas été testés ; la VM OpenVAS compilée est
+  vérifiée après l'épreuve (−5 points pour une VM toute faite). Le syllabus parlait d'un examen Moodle :
+  l'annonce orale le remplace.</li>
+</ul>
+</div>
+
+<div class="callout danger"><div class="t">Comment il corrige : là où l'on perd des points</div>
+<ul style="margin-bottom:0">
+  <li><b>Ni l'orthographe ni le style ne sont notés</b> : des phrases simples suffisent, pas un roman avec
+  chapitres et transitions.</li>
+  <li><b>La cohérence est notée</b> : « décrivez-moi un problème, donnez-moi une remédiation, soyez
+  cohérents ». On perd des points « bêtement » en se <b>contredisant</b>, avec des doubles ou triples
+  négations, des phrases de trois kilomètres. <b>Sujet, verbe, complément.</b></li>
+  <li><b>Pas de preuve demandée</b>, pas de technique pointue : un scénario « fantasmé » mais
+  <b>crédible du début à la fin</b>. Une fois parti dans un scénario, on y reste, et l'on ne conclut pas
+  « finalement j'ai contrôlé, tout va bien » : il faut jouer l'exercice.</li>
+  <li><b>Aucun piège, impossible d'être hors sujet.</b> Le risque est de partir dans tous les sens : d'où
+  le brouillon, avec les idées et leurs mots-clés reliés avant de rédiger. Il attend de la
+  <b>hauteur</b> plutôt qu'un « délire technique super précis », et une culture juste (pas un problème
+  systemd sur un parc Windows).</li>
 </ul>
 </div>
 
@@ -65,6 +89,10 @@ la restituer.
   ensuite décrire le contexte (§13.1).</li>
   <li>« <b>Vous aurez des questions réseau</b> » : savoir reconnaître une adresse, un protocole, un port
   bien connu (§14).</li>
+  <li>« <b>Réseau, réseau, réseau !</b> C'est le point faible essentiel » : on commence par la
+  cartographie, puis les <b>flux</b>, « super important » (§14.4).</li>
+  <li>« Être fier de son travail et espérer une évolution du client : <b>c'est le plus important</b> »
+  (§15).</li>
 </ul>
 </div>
 
@@ -81,6 +109,8 @@ la restituer.
 <tr><td><b>3 rôles</b></td><td><b>Manager</b> : négocie et cadre (coûts, périmètre, durée, livrables) · <b>Senior</b> : contrôle besoin, périmètre et livrables, mène les interviews et la partie réglementaire · <b>Junior</b> : partie technique et livrables.</td></tr>
 <tr><td><b>PCA / PRA</b></td><td><b>Continuité</b> : l'activité ne s'arrête pas (redondance, deux sites distincts). <b>Reprise</b> : on accepte l'arrêt, puis on restaure et on redémarre.</td></tr>
 <tr><td><b>PASSI</b></td><td>Prestataire d'Audit de la Sécurité des SI : <b>qualification ANSSI</b> de la société et de ses auditeurs. <b>Imposée pour les OIV et les OSE</b>. Référentiel v2.2 du 1<sup>er</sup> août 2024.</td></tr>
+<tr><td><b>Investigation réseau</b></td><td><b>Macro avant micro</b> : cartographie et rôle des machines → services encore utiles ? → <b>flux</b> et cloisonnement → équipements de sécurité → machines (AD, sauvegardes, applications, partages).</td></tr>
+<tr><td><b>Restitution</b></td><td>Environ <b>2 h</b> : 4 à 5 constats majeurs au plus, une quarantaine de minutes de présentation, puis le débat. Une preuve datée pour chaque vulnérabilité, pas de commande sur les diapositives.</td></tr>
 <tr><td><b>Déroulé d'une mission</b></td><td><b>Avant</b> : commercial → contrat → préparation et OSINT. <b>Pendant</b> : visite sur site → investigation → rapport. <b>Après</b> : réunion de clôture (PV) → nettoyage des traces (30 jours).</td></tr>
 </tbody></table></div>
 
@@ -1040,6 +1070,25 @@ attendue est de <b>savoir faire de la veille</b> : chercher l'outil adapté au c
   </ul></div>
 </div>
 
+<div class="grid c2">
+  <div class="card"><h4>Pas de Kali en mission</h4>
+  <p>Kali rassemble des centaines d'outils de tiers, dont certains écrits par des personnes « pas
+  recommandables » : rien ne garantit l'absence de <b>portes dérobées</b>, ni de comportements imprévus
+  sur le réseau du client. C'est un <b>bac à sable</b>, pour découvrir et tester. Une fois l'outil
+  choisi, on l'isole, on le teste vraiment, on s'y entraîne, et l'on prépare <b>sa propre</b> machine.
+  Arriver avec Kali, c'est de la paresse de préparation.</p>
+  <p style="margin-bottom:0">RETEX : un jury a suspendu la diplomation d'un élève ingénieur dont
+  l'entreprise faisait ses scans d'administration depuis un Kali installé au cœur du réseau, jusqu'à ce
+  qu'il soit remplacé.</p></div>
+  <div class="card"><h4>Travailler en machines virtuelles</h4>
+  <p>Au labo, tout se fait en <b>VM</b> (sous Proxmox). Chaque auditeur prépare la sienne en début de
+  saison, avec la documentation et les checklists ; ensuite on la copie, on ne met à jour que le delta,
+  et on ne la refait qu'en cas de nouveau moteur ou de grosse mise à jour.</p>
+  <p style="margin-bottom:0">Les données du client restent <b>cloisonnées</b> dans la VM, et le nettoyage
+  de fin de mission consiste à la supprimer. Sur un PC physique mêlé de données personnelles, prétendre
+  avoir tout nettoyé est « un mensonge ».</p></div>
+</div>
+
 <div class="callout"><div class="t">La valise d'audit et ses checklists</div>
 On ne part pas sans une <b>checklist de préparation</b>, qui sert surtout les jours de fatigue : elle
 évite d'oublier une étape.
@@ -1293,6 +1342,27 @@ réponse : il faut ensuite <b>décrire le contexte</b> retenu et en tirer la con
   l'auditeur ignore.</p></div>
 </div>
 
+<div class="callout warn"><div class="t">Deux grilles de quatre critères, à ne pas confondre</div>
+<div class="tw"><table>
+<thead><tr><th>Source</th><th>Critères</th><th>Ce qu'elle mesure</th></tr></thead>
+<tbody>
+<tr><td><b>Séance 2</b> (la recommandation)</td><td>Prix · compétences · impact sur les utilisateurs · durée</td><td>Ce que la correction coûte au client</td></tr>
+<tr><td><b>TP 3 et séance 3</b> (la vulnérabilité et sa remédiation)</td><td><b>Difficulté</b> · <b>gravité</b> · <b>coût</b> de la remédiation · <b>impact</b> opérationnel</td><td>Le danger, puis le prix de la correction</td></tr>
+</tbody></table></div>
+<p style="margin-bottom:0">À l'épreuve, utiliser la grille demandée, et préciser de quelle difficulté on
+parle (à exploiter pour un attaquant, ou à corriger). Si rien n'est précisé, couvrir les deux côtés : la
+vulnérabilité (difficulté, gravité) et la remédiation (coût, compétences, impact, durée).</p>
+</div>
+
+<div class="callout danger"><div class="t">« Coût faible » : le piège du mot de passe à changer</div>
+Une base de données dont le compte administrateur n'a pas de mot de passe : « coût de remédiation
+faible, il suffit d'en mettre un ». Faux. Rien à acheter, mais il faut des <b>tests</b>, et peut-être un
+<b>arrêt</b>. Surtout, des applications se connectent avec ce compte, le mot de passe (ou son absence)
+étant <b>écrit en dur</b> dans leur configuration, parfois simplement encodé en base64 en croyant le
+cacher. Le changer sans les recenser <b>arrête toute l'entreprise</b>. La remédiation complète :
+<b>identifier partout où le secret est utilisé</b>, puis le changer, puis tester.
+</div>
+
 <h3 id="ch13-rapport">13.4 Le plan du rapport</h3>
 <div class="steps">
   <div class="step"><b>1. Le résumé</b> <span class="who">page 1</span><br>Souvent la seule partie lue par
@@ -1321,24 +1391,123 @@ réponse : il faut ensuite <b>décrire le contexte</b> retenu et en tirer la con
   les décisions et le budget. S'il n'y est pas, il pèse peu : inutile de l'accabler de reproches qu'il
   n'a aucun moyen de traiter. On adapte le ton.</p></div>
   <div class="card"><h4>Rédiger avec l'IA ?</h4>
-  <p style="margin-bottom:0">Une IA qui rédige à partir de rien produit des phrases générales, <b>sans le
-  contexte</b>. Mieux vaut écrire soi-même, puis demander à une IA <b>locale</b> ce qu'elle a compris, ou
-  si le ton est trop agressif. Autre pratique : un <b>dictionnaire</b> de formulations déjà validées,
-  réutilisées en vérifiant qu'elles collent au contexte.</p></div>
+  <p>Une IA qui rédige à partir de rien produit des phrases générales, <b>sans le contexte</b>. Retour
+  d'expérience du labo : un auditeur a testé trois IA locales et n'a <b>jamais gagné de temps</b>, car il
+  fallait tout relire et tout revérifier. Le style IA (tout en puces, digressions hors sujet) se repère,
+  et le lecteur décroche.</p>
+  <p style="margin-bottom:0">Si on l'essaie : <b>IA locale uniquement</b>, avec l'accord de l'équipe
+  d'audit, jamais les résultats d'un audit dans un service en ligne. Mieux vaut écrire soi-même, puis
+  demander à l'IA ce qu'elle a compris ou si le ton est trop agressif ; pour les graphiques, un modèle de
+  tableur aux chiffres maîtrisés. Une erreur doit rester <b>la sienne</b>, pas celle d'une relecture
+  bâclée. Autre pratique : un <b>dictionnaire</b> de formulations déjà validées.</p></div>
 </div>
 <p>Rester mesuré : <b>conditionnel</b>, ton lisse, sans exagérer. Pour une entreprise sans aucune
 maturité, la priorité n'est pas un scan exhaustif mais les bases (plan d'adressage, plan de brassage) :
 sans elles, le reste ne sert à rien.</p>
 
+<h3 id="ch13-restituer">13.5 Présenter ses vulnérabilités au commanditaire</h3>
+<p>En séance 3, l'enseignant a corrigé en public les présentations du TP 3 (deux vulnérabilités, deux
+remédiations). Les mêmes erreurs reviennent : elles font de bonnes questions de cours.</p>
+
+<div class="grid c2">
+  <div class="card"><h4>Le fond</h4>
+  <ul>
+    <li><b>Qui lit un PowerPoint ?</b> La direction, le codir. Le technicien, lui, veut savoir vite « où
+    ça ne va pas ». Le commanditaire est souvent un « politique » ; le DSI est rarement le plus technique
+    de l'équipe, ou ne l'est plus.</li>
+    <li><b>Séparer le problème et sa remédiation</b> : deux temps distincts.</li>
+    <li><b>Dire concrètement ce qui peut arriver.</b> « Ouverture d'un shell sur un port » ne parle à
+    personne ; « une personne malveillante peut prendre le contrôle complet de la machine », si. Ne pas
+    supposer les connaissances de l'interlocuteur.</li>
+    <li><b>Donner l'échelle</b> d'un score : « 9,8 », sur combien ? (le score <b>CVSS</b>, Common Vulnerability Scoring System, va de 0 à 10) Évident seulement pour ceux qui
+    savent. Traduire le jargon : « exploit public » devient « des programmes automatisent l'attaque, il
+    suffit de cliquer ».</li>
+    <li><b>Toujours donner le coût</b> de la remédiation : un client non technique devra souvent payer
+    un prestataire.</li>
+  </ul></div>
+  <div class="card"><h4>La preuve</h4>
+  <ul>
+    <li>Le DSI qui se sent agressé répond : « Je ne vous crois pas, c'est votre outil qui invente. » Sans
+    preuve, l'auditeur a perdu. Avec : « regardez la capture juste derrière », ou « donnez-moi une prise,
+    je vous le refais en direct », et la tension retombe.</li>
+    <li>Une capture se <b>date</b> de façon visible : un bandeau « capture réalisée le … à … ».</li>
+    <li>La démonstration en direct peut échouer (effet démo, ou le DSI a corrigé entre-temps) : prévoir
+    une <b>vidéo</b> de secours.</li>
+    <li>Une vulnérabilité qu'on <b>n'arrive pas à reproduire</b>, quand il y en a beaucoup d'autres, on
+    <b>ne la présente pas</b> : le DSI s'y accrochera et tout le reste perdra son crédit.</li>
+  </ul></div>
+</div>
+
+<div class="grid c2">
+  <div class="card"><h4>Pas de commandes, des précautions</h4>
+  <p>Pas de « sudo apt-get purge … » sur une diapositive : si le client l'exécute et casse quelque chose,
+  c'est la <b>responsabilité de l'auditeur</b>, qui n'est de toute façon <b>pas payé pour la
+  remédiation</b>. Il conseille des pistes crédibles.</p>
+  <p style="margin-bottom:0">La formulation attendue est simple : <b>tester</b> la version corrigée sur
+  une plateforme de test (répond-elle toujours aux besoins ? ce sont les <b>tests de non-régression</b>),
+  puis <b>planifier une coupure</b> de service pour mettre à jour. Les mots comptent aussi : « éradiquer »
+  fait sourire, ou inquiète.</p></div>
+  <div class="card"><h4>Ne pas tirer sur le technicien</h4>
+  <p>Écrire « défaut de configuration, et non faille logicielle » revient à mettre une <b>cible dans le
+  dos</b> de l'administrateur. Deux cas, que seul le contexte départage : un technicien <b>débordé</b>,
+  ou un <b>je-m'en-foutiste</b>. On ne charge quelqu'un qu'avec l'intime conviction de son tort, et en
+  conscience.</p>
+  <p style="margin-bottom:0">Le plus souvent, la recommandation vise le management : <b>laisser du temps
+  aux équipes</b>, les <b>former</b> avant de leur demander de nouvelles technologies. Des gens
+  compétents qui font des erreurs faute de temps, c'est la responsabilité de leur <b>manager</b>.</p></div>
+</div>
+
+<div class="grid c2">
+  <div class="card"><h4>Le support de restitution du labo</h4>
+  <ul>
+    <li>La mention <b>« Diffusion restreinte »</b> : dès qu'un document doit être protégé, on
+    l'indique.</li>
+    <li>Les <b>motivations</b> de l'audit, les <b>valeurs essentielles</b> identifiées.</li>
+    <li>Les <b>points forts</b> d'abord : la « câlinothérapie ».</li>
+    <li>Les <b>chiffres</b> par domaine : humain, environnemental, organisationnel, technique.</li>
+    <li>Le <b>coût global</b> des remédiations : très cher, cher, un peu, pas cher.</li>
+    <li>Les constats en <b>quelques mots</b> (« porosité entre les réseaux, risque d'accès aux données par
+    un visiteur »), parfois un schéma : le reste se dit à l'oral et renvoie au rapport écrit.</li>
+  </ul></div>
+  <div class="card"><h4>La réunion de restitution</h4>
+  <ul>
+    <li>Environ <b>deux heures</b> : <b>4 à 5 constats majeurs au plus</b>, une quarantaine de minutes de
+    présentation, puis le débat : « vous nous avez fait peur, que fait-on maintenant ? ». On reprend alors
+    les recommandations dans leur ordre.</li>
+    <li>On <b>ne force personne</b> : on informe, on sensibilise. Le but : qu'en sortant, le dirigeant ait
+    compris <b>le risque de ne rien faire</b>. L'arbitrage budgétaire est le sien, d'où l'intérêt de parler
+    au codir. Une piste réaliste : réorienter un temps les missions de son prestataire informatique.</li>
+    <li>Des diapositives <b>lisibles</b> sur un vidéoprojecteur médiocre, au soleil, par des lecteurs à
+    lunettes : contrastes forts, pas de jeux de couleurs.</li>
+    <li>L'oral complète l'écrit : certains conseils se donnent <b>sans être écrits</b> (un prestataire
+    local fiable, par exemple, pour ne pas paraître vendre des contrats).</li>
+  </ul></div>
+</div>
+
+<div class="callout"><div class="t">Remédier soi-même ? Et commencer par les bases</div>
+Proposer ensuite de réaliser la remédiation : le labo de l'école s'y refuse ; en ESN, c'est envisageable
+si l'éthique est protégée, sans jamais créer une dépendance du type « il n'y a que nous pour vous
+aider ». Et la remédiation suit le niveau du client : recommander un coffre-fort de secrets à une
+structure dont des comptes n'ont <b>aucun mot de passe</b>, c'est mettre la charrue avant les bœufs.
+D'abord changer les mots de passe par défaut et supprimer les comptes inutilisés.
+</div>
+
 <!-- ===================================================================== -->
 <h2 id="ch14"><span class="num">14.</span> L'audit technique : du réseau au scan de vulnérabilités (TP 3)</h2>
 
 <div class="callout ok"><div class="t">Toujours commencer par le réseau</div>
-Un audit ne commence pas en lançant un outil qui « fait tout ». On fait d'abord le tour du réseau : la
+<p>« <b>Réseau, réseau, réseau !</b> C'est le point faible essentiel. » Les entreprises ne voient pas ce
+qui se passe sur leur réseau ; or tout y passe, tout y fuit, et il donne des pistes sur tout le reste.
+Sauf si le périmètre se réduit à un seul PC, l'audit commence là.</p>
+<p>Un audit ne commence pas en lançant un outil qui « fait tout ». On fait d'abord le tour du réseau : la
 documentation diffère toujours de la réalité. Toutes les adresses sont-elles logiques ? Tous les
 protocoles qui circulent sont-ils attendus ? <b>arp-scan puis nmap, à chaque fois</b> : c'est la façon de
 « dire bonjour » au réseau. Et sans brutalité : on est souvent en production, et dégrader la qualité de
-service de l'entreprise est une faute. On commence passif et discret, puis on monte en puissance.
+service de l'entreprise est une faute. On commence passif et discret, puis on monte en puissance.</p>
+<p style="margin-bottom:0">On se croit en boîte grise, avec les schémas du client ; en pratique ils sont
+souvent faux ou périmés, et l'on travaille <b>presque en boîte noire</b> : il faut reconstituer soi-même
+les DMZ, le rôle des machines, les partages et les flux qui devraient ou ne devraient pas être là.
+« C'est comme une énigme. »</p>
 </div>
 
 <h3 id="ch14-outils">14.1 arp-scan, nmap, netcat</h3>
@@ -1348,23 +1517,113 @@ service de l'entreprise est une faute. On commence passif et discret, puis on mo
 <tr><td><b>Question</b></td><td>Qui est présent sur le réseau local ?</td><td>Quels ports et services tournent, dans quelle version, sur quel système ?</td></tr>
 <tr><td><b>Couche</b></td><td>2 : requêtes ARP, réponses avec l'adresse MAC</td><td>3 et 4 : IP, TCP, UDP ; applicative avec la détection de version</td></tr>
 <tr><td><b>Portée</b></td><td>Le seul segment local</td><td>Tout hôte joignable, local ou distant</td></tr>
-<tr><td><b>Fichiers utilisés</b></td><td>Bases de correspondance préfixe MAC (OUI) → constructeur</td><td><code>nmap-services</code> (port → nom de service), sondes de détection de version, empreintes d'OS, préfixes MAC</td></tr>
+<tr><td><b>Fichiers utilisés</b></td><td><code>ieee-oui.txt</code>, <code>ieee-iab.txt</code>, <code>mac-vendor.txt</code> dans <code>/usr/share/arp-scan</code> : préfixe MAC → constructeur</td><td>Dans <code>/usr/share/nmap/</code> : <code>nmap-services</code> (port → nom de service), <code>scripts/</code> (scripts NSE), sondes de version, empreintes d'OS, préfixes MAC</td></tr>
 </tbody></table></div>
 <ul>
   <li><b>Sans droits administrateur</b>, nmap établit des connexions TCP complètes (visibles et
   journalisées) ; <b>avec</b>, il fait par défaut un scan SYN, demi-ouvert, plus discret.</li>
   <li>Une <b>interface graphique</b> de nmap (Zenmap…) lance des commandes avec des options toutes faites :
-  il faut savoir lesquelles, donc connaître la ligne de commande.</li>
-  <li><b>netcat</b>, le « couteau suisse » réseau, est un outil à connaître. Dans le TP, il ouvre un port en
-  écoute pour simuler un service non déclaré, que le scan doit révéler ; on personnalise ensuite
-  <code>nmap-services</code> pour que nmap affiche ce port sous un nom choisi.</li>
+  il faut savoir lesquelles, donc connaître la ligne de commande. RETEX : un bouton présenté comme
+  l'équivalent d'une option lançait en réalité d'autres options. L'auditeur répond de chaque paquet
+  qu'il envoie.</li>
+  <li><b>netcat</b>, le « couteau suisse » réseau, sert surtout à ouvrir un accès dérobé : un port en
+  écoute. Le but de l'exercice était ailleurs : <b>trouver le fichier <code>nmap-services</code></b>. En
+  entreprise, les applications internes écoutent sur des ports exotiques (40000…) que nmap affiche comme
+  inconnus, ou sous le nom d'un autre service : le rapport devient incompréhensible. En renommant le port
+  dans <code>nmap-services</code>, tous les rapports portent le nom de l'application métier. Précieux en
+  milieu industriel, où tout est exotique.</li>
   <li>Relancer les scans <b>après mise à jour</b> des postes montre ce qui a changé, ou pas : arp-scan ne
   voit que la couche 2, et une mise à jour ne modifie pas forcément les services exposés.</li>
   <li><b>Ports bien connus</b> : un auditeur doit savoir associer un numéro de port à son protocole et à son
   application.</li>
 </ul>
 
-<h3 id="ch14-ports">14.2 Les ports bien connus à savoir reconnaître</h3>
+<h3 id="ch14-correction">14.2 La correction du TP 3 et les options de nmap</h3>
+<div class="exam"><div class="t">Projetée en cours la veille de l'épreuve</div>
+Le prof l'a glissé : « si vous avez une bonne mémoire visuelle, vous avez pu décrypter ce qui est
+peut-être venu à l'écran ». Les questions réseau partent de là. La correction, telle qu'affichée :
+</div>
+<div class="steps">
+  <div class="step"><b>À quoi sert arp-scan ?</b><br>À découvrir les appareils connectés à un <b>réseau
+  local (LAN)</b> avec le protocole <b>ARP</b> (Address Resolution Protocol). « Il scanne uniquement les
+  adresses MAC » : il reste en couche 2, sur le segment local.</div>
+  <div class="step"><b>Quelle commande, et pourquoi ?</b><br><code>arp-scan -I &lt;interface&gt; -l</code> :
+  <code>-I</code> choisit la carte réseau, <code>-l</code> (<code>--localnet</code>) génère
+  automatiquement les adresses à scanner d'après la configuration de cette carte.</div>
+  <div class="step"><b>Quels fichiers utilise arp-scan ?</b><br>Pour trouver le constructeur à partir de
+  l'adresse MAC : <code>ieee-oui.txt</code>, <code>ieee-iab.txt</code> et <code>mac-vendor.txt</code>,
+  fournis avec arp-scan dans <code>/usr/share/arp-scan</code>.</div>
+  <div class="step"><b>À quoi sert nmap, quelle différence avec arp-scan ?</b><br>Leur objectif.
+  arp-scan sert surtout à <b>découvrir les appareils présents</b> sur un réseau local ; nmap permet en
+  plus d'<b>analyser leurs ports ouverts et les services réseau</b> accessibles.</div>
+  <div class="step"><b>Quels fichiers utilise nmap ?</b><br><code>/usr/share/nmap/</code> :
+  <code>scripts/</code> pour les scripts NSE, <code>nmap-services</code> pour l'exercice netcat.</div>
+</div>
+
+<div class="grid c2">
+  <div class="card"><h4>Les options « en maîtrise »</h4>
+  <div class="tw"><table><tbody>
+  <tr><td><code>-sn</code></td><td>Découvrir les hôtes sans scanner leurs ports</td></tr>
+  <tr><td><code>-PR</code></td><td>Découverte par ARP sur le réseau Ethernet local</td></tr>
+  <tr><td><code>-sT</code> / <code>-sU</code></td><td>Cibler TCP (connexion complète) ou UDP</td></tr>
+  <tr><td><code>-n</code></td><td>Désactiver la résolution DNS</td></tr>
+  <tr><td><code>-p 22,80,443</code></td><td>Scanner des ports précis</td></tr>
+  <tr><td><code>-p-</code></td><td>Tous les ports TCP, de 1 à 65535</td></tr>
+  <tr><td><code>-F</code></td><td>Un ensemble réduit de ports courants</td></tr>
+  <tr><td><code>--top-ports 100</code></td><td>Les 100 ports les plus courants</td></tr>
+  <tr><td><code>--scan-delay</code></td><td>Introduire un délai entre les sondes</td></tr>
+  </tbody></table></div></div>
+  <div class="card"><h4>Les options « à risque, au fur et à mesure »</h4>
+  <div class="tw"><table><tbody>
+  <tr><td><code>-sV</code></td><td>Identifier les services et tenter d'en déterminer les versions</td></tr>
+  <tr><td><code>-O</code></td><td>Estimer le système d'exploitation</td></tr>
+  <tr><td><code>-sC</code></td><td>Exécuter les scripts NSE par défaut</td></tr>
+  <tr><td><code>-A</code></td><td>Activer plusieurs fonctions avancées de détection</td></tr>
+  <tr><td><code>-T0</code> à <code>-T5</code></td><td>La vitesse du scan</td></tr>
+  </tbody></table></div>
+  <p style="margin-bottom:0;margin-top:10px">On les ajoute <b>une à une</b>, en sachant ce que chacune
+  envoie.</p></div>
+</div>
+
+<div class="key-points">
+  <li><b>La résolution DNS (<code>-n</code>).</b> Chaque adresse scannée déclenche une requête DNS. Vers un
+  DNS <b>interne</b>, un scan intense peut le <b>saturer</b>, et avec lui le réseau. Vers un DNS
+  <b>externe</b>, c'est une <b>fuite d'information</b> : toutes les adresses internes partent chez un
+  tiers, ce que le DSI ne souhaite sûrement pas. Parade : <code>-n</code>, et si l'on connaît les noms
+  utiles, remplir son fichier <code>hosts</code>. Ni bruit inutile, ni fuite.</li>
+  <li><b>Le choix des ports.</b> Le « top 100 » donne les ports les plus utilisés en général, pas ceux
+  qu'utilise <b>cette</b> société. Tous les ports à chaque fois, c'est trop. On garde le contrôle, et
+  l'on peut dresser sa propre liste.</li>
+  <li><b>Le rythme.</b> <code>--scan-delay</code> laisse l'auditeur régler l'attente entre deux sondes.
+  À l'opposé, <code>-T5</code>, c'est « défonce tout » : « suicidaire ».</li>
+  <li><b>Le fingerprinting (<code>-sV</code>, <code>-O</code>), « ultra-brutal ».</b> Pour reconnaître un
+  service ou un système, nmap lui envoie des trames et observe sa réaction. Un vieux service instable, un
+  Windows XP qui pilote une machine d'usine peuvent ne pas le supporter (§16, cas 5).</li>
+  <li><b>Les scripts NSE (<code>-sC</code>) : des « apprentis sorciers ».</b> Personne ne maîtrise vraiment
+  ce que fait chacun des scripts de <code>/usr/share/nmap/scripts</code>, dont certains tentent de deviner
+  des mots de passe. Ils font sans doute ce que dit leur documentation, mais qui lit les sources ? On les
+  <b>teste en local</b> avant de les lancer chez un client.</li>
+  <li><b><code>-A</code></b> active plusieurs détections avancées d'un coup : ce peut être très bien, mais
+  c'est <b>ne pas savoir ce qu'on envoie</b> qui inquiète.</li>
+</div>
+
+<div class="grid c2">
+  <div class="card"><h4>Un scanner ne dit pas la vérité</h4>
+  <p style="margin-bottom:0">Il y a toujours des <b>faux positifs</b> et des <b>faux négatifs</b>. Ne pas
+  voir une adresse ne veut pas dire que la machine n'est pas branchée ; l'empreinte d'OS est approchée
+  (une Rocky Linux, dérivée de CentOS, peut être vue comme une CentOS : un petit écart, est-il grave ?). Un
+  port bien connu ne garantit pas le service qui écoute derrière. Le scan donne une <b>piste pour aller
+  plus loin</b>, à comparer avec ce que déclare le DSI (plan d'adressage, ports utilisés).</p></div>
+  <div class="card"><h4>L'échantillonnage</h4>
+  <p style="margin-bottom:0">Impossible de tout vérifier : on <b>échantillonne</b> pour savoir si l'on peut
+  faire confiance aux déclarations, puis on présume la suite. Si tous les postes sortent d'un même master,
+  on en scanne quelques-uns et l'on présume les autres identiques. Mais on choisit intelligemment : un
+  poste d'itinérant, ceux qui paraissent plus à risque, un poste « conseillé »… et d'autres <b>par
+  surprise</b>. On ne se laisse pas conduire dans la salle préparée, avec le café et les petits
+  gâteaux.</p></div>
+</div>
+
+<h3 id="ch14-ports">14.3 Les ports bien connus à savoir reconnaître</h3>
 <div class="exam"><div class="t">Signalé explicitement</div>
 « Les well-known ports, c'est la base » : un auditeur doit associer sans hésiter un numéro de port à son
 protocole et à son application. Rien d'exotique ne sera demandé. Les ports <b>0 à 1023</b> sont les ports
@@ -1398,7 +1657,77 @@ bien connus, réservés aux services standard.
 <p>La liste complète des ports du cours INF5244 reste disponible :
 <a href="../inf5244-interconnexions/fiche.html#ports">annexe des ports et services</a>.</p>
 
-<h3 id="ch14-openvas">14.3 OpenVAS et Greenbone (GVM)</h3>
+<h3 id="ch14-macro">14.4 Du macro au micro : l'ordre d'investigation</h3>
+<p>À quoi sert de scanner les ports ? Établir la surface d'attaque, lire les bannières, choisir les outils
+suivants : c'est vrai, mais c'est du <b>micro</b>. La réponse attendue est au-dessus : <b>identifier le
+rôle des machines</b>, retrouver où est l'Active Directory, quels sont les gros serveurs. Souvent,
+personne ne sait plus rien : il n'y a jamais eu de cartographie, ou le DSI se fie à l'image du réseau
+qu'il avait en le construisant il y a cinq ans, que les prestataires ont modifié depuis. Est-il perdu,
+dépassé, ou ment-il ? L'auditeur vérifie.</p>
+
+<div class="steps">
+  <div class="step"><b>1. La cartographie globale</b> <span class="who">macro</span><br>Plages d'adresses,
+  sous-réseaux (les VLAN sont plus durs à voir), logique d'ensemble, rôle de chaque machine.</div>
+  <div class="step"><b>2. Avec le client</b><br>Chaque service trouvé est-il toujours utile ?</div>
+  <div class="step"><b>3. Les flux</b> <span class="who">« super important »</span><br>Qui a accès à quel
+  service, comment, par quels flux ; le cloisonnement, les logiques de <b>DMZ</b>, les interconnexions
+  entre sites. Pas de vérité absolue : un flux aberrant ici est normal ailleurs (une application qui fait
+  dialoguer deux continents). L'auditeur vérifie d'abord que c'est ouvert <b>en conscience</b> ; sinon, il
+  juge : pourquoi est-ce ouvert, est-ce grave ?</div>
+  <div class="step"><b>4. Les équipements de sécurité</b><br>Pare-feu et filtrages : la logique des
+  ouvertures, leur intérêt, leur pertinence.</div>
+  <div class="step"><b>5. Les machines</b> <span class="who">micro</span><br>Seulement alors les serveurs et
+  les postes eux-mêmes, par ordre d'importance.</div>
+</div>
+
+<div class="viz">
+  <div class="t">Les serveurs à regarder en priorité — cliquez pour le détail</div>
+  <div class="vz-grid">
+    <button class="vz-c k-red"><span class="n">1</span><h5>L'Active Directory</h5>
+      <span class="q">Il fournit tous les accès</span>
+      <span class="more"><span class="t">Pourquoi d'abord</span>L'AD, ou son équivalent, assure la gestion
+      des identités et des accès (IAM). S'il tombe, « c'est fini ». Les serveurs web, eux, sont souvent chez
+      des prestataires.</span></button>
+    <button class="vz-c k-amber"><span class="n">2</span><h5>Les sauvegardes</h5>
+      <span class="q">« La base »</span>
+      <span class="more"><span class="t">Les pièges</span>Jamais testées. Chiffrées par un rançongiciel :
+      fin de partie. Elles passent par la sécurité de l'outil de sauvegarde, tenu à jour. RETEX : un
+      administrateur, lassé de passer par l'outil (Veeam), avait ouvert un <b>partage direct</b> sur le
+      stockage des sauvegardes, contournant toute leur protection.</span></button>
+    <button class="vz-c k-blue"><span class="n">3</span><h5>Les applications internes</h5>
+      <span class="q">Difficiles à auditer à fond</span>
+      <span class="more"><span class="t">Ce qu'on peut regarder</span>La sécurité d'accès au serveur, où sont
+      les bases de données, sont-elles séparées, sont-elles dans les sauvegardes ?</span></button>
+    <button class="vz-c k-purple"><span class="n">4</span><h5>Les partages</h5>
+      <span class="q">Samba, lecteurs réseau, Drive</span>
+      <span class="more"><span class="t">Les pièges</span>Des partages « sauvages », des permissions jamais
+      revues. RETEX : un stagiaire créé par <b>copier-coller du profil</b> d'un salarié récupère ses
+      dossiers personnels, salaire compris.</span></button>
+  </div>
+  <div class="vz-bar">
+    <button class="btn" data-cards="open">Tout déplier</button>
+    <button class="btn ghost" data-cards="close">Tout replier</button>
+    <span class="cnt"></span>
+  </div>
+</div>
+
+<div class="grid c2">
+  <div class="card"><h4>Le piège des sauvegardes de VM complètes</h4>
+  <p style="margin-bottom:0">Sauvegarder la machine virtuelle entière est pratique : on la restaure en un
+  clic. Mais on peut restaurer une machine déjà compromise, une base incohérente au moment de
+  l'instantané, et surtout on <b>perd la connaissance du paramétrage</b>. Les « petits coups de
+  tournevis » ajoutés au fil du temps ne sont jamais reportés dans la procédure d'installation. Le jour
+  où il faut réinstaller (nouvelle version, nouveau matériel), personne ne sait plus les refaire.
+  <b>Vérifier que les procédures sont à jour, « c'est votre rôle ».</b></p></div>
+  <div class="card"><h4>Les partages et les droits : une mission à part entière</h4>
+  <p style="margin-bottom:0">Le lecteur personnel (le « Z: ») et les lecteurs d'équipe, aujourd'hui souvent
+  un Drive : on relève toutes les permissions sur tous les répertoires (un script, un logiciel), puis on
+  les <b>croise avec les missions et les rôles réels</b>. On y trouve les accès donnés « parce que c'est
+  plus pratique », puis oubliés. D'où l'importance des <b>procédures d'arrivée, de départ et de création
+  des comptes</b> : des stagiaires sont déjà partis avec tout ce qu'ils avaient pu trouver.</p></div>
+</div>
+
+<h3 id="ch14-openvas">14.5 OpenVAS et Greenbone (GVM)</h3>
 <p>Un <b>scanner de vulnérabilités</b> établit l'inventaire des failles connues des systèmes et des
 services d'un équipement, classées par gravité, souvent avec une piste de correction. Il automatise une
 partie de l'évaluation technique, mais <b>ne remplace pas l'humain</b> : son rapport se relit et
@@ -1449,7 +1778,28 @@ son emploi (décision, conditions, formation, protocole de test).</p>
   </ul></div>
 </div>
 
-<h3 id="ch14-credentials">14.4 Le scan authentifié, et sa preuve</h3>
+<div class="grid c2">
+  <div class="card"><h4>Une préparation qui se compte en heures</h4>
+  <p>La première synchronisation des bases prend des heures, parfois toute la nuit : ce sont « toutes les
+  vulnérabilités du monde ». C'est la leçon voulue : <b>on part avec les informations</b>, et l'on prépare
+  sa machine bien avant la mission, pas la veille à l'hôtel. Comme la première synchronisation d'un
+  serveur WSUS (les mises à jour Windows centralisées) : on la lance et on va dormir.</p>
+  <p style="margin-bottom:0">Maîtriser son PC : la <b>mise en veille coupe la carte réseau</b>, et il y a
+  une double veille, celle de l'hôte et celle de la VM. Un scan complet est long : connaître sa durée, le
+  lancer et <b>travailler en parallèle</b>. Se faire surprendre devant l'écran peut faire échouer la
+  mission.</p></div>
+  <div class="card"><h4>Gratuit contre payant</h4>
+  <p>OpenVAS se défend face aux outils payants (Nessus). Son défaut : le retard de ses bases. Les
+  vulnérabilités de cet écart, ce sont les <b>CERT payants</b> qui les ont : une veille personnalisée,
+  des bulletins ciblés sur le parc du client, le bruit en moins. L'avance est d'environ <b>deux
+  semaines</b> : pour des clients dont les correctifs ont des mois de retard, ce n'est pas décisif.</p>
+  <p style="margin-bottom:0">Le rapport brut <b>noie</b> sous l'information : 70 à 80 % du travail est de
+  la lecture et de la vérification. Il ne se donne <b>jamais</b> tel quel au client, au plus en annexe si
+  quelqu'un sait le lire. Les vulnérabilités « faibles », discutables, peuvent être omises face à un
+  interlocuteur susceptible : elles font du volume et font passer l'administrateur pour incompétent.</p></div>
+</div>
+
+<h3 id="ch14-credentials">14.6 Le scan authentifié, et sa preuve</h3>
 <div class="callout danger"><div class="t">Le piège du « je ne vois rien »</div>
 Sans identifiants, OpenVAS ne fait qu'une <b>analyse de surface</b>, depuis l'extérieur. Avec des
 identifiants (SSH sous Linux, SMB sous Windows), il entre dans le système et l'analyse <b>de
@@ -1462,6 +1812,10 @@ jamais entré</b>. Il faut donc <b>toujours prouver</b> que l'authentification a
   <li>dans l'interface, l'indicateur d'authentification sur la cible.</li>
 </ul>
 </div>
+<p>L'exemple corrigé en séance 3 : deux rapports sur la même cible, l'un de 223 pages, l'autre de 67. Le
+second scan n'était <b>pas entré</b> (l'authentification SMB n'était pas passée), et rien dans le rapport
+ne le disait : seule la capture réseau, où l'on voit le scanner tenter de se connecter et se faire
+refuser, le prouve. Et un vrai poste d'entreprise sécurisé n'a pas 223 pages de vulnérabilités.</p>
 
 <div class="callout"><div class="t">Comparer les outils, et l'Active Directory</div>
 Le TP compare plusieurs outils sur une même cible (Metasploitable) : ont-ils trouvé la même chose, qu'est-ce
@@ -1474,25 +1828,99 @@ d'administration du domaine).
 <!-- ===================================================================== -->
 <h2 id="ch15"><span class="num">15.</span> Les règles d'or</h2>
 
+<p>La conclusion du cours, en neuf règles, plus le RETEX souligné en séance 2.</p>
 <div class="steps">
-  <div class="step"><b>Avoir un organisme structuré</b> : procédures, outils, veille.</div>
-  <div class="step"><b>Bien cadrer la mission</b> : le périmètre.</div>
-  <div class="step"><b>Prendre le temps de comprendre le client</b> : lire, apprendre son vocabulaire, faire de l'OSINT.</div>
-  <div class="step"><b>Préparer son PC d'audit</b> : choisir ses outils, anticiper.</div>
-  <div class="step"><b>Collecter les preuves et tenir un journal de bord.</b></div>
-  <div class="step"><b>Prendre plaisir à choisir les mots</b>, à communiquer.</div>
-  <div class="step"><b>Tout nettoyer</b>, même ce qui est « cool ».</div>
-  <div class="step"><b>Rester éthique.</b></div>
-  <div class="step"><b>Faire un RETEX de chaque mission</b> : ce qui a marché, ce qui a raté, ce qu'on change dans la procédure. Signalé « super important ».</div>
-  <div class="step"><b>Être fier de son travail</b> et espérer une évolution du client.</div>
+  <div class="step"><b>1. Avoir un organisme structuré</b> : procédures, outils, veille, checklists,
+  calendrier. D'autant plus que les auditeurs changent chaque année : il faut les rendre opérationnels
+  vite.</div>
+  <div class="step"><b>2. Bien cadrer la mission</b> : le périmètre, et ne jamais envoyer un junior seul
+  face à un interlocuteur hostile.</div>
+  <div class="step"><b>3. Prendre le temps de comprendre le client</b> : son besoin officiel, caché,
+  inconscient ; lire, apprendre son vocabulaire, faire de l'OSINT.</div>
+  <div class="step"><b>4. Comprendre les textes de loi</b>, y compris à l'étranger (textes européens,
+  règles locales).</div>
+  <div class="step"><b>5. Préparer son PC d'audit</b> : choisir ses outils, anticiper, travailler en
+  VM.</div>
+  <div class="step"><b>6. Collecter les preuves et tenir un journal de bord</b> : une discipline
+  administrative assidue. Qui a horreur de rendre des comptes n'est pas prêt pour l'audit.</div>
+  <div class="step"><b>7. Prendre du plaisir</b> à enquêter et à choisir ses mots, sans tomber dans le
+  défi ni se moquer de l'audité quand on trouve quelque chose : il peut très mal le prendre.</div>
+  <div class="step"><b>8. Tout nettoyer, même ce qui est « cool »</b>, et se taire : les trouvailles ne se
+  racontent pas hors de l'équipe.</div>
+  <div class="step"><b>9. Rester éthique</b> : on travaille pour le client, pas pour épingler des gens au
+  mur. <b>Être fier de son travail et espérer une évolution du client : « c'est le plus important ».</b>
+  Faire un audit, c'est aider.</div>
+  <div class="step"><b>Et faire un RETEX de chaque mission</b> : ce qui a marché, ce qui a raté, ce qu'on
+  change dans la procédure. Signalé « super important ».</div>
 </div>
 
 <!-- ===================================================================== -->
 <h2 id="ch16"><span class="num">16.</span> S'entraîner : commenter une situation en auditeur</h2>
 
-<p>L'interro proposera un problème à commenter <b>comme dans un rapport d'audit</b>. Pour chaque cas :
-lisez la situation, formulez votre analyse, puis dépliez la réponse. La trame d'une bonne réponse :
-<b>constat → risque pour l'entreprise → recommandation priorisée → ce qu'il faut tracer</b>.</p>
+<p>L'épreuve se termine par une <b>mise en situation</b> : une société fictive, son contexte, trois
+questions. On y invente un problème crédible et on le traite <b>comme dans un rapport d'audit</b>.</p>
+
+<h3 id="ch16-methode">16.1 La méthode</h3>
+<div class="steps">
+  <div class="step"><b>1. Lire calmement le contexte</b> <span class="who">brouillon</span><br>Repérer le
+  métier, ce qui a de la valeur, la taille, l'organisation, l'infrastructure, les contraintes, les
+  événements récents. « Si vous vous calmez et que vous lisez, vous allez voir des idées de problèmes
+  réalistes. »</div>
+  <div class="step"><b>2. Choisir son scénario</b> <span class="who">brouillon</span><br>Un ou deux problèmes
+  <b>crédibles dans ce contexte</b>, techniques ou non (humain, environnemental, organisationnel,
+  technique). Noter les mots-clés et les relier : constat → conséquence → remédiation.</div>
+  <div class="step"><b>3. Le constat</b><br>« Avec votre contexte, il peut y avoir un problème ici » : ce
+  qu'on suppose, et d'après quel indice du sujet. Pas de preuve demandée.</div>
+  <div class="step"><b>4. Pourquoi c'est un problème</b><br>La conséquence concrète pour <b>cette</b>
+  entreprise, en mots simples. Classer : domaine (H, E, O, T) et gravité (majeur ou mineur).</div>
+  <div class="step"><b>5. La remédiation</b><br>Avec ses critères (prix, compétences, impact, durée ; ou
+  difficulté, gravité, coût, impact), ses <b>précautions</b> (recenser, tester, prévoir la coupure) et
+  sa priorité.</div>
+  <div class="step"><b>6. Relire la cohérence</b><br>Le même scénario du début à la fin, aucune
+  contradiction, pas de « finalement j'ai contrôlé, tout va bien ». Des phrases courtes.</div>
+</div>
+
+<h3 id="ch16-sujet">16.2 Un sujet complet, corrigé</h3>
+<p>Sujet inventé sur le modèle annoncé, pour s'entraîner en conditions : lire, prendre 5 minutes de
+brouillon, rédiger, puis comparer.</p>
+
+<details class="case"><summary>Le sujet — la laiterie coopérative<span class="sit">Une laiterie coopérative de 85 salariés transforme chaque jour le lait de ses adhérents. La production est pilotée par des automates, dont deux postes de supervision encore sous Windows XP. L'informatique compte deux personnes ; le réseau est géré par un prestataire. Les sauvegardes sont faites sur un NAS installé dans la salle serveur, au bout de l'atelier de production. L'été, une vingtaine de saisonniers sont embauchés. La coopérative vient de fusionner avec une voisine située à 30 km, et les deux sites sont reliés par un VPN. Le directeur commande un audit « parce que l'assureur le demande ».<br><br><b>Question 1.</b> Quels risques voyez-vous venir ?<br><b>Question 2.</b> Décrivez une vulnérabilité et sa remédiation, évaluée selon les critères vus en cours.<br><b>Question 3.</b> Comment présentez-vous ce point au directeur ?</span></summary>
+<div>
+<p><b>Brouillon (mots-clés reliés) :</b> lait périssable → arrêt impossible · fusion → deux réseaux, flux
+ouverts « pour que ça marche » · NAS sur le réseau → rançongiciel · XP → fragile · saisonniers → comptes
+copiés · informatique à deux → débordée · assureur → conformité, mais vrai besoin : continuer à
+produire.</p>
+<p><b>Question 1.</b> Le vrai besoin dépasse la demande de l'assureur : la laiterie ne peut pas
+s'arrêter, car le lait ne se stocke pas. Les risques que je vois venir : <b>(O, T)</b> la fusion récente a
+relié deux réseaux sans cartographie commune ; des flux ont sans doute été ouverts largement entre les
+sites. <b>(T)</b> Un rançongiciel arrivé par un poste de bureau pourrait chiffrer aussi le NAS des
+sauvegardes. <b>(E)</b> La salle serveur, au bout de l'atelier, est exposée à l'eau et à l'humidité du
+lavage. <b>(H)</b> Les comptes des saisonniers, créés vite, ont peut-être des droits copiés sur ceux de
+permanents. <b>(T)</b> Les postes sous XP sont fragiles : on les auditera avec précaution, sans
+fingerprinting.</p>
+<p><b>Question 2.</b> <b>Constat :</b> les sauvegardes sont sur un NAS joignable depuis tout le réseau,
+dans la salle serveur. <b>Pourquoi c'est un problème :</b> un rançongiciel chiffrerait en même temps les
+données et leurs copies ; la coopérative ne pourrait plus facturer ni prouver la traçabilité de ses
+lots, et la collecte du lait serait désorganisée. Un dégât des eaux aurait le même effet. <b>Classement :
+T-Maj-01</b>. <b>Remédiation :</b> garder une copie <b>hors ligne et hors site</b> (disques en rotation
+conservés sur le second site), réserver l'accès au NAS au seul serveur de sauvegarde avec un compte
+dédié, et tester une restauration chaque trimestre. <b>Critères :</b> prix faible (quelques disques et
+des heures de prestataire) ; compétences moyennes, confiées au prestataire ; impact nul pour les
+utilisateurs ; quelques jours. <b>Précaution :</b> recenser d'abord tout ce qui écrit sur le NAS, sinon
+la restriction d'accès casserait une sauvegarde existante. <b>Priorité :</b> immédiate.</p>
+<p><b>Question 3.</b> Je commence par les points forts : la production tourne, l'équipe connaît son
+outil. Puis le risque en mots simples : « si un virus chiffre vos ordinateurs, il chiffre aussi vos
+copies : plus de facturation ni de traçabilité pendant des jours ». J'annonce le coût et l'effort, sans
+commande technique, et je propose l'ordre de marche. Je ne charge pas l'informaticien : deux personnes
+pour deux sites depuis la fusion, c'est une question de moyens, et je recommande du temps et du
+renfort. La décision reste au directeur ; s'il refuse, je lui demande de confirmer son choix par
+écrit.</p>
+</div></details>
+
+<h3 id="ch16-cas">16.3 Treize mises en situation</h3>
+<p>Pour chaque cas : lisez la situation, formulez votre analyse, puis dépliez la réponse. La trame d'une
+bonne réponse : <b>constat → risque pour l'entreprise → recommandation priorisée → ce qu'il faut
+tracer</b>.</p>
 
 <details class="case"><summary>Cas 1 — Le client réclame un pentest<span class="sit">Une PME demande un test d'intrusion de son serveur principal. Lors du premier échange, on apprend que tous les salariés partagent le même mot de passe et qu'il n'existe aucun inventaire.</span></summary>
 <div><p><b>Analyse :</b> un pentest maintenant serait de l'argent mal dépensé. Il trouverait des failles
@@ -1574,6 +2002,32 @@ Ici, le résultat est connu d'avance et coûterait cher pour rien.</p>
 passe, mises à jour, inventaire), puis un audit plus poussé. La boîte noire viendra quand les bases
 seront maîtrisées. Conseiller le bon type d'évaluation fait partie du métier.</p></div></details>
 
+<details class="case"><summary>Cas 11 — Le stagiaire trop bien équipé<span class="sit">Pour accueillir un stagiaire au plus vite, l'administrateur a copié le profil d'un salarié du même service. Le stagiaire accède désormais aux dossiers personnels de ce salarié.</span></summary>
+<div><p><b>Analyse :</b> une dérive organisationnelle classique (O-Maj) : des droits accordés « parce que
+c'est plus pratique », jamais revus. Données confidentielles exposées (rémunération), risque de fuite au
+départ du stagiaire.</p>
+<p><b>Recommandation :</b> créer les comptes à partir de <b>profils types par rôle</b>, jamais par copie
+d'une personne ; formaliser les <b>procédures d'arrivée et de départ</b> ; faire une <b>revue des
+droits</b> croisée avec les missions réelles. Prix faible, impact utilisateurs faible, durée variable
+selon le volume de partages.</p></div></details>
+
+<details class="case"><summary>Cas 12 — « Il suffit de mettre un mot de passe »<span class="sit">Le rapport d'un junior signale une base de données dont le compte administrateur n'a pas de mot de passe. Sa recommandation : « en définir un, coût nul, à faire immédiatement ».</span></summary>
+<div><p><b>Analyse :</b> le constat est juste, la remédiation est dangereuse. Les applications qui
+utilisent ce compte ont l'accès écrit dans leur configuration : changer le mot de passe sans les
+recenser les arrête toutes.</p>
+<p><b>Recommandation :</b> recenser les applications et scripts qui utilisent ce compte, créer des comptes
+dédiés aux droits limités, définir le mot de passe, <b>tester</b>, puis basculer pendant une coupure
+planifiée. Coût faible en matériel mais pas nul en temps et en tests. Et ne pas rédiger le constat de
+façon à accuser l'administrateur.</p></div></details>
+
+<details class="case"><summary>Cas 13 — « C'est votre outil qui invente »<span class="sit">En restitution, l'auditeur présente une vulnérabilité critique relevée par le scanner. Le DSI, piqué au vif, conteste : il n'y croit pas. L'auditeur ne l'a jamais vérifiée lui-même.</span></summary>
+<div><p><b>Analyse :</b> sans preuve, l'auditeur ne peut rien répondre, et le doute se reporte sur tout
+le rapport.</p>
+<p><b>Ce qu'il fallait faire :</b> vérifier chaque constat présenté, en garder une <b>capture
+datée</b> visible, proposer de le refaire en direct avec une vidéo de secours. Une vulnérabilité qu'on
+n'a pas réussi à confirmer ne se présente pas quand d'autres suffisent. Et rester calme : le DSI se sent
+jugé.</p></div></details>
+
 <!-- ===================================================================== -->
 <h2 id="qcm-sec"><span class="num">17.</span> QCM — <span id="count-badge" class="badge acc"></span></h2>
 <p><b>Une seule bonne réponse par question</b>, ordre tiré au hasard, correction expliquée. Les
@@ -1584,7 +2038,7 @@ chapitres suivent ceux de la fiche.</p>
 </div>
 
 <button id="top" title="Haut de page">↑</button>
-<script src="qcm.js?v=5"></script>
+<script src="qcm.js?v=6"></script>
 <script src="../assets/app.js?v=35"></script>
 <script>initQCM(window.QCM_DATA, window.QCM_CHAPTERS, 'inf5049');</script>
 </body>

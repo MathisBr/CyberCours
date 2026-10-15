@@ -21,7 +21,7 @@
 
 <div class="hero" style="margin-top:22px">
   <h1>Ce que le prof a signalé pour l'examen</h1>
-  <p class="lead">Relecture des <b>quatre enregistrements</b> des séances 1 et 2, avec un seul critère :
+  <p class="lead">Relecture des <b>sept enregistrements</b> des séances 1 à 3, avec un seul critère :
   les passages où l'enseignant désigne <b>lui-même</b> ce qui compte, ce qui sera au partiel ou ce qu'il
   faut maîtriser. Sous chaque citation, <b>la réponse à savoir donner</b> et le lien vers la fiche.</p>
 </div>
@@ -36,7 +36,10 @@ prononcées par l'enseignant. Les citations sont resserrées (tics de langage re
 sens.</p>
 </div>
 
-<div class="callout ok"><div class="t">Les cinq signaux les plus forts</div>
+<div class="callout ok"><div class="t">Les signaux les plus forts</div>
+<b>0.</b> <b>Le format</b> (séance 3) : une heure sur papier ; des questions réseau (nmap, arp-scan,
+ports), des questions sur les conseils du cours, une mise en situation sur une société fictive. La
+<b>cohérence</b> est notée, pas l'orthographe.<br>
 <b>1.</b> Les <b>recommandations et leurs critères</b> : « c'est au partiel ! »<br>
 <b>2.</b> « Ça dépend du contexte » <b>ne rapporte aucun point</b> : il faut décrire le contexte.<br>
 <b>3.</b> « Vous aurez des <b>questions réseau</b> », et une liste de <b>ports bien connus</b> à connaître.<br>
@@ -54,7 +57,7 @@ le commenter, me l'expliquer, comme si c'était un rapport d'audit.</blockquote>
 Traiter une situation comme un auditeur : <b>poser le contexte</b> (métier, valeurs, ce qui compte),
 faire le <b>constat</b>, dire <b>pourquoi c'est un risque</b> pour cette entreprise, classer (domaine,
 gravité), puis <b>recommander</b> avec les quatre critères et dire ce qu'il faut tracer par écrit.
-<a class="lien" href="fiche.html#ch16">→ Fiche §16 : dix mises en situation corrigées</a></div></div>
+<a class="lien" href="fiche.html#ch16">→ Fiche §16 : la méthode, un sujet corrigé, treize mises en situation</a></div></div>
 
 <div class="px-item fort"><div class="src">Séance 1 · 03:21 <span class="th">Comment le lire</span></div>
 <blockquote>Vous commencez à connaître mon style : quand je vous dis « c'est super important », je ne vous
@@ -278,7 +281,7 @@ Les well-known ports, c'est la base. […] Il y a une liste de well-known ports 
 Associer sans hésiter un numéro de port à son protocole et à son application : 22 SSH, 23 Telnet,
 25 SMTP, 53 DNS, 80 HTTP, 443 HTTPS, 445 SMB, 3389 RDP… Il précise qu'il ne demandera pas de ports
 exotiques.
-<a class="lien" href="fiche.html#ch14-ports">→ Fiche §14.2 : les ports à connaître</a></div></div>
+<a class="lien" href="fiche.html#ch14-ports">→ Fiche §14.3 : les ports à connaître</a></div></div>
 
 <div class="px-item fort"><div class="src">Séance 2 (suite) · 34:12 <span class="th">Le scan authentifié</span></div>
 <blockquote>Il faut tout le temps, tout le temps — ce n'est pas une question — vérifier avec Wireshark
@@ -287,7 +290,7 @@ que vous rentrez bien dedans. Je veux la preuve que le credential est passé.</b
 Sans identifiants, OpenVAS ne fait qu'une analyse de surface ; un résultat vide peut vouloir dire que le
 scan n'est pas entré. Preuves : capture Wireshark de l'authentification au début du scan, journaux de
 la cible (auth.log sous Linux, journaux SMB sous Windows).
-<a class="lien" href="fiche.html#ch14-credentials">→ Fiche §14.4</a></div></div>
+<a class="lien" href="fiche.html#ch14-credentials">→ Fiche §14.6</a></div></div>
 
 <div class="px-item"><div class="src">Séance 2 (suite) · 35:48 <span class="th">L'épreuve</span></div>
 <blockquote>Vous allez faire l'interro, elle va durer une heure, elle sera facile, comme d'habitude. Et à
@@ -296,6 +299,133 @@ côté, vous allez me prouver que vous avez bien une version compilée d'OpenVAS
 Une heure. Préparer sa VM OpenVAS pour la vérification ; si une fonctionnalité ne marche pas, le dire
 plutôt que de tricher.
 <a class="lien" href="fiche.html#essentiel">→ Fiche : l'essentiel</a></div></div>
+
+<!-- ======================= SÉANCE 3 ======================= -->
+<div class="px-seance">Séance 3 — matin</div>
+
+<div class="px-item fort"><div class="src">Séance 3 · 11:06 <span class="th">Commencer par le réseau</span></div>
+<blockquote>Est-ce que vous avez bien conscientisé qu'on ne peut pas démarrer un audit sans checker le réseau ? [À quoi sert de scanner les ports ?] — Identifier le rôle de la machine ? — Enfin !</blockquote>
+<div class="rep"><div class="t">La réponse attendue</div>
+La surface d'attaque et les bannières, c'est du micro. Le macro d'abord : la cartographie, le <b>rôle des machines</b> (où est l'AD, les gros serveurs), car le DSI n'a souvent plus de vue à jour de son réseau.
+<a class="lien" href="fiche.html#ch14-macro">→ Fiche §14.4 : du macro au micro</a></div></div>
+
+<div class="px-item fort"><div class="src">Séance 3 · 13:31 <span class="th">Les flux</span></div>
+<blockquote>Les flux ! Qui a accès, comment, quels flux… Parce que ça, c'est super important ! C'est là où vous allez vérifier les logiques de DMZ, les logiques d'interconnexion inter-sites.</blockquote>
+<div class="rep"><div class="t">La réponse attendue</div>
+Après la cartographie : qui accède à quel service, le cloisonnement, les DMZ, les liaisons entre sites. Pas de vérité absolue : vérifier que chaque ouverture est faite <b>en conscience</b>, sinon juger pourquoi elle existe et si c'est grave.
+<a class="lien" href="fiche.html#ch14-macro">→ Fiche §14.4</a></div></div>
+
+<div class="px-item"><div class="src">Séance 3 · 20:37 <span class="th">Les sauvegardes de VM</span></div>
+<blockquote>Si tu dois réinstaller la VM, les trois quarts du temps il a perdu la connaissance de tous les petits coups de tournevis, parce qu'ils n'ont pas mis à jour les procédures d'installation. Et c'est à vérifier, c'est votre rôle.</blockquote>
+<div class="rep"><div class="t">À retenir</div>
+Ordre des cibles : l'AD, puis les sauvegardes (non testées, chiffrables par un rançongiciel), les applications internes, les partages. Une sauvegarde de VM complète fait perdre la trace du paramétrage.
+<a class="lien" href="fiche.html#ch14-macro">→ Fiche §14.4</a></div></div>
+
+<div class="px-item fort"><div class="src">Séance 3 · 29:00 <span class="th">Pas de Kali</span></div>
+<blockquote>Le premier qui sort Kali dans mon réseau, il dégage !</blockquote>
+<div class="rep"><div class="t">La réponse attendue</div>
+Une collection d'outils de tiers non maîtrisés, qui peuvent contenir des portes dérobées : c'est un bac à sable pour apprendre. En mission, on isole et on teste chaque outil, puis on prépare <b>sa propre</b> machine, en VM.
+<a class="lien" href="fiche.html#ch10-pc">→ Fiche §10.4</a></div></div>
+
+<div class="px-item"><div class="src">Séance 3 · 38:20 <span class="th">Le rapport brut du scanner</span></div>
+<blockquote>70 à 80 % de blabla et de lecture ! Quand tu balances OpenVAS, tu es obligé de vérifier ce qu'il dit. […] Est-ce que le rapport brut OpenVAS, on le donne au client ? Jamais !</blockquote>
+<div class="rep"><div class="t">À retenir</div>
+Le rapport brut se trie et se vérifie ; au plus en annexe si quelqu'un sait le lire. Payer un outil et un CERT donne environ deux semaines d'avance et des bulletins ciblés.
+<a class="lien" href="fiche.html#ch14-openvas">→ Fiche §14.5</a></div></div>
+
+<div class="px-item fort"><div class="src">Séance 3 · 60:13 <span class="th">La preuve</span></div>
+<blockquote>Vous avez la preuve que ça fonctionnait, ou c'est votre outil qui invente des choses ? Et là, si vous n'avez jamais testé, vous êtes marron !</blockquote>
+<div class="rep"><div class="t">La réponse attendue</div>
+Chaque vulnérabilité présentée a sa <b>preuve datée</b> (capture avec bandeau d'horodatage), ou se refait en direct, avec une vidéo de secours. Une vulnérabilité non reproduite ne se présente pas.
+<a class="lien" href="fiche.html#ch13-restituer">→ Fiche §13.5</a></div></div>
+
+<div class="px-item"><div class="src">Séance 3 · 66:18 <span class="th">Pas de commandes</span></div>
+<blockquote>Je ne mettrais peut-être pas les commandes. Pourquoi ? Parce que si c'est exécuté, c'est sous notre responsabilité ! Et secundo, tu n'es pas payé pour faire la remédiation.</blockquote>
+<div class="rep"><div class="t">La réponse attendue</div>
+Conseiller des pistes : tester la version corrigée sur une plateforme de test (non-régression), puis planifier une coupure pour mettre à jour.
+<a class="lien" href="fiche.html#ch13-restituer">→ Fiche §13.5</a></div></div>
+
+<div class="px-seance">Séance 3 — après-midi</div>
+
+<div class="px-item"><div class="src">Séance 3 (suite) · 20:25 <span class="th">L'IA</span></div>
+<blockquote>Si vous voulez tester ça, c'est une IA locale ! Et avec l'accord de votre équipe d'audit ! Ne balancez pas les chiffres que vous avez audités.</blockquote>
+<div class="rep"><div class="t">À retenir</div>
+Jamais de résultats d'audit dans un service en ligne. Le gain de temps est illusoire : tout se relit, et l'IA ignore le contexte.
+<a class="lien" href="fiche.html#ch13-rapport">→ Fiche §13.4</a></div></div>
+
+<div class="px-item fort"><div class="src">Séance 3 (suite) · 41:45 <span class="th">Les quatre critères</span></div>
+<blockquote>Quatre critères : difficulté, gravité, coût de remédiation, impact opérationnel. […] Identifier partout où sont utilisés les mots de passe avant de les modifier !</blockquote>
+<div class="rep"><div class="t">La réponse attendue</div>
+Savoir coter une vulnérabilité et sa remédiation. Un « coût faible » n'est pas nul : tests, arrêt possible, applications qui utilisent le secret écrit en dur.
+<a class="lien" href="fiche.html#ch13-recos">→ Fiche §13.3 : les deux grilles</a></div></div>
+
+<div class="px-item"><div class="src">Séance 3 (suite) · 48:15 <span class="th">Le manager</span></div>
+<blockquote>Tu as des gars bons, mais qui font des conneries parce qu'ils n'ont pas le temps. C'est la faute de qui ? De leur manager ! Tout le temps !</blockquote>
+<div class="rep"><div class="t">À retenir</div>
+Ne pas mettre une cible dans le dos du technicien. Recommander du temps et de la formation : la charge relève du management.
+<a class="lien" href="fiche.html#ch13-restituer">→ Fiche §13.5</a></div></div>
+
+<div class="px-item"><div class="src">Séance 3 (suite) · 67:01 <span class="th">Diffusion restreinte</span></div>
+<blockquote>Dès qu'il y a une mention de protection de l'information, tu la mets !</blockquote>
+<div class="rep"><div class="t">À retenir</div>
+Un rapport d'audit porte la mention « Diffusion restreinte » : il décrit les failles de l'entreprise.
+<a class="lien" href="fiche.html#ch13-restituer">→ Fiche §13.5</a></div></div>
+
+<div class="px-item"><div class="src">Séance 3 (suite) · 72:44 <span class="th">La restitution</span></div>
+<blockquote>Combien ça dure, une restitution ? Globalement deux heures. […] On ne dépasse pas les cinq constats majeurs.</blockquote>
+<div class="rep"><div class="t">À retenir</div>
+4 à 5 constats majeurs, une quarantaine de minutes de présentation, puis le débat sur la suite.
+<a class="lien" href="fiche.html#ch13-restituer">→ Fiche §13.5</a></div></div>
+
+<div class="px-seance">Séance 3 — fin de journée : le partiel</div>
+
+<div class="px-item fort"><div class="src">Séance 3 (fin) · 06:09 <span class="th">Le plus important</span></div>
+<blockquote>On est fier de son travail et on espère une évolution du client. Ça, c'est le plus important.</blockquote>
+<div class="rep"><div class="t">À retenir</div>
+Les neuf règles d'or concluent le cours ; la dernière est l'éthique : aider le client, pas épingler des gens.
+<a class="lien" href="fiche.html#ch15">→ Fiche §15 : les règles d'or</a></div></div>
+
+<div class="px-item fort"><div class="src">Séance 3 (fin) · 07:25 <span class="th">Réseau, réseau, réseau</span></div>
+<blockquote>Réseau, réseau, réseau, réseau, réseau ! C'est le point faible essentiel ! […] Le réseau vous permet d'avoir des pistes sur tout le reste.</blockquote>
+<div class="rep"><div class="t">À retenir</div>
+Tout passe et tout fuit par le réseau. On se croit en boîte grise, on est presque en boîte noire : les schémas du client sont souvent faux.
+<a class="lien" href="fiche.html#ch14">→ Fiche §14</a></div></div>
+
+<div class="px-item fort"><div class="src">Séance 3 (fin) · 10:26 <span class="th">Les trois parties</span></div>
+<blockquote>Donc l'interro demain : du réseau ! Des well-known ports, des trucs. Des questions sur les échanges qu'on a eus : est-ce que vous m'avez bien écouté ? Et une mise en situation !</blockquote>
+<div class="rep"><div class="t">Le format</div>
+Une heure sur papier, sans PC. 1) Questions réseau. 2) Questions sur les conseils du cours. 3) Une société fictive, son contexte et trois questions.
+<a class="lien" href="fiche.html#essentiel">→ Fiche : l'essentiel</a></div></div>
+
+<div class="px-item fort"><div class="src">Séance 3 (fin) · 10:46 <span class="th">La mise en situation</span></div>
+<blockquote>Une société complètement bidon, qui a un contexte complètement bidon : je vous donne des éléments et après je vous pose trois questions. Il va falloir m'inventer une vulnérabilité, voire un truc pas technique.</blockquote>
+<div class="rep"><div class="t">Ce qu'il faut savoir faire</div>
+Lire le contexte, choisir un problème crédible, le décrire, dire pourquoi c'est grave pour cette entreprise, proposer une remédiation avec ses critères. Compter 30 à 40 minutes.
+<a class="lien" href="fiche.html#ch16-methode">→ Fiche §16.1 : la méthode, et un sujet corrigé</a></div></div>
+
+<div class="px-item fort"><div class="src">Séance 3 (fin) · 12:04 <span class="th">Ce qui est noté</span></div>
+<blockquote>Décrivez-moi un problème, donnez-moi une remédiation, soyez cohérents ! […] Si vous commencez une idée et que vous vous contredisez à la fin de la phrase, c'est là que vous perdez des points, bêtement !</blockquote>
+<div class="rep"><div class="t">À retenir</div>
+Ni l'orthographe ni le style. La cohérence : sujet, verbe, complément ; pas de double négation, pas de contradiction. Utiliser le brouillon fourni.
+<a class="lien" href="fiche.html#essentiel">→ Fiche : comment il corrige</a></div></div>
+
+<div class="px-item"><div class="src">Séance 3 (fin) · 14:45 <span class="th">Rester dans son scénario</span></div>
+<blockquote>Vous pouvez inventer le scénario que vous voulez ; par contre, une fois que vous partez dans votre scénario, vous restez dans votre scénario !</blockquote>
+<div class="rep"><div class="t">À retenir</div>
+Pas de preuve demandée, mais un scénario crédible du début à la fin. Aucun piège, pas de hors-sujet possible.
+<a class="lien" href="fiche.html#ch16-methode">→ Fiche §16.1</a></div></div>
+
+<div class="px-item fort"><div class="src">Séance 3 (fin) · 16:47 <span class="th">nmap et arp-scan</span></div>
+<blockquote>Vous avez bien compris Nmap, arp-scan ? Vous l'avez compris, réellement compris, vous l'avez testé ? Vous ne pouvez pas vous perdre !</blockquote>
+<div class="rep"><div class="t">La réponse attendue</div>
+Le rôle de chaque outil, leur différence, la commande arp-scan et ses fichiers, les options de nmap et leurs risques, les ports bien connus.
+<a class="lien" href="fiche.html#ch14-correction">→ Fiche §14.2 : la correction du TP 3</a></div></div>
+
+<div class="px-item fort"><div class="src">Séance 3 (fin) · 19:55 <span class="th">Ce qui est passé à l'écran</span></div>
+<blockquote>Si vous avez une bonne mémoire visuelle, vous avez pu décrypter ce qui est peut-être venu à l'écran !</blockquote>
+<div class="rep"><div class="t">À retenir</div>
+La correction du TP 3 projetée le matin même : elle est reprise dans la fiche, telle qu'affichée.
+<a class="lien" href="fiche.html#ch14-correction">→ Fiche §14.2</a></div></div>
 
 </main>
 
