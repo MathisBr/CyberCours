@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>INF5051 — Investigation numérique (forensic)</title>
+<link rel="stylesheet" href="../assets/core.css?v=28">
+<link rel="stylesheet" href="../assets/viz.css?v=12">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><span class="dot"></span> INF5051 <small>· investigation numérique (forensic)</small></div>
+  <div class="spacer"></div>
+  <input id="search" type="search" placeholder="Rechercher…  (Ctrl+K)">
+  <a class="home" href="../index.html">← Accueil</a>
+  <button class="btn ghost" onclick="toggleTheme()" title="Thème clair / sombre">◐</button>
+  <button class="btn ghost" onclick="window.print()" title="Imprimer / PDF">⎙</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar"><h4>Parcours</h4><div id="toc"></div></nav>
+  <main class="content">
+<h1>Investigation numérique (forensic)</h1>
+<p class="lead">
+L'inforensique, ou investigation numérique, cherche à <b>comprendre ce qui s'est passé</b> sur un
+système à partir des traces qu'il a gardées. Ses deux mondes n'ont pas le même but : la
+<b>justice</b> veut des preuves pour condamner, l'<b>entreprise</b> veut comprendre l'attaque pour
+qu'elle ne se reproduise pas. Le fil rouge : <b>on laisse des traces partout</b>, et l'enquêteur tire le
+fil à partir d'un premier indice.
+</p>
+
+<div class="callout"><div class="t">État de la fiche</div>
+Construite sur le syllabus, les supports du jour 1 au matin (introduction, 51 diapositives ; un rapport
+forensic réel de 2016 ; un rapport d'expertise publié en 2019) et les deux transcriptions de cette
+matinée. Les chapitres suivants du cours (problématiques légales, collecte et
+préservation, forensic Windows, Mac et Linux, réseau et mobiles, étude de cas) s'ajouteront au fil des
+supports. Les archives de TP déjà fournies ne contiennent que des données à analyser (image disque,
+image mémoire, captures réseau, journaux) : leurs énoncés viendront avec les supports.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="essentiel">★ L'essentiel — à relire la veille</h2>
+
+<div class="exam"><div class="t">Le format de l'examen, tel qu'annoncé</div>
+<ul>
+  <li><b>Vendredi matin</b> : un <b>QCM</b> avec <b>quelques questions ouvertes</b>.</li>
+  <li><b>Aucun TP dans l'examen</b> : on évalue la compréhension, les notions et la méthode.</li>
+  <li><b>Sans accès à Internet</b> : « l'IA a la moyenne à mon examen ; je suis là pour vous noter vous,
+  pas l'IA ».</li>
+  <li>Le syllabus parle d'un contrôle mixte : un travail de synthèse sur environnement virtualisé et un
+  examen Moodle sans documents.</li>
+  <li>À la fin de chaque cours, l'intervenant fait un <b>tour de questions récapitulatif</b> : ce sont
+  les notions qu'il attend (§1 à §7, et le récapitulatif ci-dessous).</li>
+</ul>
+</div>
+
+<div class="callout ok"><div class="t">Le récapitulatif de fin de cours, avec ses réponses</div>
+<ul style="margin-bottom:0">
+  <li><b>D'où vient la forensic ?</b> De la <b>médecine légale</b>, transposée au numérique.</li>
+  <li><b>Quels types de preuves ?</b> Presque tout : capture réseau, document imprimé, e-mail, historique
+  Internet, photo, vidéo, journaux d'événements, SMS et messageries, disques, <b>mémoire RAM</b>, clés
+  USB.</li>
+  <li><b>Quelles compétences ?</b> Communication (« CAPITALE »), confidentialité, curiosité, langues
+  (l'anglais au minimum), légal, technique (réseau, système, sécurité) ; et ténacité, calme, sens du
+  détail.</li>
+  <li><b>Qui recrute ?</b> Les forces de l'ordre, les cabinets d'audit et de conseil, les grandes
+  entreprises, les experts judiciaires.</li>
+  <li><b>L'histoire ?</b> Née aux États-Unis dans les années 1980, très liée à la lutte contre la
+  pédocriminalité (NCMEC) ; Interpol installé à Lyon en 1989.</li>
+</ul>
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>Notion</th><th>À savoir en une ligne</th></tr></thead>
+<tbody>
+<tr><td><b>But de l'analyse</b></td><td><b>Comprendre ce qui s'est passé.</b> Pour un cybercrime, établir trois aspects : le <b>moyen</b>, l'<b>opportunité</b>, la <b>motivation</b>.</td></tr>
+<tr><td><b>Justice / entreprise</b></td><td>La justice veut des <b>preuves pour condamner</b>. L'entreprise veut savoir <b>ce qui s'est passé et pourquoi c'était possible</b>, pour que ça ne se reproduise pas.</td></tr>
+<tr><td><b>Attribution</b></td><td>Dire qui est derrière l'attaque : difficile, et peu demandé par le client, qui devine souvent le commanditaire d'après la cible.</td></tr>
+<tr><td><b>85 %</b></td><td>Des investigations judiciaires contiennent un volet numérique.</td></tr>
+<tr><td><b>Preuve n° 1 (général)</b></td><td>L'<b>e-mail</b> : preuve d'intention, horodaté, stocké à plusieurs endroits, reconnu en justice.</td></tr>
+<tr><td><b>Preuve n° 1 (entreprise)</b></td><td>Les <b>journaux d'événements</b>, centralisés et signés par le SIEM avant qu'un attaquant ne les efface.</td></tr>
+<tr><td><b>Traces Windows</b></td><td>Créées pour la performance (cache), elles trahissent l'activité : Prefetch, Shimcache, Amcache, LNK, corbeille, USB…</td></tr>
+<tr><td><b>Premier réflexe sur un binaire</b></td><td>Calculer son <b>empreinte (hash)</b> et vérifier s'il est connu, avant d'appeler l'équipe de rétro-ingénierie.</td></tr>
+<tr><td><b>Rapport forensic</b></td><td>Synthèse pour la direction <b>en tête</b> (coût, comment éviter que ça recommence), puis la partie technique ; empreintes et détails en annexe ; au centre, la <b>frise chronologique</b>.</td></tr>
+<tr><td><b>Compromission root / Domain Admin</b></td><td>Impossible d'être sûr d'avoir retiré toutes les portes dérobées : on <b>réinstalle de zéro</b>, après avoir analysé et, si possible, conservé la machine.</td></tr>
+<tr><td><b>Patient zéro</b></td><td>La première trace de contamination trouvée : la limite en amont de l'enquête.</td></tr>
+<tr><td><b>SOC</b></td><td>Trois niveaux : <b>N1</b> applique des procédures, <b>N2</b> trie les alertes et élimine les faux positifs, <b>N3</b> (experts) mène l'investigation.</td></tr>
+<tr><td><b>Purple Team</b></td><td>Red Team (attaque) + Blue Team (défense) : vérifier que les détections servent vraiment.</td></tr>
+</tbody></table></div>
+
+<div class="callout warn"><div class="t">Les phrases soulignées en cours</div>
+<ul style="margin-bottom:0">
+  <li>« La communication, c'est <b>CAPITAL</b>, majuscule avec point d'exclamation. » Un profil brillant
+  qui ne sait ni écrire ni parler n'est pas gardé.</li>
+  <li>« Pour faire de la forensic, il faut savoir comment font les attaquants. » Attaque et défense sont
+  deux mondes complémentaires.</li>
+  <li>« Le meilleur hacker du monde laissera des traces. » Et effacer ses traces est, en soi, très
+  suspect.</li>
+  <li>« On respecte le client, on respecte le <b>périmètre</b>. »</li>
+  <li>« La première chose que je fais sur un audit : savoir ce que je dois mettre dans le
+  <b>rapport</b>. C'est ça qui dirige le reste. »</li>
+  <li>Je ne mets dans le rapport que des <b>faits</b> ; un ressenti se dit à l'oral, s'il le faut.</li>
+  <li>« <b>Le plus important dans un rapport forensic, c'est la frise chronologique</b>, compréhensible
+  par quelqu'un de non technique. » Et la synthèse pour la direction est « la partie la plus dure »
+  (§8).</li>
+  <li>Premier réflexe sur une machine suspecte : <b>regarder ce qui se lance au démarrage</b>.</li>
+  <li>« En forensic, on traite des 1 et des 0 : on ne sait pas <b>qui est derrière le clavier</b>. »</li>
+</ul>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch1"><span class="num">1.</span> Qu'est-ce que l'inforensique ?</h2>
+
+<div class="callout def"><div class="t">Définition</div>
+On parle d'<b>informatique légale</b>, d'<b>investigation numérique légale</b> ou d'<b>informatique
+judiciaire</b> (en anglais <i>computer forensics</i>) : l'application de techniques et de protocoles
+d'investigation numérique <b>respectant les procédures légales</b>, destinée à apporter des
+<b>preuves numériques</b> à la demande d'une institution judiciaire, par réquisition, ordonnance ou
+jugement. Autrement dit : l'ensemble des connaissances et méthodes pour <b>collecter, conserver et
+analyser</b> des preuves issues de supports numériques, en vue de les produire en justice. Le concept
+est calqué sur la <b>médecine légale</b>.
+</div>
+
+<h3 id="ch1-trois">1.1 Comprendre ce qui s'est passé : trois aspects</h3>
+<div class="viz">
+  <div class="t">Les trois questions d'une enquête sur un cybercrime — cliquez pour le détail</div>
+  <div class="vz-grid g3">
+    <button class="vz-c k-blue"><span class="n">1</span><h5>Le moyen</h5>
+      <span class="q">Avec quoi ?</span>
+      <span class="more"><span class="t">La question</span>Quels outils, quelles méthodes, quelles TTP
+      (tactiques, techniques et procédures) ont permis le cybercrime ?</span></button>
+    <button class="vz-c k-amber"><span class="n">2</span><h5>L'opportunité</h5>
+      <span class="q">Par où ?</span>
+      <span class="more"><span class="t">La question</span>Quelles faiblesses ont permis de commettre le
+      cybercrime ? En général plusieurs : un chemin d'attaque est rarement direct.</span></button>
+    <button class="vz-c k-red"><span class="n">3</span><h5>La motivation</h5>
+      <span class="q">Pourquoi ?</span>
+      <span class="more"><span class="t">La question</span>La raison qui a poussé la personne ou le groupe
+      à agir : argent, espionnage, déstabilisation…</span></button>
+  </div>
+  <div class="vz-bar">
+    <button class="btn" data-cards="open">Tout déplier</button>
+    <button class="btn ghost" data-cards="close">Tout replier</button>
+    <span class="cnt"></span>
+  </div>
+</div>
+
+<div class="key-points">
+  <li><b>Agent de menace</b> plutôt qu'« attaquant » : derrière une attaque, il n'y a pas toujours une
+  personne ou un groupe qui agit en direct. Des codes autonomes se reproduisent et agissent seuls, avec
+  ou sans IA ; un humain les a lancés, l'automatisation fait le reste.</li>
+  <li><b>85 %</b> des investigations judiciaires contiennent des investigations numériques : le numérique
+  est partout.</li>
+  <li><b>Effacer ses traces est très suspect.</b> Exemple récent : un responsable politique supprime
+  des publications après des révélations ; une analyse de son compte prouve l'effacement, qui devient
+  lui-même un élément de l'affaire.</li>
+</div>
+
+<h3 id="ch1-mondes">1.2 Deux mondes : la justice et l'entreprise</h3>
+<div class="tw"><table>
+<thead><tr><th></th><th>Forensic judiciaire</th><th>Forensic en entreprise</th></tr></thead>
+<tbody>
+<tr><td><b>Objectif</b></td><td>Obtenir des <b>preuves</b> pour <b>condamner</b> les personnes</td><td>Comprendre <b>ce qui s'est passé et pourquoi c'était possible</b>, puis remédier</td></tr>
+<tr><td><b>Exigence sur la preuve</b></td><td>Très forte : procédure légale, réquisition, ordonnance</td><td>Moindre : on cherche d'abord le chemin d'attaque</td></tr>
+<tr><td><b>Attribution</b></td><td>Centrale : identifier l'auteur</td><td>Secondaire : le client devine souvent le commanditaire</td></tr>
+<tr><td><b>Preuves typiques</b></td><td>E-mails, photos, SMS, smartphones</td><td>Journaux d'événements (SIEM), captures réseau, traces des postes</td></tr>
+</tbody></table></div>
+
+<div class="grid c2">
+  <div class="card"><h4>Pourquoi l'attribution intéresse peu le client</h4>
+  <p style="margin-bottom:0">Attribuer, c'est dire « vous avez été attaqué par tel groupe ». C'est très
+  complexe, et souvent inutile : pour un grand industriel, si ce sont les finances qui sont visées, on
+  devine un concurrent intéressé par ses contrats ; si c'est la R&amp;D, un État qui développe des produits
+  concurrents. Le client veut surtout <b>le chemin d'attaque</b>, pour le fermer.</p></div>
+  <div class="card"><h4>Forensic et pentest : le même métier en miroir</h4>
+  <p style="margin-bottom:0">Le pentest cherche un chemin d'attaque <b>avant</b> qu'un vrai attaquant ne
+  l'utilise ; la forensic retrouve le chemin <b>qu'il a utilisé</b>. D'où la règle : il faut connaître
+  l'attaque pour enquêter, et la défense pour attaquer (une Red Team cherche à laisser des traces les plus
+  difficiles possibles à analyser).</p></div>
+</div>
+
+<div class="callout"><div class="t">Pourquoi la forensic aime Windows</div>
+La forensic a été créée par les <b>forces de l'ordre</b>, qui n'étaient pas des techniciens : les outils
+sont nés sous <b>Windows</b>. Le pentest, fait par des techniciens, s'est construit sous Linux. La majorité
+des investigations portent aussi sur des <b>postes utilisateurs</b>, surtout sous Windows (serveurs,
+smartphones, voitures… sont plutôt sous Linux). Et le Mac est rare en entreprise : une seule mission en
+vingt ans pour l'intervenant.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch2"><span class="num">2.</span> Les types de preuves</h2>
+
+<p>La question posée en cours : capture réseau, document imprimé, e-mail, historique Internet, photo
+numérique, journaux d'événements, SMS, vidéo numérique : lesquels sont des preuves ? <b>Tous.</b> Et la
+liste n'est pas exhaustive.</p>
+
+<h3 id="ch2-reseau">2.1 Capture réseau et document imprimé</h3>
+<div class="grid c2">
+  <div class="card"><h4>La capture réseau</h4>
+  <ul>
+    <li>Une capture (fichier <b>PCAP</b>) est rare dans le monde judiciaire, <b>courante en entreprise</b>, qui a souvent des <b>sondes réseau</b>
+    en coupure de l'accès à Internet.</li>
+    <li>Les clients matures ont des <b>NDR</b>, qui stockent les flux pour enquêter après coup, et des
+    agents <b>EDR</b> qui enregistrent le trafic quelques secondes avant et après un événement suspect.</li>
+    <li>Limite : le trafic est souvent chiffré (<b>SSL/TLS</b>, en HTTPS pour le web) ; sans déchiffrement, on n'exploite que les
+    <b>métadonnées</b>.</li>
+  </ul></div>
+  <div class="card"><h4>Le document imprimé</h4>
+  <p style="margin-bottom:0">La preuve la plus rare, mais elle existe : beaucoup d'imprimantes laser couleur
+  ajoutent des <b>points jaunes</b> presque invisibles qui encodent le <b>numéro de série</b> de
+  l'imprimante et un <b>horodatage</b>. D'autres techniques de <b>tatouage</b> (watermarking)
+  existent.</p></div>
+</div>
+
+<div class="callout warn"><div class="t">Le déchiffrement des flux TLS en entreprise</div>
+<p>Pour pouvoir analyser le trafic, certaines entreprises <b>cassent les flux TLS</b> : un équipement
+intermédiaire termine la connexion chiffrée du poste, puis ouvre lui-même la connexion vers le site. Cela
+touche à la <b>vie privée</b> (l'intervenant se souvient du nombre de mots de passe personnels visibles) :
+c'est permis si les salariés en sont informés, typiquement par la <b>charte informatique</b> qu'ils
+signent.</p>
+<p style="margin-bottom:0"><b>Comment savoir si son flux est cassé ?</b> Ouvrir le <b>certificat</b> du
+site dans le navigateur. La connexion paraît sécurisée dans les deux cas, mais si le flux est cassé,
+l'autorité de certification affichée n'est pas celle d'origine : c'est celle de l'<b>entreprise</b> (ou
+de l'équipement) qui déchiffre.</p>
+</div>
+
+<h3 id="ch2-mail">2.2 L'e-mail, preuve la plus importante</h3>
+<div class="steps">
+  <div class="step"><b>1. Preuve d'intention</b><br>Le propriétaire de l'adresse la contrôle ; envoyer un
+  message suppose une intention.</div>
+  <div class="step"><b>2. Horodaté</b><br>Sa date et son heure le placent sur la frise chronologique des
+  événements.</div>
+  <div class="step"><b>3. Très utilisé</b><br>Surtout dans le monde professionnel.</div>
+  <div class="step"><b>4. Présent à plusieurs endroits</b><br>Dans la boîte de l'expéditeur, celle du
+  destinataire et sur le serveur : pour l'effacer, l'attaquant doit atteindre les trois.</div>
+  <div class="step"><b>5. Reconnu en justice</b><br>Une preuve communément utilisée.</div>
+  <div class="step"><b>6. Généralement accessible</b><br>Pendant l'investigation, on en retrouve presque
+  toujours une copie.</div>
+</div>
+<p>Deux limites : les e-mails sont de plus en plus dans le <b>cloud</b>, et les échanges migrent vers des
+messageries d'équipe (Teams…), ce qui rend l'e-mail un peu moins central.</p>
+
+<div class="callout"><div class="t">Le cloud et les grands fournisseurs</div>
+Les données hébergées chez les grands acteurs du numérique (les <b>GAFAM</b>) échappent à la saisie directe : ils fournissent
+les journaux et les données qu'ils <b>veulent</b> bien fournir. Il existe des interfaces de réquisition,
+mais des refus arrivent, y compris dans des affaires graves. Le dirigeant de la messagerie Telegram, qui ignorait
+les réquisitions judiciaires a ainsi été retenu en France, après quoi la plateforme a commencé à
+répondre.
+</div>
+
+<h3 id="ch2-histo">2.3 L'historique Internet : où le trouver ?</h3>
+<div class="tw"><table>
+<thead><tr><th>Emplacement</th><th>Oui ?</th><th>À quelle condition</th></tr></thead>
+<tbody>
+<tr><td><b>Mémoire vive (RAM)</b></td><td>Oui</td><td>Avoir un <b>dump mémoire</b> pris pendant la navigation. Certains EDR en génèrent automatiquement lors d'un événement suspect, mais c'est gourmand et pas toujours activé.</td></tr>
+<tr><td><b>Capture réseau</b></td><td>Oui</td><td>Si le flux n'est <b>pas chiffré</b>, ou si le TLS est cassé. Sinon, seulement les requêtes DNS et les domaines, pas le contenu.</td></tr>
+<tr><td><b>Clé USB</b></td><td>En général non</td><td>Sauf un navigateur <b>portable</b> (Firefox portable, par exemple) lancé depuis la clé : son historique y est stocké.</td></tr>
+<tr><td><b>Smartphone</b></td><td>Oui</td><td>Dans la base du navigateur du téléphone.</td></tr>
+<tr><td><b>Disque</b></td><td>Oui</td><td>Si le navigateur stocke l'historique en local, de moins en moins le cas en entreprise. Le profil utilisateur est souvent sur un <b>partage réseau</b> : l'historique est alors sur ce partage, pas sur le poste.</td></tr>
+</tbody></table></div>
+<p>L'historique n'est pas la seule trace de navigation : favoris, téléchargements, cache, cookies,
+sessions à restaurer, saisie automatique, identifiants enregistrés, extensions (poster SANS, §3). On
+parle de « disque » et non plus de « disque dur » : ce sont surtout des SSD.</p>
+<p>Le <b>dump mémoire</b> est aussi une cible pour les attaquants, car la mémoire contient beaucoup
+d'informations intéressantes ; la RAM sera un sujet à part entière.</p>
+
+<h3 id="ch2-image">2.4 Photo et vidéo</h3>
+<div class="grid c2">
+  <div class="card"><h4>La photo et ses métadonnées</h4>
+  <p>Une image se lit pour son contenu (le renseignement en sources ouvertes, <b>OSINT</b>, a par exemple
+  repéré des mouvements de blindés dans un conflit récent) et pour ses <b>métadonnées EXIF</b> : fabricant
+  et modèle de l'appareil, logiciel, date et heure de prise de vue, et parfois <b>latitude, longitude,
+  altitude</b>.</p>
+  <p style="margin-bottom:0">Cas d'école : un fugitif recherché, réfugié dans la jungle, a été localisé
+  parce qu'un journaliste venu l'interviewer a publié une photo sans retirer la géolocalisation. La
+  photo sert surtout dans le monde judiciaire.</p></div>
+  <div class="card"><h4>La vidéo</h4>
+  <p>Très utilisée par tous (forces de l'ordre, manifestants, drones) ; en entreprise, la
+  <b>vidéosurveillance</b> (datacenters, locaux). Plus difficile à modifier qu'un texte ou une image,
+  mais possible : beaucoup de flux de vidéosurveillance circulent encore <b>en clair</b>, modifiables à la
+  volée par quelqu'un placé sur le chemin (afficher une œuvre qui a déjà disparu). Toujours vérifier que
+  la preuve n'a pas été compromise.</p>
+  <p style="margin-bottom:0">Et les <b>deepfakes</b> : un employé a fait un virement après une
+  visioconférence avec trois dirigeants, tous générés par IA.</p></div>
+</div>
+
+<h3 id="ch2-journaux">2.5 Journaux d'événements, SMS et messageries</h3>
+<div class="grid c2">
+  <div class="card"><h4>Les journaux d'événements</h4>
+  <ul>
+    <li>Les preuves <b>les plus utilisées en entreprise</b>. Tous les systèmes et presque toutes les
+    applications en produisent.</li>
+    <li>Ils sont envoyés au <b>SIEM</b>, qui les <b>signe</b> pour qu'ils ne soient pas altérés.</li>
+    <li>Une bonne configuration de l'envoi donne des traces de l'attaque <b>avant</b> que la personne
+    malveillante ne puisse les effacer.</li>
+    <li>On y ajoute aujourd'hui les badges d'accès et les caméras, utiles pour une intrusion physique.</li>
+    <li>La difficulté : envoyer <b>juste ce qu'il faut</b>. Trop de journaux saturent le système.</li>
+  </ul></div>
+  <div class="card"><h4>SMS, MMS et messageries chiffrées</h4>
+  <ul>
+    <li>Le SMS circule <b>en clair</b> sur le réseau téléphonique ; il est stocké sur le téléphone et sur
+    des relais de l'opérateur, accessibles avec un <b>mandat</b>, mais pour peu de temps.</li>
+    <li>Il ne représente plus qu'environ 5 % du trafic : les échanges passent par des messageries
+    <b>chiffrées de bout en bout</b> (WhatsApp, Signal), un problème pour les enquêteurs mais une garantie
+    pour la démocratie.</li>
+    <li><b>Comment lire une conversation chiffrée de bout en bout ?</b> Par sa <b>sauvegarde dans le
+    cloud</b>, qui par défaut n'est pas surchiffrée : avec l'accès au compte cloud, on lit la
+    conversation. Autre voie : une session de l'application sur ordinateur liée au compte.</li>
+  </ul></div>
+</div>
+<p>Le smartphone fera l'objet d'un chapitre complet (jour 3) : c'est aujourd'hui la source la plus
+riche.</p>
+
+<h3 id="ch2-autres">2.6 Les autres traces</h3>
+<p>Dès qu'on agit sur un système, on laisse des traces, et elles persistent souvent <b>après
+suppression</b>. Le poster SANS présenté en cours (§3) les classe par question :</p>
+<div class="grid c3">
+  <div class="card"><h4>Exécution d'applications</h4><p style="margin-bottom:0">Quels programmes ont tourné,
+  quand, combien de fois.</p></div>
+  <div class="card"><h4>Fichiers et dossiers</h4><p style="margin-bottom:0">Quels fichiers ont été ouverts,
+  existent ou ont existé, même supprimés.</p></div>
+  <div class="card"><h4>Cloud</h4><p style="margin-bottom:0">La copie de documents vers un serveur ou un
+  stockage en ligne laisse des traces partout.</p></div>
+  <div class="card"><h4>Usage des comptes</h4><p style="margin-bottom:0">Chaque authentification, réussie ou
+  non, est une preuve.</p></div>
+  <div class="card"><h4>Réseau et lieu</h4><p style="margin-bottom:0">Les réseaux utilisés permettent parfois
+  une <b>géolocalisation physique</b> : une piste sous-exploitée.</p></div>
+  <div class="card"><h4>Périphériques externes</h4><p style="margin-bottom:0">Les clés USB branchées sont
+  parfois au cœur de l'enquête (§4.1).</p></div>
+</div>
+<div class="callout ok"><div class="t">Le meilleur hacker laisse des traces</div>
+Ces traces existent pour la <b>performance</b> (caches), pas pour aider les enquêteurs ; elles n'en sont
+pas moins précieuses. Personne ne peut agir sans en laisser : la difficulté d'une Red Team est de laisser
+les traces les plus difficiles à analyser, le temps d'atteindre son objectif avant d'être détectée.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch3"><span class="num">3.</span> La carte des traces Windows</h2>
+
+<p>Le support s'appuie sur le poster du SANS Institute (<i>Windows Forensic Analysis</i>), qui range les traces d'un
+poste Windows par question d'enquête. L'intervenant le présente comme « une bonne synthèse » ; il sera
+détaillé le jour 2 (forensic Windows). Les emplacements sont ceux du poster.</p>
+
+<h3 id="ch3-execution">3.1 Prouver l'exécution d'un programme</h3>
+<div class="tw"><table>
+<thead><tr><th>Trace</th><th>Où</th><th>Ce qu'elle apporte</th></tr></thead>
+<tbody>
+<tr><td><b>Prefetch</b></td><td><code>C:\Windows\Prefetch</code> (fichiers <code>.pf</code>)</td><td>Nom et chemin de l'exécutable, nombre d'exécutions, dates des dernières exécutions (jusqu'à 8 sur les versions récentes). Créé pour accélérer le lancement.</td></tr>
+<tr><td><b>Shimcache</b> (AppCompatCache)</td><td>Ruche <code>SYSTEM</code></td><td>Exécutables vus par le système (compatibilité). Sur les versions récentes, sa présence seule ne prouve pas l'exécution.</td></tr>
+<tr><td><b>Amcache</b></td><td><code>C:\Windows\AppCompat\Programs\Amcache.hve</code></td><td>Chemin complet, date, et l'<b>empreinte SHA-1</b> des programmes.</td></tr>
+<tr><td><b>BAM / DAM</b></td><td>Ruche <code>SYSTEM</code></td><td>Dernière exécution d'un programme par utilisateur (Windows 10 et suivants).</td></tr>
+<tr><td><b>UserAssist</b></td><td><code>NTUSER.DAT</code></td><td>Programmes graphiques lancés par l'utilisateur, nombre de lancements, dernière date.</td></tr>
+<tr><td><b>SRUM</b></td><td><code>C:\Windows\System32\SRU\SRUDB.dat</code></td><td>30 à 60 jours d'historique : applications, comptes, octets envoyés et reçus par application, relevés chaque heure.</td></tr>
+<tr><td><b>Jump Lists</b>, chronologie</td><td>Profil utilisateur</td><td>Fichiers ouverts récemment par chaque application.</td></tr>
+</tbody></table></div>
+
+<h3 id="ch3-fichiers">3.2 Fichiers ouverts, supprimés, recherchés</h3>
+<div class="tw"><table>
+<thead><tr><th>Trace</th><th>Ce qu'elle apporte</th></tr></thead>
+<tbody>
+<tr><td><b>Raccourcis LNK</b> (dossier <code>Recent</code>)</td><td>Créés automatiquement à l'ouverture d'un fichier : dates d'ouverture, et les dates, la taille, le volume (nom, numéro de série) et l'emplacement d'origine du fichier cible, même s'il était sur un partage ou une clé.</td></tr>
+<tr><td><b>Shellbags</b>, Office MRU</td><td>Dossiers parcourus, documents Office récents.</td></tr>
+<tr><td><b>Corbeille</b> (<code>$Recycle.Bin</code>)</td><td>Un sous-dossier par utilisateur (SID). Fichiers <code>$I</code> : nom d'origine et date de suppression ; fichiers <code>$R</code> : contenu.</td></tr>
+<tr><td><b>Thumbcache</b></td><td>Miniatures des images vues, conservées même après suppression de l'image.</td></tr>
+<tr><td><b>Recherches</b> (WordWheelQuery), <b>chemins tapés</b> (TypedPaths)</td><td>Ce que l'utilisateur a cherché ou tapé dans l'explorateur : il connaissait cet emplacement.</td></tr>
+<tr><td><b>Base de recherche Windows</b></td><td>Index de centaines de types de fichiers, métadonnées et parfois contenu partiel.</td></tr>
+</tbody></table></div>
+
+<h3 id="ch3-comptes">3.3 Comptes et connexions</h3>
+<div class="grid c2">
+  <div class="card"><h4>Les événements de sécurité à connaître</h4>
+  <div class="tw"><table><tbody>
+  <tr><td><b>4624</b> / <b>4625</b></td><td>Ouverture de session réussie / échouée</td></tr>
+  <tr><td><b>4634</b>, <b>4647</b></td><td>Fermeture de session</td></tr>
+  <tr><td><b>4648</b></td><td>Connexion avec des identifiants explicites (« exécuter en tant que »)</td></tr>
+  <tr><td><b>4672</b></td><td>Connexion d'un compte aux droits d'administration</td></tr>
+  <tr><td><b>4720</b></td><td>Compte créé</td></tr>
+  <tr><td><b>4776</b></td><td>Validation d'identifiants NTLM</td></tr>
+  <tr><td><b>4768</b>, <b>4769</b>, <b>4771</b></td><td>Kerberos : ticket TGT accordé, ticket de service, échec de pré-authentification</td></tr>
+  <tr><td><b>4778</b> / <b>4779</b></td><td>Session RDP reconnectée / déconnectée</td></tr>
+  <tr><td><b>7045</b> (System), <b>4697</b></td><td>Service installé</td></tr>
+  </tbody></table></div></div>
+  <div class="card"><h4>Les types d'ouverture de session (4624)</h4>
+  <div class="tw"><table><tbody>
+  <tr><td><b>2</b></td><td>Interactive, à la console</td></tr>
+  <tr><td><b>3</b></td><td>Réseau (partage…)</td></tr>
+  <tr><td><b>4</b> / <b>5</b></td><td>Tâche planifiée / service</td></tr>
+  <tr><td><b>7</b></td><td>Déverrouillage</td></tr>
+  <tr><td><b>8</b></td><td>Réseau avec identifiants en clair</td></tr>
+  <tr><td><b>9</b></td><td>Nouveaux identifiants pour les accès sortants</td></tr>
+  <tr><td><b>10</b></td><td>Interactive à distance (<b>RDP</b>)</td></tr>
+  <tr><td><b>11</b></td><td>Avec identifiants en cache</td></tr>
+  </tbody></table></div>
+  <p style="margin-bottom:0;margin-top:10px">La ruche <code>SAM</code> garde, par compte local, la dernière
+  connexion, le dernier changement de mot de passe et le nombre de connexions.</p></div>
+</div>
+
+<h3 id="ch3-usb">3.4 Périphériques USB, réseaux et lieu</h3>
+<div class="grid c2">
+  <div class="card"><h4>Les traces d'une clé USB</h4>
+  <ul>
+    <li><b>Identification</b> : clé <code>USBSTOR</code> de la ruche <code>SYSTEM</code> (fabricant,
+    produit, version, numéro de série).</li>
+    <li><b>Lettre et nom du volume</b> : <code>MountedDevices</code> ; l'<b>utilisateur</b> qui l'a
+    utilisée : <code>MountPoints2</code> dans son <code>NTUSER.DAT</code>.</li>
+    <li><b>Dates</b> : première installation (journal <code>setupapi.dev.log</code>), dernière connexion,
+    dernier retrait.</li>
+    <li><b>Journaux</b> : installation du pilote (System), accès aux supports amovibles (Security, si
+    l'audit est activé), et sur Windows 10 et suivants un événement par branchement et retrait
+    (Partition/Diagnostic).</li>
+    <li>Les <b>raccourcis LNK</b> relient un fichier ouvert au <b>numéro de série du volume</b> de la
+    clé.</li>
+  </ul></div>
+  <div class="card"><h4>Réseaux et localisation</h4>
+  <ul>
+    <li><b>Historique des réseaux</b> (profils de <code>NetworkList</code>) : nom et SSID, première et
+    dernière connexion, adresse de la passerelle ; type de réseau : filaire, VPN, sans fil, mobile.</li>
+    <li><b>Journal WLAN</b> : connexions et déconnexions sans fil.</li>
+    <li><b>SRUM</b> : quelles applications ont consommé quel réseau.</li>
+    <li><b>Fuseau horaire</b> (ruche <code>SYSTEM</code>) : indispensable pour lire correctement les dates
+    des journaux.</li>
+    <li>Les paramètres d'une URL de carte en ligne peuvent révéler une position recherchée.</li>
+  </ul></div>
+</div>
+
+<div class="callout"><div class="t">Le stockage cloud</div>
+OneDrive, Google Drive, Box et Dropbox laissent une configuration dans le registre, un dossier local, des
+bases de métadonnées et des journaux de synchronisation. Des fichiers supprimés peuvent rester dans la
+<b>corbeille en ligne</b> (par exemple 30 jours pour un OneDrive personnel, 93 jours en entreprise), et
+les journaux d'audit du fournisseur complètent les traces du poste.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch4"><span class="num">4.</span> Retours d'expérience</h2>
+
+<p>L'intervenant le dit : la technique est sur Internet, pas le retour d'expérience. Chaque cas enseigne
+une règle.</p>
+
+<h3 id="ch4-exfiltration">4.1 L'exfiltration de documents dans une banque</h3>
+<div class="steps" id="anim-exfil">
+  <div class="step"><b>1. L'indice de départ</b> <span class="who">SIEM</span><br>Une alerte : un grand
+  nombre de documents du site documentaire (SharePoint) du siège ont été consultés depuis le poste d'une
+  salariée d'une filiale. Le siège met la pression : une investigation est commandée.</div>
+  <div class="step"><b>2. L'acquisition</b><br>Sur place, la copie du disque devait durer plus de trois
+  heures : le client confie l'ordinateur portable. Le disque est extrait, <b>cloné</b>, et c'est la
+  copie qui est analysée.</div>
+  <div class="step"><b>3. Confirmer l'accès</b> <span class="who">navigateur</span><br>L'historique du
+  navigateur montre le téléchargement des documents signalés : c'est corrélé avec l'alerte. La partie
+  facile.</div>
+  <div class="step"><b>4. Ont-ils quitté le poste ?</b> <span class="who">USB</span><br>Les traces USB
+  révèlent <b>deux clés n'appartenant pas à l'entreprise</b>.</div>
+  <div class="step"><b>5. La preuve de la copie</b> <span class="who">cache Office</span><br>Un cache des
+  documents Office ouverts montre environ <b>1 500 documents</b> passés de <code>C:\</code> vers
+  <code>E:\</code>, la lettre de la clé.</div>
+  <div class="step"><b>6. Le contexte</b><br>L'activité du disque montre une salariée qui préparait la
+  création de sa propre entreprise, dans le même domaine. Aucune tentative de cacher quoi que ce soit.</div>
+  <div class="step"><b>7. Le rapport</b> <span class="who">faits seulement</span><br>« Tel compte, à telle
+  heure, a copié tels fichiers de tel emplacement vers une clé USB non professionnelle. » Le ressenti
+  (pas de revente, peut-être pas consciente d'enfreindre la charte) se dit à l'oral. Le rapport part chez
+  un avocat ; l'affaire se règle souvent par une négociation, rarement par un procès.</div>
+</div>
+<button class="btn primary" onclick="playSteps('anim-exfil')">▶ Lancer l'animation</button>
+
+<h3 id="ch4-skimming">4.2 Pourquoi les données d'un skimmer sont-elles chiffrées ?</h3>
+<p>Le <b>skimming</b> : un petit dispositif posé sur un distributeur automatique de billets (<b>DAB</b>) copie la carte et capte le
+code. Ses données sont chiffrées. Pourquoi ?</p>
+<div class="tw"><table>
+<thead><tr><th>Proposition</th><th>Verdict</th></tr></thead>
+<tbody>
+<tr><td>Pour compliquer le travail de la police</td><td>Un effet secondaire, pas le but.</td></tr>
+<tr><td><b>Pour que la personne qui récupère le matériel n'utilise pas les données</b></td><td><b>La bonne réponse.</b> Le concepteur, qui fait l'argent, paie un exécutant pour poser et retirer l'appareil, donc prendre le risque. S'il est arrêté, lui seul tombe ; et il ne peut pas exploiter les cartes lui-même.</td></tr>
+<tr><td>Pour respecter la norme PCI-DSS</td><td>Absurde : la norme PCI-DSS impose aux entreprises qui traitent beaucoup de cartes bancaires (péages, commerces) de les stocker de façon sécurisée, sous peine de ne plus être assurées.</td></tr>
+<tr><td>Pour échapper à la détection d'exfiltration</td><td>Faux : les données restent dans l'appareil, elles ne traversent aucun réseau de la banque.</td></tr>
+</tbody></table></div>
+<p>Le même principe vaut pour les groupes de rançongiciels, divisés en rôles : celui qui gagne le plus
+garde les données les plus sensibles, chiffrées, hors de portée des autres.</p>
+
+<h3 id="ch4-hash">4.3 Le binaire mystère : d'abord le hash</h3>
+<div class="callout warn"><div class="t">Une demi-journée perdue</div>
+Lors d'une intrusion chez un client, l'équipe passe une demi-journée à comprendre un binaire laissé par les
+attaquants. C'était <b><code>curl.exe</code></b>, un outil légitime. Le réflexe oublié : <b>calculer
+l'empreinte (hash) du fichier</b> et vérifier si c'est un binaire connu (sur VirusTotal, par exemple). Les équipes de rétro-ingénierie
+(reverse engineering) sont rares et débordées : quelques vérifications de base suffisent souvent.
+</div>
+
+<h3 id="ch4-perimetre">4.4 Le périmètre et la production</h3>
+<div class="grid c2">
+  <div class="card"><h4>Hors périmètre : une carrière arrêtée</h4>
+  <p style="margin-bottom:0">Un pentester remarque que l'Active Directory d'un grand opérateur, <b>hors
+  périmètre</b>, permet une attaque qu'il n'a jamais essayée. Il l'essaie : l'annuaire tombe, impact
+  national, enquête de l'ANSSI, il ne peut plus travailler en France. On respecte le client et le
+  périmètre. C'est aussi pourquoi il faut aller doucement avec les agents d'IA : on ne peut pas garantir à
+  100 % qu'ils resteront dans le périmètre.</p></div>
+  <div class="card"><h4>Les bases de données fuitées</h4>
+  <p style="margin-bottom:0">Chercher dans d'anciennes fuites des identifiants encore valides du client
+  suppose de <b>télécharger et héberger</b> une base qui contient des centaines de milliers d'autres
+  personnes : c'est illégal (données personnelles, RGPD), car le contrat ne couvre que le client. L'avis d'un cabinet d'avocats a
+  conclu que c'est possible <b>si c'est bien cadré</b>. Le légal se confie à des juristes.</p></div>
+</div>
+
+<h3 id="ch4-delais">4.5 Le temps joue contre l'enquêteur</h3>
+<p>Les services de messagerie et de visioconférence gardent les fichiers échangés peu de temps (de
+l'ordre d'<b>une semaine</b> pour un service de visioconférence étudié en TP les années précédentes). Or
+l'investigation commence souvent <b>un ou deux mois</b> après les faits : beaucoup de traces ont déjà
+disparu. Et les attaques commencent souvent le vendredi soir : la forensic exige une disponibilité
+permanente, d'où des sociétés spécialisées.</p>
+
+<h3 id="ch4-reponse">4.6 La réponse à incident, dans la vraie vie</h3>
+<div class="grid c2">
+  <div class="card"><h4>Un exercice Red Team qui aurait dû échouer</h4>
+  <ul>
+    <li>Objectif : atteindre la trésorerie d'un grand groupe avec un simple badge de stagiaire.</li>
+    <li>L'équipe est <b>détectée</b> : un client SMB de Linux apparaît dans un parc sans Linux. Mais
+    l'<b>inventaire des commutateurs</b> (quelle prise mène à quel port) n'est pas à jour : la défense met
+    longtemps à localiser la machine dans un immeuble de vingt étages, et l'équipe a le temps de
+    changer de place.</li>
+    <li>Plus tard, un outil réseau classique déclenche l'<b>antivirus</b> sur un serveur de trésorerie.
+    Aucune réaction : la surveillance était sous-traitée à l'étranger et l'alerte n'a jamais été
+    remontée au siège.</li>
+    <li>Sur la trésorerie, les gros virements sont validés par <b>deux personnes</b> (principe des
+    « quatre yeux ») : il faut compromettre les deux.</li>
+  </ul>
+  <p style="margin-bottom:0">La leçon : une détection ne sert à rien sans une <b>chaîne d'alerte</b> qui
+  fonctionne et une <b>documentation à jour</b> (cartographie, matrice des flux).</p></div>
+  <div class="card"><h4>Ce qu'un antivirus détecte</h4>
+  <p>Un outil est signalé comme malveillant dès que les attaquants s'en servent beaucoup, même s'il est
+  utile à la défense : c'est arrivé à des outils réseau classiques et à des outils de recherche
+  d'élévation de privilèges sous Windows. La frontière est « très aléatoire ».</p>
+  <p style="margin-bottom:0"><b>Les outils de l'enquêteur aussi peuvent être piégés.</b> Des preuves de
+  concept publiées pour exploiter une CVE contiennent parfois une porte dérobée qui vise celui qui les
+  lance. Avant d'exécuter un script public : vérifier sa popularité et parcourir son code.</p></div>
+</div>
+<div class="callout warn"><div class="t">La pression des missions sensibles</div>
+Sur un audit classé Secret Défense, un auditeur a disparu le jour de la restitution ; le service de
+renseignement de la défense (DRSD) s'est saisi de l'affaire. C'était un épisode de paranoïa liée à la
+pression : il a perdu son habilitation et sa qualification. La règle : rester calme, ne pas rester seul
+avec ses doutes, en <b>parler à l'équipe</b>.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch5"><span class="num">5.</span> Les compétences de l'enquêteur</h2>
+
+<p>La question posée en cours, avec neuf propositions. Les réponses de l'intervenant :</p>
+<div class="viz">
+  <div class="t">Utile ou non ? — cliquez pour le détail</div>
+  <div class="vz-grid g3">
+    <button class="vz-c k-red"><span class="n">Capitale</span><h5>Communication</h5>
+      <span class="q">Écrite et orale</span>
+      <span class="more"><span class="t">Pourquoi</span>Un profil techniquement impressionnant qui ne sait ni
+      écrire ni parler n'est pas gardé : le client ne voit pas sa valeur. Exemple : un collègue dont chaque
+      rapport demandait deux jours de réécriture.</span></button>
+    <button class="vz-c k-red"><span class="n">Indispensable</span><h5>Confidentialité</h5>
+      <span class="q">Même avec ses collègues</span>
+      <span class="more"><span class="t">Pourquoi</span>On ne cite pas le nom d'un client à qui n'a pas à le
+      connaître. Un salarié qui avait affiché sur un réseau social professionnel son client de la défense et
+      le nom du projet a été retiré de la mission, et n'est plus accepté chez plusieurs clients.</span></button>
+    <button class="vz-c k-red"><span class="n">Indispensable</span><h5>Curiosité</h5>
+      <span class="q">Apprendre tous les jours</span>
+      <span class="more"><span class="t">Pourquoi</span>Le domaine évolue en permanence. Qui n'aime pas
+      apprendre n'est pas au bon endroit.</span></button>
+    <button class="vz-c k-red"><span class="n">Indispensable</span><h5>Technique</h5>
+      <span class="q">Trois briques</span>
+      <span class="more"><span class="t">Lesquelles</span><b>Réseau, sécurité, système.</b> Le
+      <b>développement</b> est une quatrième brique très utile, pas indispensable. Trouver une faille avec
+      une IA sans savoir l'expliquer ni l'exploiter ne fait pas embaucher.</span></button>
+    <button class="vz-c k-amber"><span class="n">Un plus</span><h5>Langues</h5>
+      <span class="q">L'anglais est obligatoire</span>
+      <span class="more"><span class="t">Lesquelles</span>Puis selon le domaine : le russe (ingérence
+      d'État), le coréen (vols de cryptomonnaies), le chinois (espionnage, vols).</span></button>
+    <button class="vz-c k-amber"><span class="n">Un plus</span><h5>Légal</h5>
+      <span class="q">Souvent délégué</span>
+      <span class="more"><span class="t">Pourquoi</span>On ne peut pas être expert partout : un cabinet
+      d'avocats répond aux questions (voir les bases fuitées, §4.4).</span></button>
+    <button class="vz-c k-amber"><span class="n">Cas particuliers</span><h5>Traitement du signal</h5>
+      <span class="q">Radiofréquences</span>
+      <span class="more"><span class="t">Quand</span>Audits de sécurité physique, accès à des réseaux privés
+      par radio : surtout la défense.</span></button>
+    <button class="vz-c k-blue"><span class="n">Non</span><h5>Chimie</h5>
+      <span class="q">Pas notre sujet</span>
+      <span class="more"><span class="t">Sauf</span>De très rares cas.</span></button>
+    <button class="vz-c k-blue"><span class="n">Non</span><h5>Jeux vidéo</h5>
+      <span class="q">Du divertissement</span>
+      <span class="more"><span class="t">Pourquoi</span>Ils peuvent aider certains réflexes, mais ce n'est pas
+      leur but.</span></button>
+  </div>
+  <div class="vz-bar">
+    <button class="btn" data-cards="open">Tout déplier</button>
+    <button class="btn ghost" data-cards="close">Tout replier</button>
+    <span class="cnt"></span>
+  </div>
+</div>
+<p>À la fin du cours, il ajoute : <b>ténacité</b>, <b>rester calme</b> et le <b>sens du détail</b>.</p>
+
+<h3 id="ch5-ia">5.1 L'IA et le coût des expertises</h3>
+<div class="grid c2">
+  <div class="card"><h4>Le coût des expertises judiciaires</h4>
+  <p style="margin-bottom:0">Les expertises informatiques payées au titre des frais de justice ont <b>plus
+  que doublé en cinq ans</b> : de 8 millions d'euros en moyenne sur 2016-2019 à environ 18 millions en
+  2023-2024 (+111 %), signe de la dépendance croissante des enquêtes aux preuves numériques. Côté
+  enquêteurs : la police dispose d'un laboratoire central de criminalité numérique (LCCN) et de sections
+  régionales (SCN) ; la gendarmerie, d'une unité nationale cyber (UNCyber) et d'un centre national
+  d'expertise numérique (CNENUM).</p></div>
+  <div class="card"><h4>L'IA ne remplace pas l'expert</h4>
+  <p style="margin-bottom:0">En justice, le droit impose encore des <b>interprètes humains</b> : les frais
+  de traduction ne seront pas, a priori, remplacés par l'IA. Surtout, l'IA se trompe et ses résultats sont
+  difficiles à <b>auditer</b> : le métier devient de plus en plus de <b>dire si l'outil ou l'IA a raison
+  ou tort</b>.</p></div>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch6"><span class="num">6.</span> Les métiers, le SOC et la Purple Team</h2>
+
+<h3 id="ch6-expertise">6.1 Un métier d'expertise</h3>
+<div class="callout warn"><div class="t">Pas en sortie d'école</div>
+La forensic, comme le pentest, est un <b>métier d'expertise</b> : on ne l'exerce pas sans plusieurs
+années d'expérience en cybersécurité, sinon on risque de se dégoûter et de causer des problèmes. Pour y
+arriver : commencer par l'<b>audit</b>, le <b>défensif</b>, et avoir connu la <b>production</b> (des
+pentesters juniors font tomber la production faute d'en mesurer l'importance). Un « expert junior » ne
+veut rien dire.
+</div>
+
+<div class="grid c2">
+  <div class="card"><h4>Les trois niveaux d'un SOC</h4>
+  <ul>
+    <li><b>Niveau 1 (N1)</b> : applique des procédures et qualifie les alertes ; de plus en plus remplacé par
+    l'IA.</li>
+    <li><b>Niveau 2 (N2)</b> : premières investigations, sur un périmètre restreint. L'essentiel du temps : éliminer
+    les <b>faux positifs</b> (deux vraies attaques en deux ans pour l'intervenant).</li>
+    <li><b>Niveau 3 (N3)</b> : les experts, quand « ça ne sent pas bon » : ils mènent l'investigation.</li>
+  </ul>
+  <p style="margin-bottom:0">Le SOC (autrefois intégré au <b>NOC</b>, centre d'exploitation réseau) est un
+  bon endroit pour une première expérience technique variée.</p></div>
+  <div class="card"><h4>Qui recrute en forensic</h4>
+  <ul>
+    <li>Les <b>forces de l'ordre</b> : police, gendarmerie, armées, renseignement.</li>
+    <li>Les <b>cabinets d'audit</b>, notamment les quatre plus grands, les <b>Big Four</b> (Deloitte, EY, KPMG, PwC), venus de
+    l'audit financier.</li>
+    <li>Les <b>grandes entreprises</b> (EDF, SNCF, banques, assurances), de plus en plus avec des
+    équipes internes à plein temps.</li>
+    <li>Les <b>experts judiciaires</b> en informatique, à la moyenne d'âge élevée.</li>
+  </ul>
+  <p style="margin-bottom:0">Peu de postes à plein temps en France, sauf à l'<b>ANSSI</b>, qui a même une
+  équipe de rétro-ingénierie (<b>RE</b>, reverse engineering) séparée de l'équipe forensique. Beaucoup font d'autres audits en
+  parallèle.</p></div>
+</div>
+<div class="callout"><div class="t">PASSI et LPM</div>
+L'intervenant travaille dans une société qualifiée <b>PASSI LPM</b>. Le PASSI (prestataire d'audit de la
+sécurité des SI) est une qualification de l'ANSSI ; sa déclinaison <b>LPM</b> (loi de programmation
+militaire) couvre les audits des <b>OIV</b>, opérateurs d'importance vitale, et exige des auditeurs
+habilités. Peu de sociétés l'ont, ce qui concentre ces audits.
+</div>
+<p>Les intitulés se multiplient (consultant, analyste forensique, expert cloud, chercheur antivirus,
+« security ninja », analyste en réponse à incident…) et veulent souvent tout et rien dire (relevés dans la revue spécialisée MISC). La
+<b>rétro-ingénierie</b> reste un métier à part, surtout chez les éditeurs d'antivirus et quelques sociétés
+spécialisées (Synacktiv, par exemple).</p>
+
+<h3 id="ch6-siem">6.2 SIEM, alertes et Purple Team</h3>
+<div class="grid c2">
+  <div class="card"><h4>L'« usine à gaz » moderne</h4>
+  <p style="margin-bottom:0">Chez les gros clients, une chaîne collecte tout : systèmes, disques (y compris
+  endommagés), cloud, machines virtuelles, partages. Les étapes : <b>saisie</b> → <b>acquisition</b>
+  (imagerie) → <b>analyse</b> (extraction, indexation, empreintes, recherche) → <b>revue</b>. Le
+  <b>SIEM</b> agrège et <b>corrèle</b> : deux journaux d'outils différents, rapprochés automatiquement,
+  révèlent ce qu'aucun ne montre seul. Le problème : beaucoup trop d'alertes, qu'il faut concevoir pour
+  qu'elles ne sonnent que sur de vraies attaques.</p></div>
+  <div class="card"><h4>La Purple Team, par l'exemple</h4>
+  <p style="margin-bottom:0">Dans un <b>SOC mutualisé</b> (plusieurs clients), une alerte de force brute
+  sur un poste Windows sonnait au bout de <b>10</b> échecs ; or le compte se verrouillait au bout de
+  <b>5</b>. L'alerte ne sonnait jamais. Quelqu'un qui connaît l'attaque et la défense le voit tout de
+  suite : c'est le rôle de la <b>Purple Team</b> (Red Team qui attaque + Blue Team qui défend). On génère
+  aujourd'hui par IA des cas d'attaque pour vérifier que tout est détecté.</p></div>
+</div>
+<p><b>Et demain ?</b> Probablement une grande IA qui agrège les événements et fait ressortir les pics
+anormaux ; à l'humain de dire si chacun est vrai ou faux.</p>
+
+<!-- ===================================================================== -->
+<h2 id="ch7"><span class="num">7.</span> Histoire et programme du cours</h2>
+
+<h3 id="ch7-histoire">7.1 Une discipline née aux États-Unis</h3>
+<div class="steps">
+  <div class="step"><b>Années 1980</b><br>L'ordinateur personnel arrive ; avec lui les premiers forums de
+  pirates et les groupes de hackers. Le Congrès américain vote une loi contre la fraude informatique en
+  1986.</div>
+  <div class="step"><b>1984 — le FBI</b><br>Son programme sur les supports magnétiques devient la
+  <b>CART</b> (Computer Analysis and Response Team), chargée des examens informatiques.</div>
+  <div class="step"><b>1984 — le NCMEC</b><br>Le <b>National Center for Missing and Exploited
+  Children</b> est créé : la pédocriminalité explose avec l'informatique, et la lutte contre elle fait
+  naître la forensic informatique.</div>
+  <div class="step"><b>1989 — Interpol à Lyon</b><br>Le secrétariat général d'Interpol, coordination entre
+  polices, s'installe à Lyon ; son équipe de réponse à incident est très tournée vers la forensic. D'où
+  l'idée, fausse, que la discipline viendrait de France.</div>
+  <div class="step"><b>Aujourd'hui</b><br>La France a suivi les Américains. Elle peut compter sur
+  l'<b>ANSSI</b>, l'une des agences les plus compétentes au monde.</div>
+</div>
+
+<h3 id="ch7-programme">7.2 Le programme des trois jours</h3>
+<div class="phase-band">
+  <div class="p1"><b>Jour 1</b>Introduction aux techniques forensics ; problématiques techniques et
+  légales ; ce qu'est un rapport forensic.</div>
+  <div class="p2"><b>Jour 2</b>Collecte et préservation des traces (statique, dynamique) ; forensic
+  Windows, Mac et Linux.</div>
+  <div class="p3"><b>Jour 3</b>Forensic réseau et terminaux mobiles ; étude de cas.</div>
+</div>
+<p>Le syllabus fixe les acquis visés : <b>réaliser l'analyse post-mortem</b> de l'attaque d'un système,
+et <b>intégrer les contraintes légales, techniques et rédactionnelles</b> de cette activité. Ses
+chapitres : introduction, problématiques techniques et légales, contraintes légales, collecte et
+préservation des traces statiques et dynamiques, analyse et audit d'une attaque, rédaction de rapports
+d'expertise, étude de cas.</p>
+<p>Outils fournis pour les TP : Volatility (analyse de la mémoire), EvtxExplorer et evtx_dump (journaux
+Windows), Registry Explorer, RECmd et Windows Registry Recovery (registre), USB Forensic Tracker,
+Chainsaw (recherche rapide dans les journaux), Wireshark (réseau).</p>
+
+<!-- ===================================================================== -->
+<h2 id="ch8"><span class="num">8.</span> Le rapport forensic</h2>
+
+<div class="exam"><div class="t">Ce que l'intervenant retient lui-même</div>
+« Il y a plusieurs phases : un résumé exécutif, une partie pour les techniques ; le technique technique,
+on le met en annexe. Et <b>le plus important dans un rapport forensic, c'est d'avoir une frise
+chronologique</b> qui permet d'expliquer ce qui s'est passé, compréhensible par quelqu'un de non
+technique. » Il commence chaque mission par là : <b>savoir ce qu'il doit mettre dans le rapport</b>
+dirige tout le reste.
+</div>
+
+<p>Les rapports forensic et de pentest sont confidentiels. Pour en montrer, trois solutions : des
+rapports anciens sans plus de lien contractuel, un rapport anonymisé (long à faire), un rapport qui a
+fuité publiquement. Ce chapitre suit les trois exemples étudiés en cours.</p>
+
+<h3 id="ch8-plan">8.1 La structure d'un bon rapport</h3>
+<div class="steps">
+  <div class="step"><b>1. L'en-tête</b><br>La <b>classification</b> du document, les <b>auteurs</b> avec
+  leur rôle et leurs coordonnées, les <b>destinataires</b> (DSI, RSSI…), le responsable du contrat.</div>
+  <div class="step"><b>2. La synthèse pour la direction</b> (executive summary) <span class="who">en tête</span><br>Le plus dur
+  à écrire : synthétiser et vulgariser pour quelqu'un qui ne comprend rien au technique. La direction
+  lit cette partie et s'arrête là. Ce qu'elle veut : <b>combien ça va coûter</b> et <b>comment faire pour
+  que ça ne se reproduise pas</b>. Beaucoup de rapports la mettent à la fin : « une question de
+  religion », mais en tête c'est plus utile.</div>
+  <div class="step"><b>3. Le contexte</b><br>Pourquoi on intervient, la date et le <b>lieu</b> (il n'est pas
+  toujours évident de savoir où les faits se sont produits), le rappel des faits.</div>
+  <div class="step"><b>4. L'architecture</b><br>Un schéma pour comprendre l'ensemble, comme en
+  pentest.</div>
+  <div class="step"><b>5. La frise chronologique (timeline) et le scénario d'attaque</b><br>Ce qui s'est passé, dans
+  l'ordre, compréhensible par un non-technicien.</div>
+  <div class="step"><b>6. L'analyse technique</b><br>Comptes, flux ouverts, services lancés, fichiers,
+  binaires : ce qu'on regardait en 2010 et qu'on regarde toujours.</div>
+  <div class="step"><b>7. Risques et impacts</b><br>Sur l'entreprise, les utilisateurs, les
+  machines.</div>
+  <div class="step"><b>8. Le plan d'action</b><br>Tout de suite, à court terme, à moyen et long terme
+  (§8.2).</div>
+  <div class="step"><b>9. Les annexes</b><br>Les <b>empreintes (hash)</b> des fichiers, indispensables pour
+  la traçabilité mais lourdes dans le corps du texte, et les détails techniques.</div>
+</div>
+
+<div class="grid c2">
+  <div class="card"><h4>Les niveaux de classification</h4>
+  <ul>
+    <li><b>Public</b>.</li>
+    <li><b>Confidentiel interne</b> à l'entreprise.</li>
+    <li><b>Confidentiel client</b> : entre le prestataire et son client.</li>
+    <li>Côté défense : <b>Diffusion Restreinte (DR)</b>, puis <b>Secret</b> et <b>Très Secret</b>, dont la
+    fuite a des <b>conséquences pénales</b> ; des procédures encadrent leur manipulation.</li>
+  </ul></div>
+  <div class="card"><h4>Les règles d'écriture</h4>
+  <ul>
+    <li><b>Des faits.</b> Pas de trace ? On le dit : « j'ai analysé ceci et cela, je ne peux pas dire ce
+    qui s'est passé ».</li>
+    <li><b>Décrire comment on a fait</b>, pour qu'un <b>contre-audit</b> (un auditeur qui repasse derrière,
+    parce que le client conteste ou veut vérifier) retrouve le chemin. Certains grands cabinets ne donnent
+    qu'un statut, sans la méthode.</li>
+    <li><b>Pas de secret en clair</b> (mots de passe, données personnelles), sauf pour faire passer un
+    message : un mot de passe cassé en 8 minutes, « ce n'est pas un mot de passe ».</li>
+    <li>Nommer les serveurs par leur <b>nom</b> plutôt que leur adresse IP, plus parlante, sauf si le client
+    préfère l'inverse.</li>
+    <li>Les <b>liens</b> de remédiation : uniquement des sources officielles (ANSSI…), ou toute source
+    technique utile à l'équipe qui corrige. L'intervenant est de la seconde école.</li>
+  </ul></div>
+</div>
+
+<div class="callout"><div class="t">Pourquoi on commande un rapport</div>
+Très souvent pour une raison <b>financière</b> : prouver à l'<b>assurance</b> que l'incident n'est pas trop
+la faute de l'entreprise, ou contester une facture. Et parfois pour engager des suites : quand des
+millions sont partis, il faut des responsables, et l'affaire peut finir aux prud'hommes.
+</div>
+
+<h3 id="ch8-plan-action">8.2 Le plan d'action et la remédiation</h3>
+<div class="grid c2">
+  <div class="card"><h4>Prioriser</h4>
+  <p>Deux critères : la <b>facilité</b> de la correction et son <b>importance</b>.</p>
+  <ul style="margin-bottom:0">
+    <li>Facile : on le fait tout de suite, c'est le <b>gain rapide</b> (quick win).</li>
+    <li>Difficile mais important : on le priorise quand même.</li>
+    <li>Difficile et peu important : on le repousse.</li>
+  </ul></div>
+  <div class="card"><h4>Les erreurs à ne pas faire</h4>
+  <ul style="margin-bottom:0">
+    <li><b>Réinstaller tout de suite</b> une machine compromise : elle n'est plus compromise, mais toutes les
+    traces sont détruites. La bonne pratique : la <b>débrancher</b>, l'<b>analyser</b>, puis la réinstaller,
+    et si possible <b>en garder une copie</b> pour une éventuelle contestation en justice ou une nouvelle
+    enquête.</li>
+    <li><b>« Nettoyer »</b> une machine compromise avec les droits root (ou un domaine compromis au niveau
+    Domain Admin) : impossible d'être sûr d'avoir retiré toutes les portes dérobées, d'autant qu'un
+    <b>rootkit</b> peut masquer leur présence aux outils du système (des détecteurs comme chkrootkit
+    existent, sans garantie). On <b>réinstalle de
+    zéro</b>.</li>
+  </ul></div>
+</div>
+<div class="key-points">
+  <li><b>Mots de passe</b> : ce qui compte, c'est l'<b>entropie</b>, et ce qui l'augmente le plus, c'est la
+  <b>longueur</b>. Les règles de complexité (majuscule, chiffre, caractère spécial) produisent des motifs
+  prévisibles : le NIST les a abandonnées, l'ANSSI a suivi. On recommande une <b>phrase de passe</b>.</li>
+  <li><b>Installer une machine neuve sur un réseau isolé</b> : sur un réseau déjà compromis, des programmes
+  testent en permanence les mots de passe par défaut, et les quelques minutes d'installation suffisent.</li>
+  <li><b>Réduire la surface d'attaque</b> : exposer le moins de services possible, jamais sans
+  authentification ; un objet connecté se met derrière un VPN, pas directement sur Internet.</li>
+  <li><b>Les systèmes en fin de support</b> (end of life, <b>EOL</b>) ne reçoivent plus de correctifs : ce sont eux qui
+  causent les plus gros piratages.</li>
+  <li><b>Envoyer les journaux en temps réel</b> (Syslog vers le SIEM) : même si l'attaquant efface les
+  journaux locaux trois secondes après son arrivée, sa connexion est déjà partie.</li>
+</div>
+
+<h3 id="ch8-cas2010">8.3 Exemple 1 : une intrusion par un réseau d'opérateur (2010)</h3>
+<p>Un équipementier automobile reçoit une très grosse facture de son opérateur : un réseau de données
+facturé au volume (X.25, ancêtre d'un VPN d'opérateur) a été saturé. Il commande un rapport pour
+prouver que ce n'est pas sa faute.</p>
+<div class="grid c2">
+  <div class="card"><h4>Ce que l'enquête établit</h4>
+  <ul style="margin-bottom:0">
+    <li>Elle commence <b>près de cinq mois</b> après les faits : beaucoup de traces ont disparu.</li>
+    <li>Le rapport rappelle l'architecture : liaisons entre sites (WAN), DMZ, réseau des utilisateurs
+    (LAN), progiciel de gestion SAP ; le serveur touché tournait sous Solaris.</li>
+    <li>Le serveur était relié à ce réseau <b>sans pare-feu</b>, avec un <b>identifiant générique par
+    défaut</b> : c'est très probablement l'entrée. (En 2026, l'intervenant est encore entré chez un grand
+    laboratoire de cette façon.)</li>
+    <li>Les attaquants ont laissé un accès dérobé lancé au démarrage, des fichiers aux noms trompeurs et
+    des traces d'effacement des journaux, qui sont <b>en elles-mêmes</b> un signal (l'effacement des
+    traces est la dernière étape de la Cyber Kill Chain, vue plus loin dans le cours).</li>
+    <li>Le serveur servait de <b>rebond</b> pour attaquer d'autres clients du réseau, plus intéressants :
+    l'entreprise devient juridiquement responsable de ce qui part de chez elle.</li>
+  </ul></div>
+  <div class="card"><h4>Conclusion et leçons</h4>
+  <ul style="margin-bottom:0">
+    <li>Réponse au client : c'était à lui de sécuriser son réseau ; la facture reste due.</li>
+    <li>Premier réflexe sur une machine suspecte : <b>ce qui se lance au démarrage</b>, emplacement favori
+    de la persistance.</li>
+    <li>Les <b>historiques de commandes</b> du shell (<code>.bash_history</code>) sont une mine d'or pour
+    l'enquêteur.</li>
+    <li>Un rapport de ce type peut finir en recommandations classiques : matrice des flux, filtrage,
+    durcissement, journalisation, mises à jour.</li>
+    <li>Vocabulaire : l'intervenant préfère « logiciel <b>malfaisant</b> » : un programme n'a pas
+    d'intention, il exécute des instructions.</li>
+  </ul></div>
+</div>
+
+<h3 id="ch8-cas2016">8.4 Exemple 2 : une alerte EDR (2016)</h3>
+<div class="steps">
+  <div class="step"><b>L'alerte</b> <span class="who">appui externe</span><br>L'expert interne du client (certifié CISSP) est débordé et appelle un
+  prestataire en renfort. Un outil de détection sur les postes (FireEye HX, l'ancêtre des <b>EDR</b>,
+  comportemental et non par signature) signale deux postes, avec trois marqueurs possibles :
+  <b>présence</b> d'un fichier dangereux, <b>exécution</b>, <b>exploitation</b>. Il attribue aussi
+  automatiquement l'attaque à un groupe de hackers connu. Le client s'inquiète.</div>
+  <div class="step"><b>Les premières mesures</b><br>Le <b>confinement</b> : d'un clic, tous les flux du poste
+  sont coupés sauf le lien avec la console. L'outil permet aussi de récupérer des éléments à distance,
+  sans attendre le transport du disque.</div>
+  <div class="step"><b>Comprendre qui est touché</b><br>Les <b>groupes Active Directory (AD)</b> du compte
+  révèlent son métier (ici un ingénieur de conception), en pentest comme en forensic.</div>
+  <div class="step"><b>Remonter à l'origine</b><br>Le programme vient d'un lecteur <code>X:</code> : une clé
+  USB ou un <b>partage réseau</b>. Ici, un partage réseau. Le premier fichier trouvé est le <b>patient
+  zéro</b> ; on ne peut pas remonter plus haut, d'autant que ce partage dépend d'une filiale en conflit
+  avec le siège : la politique bloque souvent l'enquête.</div>
+  <div class="step"><b>Comprendre l'échec de l'attaque</b><br>Antivirus qui bloque une partie, compte sans
+  droits d'administration, programme mal adapté à la version de Windows, serveur de commande déjà
+  éteint (serveur C2, de commande et de contrôle). Pour voir le comportement réel, on le rejoue dans une machine virtuelle avec la version de
+  Windows pour laquelle il a été écrit.</div>
+  <div class="step"><b>Vérifier l'outil</b><br>L'outil n'avait signalé que la présence sur un poste ;
+  l'enquête montre qu'il y a eu exécution sur les deux. Une migration de SIEM en cours (de RSA enVision vers Splunk) dispersait
+  aussi les alertes entre deux systèmes : il y a toujours une migration en cours. La frise a été reconstituée
+  avec Redline, l'outil d'analyse de Mandiant.</div>
+  <div class="step"><b>Conclure</b><br>Probablement <b>pas</b> le groupe annoncé : le programme est connu,
+  ancien (2012 pour une enquête en 2016), non ciblé ; un groupe qui mène des attaques ciblées (APT, menace
+  persistante avancée) utilise des outils inconnus. L'attribution automatique reposait sur trop peu de critères.</div>
+</div>
+<div class="key-points">
+  <li><b>Un compte n'est pas une personne</b> : « tel compte, associé à telle personne, a exécuté tel
+  programme à telle heure ». On ne sait pas qui était derrière le clavier.</li>
+  <li>Recommandations : désactiver l'exécution automatique des supports amovibles, signaler les fichiers à
+  l'éditeur pour qu'il les détecte, sensibiliser, et <b>réinstaller le poste en gardant une copie</b>.</li>
+</div>
+
+<h3 id="ch8-cas2019">8.5 Exemple 3 : le téléphone d'un dirigeant (rapport publié en 2019)</h3>
+<p>Un rapport d'expertise devenu public sur le smartphone d'un grand patron américain, dans un contexte
+géopolitique lourd. L'appareil aurait été compromis après la réception d'une vidéo par une messagerie
+chiffrée.</p>
+<div class="grid c2">
+  <div class="card"><h4>La méthode</h4>
+  <ul style="margin-bottom:0">
+    <li>Un <b>laboratoire isolé</b> et surveillé, sans accès à Internet, pour l'acquisition et l'analyse.</li>
+    <li>Une <b>acquisition</b> du téléphone avec un outil spécialisé, l'<b>empreinte</b> de l'image
+    obtenue, puis l'analyse de l'image.</li>
+    <li>L'analyse du <b>trafic réseau</b> : le téléphone passe par un routeur Wi-Fi dédié, le trafic est
+    capturé (Wireshark) et inspecté par un proxy (Fiddler).</li>
+    <li>Le tri des <b>indicateurs de compromission</b> (IOC) : environ 1 290 URL et 378 domaines contactés,
+    192 indicateurs à vérifier… tous des faux positifs.</li>
+    <li>Beaucoup de <b>grep</b> : souvent, ça suffit.</li>
+  </ul></div>
+  <div class="card"><h4>Ce qu'on en retient</h4>
+  <ul style="margin-bottom:0">
+    <li>Le signal le plus fort : un bond du <b>volume de données sortant</b> (de l'ordre de +29 000 %) après
+    la réception du fichier, comparé à des téléphones témoins.</li>
+    <li>L'absence de trafic malveillant visible <b>ne prouve pas</b> l'absence de compromission.</li>
+    <li>Le fichier hébergé par la messagerie n'était plus téléchargeable : ces liens <b>expirent</b>.</li>
+    <li>Conclusion « avec une confiance moyenne à élevée », enquête inachevée. Le rapport est peu
+    digeste, sans vrai plan ; le prestataire a été choisi par relations plutôt que pour sa compétence.</li>
+    <li>Le contexte : les <b>logiciels espions commerciaux</b> vendus à des États (Pegasus, Predator), qui
+    visent journalistes, militants et responsables politiques.</li>
+  </ul></div>
+</div>
+
+<h3 id="ch8-supply">8.6 Bonus : une attaque par la chaîne d'approvisionnement</h3>
+<p>L'attaque contre <b>SolarWinds</b>, éditeur d'un logiciel de supervision réseau très répandu (Orion),
+analysée notamment par Kaspersky : les attaquants ont compromis la <b>chaîne de compilation</b> de
+l'éditeur, si bien que des clients ont installé une <b>mise à jour légitime</b> contenant leur code. La
+préparation a duré <b>environ neuf mois</b> (premières traces en août 2019, mise à jour piégée en
+mars 2020), avec un soin extrême de la discrétion. Pour l'enquêteur, les registres publics de
+certificats (<b>Certificate Transparency</b>) permettent de dater l'infrastructure créée par les
+attaquants. Certaines attaques d'État servent aussi à tester la réaction adverse, comme la coupure de la
+chaîne TV5 Monde.</p>
+
+<!-- ===================================================================== -->
+<h2 id="ch9"><span class="num">9.</span> S'entraîner : questions ouvertes</h2>
+
+<p>L'examen comporte quelques questions ouvertes. Formulez votre réponse, puis dépliez.</p>
+
+<details class="case"><summary>Cas 1 — Justice ou entreprise ?<span class="sit">Une entreprise victime d'un rançongiciel vous mandate. Le directeur veut surtout savoir « qui a fait ça ». Que lui répondez-vous, et sur quoi concentrez-vous l'enquête ?</span></summary>
+<div><p>En entreprise, l'objectif est de comprendre <b>ce qui s'est passé et pourquoi c'était
+possible</b>, pour que ça ne se reproduise pas : le moyen, l'opportunité (les failles exploitées), le
+chemin d'attaque. L'<b>attribution</b> est très difficile et apporte peu : le profil de la cible donne
+souvent une idée du commanditaire. On l'explique au directeur, et l'on concentre l'enquête sur le chemin
+d'attaque et sa remédiation.</p></div></details>
+
+<details class="case"><summary>Cas 2 — Où chercher l'historique ?<span class="sit">On vous demande de prouver qu'un salarié a consulté un site. Le navigateur du poste ne garde aucun historique local et le trafic de l'entreprise est chiffré.</span></summary>
+<div><p>Pistes : le <b>proxy</b> ou l'équipement qui casse le TLS, s'il existe (charte informatique) ; à
+défaut, les requêtes <b>DNS</b> et les domaines visibles dans une capture ; un <b>dump mémoire</b> pris
+au bon moment (par un EDR) ; le <b>partage réseau</b> qui héberge le profil de l'utilisateur ; son
+<b>smartphone</b> s'il a utilisé le même compte ; les autres traces de navigation (cache, téléchargements,
+cookies).</p></div></details>
+
+<details class="case"><summary>Cas 3 — Une fuite de documents<span class="sit">Le SIEM signale qu'un compte a consulté en masse des documents sensibles sur l'intranet. On vous confie le portable. Comment procédez-vous ?</span></summary>
+<div><p>Préserver : <b>cloner le disque</b> et travailler sur la copie. Partir de l'indice : corréler
+l'alerte avec l'<b>historique du navigateur</b> (les documents ont-ils été téléchargés ?). Puis chercher
+s'ils ont <b>quitté le poste</b> : clés USB branchées (registre, journaux), raccourcis LNK et caches de
+documents récents montrant une copie vers une autre lettre de lecteur, synchronisation cloud, envoi par
+e-mail. Le rapport ne contient que des <b>faits datés</b> : qui, quand, quoi, d'où vers où.</p></div></details>
+
+<details class="case"><summary>Cas 4 — Le binaire inconnu<span class="sit">Sur un serveur compromis, vous trouvez un exécutable inconnu. Votre collègue propose de l'envoyer tout de suite à l'équipe de rétro-ingénierie.</span></summary>
+<div><p>D'abord les vérifications de base : calculer son <b>empreinte</b> (hash) et la comparer à des bases
+de binaires connus ; regarder son nom, son emplacement, ses traces d'exécution. C'est peut-être un outil
+légitime détourné. Les équipes de rétro-ingénierie sont rares et débordées : on ne les sollicite que si
+c'est nécessaire.</p></div></details>
+
+<details class="case"><summary>Cas 5 — L'alerte qui ne sonne jamais<span class="sit">Un SOC a une règle « force brute : alerte après 15 échecs de connexion ». La politique des postes verrouille les comptes après 5 échecs.</span></summary>
+<div><p>L'alerte ne peut jamais se déclencher : un attaquant est bloqué avant le seuil. C'est un point mort
+de détection. Il faut abaisser le seuil sous le verrouillage, ou détecter plutôt les verrouillages et les
+échecs répartis sur plusieurs comptes. C'est le regard <b>Purple Team</b> : connaître l'attaque pour
+juger la défense.</p></div></details>
+
+<details class="case"><summary>Cas 6 — La photo publiée<span class="sit">Un enquêteur dispose d'une photo prise par un suspect avec son téléphone. Que peut-elle apprendre, au-delà de son contenu ?</span></summary>
+<div><p>Ses <b>métadonnées EXIF</b> : fabricant et modèle de l'appareil, version du logiciel, date et heure
+de prise de vue, et si la géolocalisation était active, latitude, longitude et altitude. Le contenu
+lui-même peut être exploité en OSINT (lieux, véhicules, enseignes). Il faut toutefois vérifier que la
+preuve n'a pas été modifiée.</p></div></details>
+
+
+<details class="case"><summary>Cas 7 — Réinstaller tout de suite ?<span class="sit">Un serveur vient d'être compromis. L'administrateur veut le formater et le réinstaller immédiatement « pour être tranquille ».</span></summary>
+<div><p>Réinstaller élimine la menace mais <b>détruit toutes les traces</b>. Il faut d'abord <b>isoler</b>
+la machine du réseau, l'<b>analyser</b> (copie du disque, et de la mémoire si possible), puis la
+réinstaller de zéro, et si possible <b>garder une copie</b> pour une contestation ou une nouvelle enquête.
+Si l'attaquant avait les droits les plus élevés, on ne tente pas de « nettoyer » : on réinstalle.</p></div></details>
+
+<details class="case"><summary>Cas 8 — Rédiger la synthèse<span class="sit">Vous terminez une enquête technique très riche. Le directeur général lira seulement la première page. Qu'y mettez-vous ?</span></summary>
+<div><p>Une synthèse en mots simples : ce qui s'est passé, résumé par la <b>frise chronologique</b> ; ce que
+ça a coûté ou peut coûter ; si l'attaque est terminée ; et <b>quoi faire pour que ça ne se reproduise
+pas</b>, avec les priorités (gains rapides d'abord). Les détails techniques, les empreintes et les
+commandes vont dans la partie technique et les annexes.</p></div></details>
+
+<details class="case"><summary>Cas 9 — L'outil a attribué l'attaque<span class="sit">L'EDR du client affirme qu'un poste a été attaqué par un groupe d'État connu. Le client panique.</span></summary>
+<div><p>Vérifier sur quoi repose l'attribution : souvent très peu de critères. Confronter avec les faits :
+le programme est-il connu, ancien, adapté à la cible ? Un groupe qui mène des attaques ciblées utilise
+des outils inconnus et adaptés. Conclure avec prudence, par exemple « il n'est pas possible d'affirmer
+ou d'infirmer ; c'est peu probable parce que… ».</p></div></details>
+
+<!-- ===================================================================== -->
+<h2 id="qcm-sec"><span class="num">10.</span> QCM — <span id="count-badge" class="badge acc"></span></h2>
+<p><b>Une seule bonne réponse par question</b>, ordre tiré au hasard, correction expliquée. Les
+chapitres suivent ceux de la fiche.</p>
+<div id="qcm"></div>
+
+  </main>
+</div>
+
+<button id="top" title="Haut de page">↑</button>
+<script src="qcm.js?v=3"></script>
+<script src="../assets/app.js?v=35"></script>
+<script>initQCM(window.QCM_DATA, window.QCM_CHAPTERS, 'inf5051');</script>
+</body>
+</html>

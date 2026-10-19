@@ -25,12 +25,37 @@
 window.CATALOGUE = [
 
 {
+  code: "INF5051",
+  titre: "Investigation numérique (forensic)",
+  dossier: "inf5051-forensic",
+  sources: "../Forensic",
+  etat: "en cours",
+  couleur: "red",
+  resume: "Comprendre ce qui s'est passé à partir des traces : la justice veut des preuves, l'entreprise veut fermer le chemin d'attaque.",
+  programme: [
+    "Définition, moyen, opportunité, motivation",
+    "Justice ou entreprise, attribution",
+    "Les types de preuves numériques",
+    "Les traces Windows (poster SANS)",
+    "Retours d'expérience",
+    "Compétences, métiers, SOC et Purple Team",
+    "Histoire de la discipline",
+    "Le rapport forensic : structure, plan d'action, trois exemples"
+  ],
+  ressources: [
+    { type: "fiche", page: "fiche.html", titre: "Fiche de révision",
+      desc: "Jour 1 au matin : introduction et rapports forensic (support, deux transcriptions, deux rapports réels), 9 questions ouvertes",
+      qcm: { src: "qcm.js", cle: "inf5051" } }
+  ]
+},
+
+{
   code: "INF5049",
   titre: "Contrôle et audit en cybersécurité",
   dossier: "inf5049-controle-audit",
   sources: "../Contrôle et audit",
   exclure: ["TP2_Infrastructure_et_outils*", "guide_compilation_*", "problème_OpenVAS*", "Documentation_Compilation_*", "Rapport_Partie*", "TP3 - *", "TP3_Rapport_*", "TP3_Notes_*", "TP3_Audit_*", "TP3_Demo_*", "msf_*", "etc_*", "gvm_feeds*", "IMG_*"],
-  etat: "en cours",
+  etat: "terminé",
   couleur: "purple",
   resume: "Organiser, mener et restituer une mission d'évaluation : la technique n'en est qu'une partie.",
   programme: [
