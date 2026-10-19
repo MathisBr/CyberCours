@@ -1,6 +1,6 @@
 /* Généré par tools/generer.py : ne pas modifier à la main. */
 window.QCM_COMPTES = {
- "inf5051-forensic/qcm.js": 68,
+ "inf5051-forensic/qcm.js": 100,
  "inf5049-controle-audit/qcm.js": 126,
  "ent5003-methodologie/qcm.js": 202,
  "ent5003-methodologie/qcm-ebios-rm.js": 110,

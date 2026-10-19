@@ -32,9 +32,10 @@ fil à partir d'un premier indice.
 
 <div class="callout"><div class="t">État de la fiche</div>
 Construite sur le syllabus, les supports du jour 1 au matin (introduction, 51 diapositives ; un rapport
-forensic réel de 2016 ; un rapport d'expertise publié en 2019) et les deux transcriptions de cette
-matinée. Les chapitres suivants du cours (problématiques légales, collecte et
-préservation, forensic Windows, Mac et Linux, réseau et mobiles, étude de cas) s'ajouteront au fil des
+forensic réel de 2016 ; un rapport d'expertise publié en 2019), le support du jour 1 après-midi
+(problématiques techniques et légales), les quatre transcriptions du jour 1 et la correction du TP de
+l'après-midi. Les chapitres suivants du
+cours (collecte et préservation, forensic Windows, Mac et Linux, réseau et mobiles, étude de cas) s'ajouteront au fil des
 supports. Les archives de TP déjà fournies ne contiennent que des données à analyser (image disque,
 image mémoire, captures réseau, journaux) : leurs énoncés viendront avec les supports.
 </div>
@@ -90,6 +91,8 @@ image mémoire, captures réseau, journaux) : leurs énoncés viendront avec les
 </tbody></table></div>
 
 <div class="callout warn"><div class="t">Les phrases soulignées en cours</div>
+<p>Toutes les citations, chacune avec la réponse attendue : <a href="points-examen.html"><b>ce que le prof a
+signalé</b></a>.</p>
 <ul style="margin-bottom:0">
   <li>« La communication, c'est <b>CAPITAL</b>, majuscule avec point d'exclamation. » Un profil brillant
   qui ne sait ni écrire ni parler n'est pas gardé.</li>
@@ -106,6 +109,11 @@ image mémoire, captures réseau, journaux) : leurs énoncés viendront avec les
   (§8).</li>
   <li>Premier réflexe sur une machine suspecte : <b>regarder ce qui se lance au démarrage</b>.</li>
   <li>« En forensic, on traite des 1 et des 0 : on ne sait pas <b>qui est derrière le clavier</b>. »</li>
+  <li>« Dans la vraie vie, <b>il faut savoir le faire à la main</b> » : l'outil automatique (Autopsy) peut se
+  tromper, et le métier consiste à vérifier ce que disent l'outil ou l'IA (§10).</li>
+  <li>À la question « c'est une question du partiel ? », il répond : « <b>j'ai un ordre d'idées de ce que
+  je vais demander</b> », puis enchaîne son récapitulatif (§9) : connectiques, RAID, anonymat, OSINT,
+  cybercrime, matriciel et vectoriel (« ça, vous devez le connaître »), magic number.</li>
 </ul>
 </div>
 
@@ -926,7 +934,280 @@ attaquants. Certaines attaques d'État servent aussi à tester la réaction adve
 chaîne TV5 Monde.</p>
 
 <!-- ===================================================================== -->
-<h2 id="ch9"><span class="num">9.</span> S'entraîner : questions ouvertes</h2>
+<h2 id="ch9"><span class="num">9.</span> Problématiques techniques et légales</h2>
+
+<div class="exam"><div class="t">Le récapitulatif de fin de séance, avec ses réponses</div>
+<ul style="margin-bottom:0">
+  <li><b>Connectiques de disque</b> : SATA, NVMe, IDE, SCSI, et des disques en <b>PCIe</b>.</li>
+  <li><b>Ports qui donnent accès à la mémoire</b> : FireWire, Thunderbolt (accès direct à la mémoire,
+  DMA).</li>
+  <li><b>RAID 0</b> : pas de redondance ; <b>RAID 1</b> : miroir ; <b>RAID 5</b> : bandes avec parité.</li>
+  <li><b>Ne pas laisser de traces sur Internet</b> : ne pas y aller, ou un pseudonyme unique.</li>
+  <li><b>Où chercher en OSINT</b> : partout (réseaux sociaux, LinkedIn, GitHub, anciens élèves…).</li>
+  <li><b>Reconnaissance passive</b> : sans toucher la cible ; <b>active</b> : en l'interrogeant.</li>
+  <li><b>Matriciel ou vectoriel</b> : « ça, vous devez le connaître ».</li>
+  <li><b>Magic number</b> : l'identifiant du format au début d'un fichier.</li>
+</ul>
+</div>
+
+<h3 id="ch9-materiel">9.1 Le matériel et l'acquisition</h3>
+<p>Il faut savoir reconnaître le matériel (un Mac à processeur Intel peut faire tourner Windows), comprendre
+par où la machine a communiqué avec l'extérieur, et préparer le planning. Surtout, pour qu'une preuve soit
+recevable en justice, <b>le processus de collecte compte autant que la preuve elle-même</b> : une collecte
+qui ne respecte pas la procédure est un vice que la défense exploitera.</p>
+
+<div class="grid c2">
+  <div class="card"><h4>Le bloqueur d'écriture (write blocker)</h4>
+  <p style="margin-bottom:0">Un boîtier placé entre le disque saisi et la machine qui le copie : il laisse
+  passer la lecture et <b>bloque toute écriture</b> au niveau matériel. Pas un bit de la preuve ne change
+  pendant l'acquisition. Il en faut un adapté à chaque connectique (SATA, PCIe…), d'où l'importance de
+  savoir à l'avance quel disque on va trouver. Coût : quelques centaines d'euros.</p></div>
+  <div class="card"><h4>Les connectiques</h4>
+  <ul style="margin-bottom:0">
+    <li>Disques : <b>SCSI</b> et <b>IDE</b> (anciens), <b>SATA</b> (courant), <b>NVMe</b> et
+    <b>PCIe</b>.</li>
+    <li>Amovibles : <b>USB</b>, <b>FireWire</b>, cartes mémoire (MMC).</li>
+    <li>FireWire et Thunderbolt permettent l'<b>accès direct à la mémoire</b> (DMA, Direct Memory Access).</li>
+  </ul></div>
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>Peut contenir de l'information ?</th><th>Réponse du cours</th></tr></thead>
+<tbody>
+<tr><td>Bande magnétique (LTO), CD, DVD, Blu-ray, disquette, disque dur (HDD) ou SSD</td><td><b>Oui</b></td></tr>
+<tr><td>RAM</td><td><b>Oui</b>, sauf si la machine a été éteinte : son contenu est perdu</td></tr>
+<tr><td>Processeur (CPU)</td><td><b>Non</b> : il traite les données, il ne les stocke pas (ses caches ne servent pas en forensic)</td></tr>
+<tr><td>Boîtier d'alimentation</td><td><b>Plutôt non</b> : un peu d'électronique aujourd'hui, très peu utile</td></tr>
+<tr><td>Valise</td><td>« Ça dépend de ce qu'il y a dedans ! »</td></tr>
+<tr><td>Objets connectés (IoT)</td><td><b>Oui</b> : montres, horloges, caméras, jouets… les sources se multiplient</td></tr>
+</tbody></table></div>
+
+<div class="grid c2">
+  <div class="card"><h4>Le RAID</h4>
+  <ul style="margin-bottom:0">
+    <li><b>RAID 0</b> : les données sont découpées en bandes sur plusieurs disques ; si un disque lâche, tout
+    le volume est perdu. Rare en entreprise.</li>
+    <li><b>RAID 1</b> : chaque disque contient toutes les données (miroir) ; tant qu'un disque fonctionne, le
+    volume tient.</li>
+    <li><b>RAID 5</b> : bandes plus une <b>parité distribuée</b> (calcul par OU exclusif, XOR) ; on peut
+    perdre n'importe quel disque. Le plus fréquent en entreprise.</li>
+    <li>En forensic : un disque sorti d'une grappe RAID ne se lit pas seul ; il faut <b>reconstituer la
+    grappe</b> par logiciel avant l'acquisition.</li>
+  </ul></div>
+  <div class="card"><h4>Préparer l'acquisition d'un portable</h4>
+  <ul style="margin-bottom:0">
+    <li><b>La taille du disque</b> : « le plus important » ; partir avec des disques externes plus
+    grands.</li>
+    <li><b>Le modèle exact de la machine</b> : sur place c'est une course contre la montre ; on prépare le
+    démontage à l'avance (vidéos de démontage).</li>
+    <li><b>La clé de récupération BitLocker</b> : en entreprise le disque est chiffré en entier (full disk encryption), et l'entreprise
+    détient la clé (stockée dans l'annuaire). Le code PIN, lui, n'est pas utile.</li>
+    <li><b>La taille de la RAM</b>, si l'on prévoit de la copier.</li>
+    <li><b>Demander qu'on envoie le portable</b> : souvent possible, il est mis de côté dès qu'un salarié
+    est suspecté.</li>
+    <li>Le modèle du processeur ne sert à rien. Et il y aura toujours des imprévus.</li>
+  </ul></div>
+</div>
+
+<h3 id="ch9-droit">9.2 Juridiction et limites de l'enquête privée</h3>
+<div class="example"><div class="t">La plus grosse enquête de l'intervenant : 10 millions partis</div>
+<p>Une entreprise suisse voit partir 10 millions vers un compte en Chine. Les attaquants contrôlaient les
+boîtes mail de la direction : la comptable a reçu des ordres en apparence légitimes du PDG et de la
+directrice financière (une <b>fraude au président</b>). Ils étaient entrés grâce à un <b>compte de secours
+« break glass »</b>, à utiliser uniquement en cas de crise (l'annuaire en panne, par exemple).</p>
+<ul>
+  <li>Ce compte avait été utilisé sans crise et <b>sans alerte</b> : toute utilisation d'un compte de ce
+  type doit déclencher une alerte au SOC.</li>
+  <li>Son mot de passe (20 caractères, dans un coffre-fort de mots de passe KeePass accessible à six personnes)
+  avait été copié par un administrateur dans une <b>conversation avec lui-même</b>, pour passer d'un compte
+  à l'autre. Les journaux du fournisseur montraient une connexion depuis une <b>machine personnelle</b>,
+  sans doute compromise.</li>
+  <li>L'acquisition du poste professionnel s'est faite en Espagne, <b>devant un notaire</b> qui atteste
+  la copie.</li>
+</ul>
+<p style="margin-bottom:0"><b>Les règles à retenir.</b> Quand les pays se croisent (entreprise en Suisse,
+attaque depuis Singapour, salarié en Espagne, argent en Chine), c'est en principe le <b>pays où part
+l'argent</b> qui enquête. Un enquêteur mandaté par l'employeur <b>n'a pas le droit d'analyser la machine
+personnelle</b> d'un salarié, même utilisée pour le travail (BYOD) : seules les forces de l'ordre le peuvent. Le rapport dit donc « je soupçonne
+fortement que cela vienne de là, je recommande… ». Un second rapport, demandé pour les prud'hommes, n'a
+listé que des <b>faits</b> (fichiers de mots de passe en clair, vidéos de jeux sur le poste
+professionnel).</p>
+</div>
+
+<h3 id="ch9-osint">9.3 L'investigation en ligne (OSINT)</h3>
+<p>L'<b>OSINT</b> (Open Source Intelligence), ou <b>ROSO</b> (renseignement d'origine sources ouvertes) :
+collecter et recouper ce qui est public. Elle existait avant Internet (en bibliothèque) et sert à la fois
+l'attaque et la défense. Sur Internet, une identité ne prouve rien : générateurs de fausses identités,
+adresses jetables, faux comptes, fermes de smartphones qui vendent des « j'aime ».</p>
+
+<div class="tw"><table>
+<thead><tr><th>Moyen de cacher son identité</th><th>Efficace ?</th></tr></thead>
+<tbody>
+<tr><td><b>Tor</b></td><td>« Le plus efficace de la liste » : trois relais indépendants. Créé par la marine américaine pour défendre l'accès à l'information face aux dictatures.</td></tr>
+<tr><td><b>I2P</b></td><td>Oui, un réseau comparable à Tor.</td></tr>
+<tr><td><b>VPN</b>, <b>proxy</b></td><td>Seulement si l'on fait confiance à l'opérateur : ses journaux peuvent être saisis ou réquisitionnés.</td></tr>
+<tr><td><b>Pseudonyme</b></td><td>Oui, à condition de ne l'utiliser que dans un seul cadre : des pirates ont été identifiés par un pseudo réutilisé des années après.</td></tr>
+<tr><td><b>SecureDrop</b></td><td>Oui : un dépôt anonyme pour les sources des journalistes.</td></tr>
+<tr><td><b>Forum</b></td><td>Non : si l'administrateur tombe, toutes les identités tombent.</td></tr>
+<tr><td><b>Pair-à-pair (P2P)</b></td><td>Non : on échange avec sa propre adresse IP.</td></tr>
+<tr><td><b>Ne pas aller sur Internet</b></td><td>Le plus sûr, mais pas absolu : les autres parlent de vous, et des graphes reconstituent même les personnes absentes des réseaux sociaux.</td></tr>
+</tbody></table></div>
+
+<div class="grid c2">
+  <div class="card"><h4>Où chercher sur une personne</h4>
+  <p style="margin-bottom:0">« Partout » : réseaux sociaux, blogs, forums et messageries, <b>GitHub</b>
+  (projets d'un développeur), réseaux professionnels, anciens élèves, bases des forces de l'ordre, et les
+  <b>archives du web</b> (archive.org) qui gardent des publications effacées. Des bases illégales croisent
+  aujourd'hui les fuites de données pour reconstituer des profils complets.</p></div>
+  <div class="card"><h4>Les outils de l'OSINT</h4>
+  <p>Oui : Censys, Shodan (équipements exposés sur Internet), GitHub, archive.org (Wayback Machine),
+  Robtex (historique DNS), TinEye (recherche d'images identiques), VirusTotal, haveibeenpwned (fuites).</p>
+  <p style="margin-bottom:0"><b>Non</b> : <b>Exploit-DB</b> est une base d'exploits, et
+  <b>FactionC2</b> un outil de commande et de contrôle : ni l'un ni l'autre n'est du renseignement en
+  sources ouvertes.</p></div>
+</div>
+
+<div class="key-points">
+  <li><b>Reconnaissance passive</b> : uniquement par des sources tierces, la cible ne peut pas le savoir.
+  <b>Active</b> : on interroge la cible, elle peut en garder des traces. <b>Interne</b> : depuis un pied
+  déjà posé dans le réseau. C'est la phase d'<b>énumération</b> : la rater, c'est manquer la porte
+  d'entrée, pour l'attaquant comme pour le défenseur.</li>
+  <li><b>Certificate Transparency</b> : chaque certificat émis est publié dans des registres publics.
+  Conçu pour repérer vite les domaines qui imitent une marque (hameçonnage), il permet aussi de lister
+  tous les domaines d'une entreprise, y compris ceux qu'elle a oubliés et qui restent vulnérables.</li>
+  <li><b>La menace actuelle</b> : l'hameçonnage passe de moins en moins les filtres ; les attaquants achètent
+  plutôt des identifiants volés par des logiciels espions discrets (<b>infostealers</b>), revendus selon leur
+  fraîcheur. Lors de l'attaque contre la DGFiP, ils disposaient d'une vingtaine de comptes valides : bloquer
+  chaque compte repéré ne suffisait pas (RETEX publié par l'ANSSI).</li>
+  <li><b>L'attaque du point d'eau</b> (watering hole) : plutôt que viser directement une personne protégée,
+  on compromet un site qu'elle fréquente. D'où l'intérêt, en enquête, de regarder les sites et services
+  tiers utilisés par la cible.</li>
+  <li>Les documents publiés gardent des <b>métadonnées</b> (auteur, logiciel, chemins de dossiers) :
+  une fuite d'information discrète.</li>
+</div>
+
+<h3 id="ch9-cybercrime">9.4 Cybercrime et impacts</h3>
+<div class="grid c2">
+  <div class="card"><h4>Les cybercrimes</h4>
+  <p>Presque tout « devient vrai » : blanchiment, contrefaçon, cyberharcèlement, fraude à la carte,
+  hébergement de services illégaux, incitation au terrorisme et à la haine, rançongiciel, revenge porn,
+  revente de données sensibles, vol d'identité et même d'avatar. Le <b>cybermeurtre</b> aussi : des
+  patients sont morts dans un hôpital paralysé par un rançongiciel.</p>
+  <p style="margin-bottom:0"><b>La technique évolue plus vite que la loi</b> : reconnaissance faciale
+  automatique, assassinat d'un journaliste après l'espionnage de son entourage, décès liés à des
+  rançongiciels ou à des IA conversationnelles.</p></div>
+  <div class="card"><h4>Les quatorze impacts d'une cyberattaque (l'iceberg)</h4>
+  <p><b>Partie émergée</b> : enquêtes techniques, notification des clients (obligatoire depuis le
+  <b>RGPD</b>), mise en conformité, honoraires d'avocat et frais de justice, sécurisation des données
+  clients, relations publiques, amélioration de la cybersécurité.</p>
+  <p style="margin-bottom:0"><b>Partie immergée</b> : hausse des primes d'assurance et du coût de la dette,
+  interruption des activités, perte de contrats, dépréciation de la marque, perte de propriété
+  intellectuelle, perte de confiance des clients. D'où des assureurs de plus en plus inquiets.</p></div>
+</div>
+
+<h3 id="ch9-image">9.5 Photo et vidéo</h3>
+<div class="grid c2">
+  <div class="card"><h4>Matriciel ou vectoriel <span class="badge acc">« vous devez le connaître »</span></h4>
+  <p><b>Matriciel</b> (une grille de points) : <b>BMP, GIF, JPEG, PNG, RAW, TIFF</b>. On voit les pixels en
+  agrandissant.</p>
+  <p><b>Vectoriel</b> (des tracés calculés) : <b>AI</b> (Adobe Illustrator), <b>DRW/DWG</b>, <b>EPS</b>,
+  <b>SVG</b>. On agrandit sans perte.</p>
+  <p style="margin-bottom:0">Une image floutée ou déformée n'est pas forcément anonymisée : une photo publiée
+  par la police, au visage « tourbillonné », a été remise d'aplomb et le suspect identifié.</p></div>
+  <div class="card"><h4>Magic number et file carving</h4>
+  <p>Le <b>magic number</b> est une suite d'octets fixe au début d'un fichier qui identifie son vrai
+  format, quelle que soit son extension : <code>GIF89a</code> pour un GIF, <code>FF D8</code> au début
+  (et <code>FF D9</code> à la fin) pour un JPEG, <code>89 50 4E 47 0D 0A 1A 0A</code> (« PNG ») pour un
+  PNG.</p>
+  <p style="margin-bottom:0">Le <b>file carving</b> s'en sert : dans une suite brute de 0 et de 1 (un
+  support, de l'espace non alloué), on cherche ces signatures pour retrouver le début et la fin des
+  fichiers et les extraire, sans passer par le système de fichiers.</p></div>
+</div>
+<div class="key-points">
+  <li><b>La société fait bouger la technique</b> : les logiciels d'espionnage de conjoint
+  (<b>stalkerwares</b>) n'étaient pas détectés, puisque l'acheteur payait le service ; sous la pression
+  d'associations (notamment l'EFF), les antivirus en ont fait une catégorie de logiciels malveillants.</li>
+  <li><b>Et l'inverse</b> : l'IA génère des images et des vidéos à bas coût, y compris pour des opérations
+  d'influence d'État (premier cas connu début 2023). Qui est responsable ? Distinguer le vrai du faux
+  devient central ; la détection d'images générées est un sujet de recherche, et l'on s'appuie parfois sur
+  des signatures numériques.</li>
+  <li><b>Une photo satellite de mauvaise qualité</b> trahit un avion : les passes rouge, verte et bleue (RGB)
+  sont prises à des instants différents, l'avion apparaît en trois points de couleur. Une journaliste a
+  ainsi cartographié les vols illégaux au-dessus de l'Amazonie.</li>
+</div>
+
+<h3 id="ch9-rex">9.6 Retours d'expérience</h3>
+<div class="tw"><table>
+<thead><tr><th>Situation</th><th>Ce qu'on a fait, et la leçon</th></tr></thead>
+<tbody>
+<tr><td>Outils de piratage détectés dans les téléchargements d'un salarié, qui nie</td><td>Plutôt qu'une longue enquête, un appel : mieux vaut dire la vérité que de la voir établie par l'enquête. Il avoue, il est simplement réprimandé. On arbitre le <b>coût</b> d'une investigation.</td></tr>
+<tr><td>Une salariée signale des mouvements de souris étranges</td><td>Rien dans les traces ; la discussion révèle des craintes liées à sa vie personnelle. Probablement une touche bloquée. Une investigation est parfois <b>humaine</b> avant d'être technique.</td></tr>
+<tr><td>Portable chiffré par un rançongiciel, sans sauvegarde (télétravail)</td><td>Aucun outil sur <b>No More Ransom</b>, mais une ancienne version du code publiée sur GitHub contenait la clé : fichiers déchiffrés.</td></tr>
+<tr><td>Application mobile malveillante au code obscurci</td><td>Une <b>ancienne version</b>, retrouvée en ligne, n'était pas obscurcie : l'analyse en est simplifiée.</td></tr>
+<tr><td>Un autre CERT, par sa veille (threat intelligence), signale la vente d'un compte « administrateur du domaine »</td><td>La négociation avec un vendeur visiblement immature révèle un simple compte déjà connu : trois semaines d'enquête perdues.</td></tr>
+<tr><td>Recherche d'une taupe qui alimente un blog</td><td>Rien sur les postes ; le périmètre est élargi aux tablettes : une <b>vidéo effacée</b> d'une réunion filmée en cachette. Le rapport dit seulement « j'ai trouvé cette vidéo » ; le salarié est licencié pour non-respect du règlement intérieur.</td></tr>
+<tr><td>Des connexions suspectes partent d'une caméra de surveillance</td><td>Toute la flotte (environ 150 caméras) était vulnérable. Analyser chacune coûtait trop cher : on les a mises à jour sans savoir ce que l'attaquant avait fait. Fréquent.</td></tr>
+</tbody></table></div>
+
+<!-- ===================================================================== -->
+<h2 id="ch10"><span class="num">10.</span> Analyser une image disque Windows à la main (TP)</h2>
+
+<div class="callout"><div class="t">Pourquoi à la main</div>
+Un outil comme <b>Autopsy</b> fait tout automatiquement, mais il lui faut parfois deux jours pour ingérer une
+image, et il peut se tromper. « Votre job, ça va beaucoup être de savoir si l'outil ou l'IA dit la
+vérité » : il faut savoir retrouver chaque information soi-même. Et comme souvent en forensic, on
+<b>croise plusieurs sources</b> pour conforter un résultat.
+</div>
+
+<h3 id="ch10-image">10.1 Préparer l'image</h3>
+<div class="steps">
+  <div class="step"><b>1. Vérifier l'intégrité</b><br>Calculer l'<b>empreinte</b> de l'image (MD5, SHA-256)
+  et la comparer à celle fournie avec la preuve : <code>md5sum</code> sous Linux,
+  <code>Get-FileHash</code> en PowerShell. Même empreinte, même contenu.</div>
+  <div class="step"><b>2. Monter l'image</b><br>Avec un outil de montage (USB Forensic Tracker propose
+  « Mount Raw Image ») : le disque du suspect apparaît comme une nouvelle lettre de lecteur. Il faut
+  parfois ajuster les droits NTFS pour ouvrir les dossiers des utilisateurs.</div>
+  <div class="step"><b>3. Lire les partitions</b><br><code>fdisk -l pc.dd</code> sous Linux, ou en PowerShell
+  <code>Get-Disk</code>, <code>Get-Partition</code>, <code>Get-Volume</code>. Ici, la partition 1 sert au
+  démarrage, la partition 2 contient le système en NTFS (sa table principale de fichiers : la MFT). La
+  table de partitions est de type MBR ou GPT. Une image peut être brute (raw, dd) ou au format E01.</div>
+</div>
+<div class="grid c2">
+  <div class="card"><h4>L'original, la copie, et le principe d'incertitude</h4>
+  <p style="margin-bottom:0">On ne touche <b>jamais au support original</b>. On travaille sur une copie,
+  qu'on finit forcément par modifier un peu en l'exploitant : d'où l'empreinte calculée au départ. Sur une
+  machine allumée, c'est pire : copier la mémoire modifie la mémoire. C'est le <b>principe
+  d'incertitude</b>.</p></div>
+  <div class="card"><h4>Post-mortem ou à chaud</h4>
+  <p style="margin-bottom:0">L'analyse <b>post-mortem</b> (dead) porte sur une image du disque, hors ligne :
+  c'est le cas courant. L'analyse <b>à chaud</b> (live) se fait sur la machine en marche, pour saisir la
+  mémoire et l'activité en cours ; elle modifie le système et elle est « très risquée ».</p></div>
+</div>
+
+<h3 id="ch10-registre">10.2 Le registre : des ruches</h3>
+<p>Le registre Windows est fait de <b>ruches</b> : des fichiers binaires. Les ruches du système (SYSTEM,
+SOFTWARE, SAM, SECURITY), vues comme HKLM sur une machine en marche, sont dans <code>Windows\System32\config</code> ; chaque utilisateur a la sienne,
+<code>NTUSER.DAT</code>, fichier caché à la racine de son profil. Avec Registry Explorer, on charge la ruche
+(« Load hive ») et on cherche une clé. L'outil retrouve aussi des <b>clés effacées</b> (en rouge).</p>
+
+<h3 id="ch10-reponses">10.3 Où trouver chaque réponse</h3>
+<div class="tw"><table>
+<thead><tr><th>Question</th><th>Où regarder</th></tr></thead>
+<tbody>
+<tr><td>Fuseau horaire</td><td>Ruche SYSTEM : <code>Control\TimeZoneInformation</code></td></tr>
+<tr><td>Navigateurs et versions</td><td>Trois sources : <code>Program Files</code> ; les raccourcis de la barre des tâches (Quick Launch) du profil ; le registre (version d'Internet Explorer dans SOFTWARE, version de Chrome dans le NTUSER.DAT, clé BLBeacon)</td></tr>
+<tr><td>Client de messagerie</td><td>SOFTWARE : <code>Clients\Mail</code> (programme par défaut) et <code>Classes\mailto</code> (commande lancée pour « envoyer un mail »)</td></tr>
+<tr><td>Fichier des e-mails, compte utilisé</td><td><code>AppData\Local\Microsoft\Outlook</code> du profil : un fichier <b>OST</b> (cache synchronisé avec le serveur) nommé d'après l'adresse ; un <b>PST</b> est une archive locale</td></tr>
+<tr><td>Périphériques USB (quatre méthodes)</td><td>Le journal <code>setupapi.dev.log</code> ; les clés du registre (USBSTOR, MountedDevices, MountPoints2…) ; le journal d'événements des pilotes, s'il est activé ; USB Forensic Tracker, qui croise tout</td></tr>
+<tr><td>Version du système</td><td>SOFTWARE : <code>Microsoft\Windows NT\CurrentVersion</code></td></tr>
+</tbody></table></div>
+<div class="callout warn"><div class="t">Sur une image, les variables d'environnement mentent</div>
+<code>%USERPROFILE%</code> pointe vers le profil de l'analyste, pas vers celui du suspect : on reconstruit
+le chemin à partir de la lettre de montage (<code>F:\Users\nom\…</code>).
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch11"><span class="num">11.</span> S'entraîner : questions ouvertes</h2>
 
 <p>L'examen comporte quelques questions ouvertes. Formulez votre réponse, puis dépliez.</p>
 
@@ -988,8 +1269,21 @@ le programme est-il connu, ancien, adapté à la cible ? Un groupe qui mène des
 des outils inconnus et adaptés. Conclure avec prudence, par exemple « il n'est pas possible d'affirmer
 ou d'infirmer ; c'est peu probable parce que… ».</p></div></details>
 
+<details class="case"><summary>Cas 10 — Préparer une acquisition<span class="sit">Demain, vous devez copier le disque du portable d'un salarié suspecté, chez le client. Que demandez-vous aujourd'hui ?</span></summary>
+<div><p>La <b>taille du disque</b> (pour emporter assez de stockage) et sa <b>connectique</b> (bloqueur
+d'écriture adapté) ; le <b>modèle exact</b> du portable (préparer le démontage) ; la <b>clé de récupération
+BitLocker</b>, détenue par l'entreprise ; la taille de la RAM si la machine est restée allumée. Et
+d'abord : peut-on m'envoyer le portable ? On prévoit aussi la traçabilité de la copie (témoin, procès-verbal,
+empreinte de l'image).</p></div></details>
+
+<details class="case"><summary>Cas 11 — La machine personnelle<span class="sit">Votre enquête pour un employeur montre qu'un mot de passe critique a probablement fuité depuis l'ordinateur personnel d'un salarié. Le client vous demande de l'analyser.</span></summary>
+<div><p>Refuser : un enquêteur mandaté par l'employeur n'a pas le droit d'analyser une machine personnelle.
+Seules les forces de l'ordre le peuvent. Le rapport expose les faits (le mot de passe était présent à tel
+endroit, une connexion est venue d'une machine non professionnelle), formule le soupçon comme tel et
+recommande, par exemple, un dépôt de plainte.</p></div></details>
+
 <!-- ===================================================================== -->
-<h2 id="qcm-sec"><span class="num">10.</span> QCM — <span id="count-badge" class="badge acc"></span></h2>
+<h2 id="qcm-sec"><span class="num">12.</span> QCM — <span id="count-badge" class="badge acc"></span></h2>
 <p><b>Une seule bonne réponse par question</b>, ordre tiré au hasard, correction expliquée. Les
 chapitres suivent ceux de la fiche.</p>
 <div id="qcm"></div>
@@ -998,7 +1292,7 @@ chapitres suivent ceux de la fiche.</p>
 </div>
 
 <button id="top" title="Haut de page">↑</button>
-<script src="qcm.js?v=3"></script>
+<script src="qcm.js?v=5"></script>
 <script src="../assets/app.js?v=35"></script>
 <script>initQCM(window.QCM_DATA, window.QCM_CHAPTERS, 'inf5051');</script>
 </body>

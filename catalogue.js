@@ -40,12 +40,15 @@ window.CATALOGUE = [
     "Retours d'expérience",
     "Compétences, métiers, SOC et Purple Team",
     "Histoire de la discipline",
-    "Le rapport forensic : structure, plan d'action, trois exemples"
+    "Le rapport forensic : structure, plan d'action, trois exemples",
+    "Matériel et acquisition, juridiction, OSINT, cybercrime, photo et vidéo"
   ],
   ressources: [
     { type: "fiche", page: "fiche.html", titre: "Fiche de révision",
-      desc: "Jour 1 au matin : introduction et rapports forensic (support, deux transcriptions, deux rapports réels), 9 questions ouvertes",
-      qcm: { src: "qcm.js", cle: "inf5051" } }
+      desc: "Jour 1 complet : introduction, rapports forensic, problématiques techniques et légales, 11 questions ouvertes",
+      qcm: { src: "qcm.js", cle: "inf5051" } },
+    { type: "examen", page: "points-examen.html", titre: "Ce que le prof a signalé",
+      desc: "28 passages du jour 1, avec la réponse attendue" }
   ]
 },
 
