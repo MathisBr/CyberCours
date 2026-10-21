@@ -41,14 +41,18 @@ window.CATALOGUE = [
     "Compétences, métiers, SOC et Purple Team",
     "Histoire de la discipline",
     "Le rapport forensic : structure, plan d'action, trois exemples",
-    "Matériel et acquisition, juridiction, OSINT, cybercrime, photo et vidéo"
+    "Matériel et acquisition, juridiction, OSINT, cybercrime, photo et vidéo",
+    "Analyse d'une image disque Windows à la main, timeline pour le client",
+    "Collecte et préservation : recevabilité, chaîne de possession, mémoire, SSD",
+    "Analyse de logiciels malveillants, statique et dynamique",
+    "Forensic Windows, Mac et Linux, analyse mémoire et capture réseau"
   ],
   ressources: [
     { type: "fiche", page: "fiche.html", titre: "Fiche de révision",
-      desc: "Jour 1 complet : introduction, rapports forensic, problématiques techniques et légales, 11 questions ouvertes",
+      desc: "Jours 1 et 2 : introduction, rapports forensic, problématiques légales, collecte et préservation, malware, Windows, Mac et Linux, 19 questions ouvertes",
       qcm: { src: "qcm.js", cle: "inf5051" } },
     { type: "examen", page: "points-examen.html", titre: "Ce que le prof a signalé",
-      desc: "28 passages du jour 1, avec la réponse attendue" }
+      desc: "48 passages des jours 1 et 2, avec la réponse attendue" }
   ]
 },
 

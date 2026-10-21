@@ -21,7 +21,7 @@
 
 <div class="hero" style="margin-top:22px">
   <h1>Ce que le prof a signalé</h1>
-  <p class="lead">Relecture des quatre enregistrements du jour 1 : les passages où l'intervenant insiste
+  <p class="lead">Relecture des enregistrements des jours 1 et 2 : les passages où l'intervenant insiste
   lui-même (« vous devez le connaître », « c'est le b.a.-ba », « le plus important », « c'est capital »).
   Sous chaque citation, la réponse à savoir donner et le lien vers la fiche.</p>
 </div>
@@ -207,6 +207,134 @@ Matriciel : BMP, GIF, JPEG, PNG, RAW, TIFF. Vectoriel : AI, DRW/DWG, EPS, SVG.
 <div class="rep"><div class="t">À retenir</div>
 Savoir retrouver une information dans le registre sans outil automatique, et croiser plusieurs sources.
 <a class="lien" href="fiche.html#ch10">→ Fiche §10</a></div></div>
+
+<div class="px-seance">Jour 2 — le format de l'examen, précisé</div>
+
+<div class="px-item fort"><div class="src">Séance 2 · matin · 75:21 <span class="th">Les supports</span></div>
+<blockquote>Pour le QCM, enfin l'examen, vous aurez accès aux supports de cours. Vous n'avez pas besoin de retenir par cœur les termes.</blockquote>
+<div class="rep"><div class="t">À retenir</div>
+Examen à livre ouvert (supports du cours) : ce qui compte est de savoir où chercher et de raisonner, pas de réciter.
+<a class="lien" href="fiche.html#essentiel">→ Fiche : l'essentiel</a></div></div>
+
+<div class="px-item fort"><div class="src">Séance 2 · TP · 60:48 – 63:12 <span class="th">Moodle et SEB</span></div>
+<blockquote>Normalement, vous avez accès à Moodle. […] Il ne faut pas retenir par cœur les chemins : quand vous serez en intervention, vous aurez tous ces chemins. […] Il y a quelques questions ouvertes, principalement QCM. [Un étudiant : c'est surtout de l'analyse, comment tu ferais dans cette situation, pourquoi il faut faire ça.] Oui, ça va être ça, exactement.</blockquote>
+<div class="rep"><div class="t">À retenir</div>
+Moodle dans Safe Exam Browser ; le mail de convocation qui dit « sans documents » serait une erreur, qu'il signale à l'école. Préparez-vous aux mises en situation : que faites-vous, dans quel ordre, et pourquoi.
+<a class="lien" href="fiche.html#ch14">→ Fiche §14 : questions ouvertes</a></div></div>
+
+<div class="px-seance">Jour 2 — matin : collecte, préservation, analyse de malware</div>
+
+<div class="px-item fort"><div class="src">Séance 2 · matin · 78:04 <span class="th">La seule chose à retenir</span></div>
+<blockquote>Si on retient qu'une chose ce matin, c'est quoi ? Quand on analyse un logiciel malveillant, on le fait… [dans un environnement contrôlé, isolé.]</blockquote>
+<div class="rep"><div class="t">La réponse attendue</div>
+Dans un environnement contrôlé, dédié et isolé du réseau de l'entreprise (sandbox, machine virtuelle, poste dédié).
+<a class="lien" href="fiche.html#ch12">→ Fiche §12</a></div></div>
+
+<div class="px-item fort"><div class="src">Séance 2 · matin · 74:10 – 74:52 <span class="th">La révision</span></div>
+<blockquote>Quand vous arrivez sur une scène, qu'est-ce qu'on documente ? Pourquoi la preuve numérique est-elle particulière ? Quelles sont les règles pour qu'une preuve soit recevable ?</blockquote>
+<div class="rep"><div class="t">La réponse attendue</div>
+L'état des lieux, l'écran, les branchements, les numéros de série. Une preuve volatile et fragile, qui demande des précautions. Intégrité, authenticité, vérifiabilité, durabilité, exploitabilité ; plus la chaîne de possession.
+<a class="lien" href="fiche.html#ch11-recevabilite">→ Fiche §11.3</a></div></div>
+
+<div class="px-item fort"><div class="src">Séance 2 · matin · 75:00 <span class="th">Le SSD</span></div>
+<blockquote>Le SSD, c'est plus gênant que le disque dur d'un point de vue investigation numérique. Pourquoi ?</blockquote>
+<div class="rep"><div class="t">La réponse attendue</div>
+TRIM et uniformisation d'usure : l'effacé disparaît, le condensat brut change ; débranché, il se répare au démarrage, éteint, il fait son nettoyage ; il est sensible à la température.
+<a class="lien" href="fiche.html#ch11-ssd">→ Fiche §11.9</a></div></div>
+
+<div class="px-item fort"><div class="src">Séance 2 · matin · 75:46 <span class="th">La machine éteinte</span></div>
+<blockquote>Un système Windows qui est éteint, on peut quand même analyser la mémoire parfois. Comment ?</blockquote>
+<div class="rep"><div class="t">La réponse attendue</div>
+Le fichier d'échange (pagefile.sys), le fichier d'hibernation (hiberfil.sys), et le vidage MEMORY.DMP s'il y a eu un plantage.
+<a class="lien" href="fiche.html#ch11-eteint">→ Fiche §11.10</a></div></div>
+
+<div class="px-item"><div class="src">Séance 2 · matin · 76:21 – 76:45 <span class="th">Couches et archivage</span></div>
+<blockquote>Les quatre couches du système de fichiers. […] Dans la data layer, ce qui est important, c'est le slack space. Et comment on fait pour garder des données sur 100 ans ?</blockquote>
+<div class="rep"><div class="t">La réponse attendue</div>
+Physique, système de fichiers, données, métadonnées ; le slack space garde des restes d'anciens fichiers (pas sous Linux). Cent ans : le PDF/A, par exemple.
+<a class="lien" href="fiche.html#ch11-fs">→ Fiche §11.11</a></div></div>
+
+<div class="px-item"><div class="src">Séance 2 · matin · 76:54 – 77:38 <span class="th">Statique, dynamique</span></div>
+<blockquote>Qu'est-ce qu'il y a comme outil d'analyse statique ? […] La principale limite qui complique le travail d'une analyse ?</blockquote>
+<div class="rep"><div class="t">La réponse attendue</div>
+Statique, sans exécuter : Ghidra, IDA Pro, radare2 (gdb est dynamique). Dynamique : on exécute dans une sandbox. La limite : l'obfuscation.
+<a class="lien" href="fiche.html#ch12">→ Fiche §12</a></div></div>
+
+<div class="px-item"><div class="src">Séance 2 · matin · 77:44 <span class="th">La sandbox repérée</span></div>
+<blockquote>Comment on détecte qu'on est dans l'environnement d'exécution d'une machine d'analyste ?</blockquote>
+<div class="rep"><div class="t">La réponse attendue</div>
+Adresse MAC, services, petit disque (40 Go), registre, absence de mouvements de souris : la sandbox doit ressembler à un vrai poste.
+<a class="lien" href="fiche.html#ch12-sandbox">→ Fiche §12.2</a></div></div>
+
+<div class="px-item"><div class="src">Séance 2 · matin · 14:24 <span class="th">Intégrité et authenticité</span></div>
+<blockquote>Je rappelle la différence entre intégrité et authenticité : intégrité, on ne peut pas modifier le contenu ; authenticité, on est sûr que c'est le SIEM qui a signé et pas quelqu'un d'autre.</blockquote>
+<div class="rep"><div class="t">À retenir</div>
+Le condensat garantit l'intégrité, la signature garantit l'authenticité.
+<a class="lien" href="fiche.html#ch11-recevabilite">→ Fiche §11.3</a></div></div>
+
+<div class="px-item"><div class="src">Séance 2 · matin · 27:20 <span class="th">Les captures</span></div>
+<blockquote>N'hésitez pas à prendre plein de photos et plein de captures d'écran. Il vaut mieux en avoir trop que pas assez.</blockquote>
+<div class="rep"><div class="t">À retenir</div>
+Une capture horodatée, nommée d'après ce qu'elle montre, en plein écran, avec l'URL. Une fois parti de chez le client, il est trop tard.
+<a class="lien" href="fiche.html#ch11-preuve">→ Fiche §11.2</a></div></div>
+
+<div class="px-item"><div class="src">Séance 2 · matin · 32:12 <span class="th">Le condensat</span></div>
+<blockquote>Faire le condensat de tout le disque, puis par partition. Penser à les comparer : ça sert à rien de faire un condensat si on ne vérifie pas.</blockquote>
+<div class="rep"><div class="t">À retenir</div>
+Empreintes de l'original et de la copie, comparées : identiques. Puis travailler sur la copie de la copie.
+<a class="lien" href="fiche.html#ch11-collecte">→ Fiche §11.7</a></div></div>
+
+<div class="px-seance">Jour 2 — TP</div>
+
+<div class="px-item"><div class="src">Séance 2 · TP · 36:18 <span class="th">Connexions et déconnexions</span></div>
+<blockquote>Lister toutes les traces de connexion et de déconnexion des utilisateurs : évidemment, c'est très souvent utile dans une investigation. Pour une fois, ce n'est pas dans la base de registre.</blockquote>
+<div class="rep"><div class="t">La réponse attendue</div>
+Le journal de sécurité (Security.evtx), événements 4624, 4647, 4648, converti en CSV (EvtxECmd) puis filtré.
+<a class="lien" href="fiche.html#ch10-suite">→ Fiche §10.4</a></div></div>
+
+<div class="px-item fort"><div class="src">Séance 2 · TP · 60:16 et 66:10 <span class="th">La timeline</span></div>
+<blockquote>Il faut faire un tri : être haut niveau, compréhensible. […] Réussir à faire passer ce qui s'est passé sans rentrer dans le technique, c'est vraiment l'exercice le plus difficile lors d'un audit forensic.</blockquote>
+<div class="rep"><div class="t">À retenir</div>
+Une frise découpée par rapport au jour J (préparation, sortie des données, effacement des traces), sans noms d'outils.
+<a class="lien" href="fiche.html#ch10-timeline">→ Fiche §10.5</a></div></div>
+
+<div class="px-seance">Jour 2 — après-midi : Windows, Mac et Linux</div>
+
+<div class="px-item fort"><div class="src">Séance 2 · après-midi · 73:01 – 75:34 <span class="th">Le récapitulatif Windows</span></div>
+<blockquote>Les fichiers des journaux Windows ont une extension point… ? On peut récupérer des fichiers passés à la corbeille parce que… ? Comment on fait pour récupérer le mot de passe d'un compte Windows ? Volatility, ça sert à quoi ? Le fichier qui contient la base Active Directory ? Le champ des journaux Office 365 très intéressant ?</blockquote>
+<div class="rep"><div class="t">La réponse attendue</div>
+.evtx ; la suppression ne retire que le lien d'index ; on le demande ; l'analyse de la mémoire vive (le profil permet de bien la lire) ; ntds.dit (sorti avec ntdsutil) ; le Device ID. Aussi : attention aux formats de date, Shadow Copy pour sauvegarde et versions, BitLocker.
+<a class="lien" href="fiche.html#ch13">→ Fiche §13 : le récapitulatif</a></div></div>
+
+<div class="px-item fort"><div class="src">Séance 2 · après-midi · 75:41 – 76:21 <span class="th">Le récapitulatif Mac</span></div>
+<blockquote>Le type de système de fichiers sur Mac ? FileVault, c'est quoi ? Keychain, c'est sur Mac l'équivalent de… ?</blockquote>
+<div class="rep"><div class="t">La réponse attendue</div>
+HFS+ (aujourd'hui APFS) ; le chiffrement du disque ; DPAPI sous Windows. Les .plist pour la configuration ; attention aux formats de date (1904, 2001).
+<a class="lien" href="fiche.html#ch13-mac">→ Fiche §13.5</a></div></div>
+
+<div class="px-item fort"><div class="src">Séance 2 · après-midi · 76:29 – 78:30 <span class="th">Le récapitulatif Linux</span></div>
+<blockquote>Le système de fichiers le plus fréquent sur Linux ? Comment s'en sortir avec un disque chiffré ? Les champs des journaux web, il y en a six. Les logs PowerShell, c'est des logs OS ou applicatifs ?</blockquote>
+<div class="rep"><div class="t">La réponse attendue</div>
+ext4 ; demander la clé ou copier la RAM (et un serveur est rarement éteint) ; IP source, horodatage, méthode, URI, code de réponse, User-Agent (ni l'IP de destination ni le nombre d'octets) ; PowerShell : du système.
+<a class="lien" href="fiche.html#ch13-linux">→ Fiche §13.6</a></div></div>
+
+<div class="px-item"><div class="src">Séance 2 · après-midi · 04:03 <span class="th">PowerShell et Sysmon</span></div>
+<blockquote>Si on a les journaux PowerShell, c'est un des premiers endroits où on va regarder. […] Sysmon, ça dit tout : tout ce qui a été exécuté sur le système est logué.</blockquote>
+<div class="rep"><div class="t">À retenir</div>
+Les deux sources prioritaires pour comprendre ce qui s'est passé sur un Windows, quand elles existent.
+<a class="lien" href="fiche.html#ch13-ntfs">→ Fiche §13.1</a></div></div>
+
+<div class="px-item"><div class="src">Séance 2 · après-midi · 55:25 <span class="th">.bash_history</span></div>
+<blockquote>Quand il y a un .bash_history, c'est le premier fichier que je lis.</blockquote>
+<div class="rep"><div class="t">À retenir</div>
+Même sans horodatage, il montre les commandes tapées : outils, effacements, installations.
+<a class="lien" href="fiche.html#ch13-linux">→ Fiche §13.6</a></div></div>
+
+<div class="px-item fort"><div class="src">Séance 2 · TP · 43:15 et 80:20 <span class="th">Vérifier l'outil et l'IA</span></div>
+<blockquote>Il faut savoir si l'outil se trompe ou pas, et il faut savoir le faire manuellement. […] Si l'IA vous dit : « c'est ça le flag », vous devez vérifier.</blockquote>
+<div class="rep"><div class="t">À retenir</div>
+La démarche manuelle : Volatility (profil, pstree, procdump, empreinte), Wireshark (suivre le flux), magic numbers pour reconstituer un fichier.
+<a class="lien" href="fiche.html#ch13-tp">→ Fiche §13.9</a></div></div>
 
 </main>
 

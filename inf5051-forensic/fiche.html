@@ -31,13 +31,10 @@ fil à partir d'un premier indice.
 </p>
 
 <div class="callout"><div class="t">État de la fiche</div>
-Construite sur le syllabus, les supports du jour 1 au matin (introduction, 51 diapositives ; un rapport
-forensic réel de 2016 ; un rapport d'expertise publié en 2019), le support du jour 1 après-midi
-(problématiques techniques et légales), les quatre transcriptions du jour 1 et la correction du TP de
-l'après-midi. Les chapitres suivants du
-cours (collecte et préservation, forensic Windows, Mac et Linux, réseau et mobiles, étude de cas) s'ajouteront au fil des
-supports. Les archives de TP déjà fournies ne contiennent que des données à analyser (image disque,
-image mémoire, captures réseau, journaux) : leurs énoncés viendront avec les supports.
+Construite sur le syllabus, tous les supports des jours 1 et 2 (introduction, rapports forensic,
+problématiques techniques et légales, collecte et préservation des traces, forensic Windows, Mac et Linux),
+les huit transcriptions des deux jours et les corrections des TP. Les chapitres du jour 3 (réseau, mobiles,
+étude de cas) s'ajouteront au fil des supports.
 </div>
 
 <!-- ===================================================================== -->
@@ -49,8 +46,12 @@ image mémoire, captures réseau, journaux) : leurs énoncés viendront avec les
   <li><b>Aucun TP dans l'examen</b> : on évalue la compréhension, les notions et la méthode.</li>
   <li><b>Sans accès à Internet</b> : « l'IA a la moyenne à mon examen ; je suis là pour vous noter vous,
   pas l'IA ».</li>
-  <li>Le syllabus parle d'un contrôle mixte : un travail de synthèse sur environnement virtualisé et un
-  examen Moodle sans documents.</li>
+  <li>Sur <b>Moodle</b>, dans <b>Safe Exam Browser</b> (SEB), qui bloque tout le reste. Les <b>supports de
+  cours</b> devraient y être accessibles : « vous aurez accès aux supports de cours » (jour 2), même si le
+  mail de convocation dit « sans documents » (il le signale à l'école). À vérifier le jour J.</li>
+  <li>« Vous n'avez pas besoin de retenir par cœur les termes », ni les chemins du registre : les questions
+  font « travailler votre cerveau », sur le raisonnement : <b>comment feriez-vous dans cette situation, et
+  pourquoi</b>.</li>
   <li>À la fin de chaque cours, l'intervenant fait un <b>tour de questions récapitulatif</b> : ce sont
   les notions qu'il attend (§1 à §7, et le récapitulatif ci-dessous).</li>
 </ul>
@@ -88,6 +89,16 @@ image mémoire, captures réseau, journaux) : leurs énoncés viendront avec les
 <tr><td><b>Patient zéro</b></td><td>La première trace de contamination trouvée : la limite en amont de l'enquête.</td></tr>
 <tr><td><b>SOC</b></td><td>Trois niveaux : <b>N1</b> applique des procédures, <b>N2</b> trie les alertes et élimine les faux positifs, <b>N3</b> (experts) mène l'investigation.</td></tr>
 <tr><td><b>Purple Team</b></td><td>Red Team (attaque) + Blue Team (défense) : vérifier que les détections servent vraiment.</td></tr>
+<tr><td><b>Recevabilité</b></td><td>Cinq critères : <b>intégrité</b> (condensat), <b>authenticité</b> (source, signature du SIEM), <b>vérifiabilité</b> (histoire), <b>durabilité</b> (rétention), <b>exploitabilité</b> (utilisation) ; plus la règle de la preuve originale et la <b>chaîne de possession</b> (quoi, comment, quand avec le fuseau, qui, où).</td></tr>
+<tr><td><b>Échelle des preuves en audit</b></td><td>Physique, mathématique, confirmative, technique, analytique, documentaire, orale : de la plus forte à la plus faible.</td></tr>
+<tr><td><b>Acquisition</b></td><td>Bloqueur d'écriture, <code>dc3dd</code> ou FTK Imager, empreintes du disque et des partitions comparées, <b>copie de la copie</b>, scellé et formulaire.</td></tr>
+<tr><td><b>Volatile</b></td><td>Perdu à l'extinction : processus, fichiers ouverts, clés de chiffrement en mémoire, programme qui ne vit qu'en RAM. Reste : registre, MFT, BIOS, applications, fichiers temporaires.</td></tr>
+<tr><td><b>Mémoire d'un Windows éteint</b></td><td><code>hiberfil.sys</code> (hibernation), <code>pagefile.sys</code> (échange), <code>MEMORY.DMP</code> (plantage).</td></tr>
+<tr><td><b>SSD</b></td><td>TRIM et uniformisation d'usure : le condensat brut change, l'effacé disparaît ; collecter <b>machine allumée</b>.</td></tr>
+<tr><td><b>Fichier supprimé</b></td><td>Seul l'index change : les données deviennent non allouées. Le <b>slack space</b> garde des fragments sous Windows ; Linux le remplit de zéros.</td></tr>
+<tr><td><b>Analyse de malware</b></td><td>Statique (sans exécuter) ou dynamique (en sandbox), toujours dans un environnement <b>contrôlé, dédié et isolé</b> ; limite principale : l'<b>obfuscation</b>.</td></tr>
+<tr><td><b>AmCache</b></td><td>Garde le SHA-1 d'un exécutable même effacé de façon sécurisée.</td></tr>
+<tr><td><b>Timeline pour le client</b></td><td>Triée, haut niveau, sans jargon (« il efface ses traces », pas « Eraser ») : « l'exercice le plus difficile ».</td></tr>
 </tbody></table></div>
 
 <div class="callout warn"><div class="t">Les phrases soulignées en cours</div>
@@ -114,6 +125,11 @@ signalé</b></a>.</p>
   <li>À la question « c'est une question du partiel ? », il répond : « <b>j'ai un ordre d'idées de ce que
   je vais demander</b> », puis enchaîne son récapitulatif (§9) : connectiques, RAID, anonymat, OSINT,
   cybercrime, matriciel et vectoriel (« ça, vous devez le connaître »), magic number.</li>
+  <li>« <b>S'il faut retenir une chose ce matin</b> » (jour 2) : on analyse un logiciel malveillant dans un
+  <b>environnement contrôlé, isolé</b> (§12).</li>
+  <li>Captures d'écran et photos : « il vaut mieux en avoir trop que pas assez » (§11).</li>
+  <li>La timeline pour le client : faire passer ce qui s'est passé sans entrer dans le technique, « l'exercice
+  le plus difficile lors d'un audit forensic » (§10.5).</li>
 </ul>
 </div>
 
@@ -347,8 +363,8 @@ les traces les plus difficiles à analyser, le temps d'atteindre son objectif av
 <h2 id="ch3"><span class="num">3.</span> La carte des traces Windows</h2>
 
 <p>Le support s'appuie sur le poster du SANS Institute (<i>Windows Forensic Analysis</i>), qui range les traces d'un
-poste Windows par question d'enquête. L'intervenant le présente comme « une bonne synthèse » ; il sera
-détaillé le jour 2 (forensic Windows). Les emplacements sont ceux du poster.</p>
+poste Windows par question d'enquête. L'intervenant le présente comme « une bonne synthèse » ; le jour 2 le
+complète (§13, et le TP du §10). Les emplacements sont ceux du poster.</p>
 
 <h3 id="ch3-execution">3.1 Prouver l'exécution d'un programme</h3>
 <div class="tw"><table>
@@ -1049,6 +1065,7 @@ adresses jetables, faux comptes, fermes de smartphones qui vendent des « j'aime
 <tr><td><b>Pseudonyme</b></td><td>Oui, à condition de ne l'utiliser que dans un seul cadre : des pirates ont été identifiés par un pseudo réutilisé des années après.</td></tr>
 <tr><td><b>SecureDrop</b></td><td>Oui : un dépôt anonyme pour les sources des journalistes.</td></tr>
 <tr><td><b>Forum</b></td><td>Non : si l'administrateur tombe, toutes les identités tombent.</td></tr>
+<tr><td><b>Usurper le numéro d'appelant</b></td><td>Des outils et sites le permettent ; le support le range parmi les moyens disponibles, sans commentaire.</td></tr>
 <tr><td><b>Pair-à-pair (P2P)</b></td><td>Non : on échange avec sa propre adresse IP.</td></tr>
 <tr><td><b>Ne pas aller sur Internet</b></td><td>Le plus sûr, mais pas absolu : les autres parlent de vous, et des graphes reconstituent même les personnes absentes des réseaux sociaux.</td></tr>
 </tbody></table></div>
@@ -1091,7 +1108,7 @@ adresses jetables, faux comptes, fermes de smartphones qui vendent des « j'aime
   <div class="card"><h4>Les cybercrimes</h4>
   <p>Presque tout « devient vrai » : blanchiment, contrefaçon, cyberharcèlement, fraude à la carte,
   hébergement de services illégaux, incitation au terrorisme et à la haine, rançongiciel, revenge porn,
-  revente de données sensibles, vol d'identité et même d'avatar. Le <b>cybermeurtre</b> aussi : des
+  revente de données sensibles, vol d'identité et même d'avatar. Le piège de la liste : la « fraude à la carte de bibliothèque ». Le <b>cybermeurtre</b> aussi : des
   patients sont morts dans un hôpital paralysé par un rançongiciel.</p>
   <p style="margin-bottom:0"><b>La technique évolue plus vite que la loi</b> : reconnaissance faciale
   automatique, assassinat d'un journaliste après l'espionnage de son entourage, décès liés à des
@@ -1206,8 +1223,836 @@ SOFTWARE, SAM, SECURITY), vues comme HKLM sur une machine en marche, sont dans <
 le chemin à partir de la lettre de montage (<code>F:\Users\nom\…</code>).
 </div>
 
+
+<h3 id="ch10-suite">10.4 La suite du TP (jour 2)</h3>
+<p>Le TP s'appuie sur un jeu de données public d'entraînement (NIST CFReDS, <i>Data Leakage Case</i>, 2018) :
+un responsable d'une entreprise fictive fait sortir des documents secrets au profit d'un concurrent, puis
+tente d'effacer ses traces ; il est arrêté au contrôle de sécurité avec une clé USB et un CD-R. Les ruches
+utiles sont SYSTEM et SOFTWARE (vues comme HKLM), SAM et le NTUSER.DAT de l'utilisateur.</p>
+<div class="tw"><table>
+<thead><tr><th>Question</th><th>Où regarder</th><th>Ce qu'on trouve</th></tr></thead>
+<tbody>
+<tr><td>Nom de l'ordinateur</td><td>SYSTEM : <code>ControlSet001\Control\ComputerName\ComputerName</code> (aussi <code>Services\Tcpip\Parameters</code>, valeur Hostname)</td><td>INFORMANT-PC</td></tr>
+<tr><td>Comptes hors comptes système</td><td>SAM : <code>SAM\Domains\Account\Users</code> ; SOFTWARE : <code>Microsoft\Windows NT\CurrentVersion\ProfileList</code> (profils, SID, chemins)</td><td>Quatre comptes, avec nombre de connexions, création, dernière connexion, dernier échec</td></tr>
+<tr><td>Dernier utilisateur connecté</td><td>SOFTWARE : <code>Microsoft\Windows\CurrentVersion\Authentication\LogonUI</code>, valeur LastLoggedOnUser (attention : <i>Windows</i>, pas <i>Windows NT</i>) ; la SAM le confirme</td><td>Le compte local du suspect</td></tr>
+<tr><td>Dernier arrêt</td><td>SYSTEM : <code>ControlSet001\Control\Windows</code>, valeur <b>ShutdownTime</b>, binaire : clic droit, <b>Data Interpreter</b> (date Windows FILETIME)</td><td>25/03/2015, 15:31 UTC, soit 11:31 heure de l'Est (heure d'été). Les écarts d'une ou plusieurs heures entre étudiants venaient du <b>fuseau</b> appliqué</td></tr>
+<tr><td>Interface réseau en DHCP</td><td>SYSTEM : <code>Services\Tcpip\Parameters\Interfaces\{GUID}</code> ; les <b>signets</b> fournis par Registry Explorer y mènent directement (et au dernier arrêt)</td><td>Deux interfaces, l'une vide ; l'autre : 10.11.11.129/24, passerelle et DNS 10.11.11.2, serveur DHCP</td></tr>
+<tr><td>Applications installées par le suspect</td><td>SOFTWARE : <code>Microsoft\Windows\CurrentVersion\Uninstall</code> et <code>Wow6432Node\…\Uninstall</code> (logiciels 32 bits)</td><td>Nom et date d'installation ; <b>CCleaner en rouge</b> : installé puis désinstallé, donc suspect ; Eraser, Google Drive, iCloud…</td></tr>
+<tr><td>Connexions et déconnexions</td><td>Pas dans le registre : le journal <code>Security.evtx</code> (<code>Windows\System32\winevt\Logs</code>), converti en CSV par <b>EvtxECmd</b> (Eric Zimmerman), puis filtré par numéro d'événement dans un tableur</td><td>4624 (connexion), 4647 (déconnexion demandée), 4648 (identifiants explicites) ; aussi 4634, 4608 (démarrage), 1100 (arrêt)</td></tr>
+<tr><td>Exécution des applications</td><td>NTUSER.DAT : <code>Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist\{GUID}\Count</code> (le second GUID ; noms encodés en ROT13) ; aussi Prefetch, Shimcache, MuiCache, avec LinkParser, WinPrefetchView, ShimcacheParser</td><td>Nombre de lancements et dernière date : Solitaire, Bureau à distance… et <b>CCleaner</b> et <b>Eraser</b> (effacement sécurisé) : une couverture de traces</td></tr>
+</tbody></table></div>
+<div class="callout warn"><div class="t">Les pièges vus en TP</div>
+<ul style="margin-bottom:0">
+  <li>La <b>recherche</b> de Registry Explorer ne montre pas l'arborescence : naviguer clé par clé.</li>
+  <li>Une ruche qui refuse de se charger : la copier ailleurs et l'ouvrir de là.</li>
+  <li>Toujours dire dans quel <b>fuseau</b> est une date (UTC, heure locale du suspect, heure de l'analyste).</li>
+  <li>Le Shimcache donne une date de <b>modification</b> du fichier, pas d'exécution ; le nombre
+  d'exécutions de UserAssist peut être inexact.</li>
+</ul>
+</div>
+
+<h3 id="ch10-timeline">10.5 La timeline pour le client</h3>
+<p>Dernière question : dessiner la <b>chronologie</b> des faits trouvés, à présenter au client. « Il faut
+faire un tri » : rester haut niveau, compréhensible par des non-techniciens ; on n'écrit pas
+« Eraser », on écrit « il efface ses traces ». C'est « l'exercice le plus difficile d'un audit forensic ».
+La solution découpe le temps par rapport au jour J (D-Day) :</p>
+<div class="phase-band">
+  <div class="p1"><b>Avant</b>Fonctionnement normal : installation du système et des applications,
+  documents de l'entreprise, messagerie.</div>
+  <div class="p2"><b>J-2 : préparation</b>Recherches sur les méthodes de fuite, échanges de courriels avec
+  le complice, copie de documents depuis une clé USB et un partage réseau, renommage, installation de
+  services cloud, envoi d'échantillons.</div>
+  <div class="p3"><b>J-1 : sortie des données</b>Nouvelles copies depuis la clé et le partage réseau,
+  renommage des fichiers, copie vers une seconde clé puis gravure sur CD-R, suppression des copies.</div>
+  <div class="p4"><b>Jour J : effacement</b>Installation et usage d'outils d'anti-forensic, suppression de
+  courriels et de fichiers, déconnexion du cloud ; arrêt au contrôle de sécurité avec une clé USB et un
+  CD-R.</div>
+</div>
+<p>Le document de solution (55 pages) détaille chaque trace, avec d'autres questions : navigateurs, courriels,
+gravure de CD, cloud, copies Volume Shadow… Un bon entraînement pour la méthode.</p>
+
 <!-- ===================================================================== -->
-<h2 id="ch11"><span class="num">11.</span> S'entraîner : questions ouvertes</h2>
+<h2 id="ch11"><span class="num">11.</span> Collecte et préservation des traces</h2>
+
+<div class="exam"><div class="t">Le récapitulatif de fin de matinée (jour 2), avec ses réponses</div>
+<ul style="margin-bottom:0">
+  <li><b>En arrivant sur la scène</b>, avant toute manipulation : on documente l'état des lieux, l'écran, les
+  branchements, les numéros de série, l'environnement matériel.</li>
+  <li><b>Pourquoi la preuve numérique est-elle particulière ?</b> Elle est volatile, fragile, facilement
+  modifiable : elle demande des précautions spécifiques.</li>
+  <li><b>Les cinq critères de recevabilité</b> : intégrité, authenticité, vérifiabilité, durabilité,
+  exploitabilité.</li>
+  <li><b>Une capture d'écran</b> : écran entier, horodatée, nommée d'après ce qu'elle montre, avec l'URL.</li>
+  <li><b>Pourquoi le SSD gêne plus que le disque dur ?</b> TRIM et uniformisation d'usure, sensibilité à la
+  température.</li>
+  <li><b>Système Windows éteint : où retrouver la mémoire ?</b> Le fichier d'échange, le fichier
+  d'hibernation, le vidage après un plantage.</li>
+  <li><b>Les quatre couches du système de fichiers</b> : physique, système de fichiers, données (avec le slack
+  space), métadonnées.</li>
+  <li><b>Garder des données cent ans ?</b> Le format <b>PDF/A</b>, par exemple.</li>
+</ul>
+</div>
+
+<p>Le principe fondateur vient d'<b>Edmond Locard</b>, professeur de médecine légale, qui fonde à Lyon en
+1910 le premier laboratoire de police scientifique au monde : « il est impossible au malfaiteur d'agir
+[…] sans laisser des traces de son passage ». Tout contact entre deux choses produit un échange : c'est le
+<b>principe d'échange de Locard</b>. En numérique, le meilleur pirate laisse aussi des traces ; le jeu est
+celui du chat et de la souris.</p>
+
+<h3 id="ch11-scene">11.1 La scène du crime numérique</h3>
+<div class="grid c2">
+  <div class="card"><h4>Physique</h4>
+  <p style="margin-bottom:0">Serveurs, stations de travail, portables, smartphones, tablettes, et de plus en
+  plus d'objets connectés. Deux exemples cités : une horloge d'entreprise synchronisée par NTP, laissée avec
+  son mot de passe par défaut, qui a servi de porte d'entrée sur le réseau lors d'un test d'intrusion ; un
+  casino piraté par le thermomètre connecté de son aquarium.</p></div>
+  <div class="card"><h4>Virtuel</h4>
+  <p style="margin-bottom:0">Données sur un cluster ou un <b>SAN</b> (Storage Area Network, stockage en réseau
+  de très bas niveau), machines virtuelles, conteneurs (Docker, Kubernetes, Rancher). Un attaquant qui
+  atteint le SAN peut copier l'image entière d'une machine virtuelle et l'analyser chez lui. Plus de couches
+  d'abstraction qu'avant, donc une acquisition plus difficile, mais aussi bien plus d'outils.</p></div>
+</div>
+
+<h3 id="ch11-preuve">11.2 Preuve numérique ou preuve physique</h3>
+<div class="tw"><table>
+<thead><tr><th>Par rapport à une preuve physique, une preuve numérique…</th><th>Réponse du cours</th></tr></thead>
+<tbody>
+<tr><td>est plus facile à détruire ?</td><td><b>Non</b> : tout effacer demande des droits étendus et une maîtrise exceptionnelle du système. Même un administrateur du domaine (Domain Admin) n'atteint pas les journaux déjà envoyés et signés par le SIEM.</td></tr>
+<tr><td>contient moins d'informations ?</td><td><b>Difficile à dire</b> : une preuve physique contient énormément de choses mesurables. Dans les deux cas, impossible de ne laisser aucune trace.</td></tr>
+<tr><td>est dure à dupliquer ?</td><td><b>Non</b> : ce sont des 1 et des 0 ; une copie bit à bit (<code>dd</code>) est identique.</td></tr>
+<tr><td>est facilement modifiable ?</td><td><b>Oui</b>, pour qui y a accès.</td></tr>
+<tr><td>Une capture d'écran est une preuve numérique ?</td><td><b>Pas au sens judiciaire</b> : c'est un point de départ pour chercher des preuves, mais elle suffit à la plupart des clients privés (et, en justice, pour des affaires comme le cyberharcèlement, avec d'autres éléments).</td></tr>
+<tr><td>Il manque de procédures et de standards établis ?</td><td><b>Oui</b> : ils mûrissent, mais restent en retard sur la technique.</td></tr>
+</tbody></table></div>
+
+<div class="callout ok"><div class="t">Une bonne capture d'écran</div>
+<ul style="margin-bottom:0">
+  <li><b>L'horodater</b> (un outil comme Greenshot le fait seul).</li>
+  <li>Indiquer <b>dans le nom du fichier</b> ce qu'elle illustre : à la rédaction du rapport, on ne s'en
+  souvient plus, et on évite les captures inutiles.</li>
+  <li>Prendre <b>l'écran entier</b> et recadrer ensuite : on garde l'heure, l'URL, le contexte.</li>
+  <li>Afficher l'<b>URL complète</b> : le client sait où l'on était dans l'application.</li>
+  <li>Disposer les fenêtres pour <b>raconter l'histoire</b>, « comme une BD ».</li>
+  <li>« Il vaut mieux en avoir trop que pas assez » : une fois parti de chez le client, il est trop tard.</li>
+</ul>
+</div>
+
+<h3 id="ch11-recevabilite">11.3 Ce qui rend une preuve recevable</h3>
+<div class="grid c2">
+  <div class="card"><h4>Les cinq règles d'une bonne preuve (justice)</h4>
+  <ul style="margin-bottom:0">
+    <li><b>Admissible</b> : utilisable en justice ou ailleurs.</li>
+    <li><b>Authentique</b> : liée à l'incident de façon pertinente.</li>
+    <li><b>Complète</b> : montre toutes les perspectives de l'incident, ce qui prouve <b>et ce qui
+    contredit</b>.</li>
+    <li><b>Fiable et juste</b> : l'acquisition et la procédure ne laissent aucun doute sur l'authenticité
+    et la véracité.</li>
+    <li><b>Convaincante</b> : claire et facile à croire pour un juge ou un jury non technique, avec un lien
+    évident entre la preuve brute et sa version simplifiée.</li>
+  </ul></div>
+  <div class="card"><h4>Les cinq critères de recevabilité</h4>
+  <ul style="margin-bottom:0">
+    <li><b>Intégrité</b> : la qualité de la preuve (rien n'a changé).</li>
+    <li><b>Authenticité</b> : sa source.</li>
+    <li><b>Vérifiabilité</b> : son histoire.</li>
+    <li><b>Durabilité</b> : son futur.</li>
+    <li><b>Exploitabilité</b> : son utilisation.</li>
+  </ul>
+  <p style="margin-bottom:0;margin-top:8px">S'y ajoutent deux précautions, surtout en justice : la <b>règle de
+  la preuve originale</b> et la <b>chaîne de possession</b>.</p></div>
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>Critère</th><th>Dans un SOC équipé d'un SIEM</th></tr></thead>
+<tbody>
+<tr><td><b>Intégrité</b></td><td>Garantie par le <b>condensat</b> (hash).</td></tr>
+<tr><td><b>Authenticité</b></td><td>Garantie par la <b>signature des journaux</b> avec la clé privée du SIEM. Intégrité : on ne peut pas modifier le contenu ; authenticité : on est sûr que c'est bien le SIEM qui a signé.</td></tr>
+<tr><td><b>Vérifiabilité</b></td><td>Les systèmes envoient la preuve automatiquement, au moment de l'intrusion, avant que l'attaquant ne puisse modifier l'envoi.</td></tr>
+<tr><td><b>Durabilité</b></td><td>Dépend de la <b>durée de rétention</b> des journaux, fixée par des contraintes légales et des référentiels (PCI-DSS, HDS…) parfois contradictoires. En pratique, elle est limitée par le stockage : « deux mois de journaux » seulement, plusieurs fois.</td></tr>
+<tr><td><b>Exploitabilité</b></td><td>Dépend de l'« intelligence » des <b>règles de collecte</b> : collecter ce qu'il faut, ni trop ni trop peu. C'est l'une des grosses difficultés d'un SOC.</td></tr>
+</tbody></table></div>
+<div class="example"><div class="t">Une preuve inexploitable</div>
+Dans un rapport d'audit de code, une capture d'un extrait de code sans le <b>fichier</b> ni la <b>ligne</b> :
+sur des millions de lignes, le client ne le retrouve pas. On indique toujours où se trouve ce qu'on montre.
+</div>
+
+<h3 id="ch11-types">11.4 Les sept types de preuves en entreprise</h3>
+<p>En audit, toutes les preuves n'ont pas la même force. Du plus fort au plus faible :</p>
+<div class="tw"><table>
+<thead><tr><th>Type</th><th>Définition</th><th>Exemple</th></tr></thead>
+<tbody>
+<tr><td><b>1. Physique</b></td><td>Observation directe de la mise en œuvre, physique ou logique, d'une mesure de sécurité.</td><td>Je vois l'antivirus sur les postes ; en test d'intrusion, j'essaie le mot de passe moi-même.</td></tr>
+<tr><td><b>2. Mathématique</b></td><td>Calcul qui vérifie par rapprochement, souvent sur un échantillon étendu au parc.</td><td>140 équipements supervisés sur 150, soit 93,33 %.</td></tr>
+<tr><td><b>3. Confirmative</b></td><td>Croisement de plusieurs sources fiables qui disent la même chose.</td><td>La RSSI, l'administratrice et des utilisateurs confirment le déploiement de l'antivirus.</td></tr>
+<tr><td><b>4. Technique</b></td><td>Vérification de la configuration ou du paramétrage d'un outil.</td><td>La carte réseau est configurée selon le plan d'adressage.</td></tr>
+<tr><td><b>5. Analytique</b></td><td>Analyse du contenu de la preuve.</td><td>Les journaux montrent la remontée d'alerte quand un équipement est coupé du réseau.</td></tr>
+<tr><td><b>6. Documentaire</b></td><td>Revue documentaire, sans vérifier la mise en œuvre.</td><td>La politique exige un antivirus sur tous les postes.</td></tr>
+<tr><td><b>7. Orale</b></td><td>Entretien, sans vérification.</td><td>« On m'a dit que le schéma réseau est à jour. »</td></tr>
+</tbody></table></div>
+<p>Les audits de gouvernance (ISO 27001) restent souvent aux niveaux documentaire et oral ; un audit de
+configuration se situe au milieu ; le test d'intrusion et la forensic visent le haut de l'échelle.
+Certains outils d'audit associent à chaque constat son niveau de preuve.</p>
+
+<div class="grid c2">
+  <div class="card"><h4>Réutiliser une preuve d'un autre rapport ?</h4>
+  <p style="margin-bottom:0"><b>Oui</b>, si elle est recevable. Exemple : la contre-expertise d'un rapport
+  forensic s'est appuyée sur les journaux collectés lors de l'incident par la première équipe.</p></div>
+  <div class="card"><h4>Le badge et la caméra suffisent-ils ?</h4>
+  <p style="margin-bottom:0">En théorie, l'historique d'un badge ou la vidéosurveillance montrent qui est
+  entré. En pratique, <b>tout se pirate</b> : un badge peut avoir reçu des droits illégitimes, un flux vidéo
+  peut être remplacé. On croise plusieurs sources, ou l'on prouve que la source n'a pas été compromise.</p></div>
+</div>
+
+<h3 id="ch11-chaine">11.5 La chaîne de possession</h3>
+<p>Le formulaire qu'on voit dans les séries, avec le sachet de scellé : il trace <b>entre quelles mains la
+preuve est passée</b>, pour savoir qui l'a touchée si un problème survient. Il porte le numéro d'affaire,
+l'infraction, l'agent, la victime, le suspect, la date, l'heure et le lieu de la saisie ; la description de
+chaque objet (modèle, numéro de série, état, marques, rayures) ; puis chaque remise : date, heure, remis par,
+reçu par (signatures), commentaire ou lieu. On répond à cinq questions :</p>
+<div class="tw"><table>
+<thead><tr><th>Question</th><th>Ce qu'on consigne</th></tr></thead>
+<tbody>
+<tr><td><b>Quelle est la preuve ?</b></td><td>Matériel : photos, description, numéro de série, identifiant, nom d'hôte. Numérique : nom de fichier, condensat.</td></tr>
+<tr><td><b>Comment l'a-t-on obtenue ?</b></td><td>Les outils, le type d'acquisition (en direct ou hors ligne), le format de stockage ; qui l'a fournie (telle personne du SOC).</td></tr>
+<tr><td><b>Quand ?</b></td><td>Par écrit, <b>avec le fuseau horaire</b> : chez une multinationale, tout en UTC ou tout dans le même fuseau.</td></tr>
+<tr><td><b>Qui l'a manipulée ?</b></td><td>Toutes les personnes qui l'ont touchée, d'où le mot « chaîne ». Des outils comme EnCase enregistrent chaque accès.</td></tr>
+<tr><td><b>Où était-elle stockée ?</b></td><td>Le lieu physique, ou le modèle, le numéro de série, l'adresse IP du stockage (NAS) qui garde l'image.</td></tr>
+</tbody></table></div>
+
+<h3 id="ch11-saisie">11.6 La saisie</h3>
+<p>Elle n'existe pratiquement que dans le monde judiciaire : elle est faite <b>souvent par ou avec les forces
+de l'ordre</b>, <b>toujours par un technicien formé</b>, et respecte la loi (elle peut nécessiter un
+mandat). Quel que soit le domaine, la vie privée et les droits humains sont respectés. Les preuves doivent
+être saisies <b>au plus vite</b> pour rester admissibles : plus le temps passe, moins il reste de traces.
+Face à un suspect qui peut tout effacer d'un geste, l'effet de surprise compte.</p>
+
+<h3 id="ch11-collecte">11.7 Collecter, puis préserver</h3>
+<div class="steps" id="anim-collecte">
+  <div class="step"><b>1. Identifier les données</b><br>Compressées ou non ? Prises en direct ou sur un hôte
+  éteint ? Une partie ou le disque complet ?</div>
+  <div class="step"><b>2. Relever le BIOS</b><br>(l'UEFI aujourd'hui) Surtout son <b>horloge</b> (stockée dans le RTC/CMOS) : une
+  machine isolée, sans serveur NTP, n'a que cette heure-là.</div>
+  <div class="step"><b>3. Photographier et capturer</b><br>Plein de photos et de captures : l'environnement,
+  les objets (dommages, rayures, traces), les câbles, les emplacements logiques (chemin, URL). Étiqueter pour
+  éviter les doublons.</div>
+  <div class="step"><b>4. Acquérir</b><br>Du matériel professionnel, le bon connecteur, assez d'espace libre ;
+  le modèle de la machine et de son disque étudié à l'avance ; un <b>bloqueur d'écriture</b> (lecture oui,
+  écriture non).</div>
+  <div class="step"><b>5. Authentifier</b><br>Calculer les <b>condensats</b> du disque entier et de chaque
+  partition, puis ceux de la copie : ils doivent être <b>identiques</b>. Un condensat qu'on ne compare pas
+  ne sert à rien.</div>
+  <div class="step"><b>6. Préserver</b><br>Fermer le contenant à clé (scellé, ou casier fermant chez le
+  client) et remplir le formulaire de chaîne de possession.</div>
+</div>
+<button class="btn primary" onclick="playSteps('anim-collecte')">▶ Lancer l'animation</button>
+
+<div class="grid c2" style="margin-top:14px">
+  <div class="card"><h4>La liste de l'intervenant avant une acquisition</h4>
+  <ul style="margin-bottom:0">
+    <li>Regarder sur ce modèle de PC comment ouvrir la coque et démonter le disque.</li>
+    <li>Brancher le bloqueur d'écriture au disque.</li>
+    <li>Faire un <code>mount</code> <b>avant</b> d'allumer le bloqueur, puis <b>après</b> : la différence
+    désigne le disque du suspect sans ambiguïté. Le confirmer avec <code>fdisk -l</code>, capture à l'appui.</li>
+    <li>Copier avec <code>dc3dd</code>, l'équivalent forensic de <code>dd</code> : copie bit à bit,
+    condensat (<code>hash=sha256</code>) et journal (<code>log=</code>) calculés pendant la copie.</li>
+    <li>Photographier le bloqueur et les branchements pendant l'acquisition, capturer la sortie finale.</li>
+    <li>Lire les partitions de l'image, recalculer son SHA-256 : la copie n'est pas corrompue.</li>
+    <li>Copier la preuve sur la machine d'investigation et la monter pour vérifier l'accès au contenu.</li>
+  </ul></div>
+  <div class="card"><h4>Les précautions concrètes</h4>
+  <ul style="margin-bottom:0">
+    <li><b>Travailler sur la copie de la copie</b> : l'original reste intact, une première copie reste
+    stockée, l'enquête porte sur une seconde copie. C'est l'idéal, pas toujours possible.</li>
+    <li>Se décharger de l'<b>électricité statique</b> en touchant du métal avant d'ouvrir la machine.</li>
+    <li>Ne pas abîmer les <b>vis</b> de vieux portables.</li>
+    <li>Sous Windows, <b>FTK Imager</b> fait la même acquisition et affiche un bilan : MD5 et SHA-1 calculés et
+    vérifiés (« Match »), secteurs défectueux.</li>
+    <li>Les gros fichiers se corrompent souvent à la copie : toujours vérifier l'empreinte.</li>
+  </ul></div>
+</div>
+
+<h3 id="ch11-memoire">11.8 L'acquisition de la mémoire</h3>
+<div class="tw"><table>
+<thead><tr><th>Perdu si l'on débranche l'ordinateur ?</th><th>Réponse</th></tr></thead>
+<tbody>
+<tr><td>Clés de registre</td><td><b>Non</b> : le registre est stocké dans des fichiers (SYSTEM, SOFTWARE, NTUSER.DAT).</td></tr>
+<tr><td>Clés de chiffrement</td><td><b>Oui</b>, pour celles qui ne vivent qu'en mémoire.</td></tr>
+<tr><td>Paramètres de configuration</td><td><b>Non</b> en général : ils sont dans des fichiers.</td></tr>
+<tr><td>MFT</td><td><b>Non</b> : c'est un fichier du disque.</td></tr>
+<tr><td>BIOS</td><td><b>Non</b> : il est sur une puce de la carte mère.</td></tr>
+<tr><td>Applications installées</td><td><b>Non</b> : tout ce qui est sur le disque reste.</td></tr>
+<tr><td>Fichiers ouverts</td><td><b>Oui</b> : la liste des fichiers ouverts n'existe qu'en mémoire.</td></tr>
+<tr><td>Fichiers temporaires</td><td><b>Plutôt non</b> : ils sont purgés au <b>démarrage</b> suivant (<code>/tmp</code> sous Linux), pas à l'extinction ; la copie du disque les contient.</td></tr>
+<tr><td>Processus</td><td><b>Oui</b>.</td></tr>
+<tr><td>Logiciel malveillant</td><td><b>Seulement s'il ne réside qu'en mémoire</b> sans persistance. Beaucoup le font, pour échapper à l'antivirus, qui détecte plus difficilement en mémoire que sur le disque.</td></tr>
+</tbody></table></div>
+<div class="callout warn"><div class="t">Le dilemme de la copie de la mémoire</div>
+« Brancher un périphérique pour collecter la mémoire va corrompre la preuve » : oui, mais ne pas le faire,
+c'est se priver de 8 à 64 Go de données importantes. On récupère le plus possible en modifiant le moins
+possible, et l'on <b>note chaque action</b> pour pouvoir exclure ou expliquer ses propres traces. Attendez-vous
+à des <b>alertes antivirus</b> : les attaquants aussi lisent la mémoire, et il faut parfois désactiver
+l'antivirus pour l'acquisition. En justice, la conviction repose sur un <b>faisceau d'indices</b>, pas sur
+une preuve parfaitement intacte.
+</div>
+
+<h3 id="ch11-ssd">11.9 Les SSD compliquent tout</h3>
+<div class="grid c3">
+  <div class="card"><h4>Uniformisation d'usure</h4>
+  <p style="margin-bottom:0">(wear leveling) Les cellules s'usent : le contrôleur déplace les données vers un
+  nouvel emplacement nettoyé (toutes les cinq écritures). La fragmentation disparaît et la topologie de la
+  mémoire change sans cesse.</p></div>
+  <div class="card"><h4>TRIM</h4>
+  <p style="margin-bottom:0">Le contrôleur nettoie l'espace non utilisé, sur ordre du système (une fois par
+  semaine sous Windows). Récupérer une donnée effacée devient presque impossible.</p></div>
+  <div class="card"><h4>Performances</h4>
+  <p style="margin-bottom:0">Prefetch et ReadyBoost peuvent être désactivés sur un SSD : autant de traces en
+  moins.</p></div>
+</div>
+<p><b>Conséquence</b> : pas de preuve d'intégrité au niveau physique (le condensat brut change en permanence),
+donc moins de preuves numériques. Cela touche surtout les laboratoires de récupération de données ; au
+niveau logique, on reste sur l'empreinte de l'image.</p>
+<div class="tw"><table>
+<thead><tr><th>Option</th><th>Risque</th></tr></thead>
+<tbody>
+<tr><td>Débrancher sauvagement</td><td>Peut endommager le SSD et lancer l'« auto-réparation » au démarrage suivant.</td></tr>
+<tr><td>Éteindre proprement</td><td>Peut lancer l'uniformisation d'usure et le TRIM.</td></tr>
+<tr><td><b>Collecter machine allumée</b></td><td>La solution <b>recommandée</b>, quand on arrive à temps (surtout sur des serveurs).</td></tr>
+</tbody></table></div>
+<p>Autres pièges : quand le SOC isole une machine (containment), un programme malveillant qui ne joint plus
+son serveur de commande (C2) peut s'effacer, comme certaines applications mobiles coupées du réseau. Et pour
+le stockage long, un SSD peut perdre des données <b>dès 7 jours</b> s'il est usé, et sa durée de rétention
+dépend de la <b>température</b> : environ 2 ans à 25 °C, 1 an à 30 °C. Les vieilles clés USB vieillissent
+mal aussi.</p>
+
+<h3 id="ch11-eteint">11.10 Le système est éteint : que reste-t-il de la mémoire ?</h3>
+<div class="tw"><table>
+<thead><tr><th>Source</th><th>Utile ?</th></tr></thead>
+<tbody>
+<tr><td><code>%WINDIR%\MEMORY.DMP</code></td><td><b>Oui</b> : écrit lors d'un plantage (écran bleu, BSOD), c'est l'état exact de la RAM à ce moment.</td></tr>
+<tr><td><code>%SystemDrive%\hiberfil.sys</code></td><td><b>Oui</b> : à la mise en veille prolongée (on ferme le capot), une image <b>compressée</b> de la RAM ; elle peut aussi subsister dans les copies Volume Shadow.</td></tr>
+<tr><td><code>%SystemDrive%\pagefile.sys</code></td><td><b>Oui</b> : le fichier d'échange (swap), où le système déplace des pages de mémoire quand la RAM manque.</td></tr>
+<tr><td>Le contenu d'une clé USB, le fichier <code>hosts</code>, une DLL Python</td><td><b>Non</b> : sans rapport avec la mémoire de Windows (<code>hosts</code> associe des noms à des adresses IP).</td></tr>
+</tbody></table></div>
+
+<h3 id="ch11-fs">11.11 Les quatre couches d'un système de fichiers</h3>
+<div class="tw"><table>
+<thead><tr><th>Couche</th><th>Contenu</th></tr></thead>
+<tbody>
+<tr><td><b>Physique</b></td><td>Le disque lui-même (cellules ou secteurs de 1 et de 0).</td></tr>
+<tr><td><b>Système de fichiers</b></td><td>L'organisation des fichiers : FAT12/16/32, exFAT, NTFS, ReFS (et APFS chez Apple).</td></tr>
+<tr><td><b>Données</b> (data layer)</td><td>Les clusters ou blocs, morceaux de données.</td></tr>
+<tr><td><b>Métadonnées</b></td><td>Les informations sur les fichiers : entrée de la MFT, entrée de répertoire FAT, noms, répertoires. La MFT est « une mine d'or » : une entrée par fichier, avec ses dates.</td></tr>
+</tbody></table></div>
+<div class="grid c2">
+  <div class="card"><h4>Données allouées, non allouées</h4>
+  <p style="margin-bottom:0">Supprimer un fichier ne fait que le <b>retirer du système de fichiers</b> : ses
+  données deviennent <b>non allouées</b> et restent sur le disque jusqu'à ce que le système ait besoin de la
+  place. Ce qu'on récupère d'incomplet s'appelle des <b>fragments</b>, parfois cruciaux. Les clés en rouge de
+  Registry Explorer viennent de là. C'est une question de chance : écrasé tout de suite, ou intact des
+  mois.</p></div>
+  <div class="card"><h4>Le slack space</h4>
+  <p style="margin-bottom:0">Le système alloue des clusters entiers (par exemple 2 048 octets, soit 4 secteurs
+  de 512). Un fichier de 1 280 octets laisse la fin du cluster inutilisée : ce <b>slack space</b> peut
+  garder des morceaux d'anciens fichiers. <b>Linux remplit cet espace d'octets nuls</b> : plus sûr, mais pas
+  de fragments à récupérer.</p></div>
+</div>
+<div class="callout"><div class="t">Conserver très longtemps</div>
+Certains métiers doivent garder des documents très longtemps (les notaires, <b>100 ans</b>). Aucun support
+numérique ne tient aussi longtemps, et les formats changent : une piste connue est le format <b>PDF/A</b>,
+une norme de PDF conçue pour rester lisible à très long terme. C'est un sujet à part entière.
+</div>
+
+<h3 id="ch11-cas">11.12 Le cas de la banque, côté technique</h3>
+<p>Une salariée est soupçonnée d'avoir fait sortir des documents sensibles (§4.1). Faute de temps sur place,
+l'enquêteur repart avec le portable. Les étapes :</p>
+<div class="steps">
+  <div class="step"><b>1. L'image</b><br>Acquisition avec FTK Imager, empreintes vérifiées.</div>
+  <div class="step"><b>2. Le téléchargement</b><br>La base <b>SQLite</b> de l'historique du navigateur
+  (ouverte avec DB Browser for SQLite) montre l'URL SharePoint et le document enregistré sur le poste : les
+  alertes du SIEM sont confirmées. Elle avait le droit d'y accéder… ce qui était l'erreur de la banque.</div>
+  <div class="step"><b>3. La chronologie</b><br>La timeline d'Autopsy, resserrée sur 45 minutes autour des
+  alertes (système de fichiers en rouge, navigation en bleu), montre une clé USB montée en D:.</div>
+  <div class="step"><b>4. Les clés USB</b><br>USB Detective liste tous les périphériques, colorés selon
+  la cohérence des sources (vert : plusieurs sources concordent ; rouge : une seule). On écarte les
+  légitimes (stations d'accueil, clés des salles de réunion) : deux clés étaient inconnues de l'entreprise.</div>
+  <div class="step"><b>5. Les fichiers copiés</b><br>JumpList Explorer (Eric Zimmerman) montre les noms des
+  documents sur le lecteur D: : tel jour, à telle heure, ils étaient sur une clé étrangère à
+  l'entreprise.</div>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch12"><span class="num">12.</span> Analyse de logiciels malveillants</h2>
+
+<div class="exam"><div class="t">« S'il faut retenir une seule chose ce matin »</div>
+Une analyse de logiciel malveillant se fait dans un <b>environnement contrôlé, dédié et isolé</b> du réseau
+de l'entreprise.
+</div>
+
+<p>Analyser un logiciel malveillant (malware), c'est comprendre son fonctionnement et ses impacts potentiels,
+pour concevoir des contre-mesures. Deux approches :</p>
+<div class="grid c2">
+  <div class="card"><h4>Analyse statique</h4>
+  <p style="margin-bottom:0">On <b>n'exécute pas</b> le programme : on lit le binaire (désassemblage,
+  chaînes de caractères, appels, flux de contrôle) pour en identifier les fonctions. Avantage : on est
+  <b>exhaustif</b> sur tous les chemins possibles. Inconvénient : comprendre le code est long.</p></div>
+  <div class="card"><h4>Analyse dynamique</h4>
+  <p style="margin-bottom:0">On <b>exécute</b> le programme dans un environnement contrôlé (machine virtuelle,
+  émulateur, bac à sable ou <b>sandbox</b>) et l'on observe ses interactions avec le système. Plus rapide pour
+  voir le comportement réel, mais coûteuse en ressources. Limite : le programme peut ne se déclencher que
+  sous conditions (une date, une commande, l'accès à Internet, l'adresse IP de la cible) ou se comporter
+  autrement dans un environnement d'analyse.</p></div>
+</div>
+<p>Dans les SOC de l'intervenant, un <b>poste dédié</b>, isolé du réseau du client mais doté de sa propre
+ligne Internet : beaucoup de programmes malveillants ne lancent leur charge que s'ils joignent Internet.</p>
+
+<div class="tw"><table>
+<thead><tr><th>Outil</th><th>Statique ou dynamique ?</th></tr></thead>
+<tbody>
+<tr><td><b>Cuckoo</b> (sandbox automatisée)</td><td>Principalement dynamique</td></tr>
+<tr><td><b>Frida</b> (instrumentation de processus)</td><td>Dynamique</td></tr>
+<tr><td><b>gdb</b> (débogueur sous Linux)</td><td>Dynamique</td></tr>
+<tr><td><b>Ghidra</b> (publié en libre par la NSA, avec décompilateur)</td><td>Statique</td></tr>
+<tr><td><b>IDA Pro</b></td><td>Principalement statique</td></tr>
+<tr><td><b>OllyDbg</b>, <b>x64dbg</b> (débogueurs sous Windows)</td><td>Dynamique</td></tr>
+<tr><td><b>radare2</b></td><td>Principalement statique</td></tr>
+</tbody></table></div>
+
+<h3 id="ch12-limites">12.1 Les limites : chiffrement, polymorphisme, obfuscation</h3>
+<div class="tw"><table>
+<thead><tr><th>Technique</th><th>Principe</th><th>Ce qui reste détectable</th></tr></thead>
+<tbody>
+<tr><td><b>Chiffré</b></td><td>Un déchiffreur et un corps chiffré, avec une clé différente à chaque infection.</td><td>Le <b>déchiffreur</b>, identique d'une version à l'autre.</td></tr>
+<tr><td><b>Polymorphe</b></td><td>D'innombrables déchiffreurs différents.</td><td>Le <b>corps</b>, constant une fois déchiffré.</td></tr>
+<tr><td><b>Métamorphe</b></td><td>Le programme réécrit son propre corps à chaque génération, sans changer ce qu'il fait.</td><td>Aucun corps constant en mémoire : très difficile à détecter.</td></tr>
+<tr><td><b>Obfuscation</b></td><td>Remplacer des instructions par des équivalents plus obscurs, ajouter du code inutile.</td><td>Le comportement. À l'origine, l'obfuscation <b>protège la propriété intellectuelle</b> : elle n'est pas malveillante en soi.</td></tr>
+</tbody></table></div>
+<p>Exemple du cours : un message web exploitait une faille <b>XSS</b> par l'attribut <code>onload</code> d'une
+balise <code>img</code> ; deux variables encodées en base64 servaient à fabriquer l'en-tête et le corps d'une
+page. Le code à analyser n'est parfois qu'un <b>bout de code injecté</b>.</p>
+
+<div class="callout"><div class="t">Une taxonomie qui a moins de sens</div>
+Virus, ver, rançongiciel… WannaCry était-il un ver (il se propageait seul par la faille EternalBlue de SMBv1) ou un rançongiciel ? NotPetya, un effaceur (wiper) ou un
+ver ? Les programmes modernes mélangent tout. Une taxonomie plus pertinente classe les <b>incidents</b> :
+contenu abusif (spam, harcèlement, exploitation sexuelle), code malveillant (système infecté, serveur de
+commande, distribution ou configuration de malware), collecte d'informations (scan, écoute réseau,
+ingénierie sociale)…
+</div>
+
+<h3 id="ch12-sandbox">12.2 Un bac à sable trop reconnaissable</h3>
+<p>Un programme malveillant peut chercher à savoir s'il tourne dans une machine d'analyse, et alors ne rien
+faire. Les indices cités en cours : des valeurs du registre, des services, des noms de processus et
+surtout les DLL qu'ils chargent, l'adresse MAC (préfixe propre à VMware ou VirtualBox), des noms de compte
+ou de répertoire, l'absence de mouvements de souris, un petit disque (moins de 40 Go). D'où la leçon pour
+l'analyste : un environnement d'analyse doit <b>ressembler à un vrai poste</b>.</p>
+
+<h3 id="ch12-retenir">12.3 Ce qu'il faut retenir particulièrement</h3>
+<div class="key-points">
+  <li>Analyser dans un environnement <b>contrôlé, dédié et isolé</b> du réseau de l'entreprise.</li>
+  <li>Vérifier d'abord, par le <b>condensat</b> de préférence et <b>si le client le permet</b>, que le fichier
+  n'a pas déjà été analysé (VirusTotal, malware-traffic-analysis.net, ANY.RUN, Joe Sandbox). Envoyer le
+  fichier lui-même le rend visible d'autres personnes, y compris de l'attaquant.</li>
+  <li>Après une ou deux heures sans comprendre, <b>s'appuyer sur les collègues</b> qui font de la
+  rétro-ingénierie à plein temps.</li>
+  <li><b>Prioriser</b> : comprendre un programme est inutile si l'enquête montre qu'il n'a pas servi à la
+  compromission. Ne pas s'enfermer des jours sur une piste.</li>
+</div>
+<div class="example"><div class="t">Clin d'œil historique</div>
+Frances Glessner Lee a formé des enquêteurs de police avec des maquettes de scènes de crime (les
+<i>Nutshell Studies of Unexplained Death</i>), pleines d'indices à trouver : la méthode d'observation avant
+la technique.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch13"><span class="num">13.</span> Forensic Windows, Mac et Linux</h2>
+
+<div class="exam"><div class="t">Le récapitulatif de fin de cours (jour 2 après-midi), avec ses réponses</div>
+<ul style="margin-bottom:0">
+  <li><b>Windows</b> : né dans les années 80 (Windows 1.0, sur MS-DOS). <b>Attention aux formats de
+  date</b>, pour tous les systèmes.</li>
+  <li><b>L'extension des journaux Windows</b> : <code>.evtx</code>.</li>
+  <li><b>Pourquoi récupère-t-on un fichier de la corbeille ?</b> La suppression retire le lien d'index ; les
+  données restent sur le disque.</li>
+  <li><b>NTFS est pratique parce que…</b> la MFT garde création, suppression et métadonnées de tous les
+  fichiers.</li>
+  <li><b>Shadow Copy</b> : sauvegarde et gestion de versions.</li>
+  <li><b>Récupérer le mot de passe d'un compte Windows ?</b> « On lui demande ! »</li>
+  <li><b>Volatility</b> : l'analyse de la mémoire vive ; le <b>profil</b> est la configuration qui permet de
+  lire correctement la mémoire d'un système donné.</li>
+  <li><b>Chiffrement de disque sous Windows</b> : BitLocker. <b>La base de l'Active Directory</b> :
+  <code>ntds.dit</code> (sortie avec <code>ntdsutil</code>). <b>Le champ précieux des journaux Office 365</b> :
+  le <b>Device ID</b>.</li>
+  <li><b>Mac</b> : HFS+ ; FileVault chiffre le disque ; les .plist gardent la configuration ; le Keychain est
+  l'équivalent de DPAPI sous Windows (un coffre de mots de passe intégré au système).</li>
+  <li><b>Linux</b> : ext4 ; tout est fichier (shell inversé, enregistreur de frappe) ; disque chiffré :
+  demander la clé, ou copier la RAM si l'on a de la chance, et de toute façon un serveur est rarement
+  éteint.</li>
+  <li><b>Les six champs d'un journal web</b> : IP source, horodatage, méthode, URI, code de réponse,
+  User-Agent. Ni l'IP de destination (le serveur lui-même), ni le nombre d'octets.</li>
+  <li><b>Les journaux PowerShell sont-ils des journaux du système ou applicatifs ?</b> Du <b>système</b> :
+  « applicatif », ce sont les applications installées par-dessus.</li>
+</ul>
+</div>
+
+<p>Windows est partout sur les postes utilisateurs, donc dans la plupart des enquêtes en entreprise ; Linux
+domine les serveurs et le matériel réseau ; le Mac reste rare (l'intervenant ne l'a croisé qu'une fois, dans
+la finance). Les systèmes anciens (Windows XP dans l'industrie) ou exotiques (VMS, Solaris) existent encore :
+il faut alors creuser leur documentation, avec bien moins d'outils.</p>
+
+<h3 id="ch13-ntfs">13.1 Windows : NTFS, dates et journaux</h3>
+<p><b>NTFS</b> est né de la séparation de Microsoft et d'IBM après OS/2 : il reprend des concepts du système
+de fichiers HPFS d'OS/2 (avec lequel il partage le code de partition 07) et de Files-11 de VMS, dont le
+chef de projet, Dave Cutler, a aussi dirigé Windows NT. Versions : v1.0 (Windows NT 3.1, 1993), v1.1 (NT
+3.5), v1.2 (NT 3.51 et 4.0), v3.0 (Windows 2000), <b>v3.1 depuis Windows XP</b> (2001). Avant lui : FAT12,
+FAT16, FAT32 ; certaines vieilles versions ne dépassaient pas <b>2 Go par fichier</b>.</p>
+
+<div class="grid c2">
+  <div class="card"><h4>La MFT, « le Graal »</h4>
+  <p style="margin-bottom:0">En NTFS, tous les fichiers, répertoires et leurs métadonnées (nom, date de
+  création, droits d'accès ACL, taille) sont stockés dans la <b>Master File Table</b> (le fichier
+  <code>$MFT</code> à la racine, visible avec FTK Imager ; chaque entrée commence par la signature
+  <code>FILE</code>). Elle est mise à jour à chaque création ou suppression : c'est la base de données des
+  fichiers qui existent <b>et qui ont existé</b>. Elle garde même le <b>début</b> des petits fichiers, parfois
+  suffisant pour lire un texte. Illisible à l'œil : on passe par un analyseur.</p></div>
+  <div class="card"><h4>Les règles des dates (poster SANS)</h4>
+  <p style="margin-bottom:0">L'attribut <code>$Standard_Information</code> garde quatre dates : modification,
+  accès, changement des métadonnées, création (MACB). Chaque opération (création, accès, modification,
+  renommage, copie, déplacement, suppression) les met à jour différemment. Par exemple, une <b>copie</b>
+  prend une date de création égale au moment de la copie mais <b>hérite</b> de la date de modification de
+  l'original : une modification antérieure à la création trahit une copie. Deux événements qui ne
+  s'accordent pas s'expliquent souvent par deux types d'horodatage différents ; les outils le gèrent, mais
+  il faut le savoir.</p></div>
+</div>
+
+<p>Les <b>journaux d'événements</b> se lisent avec l'Observateur d'événements, ou après conversion (EvtxECmd).
+Ils sont stockés dans <code>C:\Windows\System32\winevt\Logs</code>, au format propriétaire
+<code>.evtx</code>. Les plus anciens (Application, Sécurité, Système) servent toujours ; l'intervenant
+regarde en priorité ceux de <b>PowerShell</b> (outil des administrateurs comme des attaquants, et journaux
+« assez compréhensibles ») et de <b>Sysmon</b> (System Monitor, aujourd'hui intégré à Windows, qui journalise
+tout ce qui est exécuté). Un site de référence permet de retrouver ce que signifie chaque numéro, ou le
+numéro d'une action.</p>
+<div class="tw"><table>
+<thead><tr><th>Événement</th><th>Signification</th></tr></thead>
+<tbody>
+<tr><td><b>12</b> / <b>13</b></td><td>Démarrage / arrêt du système</td></tr>
+<tr><td><b>41</b></td><td>Redémarrage sans arrêt complet</td></tr>
+<tr><td><b>19</b>, <b>20</b>, <b>21</b></td><td>WMI : enregistrement d'un filtre, d'un consommateur, puis leur liaison (une persistance à surveiller)</td></tr>
+<tr><td><b>1100</b> / <b>4608</b></td><td>Arrêt / démarrage du service de journalisation de sécurité</td></tr>
+<tr><td><b>1102</b></td><td><b>Journal de sécurité effacé</b></td></tr>
+<tr><td><b>1116</b>, <b>1117</b>, <b>5007</b></td><td>Antivirus Defender : malware détecté, action prise, configuration modifiée</td></tr>
+<tr><td><b>2004</b>, <b>2005</b>, <b>2006</b>, <b>2033</b></td><td>Pare-feu : règle ajoutée, modifiée, supprimée ; toutes les règles supprimées</td></tr>
+<tr><td><b>2010</b></td><td>Profil réseau changé sur une interface</td></tr>
+<tr><td><b>4103</b>, <b>4104</b></td><td>PowerShell : journalisation de module ; contenu d'un bloc de script (à sa première exécution)</td></tr>
+<tr><td><b>4634</b>, <b>4648</b></td><td>Fermeture de session ; connexion avec des identifiants explicites</td></tr>
+<tr><td><b>4698</b>, <b>4719</b>, <b>4738</b></td><td>Tâche planifiée créée ; politique d'audit modifiée ; compte modifié</td></tr>
+<tr><td><b>4740</b></td><td>Compte verrouillé après des échecs de mot de passe répétés</td></tr>
+<tr><td><b>4768</b>, <b>4769</b>, <b>4771</b>, <b>4776</b></td><td>Kerberos (tickets, utiles pour repérer le Kerberoasting ; échec de pré-authentification) ; validation NTLM par le contrôleur de domaine</td></tr>
+<tr><td><b>4778</b>, <b>4779</b>, <b>4825</b></td><td>Session (RDP) reconnectée, déconnectée ; accès Bureau à distance refusé</td></tr>
+<tr><td><b>5140</b></td><td>Accès à un partage réseau</td></tr>
+</tbody></table></div>
+
+<h3 id="ch13-recup">13.2 Windows : fichiers effacés, registre, copies, mots de passe</h3>
+<div class="grid c2">
+  <div class="card"><h4>Pourquoi récupère-t-on un fichier vidé de la corbeille ?</h4>
+  <p style="margin-bottom:0">Parce qu'à la suppression, <b>Windows se contente de modifier l'index</b>. La
+  corbeille est sur le même disque que le reste (pas une partition dédiée) ; la RAM est perdue à
+  l'extinction ; Windows ne fait aucune sauvegarde avant suppression. Le système voit le disque comme une
+  encyclopédie : effacer un article le retire de la table des matières, mais ses pages restent jusqu'à ce
+  qu'un autre contenu les remplace. Outil : <b>Recuva</b>. (L'affaire Clearstream s'est en partie appuyée sur
+  des données qu'un témoin avait simplement effacées.)</p></div>
+  <div class="card"><h4>Les approches de récupération</h4>
+  <ul style="margin-bottom:0">
+    <li><b>Basée sur la structure effacée</b> (file carving) : on parcourt tout le support à la recherche
+    des <b>magic numbers</b> qui marquent le début et la fin des fichiers.</li>
+    <li><b>Basée sur le système de fichiers</b> : on reconstruit le lien retiré de l'index (les commandes
+    <i>undelete</i> et <i>unformat</i> de MS-DOS).</li>
+    <li><b>Mixte</b> : ce que font Autopsy et les autres outils forensic, pour récupérer le maximum.</li>
+  </ul></div>
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>Branche du registre</th><th>Contenu</th></tr></thead>
+<tbody>
+<tr><td><b>HKEY_LOCAL_MACHINE</b> (HKLM)</td><td>Ce qui vaut pour tous les utilisateurs : matériel, sécurité, SAM, logiciels, système (dont CurrentControlSet)</td></tr>
+<tr><td><b>HKEY_USERS</b> (HKU)</td><td>Une sous-branche par utilisateur ; celle de l'utilisateur connecté est HKEY_CURRENT_USER</td></tr>
+<tr><td>HKEY_CURRENT_CONFIG</td><td>Configuration matérielle courante, régénérée à chaque démarrage</td></tr>
+<tr><td>HKEY_CLASSES_ROOT</td><td>Associations entre extensions et applications (= HKLM\SOFTWARE\Classes)</td></tr>
+<tr><td>HKEY_CURRENT_USER (HKCU)</td><td>L'utilisateur connecté, stocké dans son <code>NTUSER.DAT</code></td></tr>
+<tr><td>HKEY_PERFORMANCE_DATA</td><td>Données de performance générées à la volée</td></tr>
+</tbody></table></div>
+<p>Les outils : <b>Regedit</b> (interface graphique native), la ligne de commande ou PowerShell,
+<b>Registry Explorer</b> (pensé pour la forensic) et <b>RegRipper</b>, qui extrait d'office les données
+utiles mais ne rend qu'un rapport, sans parcours. Un cas : dans l'affaire des 10 millions (§9.2), le service
+de synchronisation de Windows (Windows Sync) gardait dans le registre du poste professionnel les machines connectées au
+même compte <b>Microsoft Entra ID</b> (l'Active Directory du cloud de Microsoft) : à côté du portable
+professionnel figurait un PC personnel, au nom évocateur. La preuve qu'une machine personnelle avait servi à
+se connecter au compte.</p>
+
+<div class="grid c2">
+  <div class="card"><h4>Les copies Volume Shadow (VSS)</h4>
+  <p style="margin-bottom:0">Le service de clichés instantanés fait des sauvegardes automatiques ou manuelles,
+  même de fichiers en cours d'utilisation (depuis Windows XP, persistantes depuis Server 2003 ; NTFS requis).
+  Sauvegarde <b>et gestion de versions</b> : on compare les anciennes versions aux fichiers actuels pour voir
+  ce qui a changé, voire on retrouve d'anciens fichiers d'hibernation. Tout dépend de la politique de
+  sauvegarde de l'entreprise.</p></div>
+  <div class="card"><h4>Retrouver le mot de passe Windows d'un suspect</h4>
+  <ul style="margin-bottom:0">
+    <li><b>Oui</b> : depuis une image mémoire de <code>lsass.exe</code>, le processus qui gère
+    l'authentification. Autrefois le mot de passe y était en clair ; aujourd'hui on n'y trouve plus que des
+    condensats, et tout EDR moderne surveille l'accès à cette mémoire.</li>
+    <li><b>Oui</b>, et c'est le plus fréquent : <b>le demander</b> à la personne (« on lui demande ! ») ;
+    ou le trouver en clair dans un fichier, même effacé (tableur de mots de passe, fichier de
+    configuration).</li>
+    <li><b>Peu envisageable</b> : casser par force brute les condensats de la base SAM, si le mot de passe
+    est long et complexe.</li>
+    <li><b>Non</b> : les journaux (une application qui y écrit des mots de passe est « très sale »), les
+    métadonnées de la MFT, la ruche SYSTEM (elle contient la clé qui protège la SAM, pas de mot de passe),
+    le service VSS.</li>
+  </ul></div>
+</div>
+
+<h3 id="ch13-memoire">13.3 Windows : mémoire, chiffrement, AmCache</h3>
+<div class="grid c2">
+  <div class="card"><h4>Volatility</h4>
+  <p style="margin-bottom:0">Framework libre d'analyse de la mémoire, en Python, pour la réponse à incident et
+  l'analyse de malware (Windows, macOS, Linux). La mémoire vient d'une copie à chaud, ou des fichiers que
+  Windows écrit lui-même (<code>hiberfil.sys</code>, <code>pagefile.sys</code>, <code>MEMORY.DMP</code>,
+  §11.10). Exemple : sur l'image mémoire d'une machine infectée par Stuxnet, la liste des processus montre
+  <b>trois</b> <code>lsass.exe</code>, dont deux lancés plus tard et dont le parent est
+  <code>services.exe</code> : une anomalie, il n'en existe normalement qu'un. L'analyse mémoire est un métier
+  à part (une semaine de formation à plein temps) : l'enquêteur généraliste fait appel à un spécialiste
+  pour les cas difficiles.</p></div>
+  <div class="card"><h4>BitLocker</h4>
+  <p style="margin-bottom:0">Trois modes : <b>transparent</b> (Transparent Operation Mode : la puce TPM libère la clé, l'utilisateur ne
+  fait rien), <b>authentification de l'utilisateur</b> (User Authentication Mode, avant le démarrage), <b>clé USB</b> (sans TPM). Il
+  faut deux partitions NTFS ; depuis Windows 10 (1511), chiffrement XTS-AES 128 ou 256 bits. Machine
+  allumée et déverrouillée, la clé est <b>en mémoire</b>. Autres outils de chiffrement de disque : TrueCrypt
+  (abandonné en 2014), son successeur VeraCrypt, Stormshield, PGP, dm-crypt (avec LUKS) sous Linux.</p></div>
+</div>
+<div class="callout ok"><div class="t">Merci AmCache</div>
+La machine compromise était éteinte ; on a la clé BitLocker, mais le programme malveillant a été <b>supprimé
+de façon sécurisée</b>. Comment retrouver son empreinte ? Dans l'<b>AmCache</b>
+(<code>C:\<wbr>Windows\<wbr>AppCompat\<wbr>Programs\<wbr>Amcache.hve</code>), qui garde le chemin et le SHA-1 des exécutables :
+avec ce condensat, on interroge les bases de menaces sans avoir le binaire. Il est mis à jour à l'exécution
+d'un programme et par des tâches planifiées (Microsoft Compatibility Appraiser, ProgramDataUpdater). Des
+travaux de l'ANSSI l'ont fait connaître.
+</div>
+
+<h3 id="ch13-ad">13.4 Windows : Active Directory, messagerie et cloud</h3>
+<div class="grid c2">
+  <div class="card"><h4>ntds.dit et ntdsutil</h4>
+  <p style="margin-bottom:0">La base de l'Active Directory est le fichier <b><code>ntds.dit</code></b> (dans
+  <code>C:\Windows\NTDS</code>, sur les contrôleurs de domaine) : tous les comptes et leurs empreintes de
+  mot de passe. Il est verrouillé en fonctionnement. Trouver sur une machine compromise la trace de
+  <code>ntdsutil</code> avec l'option <b>IFM</b> (« create full ») est inquiétant : cette fonction légitime,
+  prévue pour installer un contrôleur de domaine à partir d'une sauvegarde, crée un instantané et copie
+  <code>ntds.dit</code> avec les ruches SYSTEM et SECURITY. Elle sert à <b>récupérer des informations
+  sensibles</b>. Elle ne défragmente rien d'utile, ne contourne pas les GPO, ne joint pas la machine au
+  domaine et n'abîme pas le système.</p></div>
+  <div class="card"><h4>Exchange et Office 365</h4>
+  <p style="margin-bottom:0">Avec Exchange sur site (on-premise), l'enquêteur avait le serveur et ses bases. Dans le cloud
+  de Microsoft, plus d'image disque : les journaux sont dispersés entre des consoles qui changent souvent de
+  nom (recherche d'audit dans Purview, suivi des messages et règles de transfert dans la console Exchange,
+  journaux de connexion d'Entra ID). Dans une connexion Office 365, le champ <b>Device ID</b> identifie la
+  machine : le poste habituel a toujours le même, une connexion inconnue en a un autre. Un adversaire en
+  <b>navigation privée</b> laisse ce champ vide : une anomalie à repérer.</p></div>
+</div>
+<div class="viz"><div class="t">Cinq retours d'expérience</div>
+<div class="vz-grid g2">
+  <button class="vz-c k-amber"><span class="n">Antivirus</span><h5>Le pilote qui enregistrait le clavier</h5><span class="q">Une alerte antivirus sur un serveur : un pilote légitime</span><span class="more"><span class="t">Leçon</span>Ce n'était pas un virus mais un pilote audio légitime (affaire de portables HP en 2017) qui enregistrait les frappes dans un fichier. L'alerte était fondée : on a remplacé le pilote par une version corrigée.</span></button>
+  <button class="vz-c k-blue"><span class="n">Faux positif</span><h5>Le RIB dans le navigateur</h5><span class="q">Une coopérative agricole : un clic sur un lien d'hameçonnage, et un RIB dans la ligne de commande du navigateur</span><span class="more"><span class="t">Leçon</span>L'EDR s'alarmait : le processus du navigateur ouvert par le clic avait un RIB en paramètre. Une semaine d'enquête : lecture de la boîte mail (fichier OST) avec XstReader, outil libre qui faisait sonner l'antivirus car il sert aussi aux attaquants (les outils gratuits habituels ne suffisaient pas). Explication : le matin, l'employée avait ouvert un RIB, ce qui avait lancé Internet Explorer avec ce paramètre ; la fenêtre était restée ouverte, et le lien cliqué l'après-midi s'y est ouvert. Aucun lien de cause, et le serveur malveillant ne répondait déjà plus : aucune fuite. L'enquête sert aussi à lever un doute.</span></button>
+  <button class="vz-c k-purple"><span class="n">Cloud</span><h5>L'incident sur AWS</h5><span class="q">Une application publique vulnérable comme porte d'entrée</span><span class="more"><span class="t">Le chemin d'attaque</span>Compromission d'une application exposée, puis de son instance, rebond vers les ressources internes, dont des postes de travail virtuels (VDI) mal cloisonnés, et exfiltration de données vers des compartiments S3. Le fournisseur sécurise l'infrastructure ; l'architecture et les droits restent l'affaire du client (responsabilité partagée).</span></button>
+  <button class="vz-c k-red"><span class="n">Cloud</span><h5>Le réseau à plat chez Google</h5><span class="q">Une plateforme de cryptomonnaies qui cache l'adresse de ses bureaux</span><span class="more"><span class="t">Leçon</span>Très soucieux de leur sécurité physique (risque d'extorsion) et de leur code, ils avaient construit tout leur réseau sur GCP sans aucune segmentation interne : « c'est chez Google, donc c'est sécurisé ». Le cloud s'administre et se sécurise ; par défaut, il ne l'est pas.</span></button>
+  <button class="vz-c k-green"><span class="n">Active Directory</span><h5>Après l'éviction</h5><span class="q">Vérifier que l'intrus est bien parti</span><span class="more"><span class="t">La mission</span>Après une opération d'éviction des intrus menée par Microsoft, le client demande d'évaluer la solidité du « Tier 0 » (les comptes et serveurs les plus sensibles de l'annuaire) et de confirmer que son système n'est plus compromis, en s'appuyant sur les données de Microsoft ATP.</span></button>
+</div>
+<div class="vz-bar"><button class="btn" data-cards="open">Tout déplier</button><button class="btn ghost" data-cards="close">Tout replier</button><span class="cnt"></span></div></div>
+
+<h3 id="ch13-mac">13.5 Mac</h3>
+<p>Plus ancien que Windows : Apple I (1976) et II (1977), Lisa (1983), Macintosh (1984), PowerBook, iPod
+(2001), iPhone (2007), iPad (2010). Un écosystème <b>propriétaire</b> (protocoles et formats maison) dont les
+appareils dialoguent très facilement entre eux : dans un parc tout Mac, un iPhone peut échanger des fichiers
+avec un poste sans qu'aucun filtrage ne le voie, un risque de fuite si rien n'est verrouillé (gestion de
+flotte, MDM). Systèmes de fichiers : <b>HFS</b> (« Mac OS Standard »), puis <b>HFS+</b> (« Mac OS étendu »),
+aujourd'hui <b>APFS</b> (visibles avec <code>diskutil list</code>). L'arborescence distingue trois domaines :
+local (Applications, Library), système (System) et utilisateur (Users, avec la Library de chacun).</p>
+<div class="tw"><table>
+<thead><tr><th>Élément</th><th>À savoir</th></tr></thead>
+<tbody>
+<tr><td><b>FileVault</b></td><td>Le chiffrement du disque, équivalent de BitLocker (depuis Mac OS X 10.3) : chiffrement AES, clé dérivée du mot de passe de l'utilisateur ; un mot de passe maître permet la récupération.</td></tr>
+<tr><td><b>Fichiers .plist</b></td><td>Configuration du système et des applications, dont ce qui se lance au démarrage, « un peu comme le registre Windows » ; XML ou binaire, lisibles avec Xcode ou <code>plutil</code>.</td></tr>
+<tr><td><b>Keychain</b> (trousseau)</td><td>Le coffre-fort des mots de passe (Safari, Notes), équivalent de <b>DPAPI</b> sous Windows. Avec la clé, des outils comme chainbreaker l'ouvrent ; un Mac souvent hors annuaire n'offre pas de récupération centralisée.</td></tr>
+<tr><td><b>Dates</b></td><td>Unix compte depuis le 1<sup>er</sup> janvier <b>1970</b>, HFS+ depuis le 1<sup>er</sup> janvier <b>1904</b>, le « Mac Absolute Time » depuis le 1<sup>er</sup> janvier <b>2001</b>. Chrome et Windows comptent depuis 1601 : un même nombre donne des dates très différentes selon l'origine.</td></tr>
+<tr><td><b>Triage à chaud</b></td><td>Système (<code>date</code>, <code>sw_vers</code>, <code>uname -a</code>, <code>hostname</code>), réseau (<code>netstat</code>, <code>lsof -i</code>, <code>arp -an</code>, <code>ifconfig</code>), connexions (<code>who</code>, <code>w</code>, <code>last</code>), processus (<code>ps aux</code>), fichiers ouverts (<code>lsof</code>), historique du shell (zsh par défaut aujourd'hui). Les mêmes réflexes que sous Linux.</td></tr>
+</tbody></table></div>
+<div class="tw"><table>
+<thead><tr><th>Fichier spécial de macOS</th><th>Ce qu'il révèle</th></tr></thead>
+<tbody>
+<tr><td><code>com.apple.LaunchServices.QuarantineEventsV2</code></td><td>Les fichiers téléchargés et l'URL d'où ils viennent</td></tr>
+<tr><td><code>com.apple.recentitems.plist</code></td><td>Fichiers et applications ouverts récemment via le Finder</td></tr>
+<tr><td><code>com.apple.loginitems.plist</code></td><td>Ce qui se lance à l'ouverture de session</td></tr>
+<tr><td><code>DiskUtility.log</code></td><td>Disques, dont les clés USB</td></tr>
+<tr><td><code>com.apple.airport.preferences.plist</code></td><td>Points d'accès Wi-Fi</td></tr>
+<tr><td><code>/var/log/system.log</code>, <code>/private/var/log/asl/*.asl</code></td><td>Journaux du système</td></tr>
+<tr><td><code>.DS_Store</code></td><td>Attributs d'affichage de chaque dossier ouvert dans le Finder. Copié par mégarde sur un serveur web, il <b>liste le contenu du dossier</b>, même si le listage des répertoires est désactivé.</td></tr>
+<tr><td><code>.Spotlight-V100</code></td><td>Index de recherche du volume</td></tr>
+<tr><td><code>/private/etc/kcpassword</code></td><td>Si l'ouverture de session automatique est active, le mot de passe, à peine masqué (XOR)</td></tr>
+</tbody></table></div>
+
+<h3 id="ch13-linux">13.6 Linux</h3>
+<p>Le projet GNU démarre en 1984, le noyau Linux en 1991 (Linus Torvalds). Un monde ouvert : on a le code,
+rien n'est une boîte noire, contrairement au Microsoft hostile à la rétro-ingénierie des années 1990-2000
+(devenu bien plus ouvert depuis : PowerShell, WSL). Les systèmes de fichiers courants :</p>
+<div class="tw"><table>
+<thead><tr><th></th><th><b>ext4</b> (le plus fréquent)</th><th>XFS</th><th>Btrfs</th></tr></thead>
+<tbody>
+<tr><td>Apparu en</td><td>2006</td><td>1994</td><td>2009</td></tr>
+<tr><td>Taille maximale d'un fichier</td><td>16 To</td><td>8 Eo</td><td>16 Eo</td></tr>
+<tr><td>Compression transparente</td><td>Non</td><td>Non</td><td>Oui</td></tr>
+<tr><td>Copie sur écriture, instantanés</td><td>Non</td><td>Prévu</td><td>Oui</td></tr>
+</tbody></table></div>
+<p>Les traces sont rangées par l'arborescence : <code>/etc</code> (configuration, à regarder),
+<code>/home</code> (utilisateurs), <code>/root</code>, <code>/boot</code>, <code>/tmp</code>,
+<code>/dev</code> (périphériques : clavier, souris, écran…), <code>/proc</code> (les processus, présentés
+comme des fichiers : avec un accès en lecture, on en apprend beaucoup), et surtout <code>/var</code>
+(journaux).</p>
+<div class="callout warn"><div class="t">Avant un find ou un grep sur /</div>
+Les serveurs d'entreprise montent souvent des <b>partages réseau</b> de plusieurs téraoctets. Un
+<code>find /</code> ou un <code>grep -r /</code> lancé sans regarder ce qui est monté prend des heures et
+consomme beaucoup de ressources : vérifier d'abord avec <code>mount</code> ou <code>df</code>.
+</div>
+
+<div class="grid c2">
+  <div class="card"><h4>Sur Linux, tout est fichier</h4>
+  <p style="margin-bottom:0">Une redirection « vers un fichier » peut en réalité ouvrir une <b>connexion
+  réseau</b> (<code>/dev/tcp/adresse/port</code> : un shell inversé) ou lire le <b>clavier</b>
+  (<code>/dev/input/event0</code>) : un enregistreur de frappe en une ligne. Le shell inversé est né des
+  pare-feux qui filtraient les connexions entrantes mais pas les sortantes ; aujourd'hui, avec le filtrage
+  des flux sortants et la micro-segmentation, c'est parfois l'inverse.</p></div>
+  <div class="card"><h4>Le disque chiffré</h4>
+  <p style="margin-bottom:0">Pour obtenir la clé : depuis une <b>image mémoire</b> (à condition de l'avoir,
+  et prise au bon moment : la clé sert surtout au démarrage du déchiffrement), en la <b>demandant</b> à la
+  personne qui la connaît (en général, elle la donne), ou dans une <b>puce</b> (TPM) selon la machine : les
+  modes transparent et utilisateur existent aussi avec dm-crypt. <b>Non</b> : les journaux (sauf application
+  mal faite), les options de démarrage, un fichier effacé (rare), <code>/etc/shadow</code> (empreintes des
+  comptes, pas la clé du disque), <code>dd</code> (copie chiffrée). En entreprise, un serveur Linux est
+  rarement éteint : on n'a souvent pas besoin de déchiffrer.</p></div>
+</div>
+
+<div class="grid c2">
+  <div class="card"><h4>.bash_history</h4>
+  <p style="margin-bottom:0">« Très TRÈS utile » : le premier fichier que l'intervenant lit, en forensic comme
+  en test d'intrusion. Pas toujours horodaté, mais les commandes racontent l'histoire. Exemple : on y lit une
+  mise à jour du système, des contrôles de rootkits et d'intégrité (<code>chkrootkit</code>,
+  <code>rkhunter</code>, Tripwire), des effacements sécurisés (<code>srm</code>, <code>shred</code>,
+  l'équivalent d'Eraser), un scanner web (Nikto), Burp Suite, puis la lecture de
+  <code>/var/log/apt/history.log</code> (paquets installés). Le shell suffit à beaucoup d'enquêtes :
+  <code>grep</code> et ses expressions régulières sont très rapides (en audit PCI-DSS, on cherche ainsi des
+  numéros de carte bancaire oubliés sur les partages).</p></div>
+  <div class="card"><h4>Les journaux web</h4>
+  <p style="margin-bottom:0">Les principaux serveurs web sont sous Linux (Nginx a dépassé Apache). Quel que
+  soit le serveur, chaque ligne contient les six mêmes champs : <b>adresse IP source</b>, <b>horodatage</b>,
+  <b>méthode</b> (GET, POST, PUT, OPTIONS…), <b>URI</b> (ce qui suit le nom de domaine), <b>code de réponse
+  HTTP</b> (200, 3xx, 404…), <b>User-Agent</b> (le client web). Une série de requêtes vers
+  <code>../../etc/passwd</code> signe une tentative de traversée de répertoires (directory traversal).</p></div>
+</div>
+<div class="callout warn"><div class="t">Des programmes qui ne touchent pas le disque</div>
+Sur Windows comme sur Linux, beaucoup de programmes malveillants n'écrivent plus de fichier pour ne pas être
+détectés. Sur Linux, un indice : un processus dont <code>/proc/&lt;PID&gt;/exe</code> pointe vers un fichier
+marqué « (deleted) ». Autre endroit à regarder : <code>/dev/shm</code>, mémoire partagée vidée à
+l'extinction, où des outils sont souvent déposés après une intrusion.
+</div>
+
+<h3 id="ch13-couches">13.7 Quand le système ne dit rien : les autres couches</h3>
+<p>Sans journaux du système, on voit encore certaines phases grâce aux journaux applicatifs. Exemple, tiré des
+« réserves sur l'analyse » d'un rapport (plan du §8 : chronologie, actifs touchés, constats techniques) :</p>
+<div class="tw"><table>
+<thead><tr><th>Phase de l'intrusion</th><th>Visible sans journaux du système ?</th></tr></thead>
+<tbody>
+<tr><td><b>Injection SQL</b></td><td><b>Oui</b>, dans les journaux du serveur web, puisqu'elle passe par des requêtes vers l'application (en clair si elle est dans un GET).</td></tr>
+<tr><td><b>Exécution de commande arbitraire</b></td><td><b>Parfois</b> : visible si elle passe par un <b>GET</b> (l'URI est journalisée) ; dans un <b>POST</b>, la requête est tracée mais <b>pas son contenu</b>. Ou si l'application journalise elle-même cette fonction.</td></tr>
+<tr><td><b>Shell inversé et accès aux systèmes</b></td><td><b>Peu de chances</b> : ce sont des traces du système (ou d'une capture intégrale du trafic).</td></tr>
+</tbody></table></div>
+<p>Certaines enquêtes ne touchent le système qu'à la fin : sur les <b>cryptomonnaies</b>, la plupart des
+blockchains sont publiques. Dans une affaire de service pédocriminel caché derrière Tor (racontée dans un
+podcast), plusieurs pistes étaient vraies :</p>
+<ul>
+  <li>l'enquête est partie du <b>fisc américain</b> (IRS), qui suit les flux financiers suspects ;</li>
+  <li>une <b>miniature d'image</b> n'était pas servie à travers Tor : elle a révélé l'adresse IP réelle du
+  serveur ;</li>
+  <li>le <b>portefeuille</b> qui recevait les paiements, public puisqu'il fallait l'alimenter, renvoyait
+  toujours vers le même compte ;</li>
+  <li>une adresse électronique très proche d'une autre, utilisée sur un service de cryptomonnaie, a bien
+  servi, mais à identifier un <b>utilisateur</b> (un agent américain des frontières), pas l'administrateur.</li>
+</ul>
+<p>Fausses pistes : une faille pour trouver le portefeuille (inutile, il était public), une porte dérobée de la
+NSA (« la vérité est suffisamment sensationnelle » : l'intervenant en profite pour mettre en garde contre le
+complotisme). Il rappelle aussi qu'il est parfois question de vie ou de mort dans ces affaires.</p>
+
+<h3 id="ch13-conteneurs">13.8 Conteneurs et trois études de cas</h3>
+<p>Docker fait tourner un conteneur applicatif sur un hôte ; Kubernetes en orchestre beaucoup. Ils ne
+changent pas la discipline, mais imposent un changement de paradigme et d'outillage : déploiements à la
+volée, adresses IP très temporaires, d'où l'importance d'avoir les bons journaux. Kubernetes a un plan de
+contrôle (serveur d'API, controller manager, scheduler, base etcd) et des nœuds (kubelet, kube-proxy) qui
+font tourner des <b>pods</b>.</p>
+<div class="grid c3">
+  <div class="card"><h4>Détecter l'exploitation d'une faille</h4>
+  <p>Un scanner de vulnérabilités (Nessus) a exploité une faille du gestionnaire de ressources Hadoop YARN :
+  une requête POST qui exécute une commande. Côté forensic :</p>
+  <ul style="margin-bottom:0">
+    <li>l'heure des POST sur cette URI (sans leur contenu) et leur <b>nombre inhabituel</b> ;</li>
+    <li>le <code>.bash_history</code> du compte du service, s'il existe (rare pour un compte de
+    service) ;</li>
+    <li>l'IP source dans les journaux web ; les flux réseau vers un éventuel serveur de commande (C2) ; les
+    journaux du pare-feu ;</li>
+    <li>les fichiers modifiés dans la fenêtre de temps.</li>
+  </ul></div>
+  <div class="card"><h4>Les alertes du pare-feu</h4>
+  <p style="margin-bottom:0">Un pare-feu de niveau 7 (Palo Alto) remonte, contre une même machine, des
+  tentatives visant Windows, un serveur Apache et Linux à la fois. Aucune attaque réelle ne vise trois
+  systèmes en même temps : c'est un <b>scan de vulnérabilités</b> qui essaie tout.</p></div>
+  <div class="card"><h4>Le pod compromis</h4>
+  <p style="margin-bottom:0">Le scan venait d'une <b>adresse IP interne</b> : un <b>pod Kubernetes</b>
+  compromis par un composant pas à jour. La <b>chronologie</b> montre qu'il a d'abord tenté, sans succès,
+  d'atteindre d'autres conteneurs, d'en sortir des données et d'élever ses droits ; c'est « par dépit »
+  qu'il a ensuite scanné le réseau. Leçon : avec une bonne hygiène, une compromission a peu d'impact.</p></div>
+</div>
+
+<h3 id="ch13-tp">13.9 Le TP : une image mémoire et une capture réseau</h3>
+<div class="grid c2">
+  <div class="card"><h4>L'image mémoire avec Volatility</h4>
+  <ol style="margin-bottom:0">
+    <li><code>imageinfo</code> identifie le système d'origine et propose des <b>profils</b> (ici Windows 7 SP1
+    64 bits).</li>
+    <li><code>pstree</code> liste les processus et leur parenté (PID, et PPID du parent) ; on <b>écrit la sortie dans un fichier</b>
+    (Volatility est lent) puis on la filtre (<code>grep dwm</code> donne le PID du Desktop Window
+    Manager).</li>
+    <li>Le processus malveillant : celui qu'on ne connaît pas. Avec l'habitude, on retire les processus
+    légitimes et il en reste peu à examiner.</li>
+    <li><code>procdump -p &lt;PID&gt; --dump-dir</code> extrait l'exécutable de la mémoire ;
+    <code>sha256sum</code> donne son empreinte, que VirusTotal reconnaît comme malveillante. Volatility 3 ne
+    rendait pas la même empreinte : savoir quelle version on utilise.</li>
+  </ol></div>
+  <div class="card"><h4>Le fichier caché dans la capture</h4>
+  <ol style="margin-bottom:0">
+    <li>Dans Wireshark, <b>Statistiques, Hiérarchie des protocoles</b> : un seul flux HTTP.</li>
+    <li><b>Suivre le flux TCP</b> : une requête GET vers <code>secret.txt</code> renvoie le mot de passe
+    d'une archive ZIP, puis l'archive est téléchargée.</li>
+    <li>L'export automatique (Exporter les objets HTTP) échoue : transfert corrompu.</li>
+    <li>On cherche les <b>magic numbers</b> du ZIP dans le flux en hexadécimal : début <code>50 4B 03
+    04</code>, fin <code>50 4B 05 06</code>. Un flux contient les deux, l'autre n'a pas la fin (d'où
+    l'échec).</li>
+    <li>On garde les octets du début à la fin, on les convertit en binaire (<code>xxd -r -p</code>), et
+    l'archive s'ouvre avec le mot de passe. Un outil de carving (Foremost) fait la même chose
+    automatiquement.</li>
+  </ol></div>
+</div>
+<div class="callout"><div class="t">La règle répétée en TP</div>
+Chercher « flag » avec <code>grep</code>, « c'est avoir de la chance ». Et « si l'IA vous dit : c'est ça le
+flag, vous devez vérifier ». Les outils automatiques existent, « mais il faut savoir si l'outil se trompe, et
+savoir le faire manuellement ».
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch14"><span class="num">14.</span> S'entraîner : questions ouvertes</h2>
 
 <p>L'examen comporte quelques questions ouvertes. Formulez votre réponse, puis dépliez.</p>
 
@@ -1282,8 +2127,68 @@ Seules les forces de l'ordre le peuvent. Le rapport expose les faits (le mot de 
 endroit, une connexion est venue d'une machine non professionnelle), formule le soupçon comme tel et
 recommande, par exemple, un dépôt de plainte.</p></div></details>
 
+<details class="case"><summary>Cas 12 — « Tout le monde me l'a dit »<span class="sit">Pendant un audit, le directeur affirme que l'antivirus est déployé partout : la RSSI et deux administrateurs le confirment, et la politique de sécurité l'exige. Pouvez-vous l'écrire comme un constat ?</span></summary>
+<div><p>Ce sont des preuves <b>confirmative</b> (plusieurs sources concordantes), <b>orale</b> et
+<b>documentaire</b> : les plus faibles de l'échelle, puisqu'aucune ne vérifie la mise en œuvre. Pour un
+constat technique, il faut monter : observer l'antivirus sur des postes (<b>physique</b>), vérifier sa
+configuration (<b>technique</b>), rapprocher la console de l'inventaire (<b>mathématique</b>, par exemple 140
+postes sur 150), analyser les journaux de remontée d'alertes (<b>analytique</b>). Le rapport indique le
+niveau de preuve de chaque constat.</p></div></details>
+
+<details class="case"><summary>Cas 13 — Le serveur allumé<span class="sit">Vous arrivez devant un serveur suspect, encore allumé, équipé d'un SSD. L'administrateur propose de l'éteindre proprement pour que vous emportiez le disque.</span></summary>
+<div><p>L'éteindre perd tout ce qui est en mémoire (processus, connexions, fichiers ouverts, clés de
+chiffrement, programme qui ne vit qu'en RAM), et sur un SSD l'arrêt peut lancer le TRIM et l'uniformisation
+d'usure ; le débrancher brutalement risque d'abîmer le disque. La recommandation est de <b>collecter à
+chaud</b> : la mémoire d'abord, puis le disque, en <b>notant chaque action</b> (on modifie forcément un peu
+la mémoire) et en prévoyant les alertes antivirus. Ensuite empreintes, copie de la copie, chaîne de
+possession.</p></div></details>
+
+<details class="case"><summary>Cas 14 — La mémoire d'une machine éteinte<span class="sit">Un portable Windows compromis a été éteint par son utilisateur. On vous demande quand même ce qui tournait en mémoire.</span></summary>
+<div><p>Chercher sur l'image du disque les copies de la mémoire que Windows écrit lui-même : le fichier
+d'<b>hibernation</b> <code>hiberfil.sys</code> (image compressée de la RAM, si le portable a été mis en veille
+prolongée, et ses anciennes versions dans les copies Volume Shadow), le fichier d'<b>échange</b>
+<code>pagefile.sys</code>, et un <code>MEMORY.DMP</code> s'il y a eu un plantage. On les analyse avec
+Volatility. Sans eux, on se rabat sur les traces du disque (Prefetch, AmCache, journaux).</p></div></details>
+
+<details class="case"><summary>Cas 15 — L'exécutable à comprendre<span class="sit">Un exécutable inconnu a été retrouvé sur un poste compromis. Un analyste junior veut le lancer sur sa machine pour « voir ce qu'il fait », puis l'envoyer sur VirusTotal.</span></summary>
+<div><p>Jamais sur une machine de travail : l'analyse se fait dans un environnement <b>contrôlé, dédié et
+isolé</b>, qui ressemble à un vrai poste (sinon le programme peut ne rien faire). Avant tout, rechercher son
+<b>condensat</b> (déjà analysé ?) plutôt que d'envoyer le fichier, et seulement si le client le permet :
+un fichier envoyé devient visible, y compris de l'attaquant. Choisir entre analyse <b>statique</b> (sans
+exécuter, exhaustive mais longue) et <b>dynamique</b> (en sandbox, rapide mais contournable). Demander
+l'aide des spécialistes après une ou deux heures, et <b>prioriser</b> : si l'enquête montre que ce programme
+n'a pas servi, inutile de le disséquer.</p></div></details>
+
+<details class="case"><summary>Cas 16 — Le formulaire de la preuve<span class="sit">Vous venez de copier le disque d'un portable chez un client à l'étranger. Que consignez-vous pour la chaîne de possession ?</span></summary>
+<div><p><b>Quoi</b> : photos, modèle et numéro de série du portable et du disque, nom d'hôte ; nom du fichier
+image et son <b>empreinte</b>. <b>Comment</b> : outil (dc3dd, FTK Imager), acquisition hors ligne avec
+bloqueur d'écriture, format. <b>Quand</b> : date et heure <b>avec le fuseau</b> (ou tout en UTC).
+<b>Qui</b> : chaque personne qui a remis ou reçu la preuve, avec signature. <b>Où</b> : le lieu de stockage
+(casier fermé à clé) ou le NAS et son adresse.</p></div></details>
+
+<details class="case"><summary>Cas 17 — La chronologie pour la direction<span class="sit">Votre analyse a trouvé des dizaines de traces : clés USB, gravure de CD, courriels, CCleaner, Eraser… Comment les présenter au comité de direction ?</span></summary>
+<div><p>Une <b>frise chronologique</b> triée et haut niveau, découpée par rapport au jour de la découverte
+(J-2, J-1, J) : préparation, sortie des données, effacement des traces. On ne garde que les actions
+importantes et on les dit en mots simples : « il a copié les documents sur une clé personnelle », « il a
+effacé ses traces », pas le nom des outils ni des clés de registre. Les détails techniques et les preuves
+vont dans la partie technique et en annexe.</p></div></details>
+
+<details class="case"><summary>Cas 18 — L'alerte qui fait peur<span class="sit">L'EDR signale qu'après un clic sur un lien d'hameçonnage, le navigateur s'est lancé avec un RIB de l'entreprise en paramètre. Le SOC conclut à un vol de coordonnées bancaires.</span></summary>
+<div><p>Ne pas conclure sur une corrélation : reconstituer la <b>chronologie</b>. Quand le processus du navigateur
+a-t-il été créé, et par quoi ? Qu'a reçu l'employée (boîte mail, fichier OST) ? Le site malveillant
+répondait-il au moment du clic (historique, proxy) ? Dans le cas réel, le navigateur avait été ouvert le
+matin avec ce RIB et le lien s'y était ouvert l'après-midi ; le serveur était déjà hors ligne : aucune fuite.
+Le rapport l'établit avec des faits : lever un doute est aussi un résultat.</p></div></details>
+
+<details class="case"><summary>Cas 19 — Le fichier qui ne s'extrait pas<span class="sit">Une capture réseau montre le téléchargement d'une archive, mais l'export automatique de Wireshark échoue : fichier corrompu.</span></summary>
+<div><p>Repérer le flux (hiérarchie des protocoles, suivre le flux TCP), puis passer en hexadécimal et chercher
+les <b>magic numbers</b> du format : pour un ZIP, <code>50 4B 03 04</code> au début et <code>50 4B 05
+06</code> à la fin. Si un flux est tronqué, en chercher un autre qui contient les deux. Garder les octets entre
+les deux, les reconvertir en binaire, ouvrir l'archive. Un outil de carving fait la même chose ; il faut
+savoir le faire à la main pour vérifier l'outil.</p></div></details>
+
 <!-- ===================================================================== -->
-<h2 id="qcm-sec"><span class="num">12.</span> QCM — <span id="count-badge" class="badge acc"></span></h2>
+<h2 id="qcm-sec"><span class="num">15.</span> QCM — <span id="count-badge" class="badge acc"></span></h2>
 <p><b>Une seule bonne réponse par question</b>, ordre tiré au hasard, correction expliquée. Les
 chapitres suivent ceux de la fiche.</p>
 <div id="qcm"></div>
@@ -1292,7 +2197,7 @@ chapitres suivent ceux de la fiche.</p>
 </div>
 
 <button id="top" title="Haut de page">↑</button>
-<script src="qcm.js?v=5"></script>
+<script src="qcm.js?v=7"></script>
 <script src="../assets/app.js?v=35"></script>
 <script>initQCM(window.QCM_DATA, window.QCM_CHAPTERS, 'inf5051');</script>
 </body>
