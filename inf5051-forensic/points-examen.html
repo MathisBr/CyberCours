@@ -21,7 +21,7 @@
 
 <div class="hero" style="margin-top:22px">
   <h1>Ce que le prof a signalé</h1>
-  <p class="lead">Relecture des enregistrements des jours 1 et 2 : les passages où l'intervenant insiste
+  <p class="lead">Relecture des enregistrements des trois jours : les passages où l'intervenant insiste
   lui-même (« vous devez le connaître », « c'est le b.a.-ba », « le plus important », « c'est capital »).
   Sous chaque citation, la réponse à savoir donner et le lien vers la fiche.</p>
 </div>
@@ -213,14 +213,14 @@ Savoir retrouver une information dans le registre sans outil automatique, et cro
 <div class="px-item fort"><div class="src">Séance 2 · matin · 75:21 <span class="th">Les supports</span></div>
 <blockquote>Pour le QCM, enfin l'examen, vous aurez accès aux supports de cours. Vous n'avez pas besoin de retenir par cœur les termes.</blockquote>
 <div class="rep"><div class="t">À retenir</div>
-Examen à livre ouvert (supports du cours) : ce qui compte est de savoir où chercher et de raisonner, pas de réciter.
+Annonce <b>annulée le jour 3</b> : pas de supports de cours à l'examen. Ce qui reste vrai : on ne vous demande pas de réciter, mais de raisonner et de savoir où chercher.
 <a class="lien" href="fiche.html#essentiel">→ Fiche : l'essentiel</a></div></div>
 
 <div class="px-item fort"><div class="src">Séance 2 · TP · 60:48 – 63:12 <span class="th">Moodle et SEB</span></div>
 <blockquote>Normalement, vous avez accès à Moodle. […] Il ne faut pas retenir par cœur les chemins : quand vous serez en intervention, vous aurez tous ces chemins. […] Il y a quelques questions ouvertes, principalement QCM. [Un étudiant : c'est surtout de l'analyse, comment tu ferais dans cette situation, pourquoi il faut faire ça.] Oui, ça va être ça, exactement.</blockquote>
 <div class="rep"><div class="t">À retenir</div>
-Moodle dans Safe Exam Browser ; le mail de convocation qui dit « sans documents » serait une erreur, qu'il signale à l'école. Préparez-vous aux mises en situation : que faites-vous, dans quel ordre, et pourquoi.
-<a class="lien" href="fiche.html#ch14">→ Fiche §14 : questions ouvertes</a></div></div>
+Moodle dans Safe Exam Browser ; le mail de convocation (« sans documents ») avait finalement raison, comme l'intervenant l'a confirmé le jour 3. Préparez-vous aux mises en situation : que faites-vous, dans quel ordre, et pourquoi.
+<a class="lien" href="fiche.html#ch18">→ Fiche §18 : questions ouvertes</a></div></div>
 
 <div class="px-seance">Jour 2 — matin : collecte, préservation, analyse de malware</div>
 
@@ -335,6 +335,60 @@ Même sans horodatage, il montre les commandes tapées : outils, effacements, in
 <div class="rep"><div class="t">À retenir</div>
 La démarche manuelle : Volatility (profil, pstree, procdump, empreinte), Wireshark (suivre le flux), magic numbers pour reconstituer un fichier.
 <a class="lien" href="fiche.html#ch13-tp">→ Fiche §13.9</a></div></div>
+
+<div class="px-seance">Jour 3 — le format de l'examen, confirmé</div>
+
+<div class="px-item fort"><div class="src">Séance 3 · après-midi · 63:02 <span class="th">L'examen</span></div>
+<blockquote>Pour l'examen […], vous aurez pas les supports de cours. […] J'ai regardé l'interro, l'examen, et finalement il n'y a pas spécialement besoin des supports de cours.</blockquote>
+<div class="rep"><div class="t">À retenir</div>
+Vendredi matin : un QCM de 25 questions, plus des questions ouvertes (exemple donné : une situation, que faire et où aller chercher l'information). Pas de support de cours autorisé, malgré ce qui avait été dit le jour 2.
+<a class="lien" href="fiche.html#essentiel">→ Fiche : l'essentiel</a></div></div>
+
+<div class="px-seance">Jour 3 — matin : réseau, kill chain, mobiles</div>
+
+<div class="px-item fort"><div class="src">Séance 3 · matin · 73:56 <span class="th">La Cyber Kill Chain</span></div>
+<blockquote>Les différentes étapes d'une attaque ? Ça il faut le savoir, c'est très utile.</blockquote>
+<div class="rep"><div class="t">La réponse attendue</div>
+Reconnaissance, weaponization, delivery, exploitation, installation, command and control, actions on objectives.
+<a class="lien" href="fiche.html#ch14-killchain">→ Fiche §14.3</a></div></div>
+
+<div class="px-item fort"><div class="src">Séance 3 · matin · 74:27 <span class="th">Les indicateurs de compromission</span></div>
+<blockquote>Les IoC : important, ce qu'on cherche c'est à identifier de manière unique des attaquants, des techniques et procédures.</blockquote>
+<div class="rep"><div class="t">La réponse attendue</div>
+IP, domaine, URL, hash, mutex. Pas un numéro de téléphone ni un protocole générique.
+<a class="lien" href="fiche.html#ch14-killchain">→ Fiche §14.3</a></div></div>
+
+<div class="px-item"><div class="src">Séance 3 · matin · 72:50 <span class="th">Le récapitulatif réseau</span></div>
+<blockquote>Est-ce que vous avez retenu quelque chose ce matin ? Qu'est-ce qu'il y a comme périphériques réseau en entreprise ?</blockquote>
+<div class="rep"><div class="t">À retenir</div>
+Switch, routeur, IDS/IPS, pare-feu, DNS, DHCP, proxy, serveur web ; pas l'antivirus (logiciel de sécurité, pas un équipement réseau) ; le hub a quasi disparu.
+<a class="lien" href="fiche.html#ch14-reseau">→ Fiche §14.1</a></div></div>
+
+<div class="px-item"><div class="src">Séance 3 · matin · 75:00 <span class="th">La saisie d'un smartphone</span></div>
+<blockquote>Quand on fait une perquisition ou une saisie [d'un smartphone]…</blockquote>
+<div class="rep"><div class="t">La réponse attendue</div>
+Le garder allumé, le mettre dans une cage de Faraday (avec alimentation), car il communique en permanence et peut recevoir un ordre d'effacement.
+<a class="lien" href="fiche.html#ch14-mobile">→ Fiche §14.5</a></div></div>
+
+<div class="px-item"><div class="src">Séance 3 · TP (11:54) · 00:43 et 38:00 <span class="th">IA et confidentialité</span></div>
+<blockquote>Si un client vous mandate pour faire du forensic et que vous utilisez l'IA, il aurait pu demander à l'IA directement : il faut que vous ayez une plus-value. […] Jamais de données client sur l'IA !</blockquote>
+<div class="rep"><div class="t">À retenir</div>
+L'IA peut aider sur la syntaxe (filtres, commandes), jamais avec les données réelles d'une mission ; vérifier systématiquement ce qu'elle trouve avant de le mettre dans un rapport.
+<a class="lien" href="fiche.html#ch16">→ Fiche §16 : le rappel déontologique</a></div></div>
+
+<div class="px-seance">Jour 3 — après-midi : études de cas</div>
+
+<div class="px-item fort"><div class="src">Séance 3 · après-midi · 28:38 <span class="th">Le biais du commanditaire</span></div>
+<blockquote>On peut être influencé par le commanditaire de l'audit. […] On a focalisé sur une seule piste, on n'a pas fait tous les checks classiques.</blockquote>
+<div class="rep"><div class="t">À retenir</div>
+Toujours vérifier les éléments de base (échecs de connexion, géolocalisation) avant de conclure, même quand un dossier semble déjà bouclé.
+<a class="lien" href="fiche.html#ch16-megacorp">→ Fiche §16.2</a></div></div>
+
+<div class="px-item"><div class="src">Séance 3 · après-midi · 50:58 <span class="th">Le score d'un scanner</span></div>
+<blockquote>Nessus me dit : « ah bah là il y a une vulnérabilité medium », alors qu'elle est juste méga critique.</blockquote>
+<div class="rep"><div class="t">À retenir</div>
+Le contexte prime sur le score automatique d'un outil.
+<a class="lien" href="fiche.html#ch16-pentests">→ Fiche §16.3</a></div></div>
 
 </main>
 

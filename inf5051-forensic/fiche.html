@@ -31,29 +31,32 @@ fil à partir d'un premier indice.
 </p>
 
 <div class="callout"><div class="t">État de la fiche</div>
-Construite sur le syllabus, tous les supports des jours 1 et 2 (introduction, rapports forensic,
-problématiques techniques et légales, collecte et préservation des traces, forensic Windows, Mac et Linux),
-les huit transcriptions des deux jours et les corrections des TP. Les chapitres du jour 3 (réseau, mobiles,
-étude de cas) s'ajouteront au fil des supports.
+Construite sur le syllabus, tous les supports des trois jours (introduction, rapports forensic,
+problématiques techniques et légales, collecte et préservation des traces, forensic Windows, Mac et Linux,
+réseau et mobiles, études de cas), les onze transcriptions et les corrections des TP. La transcription du
+dernier après-midi s'arrête à la pause.
 </div>
 
 <!-- ===================================================================== -->
 <h2 id="essentiel">★ L'essentiel — à relire la veille</h2>
 
-<div class="exam"><div class="t">Le format de l'examen, tel qu'annoncé</div>
+<div class="exam"><div class="t">Le format de l'examen, confirmé le dernier jour</div>
 <ul>
-  <li><b>Vendredi matin</b> : un <b>QCM</b> avec <b>quelques questions ouvertes</b>.</li>
+  <li><b>Vendredi matin</b> : un <b>QCM de 25 questions</b> et des <b>questions ouvertes</b> (exemple de type de
+  question donné en cours : une situation d'enquête, et « qu'est-ce qu'on peut faire, où va-t-on pour
+  récupérer tel fichier ou telle information » — un exemple de forme, pas une liste exhaustive).</li>
+  <li><b>Sans les supports de cours</b> : annoncé en fin de dernier cours (jour 3 après-midi), contredisant
+  ce qui avait été dit le jour 2. L'intervenant a vérifié l'examen lui-même : « finalement il n'y a pas
+  spécialement besoin des supports de cours ».</li>
   <li><b>Aucun TP dans l'examen</b> : on évalue la compréhension, les notions et la méthode.</li>
   <li><b>Sans accès à Internet</b> : « l'IA a la moyenne à mon examen ; je suis là pour vous noter vous,
   pas l'IA ».</li>
-  <li>Sur <b>Moodle</b>, dans <b>Safe Exam Browser</b> (SEB), qui bloque tout le reste. Les <b>supports de
-  cours</b> devraient y être accessibles : « vous aurez accès aux supports de cours » (jour 2), même si le
-  mail de convocation dit « sans documents » (il le signale à l'école). À vérifier le jour J.</li>
+  <li>Sur <b>Moodle</b>, dans <b>Safe Exam Browser</b> (SEB), qui bloque tout le reste.</li>
   <li>« Vous n'avez pas besoin de retenir par cœur les termes », ni les chemins du registre : les questions
   font « travailler votre cerveau », sur le raisonnement : <b>comment feriez-vous dans cette situation, et
-  pourquoi</b>.</li>
+  pourquoi</b>. Évaluation axée sur l'analyse et la logique d'investigation, pas le par cœur.</li>
   <li>À la fin de chaque cours, l'intervenant fait un <b>tour de questions récapitulatif</b> : ce sont
-  les notions qu'il attend (§1 à §7, et le récapitulatif ci-dessous).</li>
+  les notions qu'il attend (§1 à §7, et les récapitulatifs ci-dessous et en tête de chaque chapitre).</li>
 </ul>
 </div>
 
@@ -2052,7 +2055,760 @@ savoir le faire manuellement ».
 </div>
 
 <!-- ===================================================================== -->
-<h2 id="ch14"><span class="num">14.</span> S'entraîner : questions ouvertes</h2>
+<h2 id="ch14"><span class="num">14.</span> Forensic réseau et terminaux mobiles</h2>
+
+<div class="exam"><div class="t">Les récapitulatifs de fin de matinée (jour 3), avec leurs réponses</div>
+<ul style="margin-bottom:0">
+  <li><b>Périphériques réseau</b> : switch, routeur, IDS/IPS, pare-feu, serveurs DNS, DHCP, proxy, web.
+  <b>L'antivirus n'en est pas un</b> (c'est un logiciel de sécurité sur le poste) ; le hub a quasiment
+  disparu.</li>
+  <li><b>Format d'une capture de paquets</b> : <b>PCAP</b> (ou PCAPNG).</li>
+  <li><b>Modèle OSI</b> : ICMP est en couche 3 ; un SAN (Storage Area Network) se joue plutôt en couche
+  haute (6/7), au-dessus des protocoles de transport.</li>
+  <li><b>Les 7 étapes de la Cyber Kill Chain</b> : reconnaissance, weaponization, delivery, exploitation,
+  installation, command and control, actions on objectives. « Ça, il faut le savoir ».</li>
+  <li><b>Les indicateurs de compromission (IoC) valides</b> : adresse IP, nom de domaine, URL, empreinte
+  (hash), mutex. <b>Pas valides</b> : nom de virus (non standardisé), numéro de série, protocole réseau
+  générique (trop vague).</li>
+  <li><b>Périphériques et formats mobiles</b> : Android (APK) et iOS (IPA, le « i » toujours en
+  minuscule). Architecture en trois couches : matériel, système, applicatif, avec sandboxing.</li>
+  <li><b>Saisie d'un smartphone</b> : le garder allumé et alimenté, dans une cage de Faraday pour couper le
+  réseau sans l'éteindre.</li>
+</ul>
+</div>
+
+<h3 id="ch14-reseau">14.1 Les briques du réseau d'entreprise</h3>
+<p>L'<b>antivirus</b> (aujourd'hui EDR, NGAV) n'est pas un périphérique réseau : c'est un logiciel de
+sécurité sur l'hôte, historiquement basé sur des signatures, puis comportemental. Un IDS <b>détecte et
+alerte</b> (passif, sur une copie du trafic) ; un IPS <b>bloque</b> (en coupure). Un <b>hub</b> (couche 1)
+a quasiment disparu des entreprises modernes, mais reste recherché par un attaquant pour contourner le
+contrôle d'accès réseau (NAC), car il répète aveuglément les trames sur tous les ports — contrairement au
+<b>switch</b> (couche 2), qui cloisonne par port et par VLAN.</p>
+<div class="tw"><table>
+<thead><tr><th>Service</th><th>Rôle</th><th>Remarque forensic</th></tr></thead>
+<tbody>
+<tr><td><b>DHCP</b></td><td>Attribue les adresses IP</td><td>Des baux persistants permettent de relier une machine à une IP sur une période</td></tr>
+<tr><td><b>DNS</b></td><td>Résout les noms en adresses IP</td><td>En entreprise, souvent hébergé sur le contrôleur de domaine : une cible de choix pour la reconnaissance</td></tr>
+<tr><td><b>Proxy / reverse proxy</b></td><td>Couche 7 : le proxy protège les clients sortants, le reverse proxy distribue les flux entrants</td><td>Très présent avec les architectures en conteneurs</td></tr>
+<tr><td><b>SMTP</b></td><td>Achemine les courriels</td><td>Encore vu non chiffré en interne (pas de STARTTLS forcé)</td></tr>
+</tbody></table></div>
+<div class="callout"><div class="t">Capture de paquets</div>
+Le format <b>PCAP</b> (et son évolution PCAPNG) est ouvert et universel (Wireshark, tshark, tcpdump) ; la
+bibliothèque est <code>libpcap</code> sous Unix/Linux, <code>WinPcap</code>/<code>Npcap</code> sous
+Windows. Si WinPcap est installé sur un serveur, un simple utilisateur peut capturer tout le trafic réseau
+de la machine, et donc potentiellement des mots de passe en clair : contrôler une machine, c'est aussi
+contrôler ce qui transite sur son réseau local.
+</div>
+
+<h3 id="ch14-osi">14.2 Le modèle OSI et l'évolution des pare-feux</h3>
+<div class="tw"><table>
+<thead><tr><th>Couche</th><th>Unité</th><th>Contenu</th></tr></thead>
+<tbody>
+<tr><td>7 — Application</td><td>Donnée</td><td>HTTP, HTTPS, DNS, SSH, SMTP</td></tr>
+<tr><td>4 — Transport</td><td>Segment</td><td>TCP, UDP (contrôle de flux de bout en bout)</td></tr>
+<tr><td>3 — Réseau</td><td>Paquet</td><td>IP, ICMP, routage</td></tr>
+<tr><td>2 — Liaison</td><td>Trame</td><td>Adressage MAC, ARP (convertit une IP niveau 3 en MAC niveau 2)</td></tr>
+<tr><td>1 — Physique</td><td>Bit</td><td>Transmission binaire</td></tr>
+</tbody></table></div>
+<p>Les pare-feux ont trois générations : <b>niveau 3</b> (IP source/destination), <b>niveau 4</b> (ports,
+état, type <code>iptables</code>), <b>niveau 7</b> (inspection applicative, DPI) : un pare-feu moderne peut
+bloquer un tunnel SSH caché sur le port 443 en reconnaissant la négociation applicative, même sans
+connaître le port d'origine. La <b>micro-segmentation</b> va plus loin : un blocage de flux automatisé et
+très fin entre machines ou conteneurs d'un même sous-réseau.</p>
+
+<h3 id="ch14-killchain">14.3 La Cyber Kill Chain et les IoC</h3>
+<div class="steps">
+  <div class="step"><b>1. Reconnaissance</b><br>Collecte passive (OSINT) et active (scans) sur la cible.</div>
+  <div class="step"><b>2. Weaponization</b><br>Préparation d'une charge utile couplant exploit et mécanisme d'exécution.</div>
+  <div class="step"><b>3. Delivery</b><br>Acheminement du vecteur (pièce jointe, site piégé, clé USB).</div>
+  <div class="step"><b>4. Exploitation</b><br>La phase la plus courte : quelques microsecondes, l'exécution du code.</div>
+  <div class="step"><b>5. Installation</b><br>Persistance, car un exploit ne fonctionne souvent qu'une fois.</div>
+  <div class="step"><b>6. Command &amp; Control (C2)</b><br>Canal pour piloter la machine à distance.</div>
+  <div class="step"><b>7. Actions on objectives</b><br>L'objectif final : ce pour quoi l'attaquant est venu.</div>
+</div>
+<p>Modèle militaire repris par la cybersécurité (80 à 90 % des attaques le suivent) et par le cadre
+<b>MITRE ATT&amp;CK</b>, qui documente des tactiques, techniques et procédures (TTP) réelles pour
+cartographier une attaque et identifier les angles morts de détection (Purple Team). L'essor des
+<b>rançongiciels</b> a changé l'économie du cybercrime : plus besoin de commanditaire ni de connaître le
+métier de la cible pour monétiser une intrusion, d'où l'explosion du nombre d'attaques.</p>
+<div class="tw"><table>
+<thead><tr><th>Indicateur de compromission (IoC) ?</th><th>Réponse</th></tr></thead>
+<tbody>
+<tr><td>Adresse IP, nom de domaine, URL</td><td><b>Oui</b>, même si éphémères (serveurs de commande, DGA)</td></tr>
+<tr><td>Empreinte (hash MD5, SHA-256)</td><td><b>Oui</b> ; le MD5 recule devant le SHA-256</td></tr>
+<tr><td>Mutex</td><td><b>Oui</b>, et très discriminant : une chaîne unique créée en mémoire pour éviter les instances concurrentes</td></tr>
+<tr><td>Nom de fichier</td><td>Possible, mais plus vague</td></tr>
+<tr><td>Nom de virus</td><td><b>Non</b> : pas de nomenclature standard entre éditeurs</td></tr>
+<tr><td>Numéro de série (smartphone, matériel)</td><td><b>Non</b> : jamais visible dans les traces d'une attaque</td></tr>
+<tr><td>Protocole réseau (HTTP, DNS…)</td><td><b>Non</b> : trop générique</td></tr>
+</tbody></table></div>
+
+<h3 id="ch14-soc">14.4 Faux positifs et cas concrets en SOC</h3>
+<div class="viz"><div class="t">Cinq retours d'expérience réseau</div>
+<div class="vz-grid g2">
+  <button class="vz-c k-amber"><span class="n">Faux positif</span><h5>L'outil d'administration bavard</h5><span class="q">Un scan interne détecté par le SIEM</span><span class="more"><span class="t">Leçon</span>Un outil légitime d'administration à distance (type MobaXterm) se connectait à de nombreux hôtes au lancement, générant des alertes de scan de ports. Les logiciels légitimes ont parfois des comportements « sales » qui imitent une attaque.</span></button>
+  <button class="vz-c k-amber"><span class="n">Faux positif</span><h5>Le compte sa sur une sauvegarde SQL</h5><span class="q">Alerte sur le compte administrateur de la base</span><span class="more"><span class="t">Leçon</span>Un flux de sauvegarde volumineux (plusieurs téraoctets de données brutes) a statistiquement plus de chances de faire correspondre une signature par hasard : plus un flux est gros, plus il génère de faux positifs.</span></button>
+  <button class="vz-c k-blue"><span class="n">Découverte</span><h5>Le serveur d'une filiale non déclarée</h5><span class="q">Une alerte sans rapport révèle un shadow IT exposé sur Internet</span><span class="more"><span class="t">Leçon</span>Une filiale avait déployé un serveur sans en informer le siège ; vulnérable, mais sans trace d'exploitation après vérification dans les journaux.</span></button>
+  <button class="vz-c k-red"><span class="n">Protocole en clair</span><h5>Le port maritime</h5><span class="q">Des connexions administrateur à des heures impossibles, malgré des changements de mot de passe répétés</span><span class="more"><span class="t">Leçon</span>Un vieux protocole d'émulation de terminal (mainframe) transmettait les identifiants en clair sur le réseau local : une sonde a confirmé l'interception. Remédiation : chiffrer la session (TLS). Signal fort : les mainframes industriels (très haute disponibilité, 99,999 %) restent courants dans la banque et la logistique, avec des protocoles hérités non sécurisés.</span></button>
+  <button class="vz-c k-green"><span class="n">Supply chain</span><h5>Le JavaScript injecté chez un fournisseur</h5><span class="q">Une sonde détecte une connexion vers un site malveillant</span><span class="more"><span class="t">Leçon</span>Le site d'un vendeur tiers avait été compromis et redirigeait les visiteurs. Réflexe professionnel : prévenir le site tiers, même sans lien contractuel.</span></button>
+</div>
+<div class="vz-bar"><button class="btn" data-cards="open">Tout déplier</button><button class="btn ghost" data-cards="close">Tout replier</button><span class="cnt"></span></div></div>
+<div class="callout warn"><div class="t">Un risque documenté a posteriori</div>
+Sur un port maritime, l'hypothèse qu'un trafiquant de drogue puisse pirater le logiciel de gestion des
+conteneurs pour savoir lesquels seraient contrôlés par la douane avait fait sourire le client. Deux ans
+plus tard, l'ENISA publiait un rapport confirmant exactement ce scénario dans un autre port. « Le client
+rigole, mais la réalité arrive. »
+</div>
+
+<h3 id="ch14-mobile">14.5 Forensic des terminaux mobiles</h3>
+<p>Le smartphone est une source de preuve souvent plus riche qu'un ordinateur : toujours allumé, transporté
+partout, il centralise banque, géolocalisation, contacts, messages, biométrie. Android (noyau Linux) et
+iOS dominent le marché ; les autres systèmes ont moins d'outils disponibles.</p>
+<div class="grid c2">
+  <div class="card"><h4>À la saisie</h4>
+  <ul style="margin-bottom:0">
+    <li>Garder l'appareil <b>allumé</b> : l'éteindre impose de retaper le mot de passe au redémarrage, et
+    peut faire passer l'état du chiffrement d'« après premier déverrouillage » (exploitable) à « avant
+    premier déverrouillage » (clés purgées de la mémoire).</li>
+    <li>L'isoler dans une <b>cage de Faraday</b> (avec passage d'alimentation) : un smartphone communique
+    en permanence, et un ordre d'effacement à distance reste possible tant qu'il capte un réseau.</li>
+    <li>La <b>carte SIM</b> garde l'identité de l'abonné (IMSI, ICCID) et, historiquement, des SMS et
+    contacts.</li>
+  </ul></div>
+  <div class="card"><h4>Les méthodes d'extraction Android</h4>
+  <ul style="margin-bottom:0">
+    <li><b>Logique</b> : copier les fichiers accessibles (idéalement avec un accès root) — la plus simple.</li>
+    <li><b>Physique</b> : image complète du stockage (backup).</li>
+    <li>Le port de débogage matériel ou le retrait de la puce (dernier recours, risque de rendre le
+    téléphone inutilisable) existent mais demandent du matériel spécialisé.</li>
+    <li>Exploiter une faille pour obtenir un accès root modifie la preuve : peser le bénéfice contre le
+    risque avant d'agir.</li>
+  </ul></div>
+</div>
+<p>Architecture en trois couches, matérielle (dont une enclave de sécurité isolée du processeur principal,
+l'équivalent mobile de Windows Credential Guard), système (root, pilotes), applicative (avec
+<b>sandboxing</b> : chaque application est cloisonnée, sauf faille de conception). Les données
+<b>biométriques</b> valent plus cher qu'un mot de passe sur le marché noir : un mot de passe se change, une
+empreinte digitale non.</p>
+<p>Sur iOS, la confidentialité est un point fort (chiffrement matériel, clé dérivée d'un identifiant gravé
+en usine) mais la confiance entre appareils Apple peut être un point faible ; un verrouillage automatique
+après inactivité purge les clés de déchiffrement, rendant l'extraction physique impossible sans le mot de
+passe. Les formats d'application : <b>APK</b> pour Android, <b>IPA</b> pour iOS.</p>
+
+<!-- ===================================================================== -->
+<h2 id="ch15"><span class="num">15.</span> Le pentest, miroir du forensic</h2>
+
+<div class="callout"><div class="t">Pourquoi ce chapitre</div>
+Le cours termine sur un exemple de test d'intrusion (2019) et son « cheminement du cybercriminel » : savoir
+comment attaque un pentester aide à savoir ce que cherche un enquêteur forensic, et inversement. Ce
+chapitre reste du côté défensif : le cadre, les leçons, les remédiations.
+</div>
+
+<h3 id="ch15-modes">15.1 Boîte noire, grise, blanche</h3>
+<div class="tw"><table>
+<thead><tr><th>Mode</th><th>Ce que l'auditeur a</th><th>Avantage / limite</th></tr></thead>
+<tbody>
+<tr><td><b>Boîte noire</b></td><td>Rien, comme un attaquant externe</td><td>Le plus réaliste ; mais long, coûteux, et superficiel face à une cible mature</td></tr>
+<tr><td><b>Boîte grise</b></td><td>Un compte utilisateur standard</td><td>Le compromis le plus courant : pas de temps perdu sur la phase d'entrée</td></tr>
+<tr><td><b>Boîte blanche</b></td><td>Tout : code source, documentation, accès admin</td><td>Le meilleur rapport couverture/coût ; le moins réaliste</td></tr>
+</tbody></table></div>
+<p>Un test externe (depuis Internet) est souvent en boîte noire, un test interne en boîte blanche, faute de
+temps pour refaire toute la phase de reconnaissance. Les « micro-périmètres » (une seule application, un
+seul segment) limitent l'évaluation d'un scénario de bout en bout.</p>
+
+<h3 id="ch15-perimetre">15.2 Le périmètre, au caractère près</h3>
+<p>Si le périmètre autorisé est <code>monclient.target</code>, l'auditeur peut attaquer ce domaine et ses
+sous-domaines (<code>preprod.monclient.target</code>), mais <b>pas</b> un autre TLD
+(<code>monclient.com</code>) ni un domaine qui n'est pas en dessous dans l'arborescence. Sortir du
+périmètre écrit est une intrusion informatique illégale, même pour un pentester. D'où la préférence pour
+des plages d'adresses IP plutôt que des noms de domaine, moins ambigües.</p>
+
+<h3 id="ch15-vs">15.3 Pentest, Red Team, attaque réelle : les différences</h3>
+<div class="tw"><table>
+<thead><tr><th></th><th>Pentest</th><th>Red Team</th><th>Attaque réelle</th></tr></thead>
+<tbody>
+<tr><td>Le défenseur est prévenu ?</td><td>Oui</td><td>Non</td><td>Non</td></tr>
+<tr><td>Durée</td><td>1 à 2 semaines</td><td>Longue, discrète</td><td>Illimitée (parfois des mois)</td></tr>
+<tr><td>Traces en fin de mission</td><td>Effacées (pour ne pas être réexploitées)</td><td>Effacées</td><td>Effacées (pour échapper à la détection)</td></tr>
+<tr><td>Cadre</td><td>Autorisation écrite (convention, règles d'engagement)</td><td>Autorisation écrite</td><td>Aucun : risque pénal réel</td></tr>
+</tbody></table></div>
+<p>Même en pentest, certaines limites restent fermes : pas d'atteinte à la vie privée des employés (pas de
+recherche sur leurs réseaux sociaux personnels pour deviner un mot de passe), respect du RGPD.</p>
+<div class="callout warn"><div class="t">Les compétences d'un pentester</div>
+Les mêmes qu'en forensic : esprit créatif, communication écrite et orale, bases en développement, réseau,
+système et sécurité défensive. L'IA automatise les scans génériques, mais pas l'imagination de nouveaux
+scénarios : la plus-value humaine reste dans la créativité et la rédaction claire pour un décideur non
+technique.
+</div>
+
+<h3 id="ch15-retex">15.4 Un audit de 2019 : constats et remédiations</h3>
+<p>Exemple cité en cours, résumé côté défensif : un formulaire d'administration exposé sur Internet, sans
+HTTPS, destiné à un public non technique (transport routier), utilisait encore des identifiants par défaut.
+Une fois l'accès obtenu, une injection SQL (exploitable avec un outil comme SQLMap) a permis d'exécuter du code sur le serveur, puis
+d'élever les privilèges jusqu'à un compte à droits élevés du domaine, le serveur n'étant pas isolé dans une
+zone démilitarisée (DMZ).</p>
+<div class="tw"><table>
+<thead><tr><th>Constat</th><th>Remédiation recommandée</th></tr></thead>
+<tbody>
+<tr><td>Identifiants par défaut sur une interface d'administration</td><td>Les changer systématiquement ; en exiger la possibilité dès la conception</td></tr>
+<tr><td>Fonctions de base de données dangereuses activées</td><td>Désactiver les procédures qui permettent d'exécuter du code depuis le SGBD</td></tr>
+<tr><td>Serveur applicatif exposé directement sur le réseau interne</td><td>Le placer en DMZ, avec un pare-feu qui limite les flux sortants</td></tr>
+<tr><td>Pas d'antivirus / EDR sur le serveur</td><td>En déployer un partout, y compris sur les serveurs applicatifs</td></tr>
+<tr><td>Mots de passe exposés en mémoire</td><td>Une protection renforcée de la mémoire d'authentification (type Credential Guard) limite l'extraction de secrets en clair</td></tr>
+<tr><td>Pas de sauvegarde hors ligne</td><td>La règle 3-2-1 : plusieurs copies, deux supports différents, une copie non accessible depuis le réseau</td></tr>
+</tbody></table></div>
+<p>Une fois un accès initial obtenu, la priorité en post-exploitation est l'<b>élévation de privilèges</b>
+(pas l'exfiltration, souvent déjà possible avant, ni le rebond, réservé à la fin) : savoir si la machine
+dispose d'une protection antivirus conditionne la suite. Monétisation possible d'un accès : revente sur le
+darknet, exfiltration de données, rançongiciel (après avoir ciblé et détruit les sauvegardes en premier),
+rebond vers des partenaires. Le modèle a évolué vers la <b>double</b> puis la <b>triple extorsion</b>
+(chiffrement, menace de divulgation, pression sur les clients de la victime).</p>
+
+<!-- ===================================================================== -->
+<h2 id="ch16"><span class="num">16.</span> Études de cas et TP réseau (jour 3)</h2>
+
+<div class="exam"><div class="t">Rappel déontologique répété en TP</div>
+« Jamais de données client sur l'IA » : les traces d'une investigation (captures réseau, journaux, dumps
+mémoire) sont confidentielles ; les transmettre à une IA généraliste, même « en local », viole le secret
+professionnel et peut engager la responsabilité de l'analyste. L'IA peut aider sur la <b>syntaxe</b> (un
+filtre Wireshark, une commande), jamais avec les données réelles de la mission. « Si l'IA se trompe et que
+vous livrez un rapport faux, ça peut se retourner contre vous en cas de contre-audit. »
+</div>
+
+<h3 id="ch16-tp">16.1 Le TP : une capture réseau chiffrée à déchiffrer</h3>
+<p>Un SOC transmet une capture réseau (<code>.pcap</code>), un journal de sondes (répertoire Zeek/Bro) et un
+fichier <code>.log</code> suite à une alerte. Objectif : prouver une exfiltration de données financières.</p>
+<div class="steps">
+  <div class="step"><b>1. Vue d'ensemble</b><br>Dans Wireshark, <code>Statistiques &gt; Hiérarchie des
+  protocoles</code> : une part significative du trafic est chiffrée (TLS). Sans les clés de session, pas de
+  déchiffrement passif possible (chiffrement moderne à confidentialité persistante).</p></div>
+  <div class="step"><b>2. Le secrets.log</b><br>Le SOC fournit un fichier qui journalise les clés de
+  session (généré côté client web qu'il contrôle). Dans Wireshark : <code>Édition &gt; Préférences &gt;
+  Protocols &gt; TLS</code>, champ <code>(Pre)-Master Secret log filename</code> (à ne pas confondre avec
+  le champ de débogage, qui ne sert à rien ici).</div>
+  <div class="step"><b>3. Rechercher l'anomalie</b><br>Un flux TCP sur le <b>port 53</b> (normalement
+  réservé au DNS, qui utilise l'UDP) contient en réalité des commandes systèmes en clair : un
+  <b>reverse shell</b> déguisé pour contourner un pare-feu qui filtre les sorties mais laisse passer le
+  DNS.</div>
+  <div class="step"><b>4. Repérer l'exfiltration</b><br><code>Statistiques &gt; HTTP &gt; Requests</code>
+  ou un filtre sur les requêtes <b>POST</b> : des envois vers un service public de partage de texte
+  (Pastebin), utilisé pour exfiltrer sans infrastructure dédiée. Le contenu des requêtes (suivre le flux)
+  révèle les données volées et le flag.</div>
+  <div class="step"><b>5. Remonter en amont</b><br>Une fois l'exfiltration prouvée, la capture réseau ne
+  suffit plus pour savoir <b>comment</b> l'attaquant est entré : il faut demander au SOC les journaux du
+  serveur concerné (connexions, applicatif) pour reconstituer l'accès initial.</div>
+</div>
+<div class="callout ok"><div class="t">À retenir</div>
+Avant de lire paquet par paquet : la hiérarchie des protocoles, les journaux de sonde (Zeek/Bro) qui
+résument les sessions (IP, volumes, noms d'hôtes) orientent directement vers les flux intéressants. Un
+canal chiffré ne veut pas dire indéchiffrable si l'on dispose des clés de session ; sans elles, l'analyse
+se limite aux métadonnées (IP, SNI, volumes).
+</div>
+
+<h3 id="ch16-megacorp">16.2 L'affaire Megacorp : exfiltration par un salarié</h3>
+<p>Une direction démissionne en bloc vers un concurrent qui aligne ses offres salariales sur un fichier
+confidentiel (<code>leads.xlsx</code>) consultable par trois personnes seulement. Le suspect désigné par la
+direction a un alibi (vacances, portable resté au bureau). Méthode suivie :</p>
+<div class="steps">
+  <div class="step"><b>1. Acquisition</b><br>Disque soudé : démarrage sur une clé Linux live, sans monter
+  le disque, copie bit à bit (<code>dd</code>), empreintes calculées, travail sur une copie de la copie.</div>
+  <div class="step"><b>2. Le fichier n'est nulle part</b><br>Absent du profil, corbeille vide : deux
+  hypothèses — il n'a jamais été là (innocence), ou il a été supprimé puis la corbeille vidée (dissimulation).</div>
+  <div class="step"><b>3. Les fichiers récents (.lnk)</b><br>Un raccourci <code>leads.lnk</code> pointe vers
+  le lecteur réseau de l'intranet : quelqu'un a ouvert ce fichier depuis ce poste. Mais un nom de fichier
+  seul ne prouve rien : il faut recouper avec d'autres sources (ici le cache du navigateur et les listes
+  MRU, qui confirment bien <code>leads.xlsx</code>, ouvert via Excel, un jour précis).</div>
+  <div class="step"><b>3 bis. Le cache d'Edge et le piège du fuseau</b><br>Edge range son historique, son
+  cache, ses cookies et ses téléchargements dans une base ESE, <code>WebCacheV01.dat</code>. Après un arrêt
+  brutal, elle est en état <b>dirty shutdown</b> : on la répare (outil Windows <code>esentutl</code>) pour
+  la passer en <b>clean shutdown</b> avant de la lire (IECacheView, ESEDatabaseView), en travaillant sur une
+  copie et en documentant l'opération. On y voit l'intranet consulté à 13:00, alors que le fichier a été
+  ouvert à 12:03 : ouvert avant d'être téléchargé ? Non, les sources n'ont pas le même fuseau (UTC, GMT,
+  heure locale). Ramené en UTC, l'intranet est consulté à 12:00 : tout redevient cohérent. On normalise
+  toujours toutes les dates dans un seul fuseau avant de bâtir la chronologie.</div>
+  <div class="step"><b>4. Qui était au clavier ?</b><br>Le journal de sécurité (<code>Security.evtx</code>,
+  événement 4624) précise le <b>type d'ouverture de session</b> : un type 2 (interactif local) signifie
+  une présence physique devant la machine, pas une connexion distante.</div>
+  <div class="step"><b>5. Élargir la piste</b><br>Les MRU montrent aussi l'ouverture d'un second fichier
+  (un plan technique), copié avec le premier sur une clé USB identifiée par son nom de volume, puis
+  confirmée par son numéro de série dans le registre (<code>USBSTOR</code>) ; un numéro de série dont le
+  second caractère en partant de la fin est un <code>&amp;</code> n'est pas unique (clé bas de gamme) : la
+  correspondance est probable, pas certaine. Même supprimées, les images
+  restent visibles dans le cache de miniatures (Thumbcache) de Windows ; le contenu effacé de la clé a été
+  retrouvé par file carving une fois la clé fournie par le suspect lui-même.</div>
+  <div class="step"><b>6. Vérifier avant de conclure</b><br>Les horodatages se recoupent à la minute près :
+  un dossier qui semble solide. Mais un bon réflexe de base restait à faire : regarder les <b>échecs de
+  connexion</b> avant le succès (ici treize événements 4625 avant le 4624, inhabituel) et l'historique
+  Wi-Fi du poste (ruche SOFTWARE). Juste avant le vol, le portable était connecté au Wi-Fi d'un hôtel ;
+  une base publique comme WiGLE, qui géolocalise les points d'accès par leur BSSID, le situe à Miami
+  Beach : la ville où l'autre personne ayant accès au fichier, le directeur adjoint, venait de se rendre.</div>
+</div>
+<div class="callout"><div class="t">La frise chronologique, en UTC</div>
+Le jour du vol : ouverture de session locale (4624, type 2) à 11:57, précédée de treize échecs ; intranet
+consulté à 12:00 (historique Edge, fichier LNK) ; clé USB insérée à 12:01 (registre, numéro de série) ;
+plan technique ouvert depuis la clé à 12:02, puis <code>leads.xlsx</code> à 12:03 (MRU, LNK). Les fichiers
+volés sont retrouvés dans le Thumbcache du portable et, par file carving, sur la clé.
+</div>
+<div class="callout warn"><div class="t">Le vrai coupable</div>
+Le faisceau d'indices technique visait le suspect désigné d'avance par la direction. Les vérifications de
+base (échecs de connexion, géolocalisation Wi-Fi) l'ont innocenté : c'est le directeur adjoint qui avait
+« emprunté » son portable et sa clé USB pour le faire accuser, en devinant son mot de passe à force
+d'essais. Leçon : ne jamais se laisser influencer par l'avis du
+commanditaire, et toujours faire les contrôles élémentaires avant de conclure, même quand un dossier
+semble déjà bouclé.
+</div>
+
+<h3 id="ch16-pentests">16.3 Trois audits, en bref</h3>
+<p>Trois tests d'intrusion racontés en cours, résumés côté défense : les faiblesses qui se sont enchaînées,
+et ce qu'il fallait corriger. Chaque fois, une faiblesse banale ouvre la porte et la suivante l'élargit.</p>
+<div class="tw"><table>
+<thead><tr><th>Contexte</th><th>Faiblesses enchaînées</th><th>Remédiations</th></tr></thead>
+<tbody>
+<tr><td>PME régionale, audit interne</td><td>Un wiki interne jugé « pas critique » (DokuWiki) accepte les
+identifiants par défaut et tourne avec le compte SYSTEM : l'accès administrateur à l'application donne le
+contrôle du serveur. Ensuite, mouvement latéral : NTLM encore actif (relais d'authentification), même mot
+de passe d'administrateur local sur de nombreuses machines (réutilisation de son empreinte), secrets lus
+dans la mémoire de LSASS, jusqu'à un compte administrateur du domaine. Les mots de passe de l'IT étaient
+dans un tableur sur un partage.</td><td>Changer tout identifiant par défaut ; comptes de service à moindres
+privilèges ; désactiver NTLM là où c'est possible ; un mot de passe d'administrateur local unique par
+machine ; protéger la mémoire d'authentification ; un gestionnaire de mots de passe (KeePass) plutôt qu'un
+tableur.</td></tr>
+<tr><td>Chaîne de supermarchés bio, audit externe puis interne</td><td>Les produits du commerce exposés
+étaient à jour et protégés (webmail derrière un WAF, Citrix corrigé, VPN qui bloque la force brute) ; le
+point faible était l'extranet développé en interne. La fonction « mot de passe oublié » répond
+différemment selon que le compte existe ou non (200 ou 400) ; un compte fonctionnel a un mot de passe
+trivial ; une injection SQL donne l'exécution de commandes sur le serveur de base de données, qui n'est
+pas en DMZ ; en interne, une machine encore vulnérable à EternalBlue (SMBv1). Le domaine compromis était
+l'ancien, gardé après un premier piratage ; une trentaine de comptes avaient réutilisé leur mot de passe
+sur le nouveau.</td><td>Prioriser la sécurité des applications maison ; une réponse identique que le compte
+existe ou non ; bannir les mots de passe triviaux, même sur les comptes fonctionnels ; requêtes
+paramétrées et procédures dangereuses du SGBD désactivées ; DMZ ; correctifs ; démanteler l'ancien domaine
+et imposer un nouveau mot de passe à la migration.</td></tr>
+<tr><td>Deux filiales dans les îles, audit externe puis interne</td><td>Le scanner (Nessus) classe en
+« moyenne » une faille de la passerelle VPN qui affiche en clair les identifiants des sessions en cours :
+critique en réalité, l'audit peut se faire à distance. En interne, une machine hors domaine, un outil de
+prise en main à distance ouvert, un compte de service dont le mot de passe est son nom, un répertoire exclu
+de l'antivirus qui permet d'y déposer des outils sans détection. Une plage d'adresses « sautée » révèle un
+lien réseau historique vers l'autre filiale, jamais fermé. Le serveur des finances garde le mot de passe
+mémorisé.</td><td>Juger une vulnérabilité selon son contexte, pas sur le seul score du scanner ; corriger
+la passerelle VPN ; inventorier les outils de prise en main à distance ; mots de passe robustes sur les
+comptes de service ; limiter et surveiller les exclusions antivirus ; documenter et fermer les liens
+réseau obsolètes ; ne jamais mémoriser un mot de passe d'accès sensible.</td></tr>
+</tbody></table></div>
+<div class="callout"><div class="t">Côté forensic</div>
+Un pentest classique est court et peu discret : il génère beaucoup d'alertes et de traces, un bon
+entraînement pour le SOC. Une Red Team, au contraire, doit rester indétectée, plus longtemps et pour plus
+cher. Les alertes antivirus nomment souvent un virus qui n'a rien à voir : elles reconnaissent un
+comportement partagé avec ce virus, pas l'outil réellement utilisé. Un outil de cartographie de l'annuaire
+comme BloodHound sert aussi bien à l'attaquant qu'au défenseur, pour voir les chemins qui mènent aux
+comptes à hauts privilèges.
+</div>
+<p>Fil conducteur des trois cas : avec une centaine d'heures de travail, des faiblesses basiques
+(identifiants par défaut, mot de passe réutilisé, segmentation absente) suffisent souvent à compromettre
+entièrement un système d'information, quel que soit le budget de sécurité de l'entreprise visée.</p>
+
+<h3 id="ch16-takedown">16.4 Au-delà du SOC : le Take-Down judiciaire</h3>
+<p>Quand une investigation en entreprise (SOC niveau 3) identifie des auteurs, le rapport est transmis aux
+forces de l'ordre, qui peuvent aller plus loin : un <b>Take-Down</b> coordonné au niveau international
+(Europol, polices nationales) coupe l'infrastructure des attaquants au même moment qu'une intervention
+physique, pour empêcher toute destruction de preuves ou fuite. Les enquêteurs présents sur place pratiquent
+alors le <b>live forensics</b> : acquisition de la mémoire des machines saisies encore allumées, pour
+récupérer les clés de chiffrement de disque avant extinction.</p>
+
+<!-- ===================================================================== -->
+<h2 id="ch17"><span class="num">17.</span> Les quiz du cours, diapositive par diapositive</h2>
+
+<div class="callout"><div class="t">Pourquoi ce chapitre</div>
+Chaque cours contient des diapositives « quiz » : une question suivie d'une liste d'options lettrées
+(A, B, C…), puis une diapositive de correction. Ce chapitre les reprend <b>toutes</b>, dans l'ordre des
+supports, telles qu'affichées en cours. Les chapitres précédents en reprennent déjà le contenu sous forme
+de tableaux et de fiches ; ici, c'est la liste brute, question par question, pour s'entraîner dans les
+conditions du cours — et le QCM du §19 en reprend une question par quiz.
+</div>
+
+<h3 id="ch17-j1">17.1 Jour 1</h3>
+
+<h4>Quels types de preuves utilise l'inforensique ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. Capture réseau</td><td><b>Oui</b></td></tr>
+<tr><td>B. Document imprimé</td><td><b>Oui</b> — des points jaunes invisibles identifient l'imprimante (watermarking)</td></tr>
+<tr><td>C. E-mail</td><td><b>Oui</b></td></tr>
+<tr><td>D. Historique Internet</td><td><b>Oui</b></td></tr>
+<tr><td>E. Photo numérique</td><td><b>Oui</b></td></tr>
+<tr><td>F. Journaux d'événements</td><td><b>Oui</b></td></tr>
+<tr><td>G. SMS ou autre messagerie (WhatsApp, Signal, même chiffrée de bout en bout)</td><td><b>Oui</b></td></tr>
+<tr><td>H. Vidéo numérique (caméra de surveillance)</td><td><b>Oui</b></td></tr>
+</tbody></table></div>
+<p style="margin-top:-8px;font-size:.92em;opacity:.85">Toutes les options sont valides : presque tout peut servir de preuve inforensique.</p>
+
+<h4>L'historique Internet est une preuve accessible à quels endroits ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. Dans la mémoire RAM</td><td><b>Oui</b>, à condition d'avoir un dump mémoire pris au bon moment</td></tr>
+<tr><td>B. Dans une capture réseau</td><td><b>Oui</b>, à condition que le flux ne soit pas chiffré (ou que le TLS soit cassé)</td></tr>
+<tr><td>C. Sur une clé USB</td><td><b>Oui</b></td></tr>
+<tr><td>D. Sur le smartphone</td><td><b>Oui</b></td></tr>
+<tr><td>E. Sur le disque</td><td><b>Oui</b>, si le navigateur est configuré pour stocker l'historique en local (de moins en moins fréquent en entreprise)</td></tr>
+</tbody></table></div>
+
+<h4>Pourquoi les données enregistrées lors d'un skimming sont-elles chiffrées ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. Pour compliquer le travail de la police</td><td>Non</td></tr>
+<tr><td>B. Pour que la personne qui récupère le matériel n'utilise pas les informations récoltées pour son propre compte</td><td><b>Oui</b></td></tr>
+<tr><td>C. Pour être en accord avec la norme PCI-DSS</td><td>Non</td></tr>
+<tr><td>D. Pour éviter la détection par les équipements de sécurité</td><td>Non</td></tr>
+</tbody></table></div>
+<p style="margin-top:-8px;font-size:.92em;opacity:.85">Un organisateur de skimming ne fait pas confiance à l'exécutant sur le terrain : chiffrer les données volées l'empêche de les exploiter lui-même avant qu'elles ne remontent.</p>
+
+<h4>Quelles sont les compétences requises pour une investigation en inforensique ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. Chimie</td><td>Non</td></tr>
+<tr><td>B. Communication</td><td><b>Oui</b> — « CAPITALE », à l'écrit comme à l'oral</td></tr>
+<tr><td>C. Confidentialité</td><td><b>Oui</b> — y compris entre collègues qui n'ont pas à connaître un nom de client</td></tr>
+<tr><td>D. Curiosité</td><td><b>Oui</b> — un monde qui évolue en permanence</td></tr>
+<tr><td>E. Jeux vidéo</td><td>Non</td></tr>
+<tr><td>F. Langue</td><td><b>Oui</b></td></tr>
+<tr><td>G. Légal</td><td><b>Oui</b></td></tr>
+<tr><td>H. Techniques</td><td><b>Oui</b> — surtout réseau, sécurité et système</td></tr>
+<tr><td>I. Traitement du signal</td><td>Non</td></tr>
+</tbody></table></div>
+
+<h4>Lesquels de ces éléments sont des médias pouvant contenir de l'information ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. Bande magnétique</td><td><b>Oui</b></td></tr>
+<tr><td>B. Boîtier d'alimentation</td><td>Non</td></tr>
+<tr><td>C. CD</td><td><b>Oui</b></td></tr>
+<tr><td>D. Disque Blu-ray</td><td><b>Oui</b></td></tr>
+<tr><td>E. Disquette</td><td><b>Oui</b></td></tr>
+<tr><td>F. DVD</td><td><b>Oui</b></td></tr>
+<tr><td>G. RAM</td><td><b>Oui</b>, sauf si la machine est éteinte</td></tr>
+<tr><td>H. Processeur</td><td>Non — il traite les données, il ne les stocke pas</td></tr>
+<tr><td>I. Valise</td><td>« Ça dépend ce qu'il y a dedans ! »</td></tr>
+</tbody></table></div>
+
+<h4>À quoi faut-il penser en préparant une acquisition d'image disque d'un portable ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. Noter la recovery key BitLocker</td><td><b>Oui</b></td></tr>
+<tr><td>B. Demander si on peut emmener la souris</td><td>Non</td></tr>
+<tr><td>C. Récupérer le modèle du processeur</td><td>Non — ne sert à rien</td></tr>
+<tr><td>D. Avoir la taille de la mémoire vive</td><td><b>Oui</b>, sauf si le PC n'a pas été éteint depuis l'incident</td></tr>
+<tr><td>E. Noter le code PIN BitLocker</td><td>Non</td></tr>
+<tr><td>F. « Invoquer la déesse du forensic »</td><td>Humour — il y aura toujours des imprévus</td></tr>
+<tr><td>G. Avoir la taille du disque à prélever</td><td><b>Oui</b> — « le plus important »</td></tr>
+<tr><td>H. Récupérer le modèle exact de la machine cible</td><td><b>Oui</b></td></tr>
+<tr><td>I. Demander si on peut emmener le portable cible</td><td><b>Oui</b></td></tr>
+</tbody></table></div>
+
+<h4>Quels moyens pour une agente sous couverture de dissimuler sa réelle identité ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. Forum</td><td>Non, sauf confiance dans l'administration du forum</td></tr>
+<tr><td>B. I2P</td><td><b>Oui</b></td></tr>
+<tr><td>C. Ne pas aller sur Internet</td><td>Le plus sûr, mais pas absolu (on parle de vous ailleurs)</td></tr>
+<tr><td>D. Outils pour usurper le numéro d'appelant</td><td><b>Oui</b></td></tr>
+<tr><td>E. Pair-à-pair (P2P)</td><td>Non — on échange avec sa propre adresse IP</td></tr>
+<tr><td>F. Proxy</td><td>Conditionnel — les journaux peuvent être réquisitionnés</td></tr>
+<tr><td>G. Pseudonyme</td><td>Oui, à condition de ne l'utiliser que dans un seul cadre</td></tr>
+<tr><td>H. SecureDrop</td><td><b>Oui</b></td></tr>
+<tr><td>I. Tor</td><td><b>Oui</b> — le plus efficace de la liste</td></tr>
+<tr><td>J. VPN</td><td>Conditionnel — seulement si l'on fait confiance à l'opérateur</td></tr>
+</tbody></table></div>
+
+<h4>Quels sont les types de cybercrime ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. Blanchiment d'argent</td><td><b>Oui</b></td></tr>
+<tr><td>B. Contrefaçon / violation de propriété intellectuelle</td><td><b>Oui</b></td></tr>
+<tr><td>C. Cyberharcèlement</td><td><b>Oui</b></td></tr>
+<tr><td>D. Cybermeurtre</td><td><b>Oui</b></td></tr>
+<tr><td>E. Fraude à la carte bancaire</td><td><b>Oui</b></td></tr>
+<tr><td>F. « Fraude à la carte bibliothécaire »</td><td><b>Non</b> — le piège de la liste, ça n'existe pas</td></tr>
+<tr><td>G. Hébergement de services en ligne illégaux</td><td><b>Oui</b></td></tr>
+<tr><td>H. Incitation au terrorisme et à la haine raciale</td><td><b>Oui</b></td></tr>
+<tr><td>I. Rançongiciel</td><td><b>Oui</b></td></tr>
+<tr><td>J. Revenge porn</td><td><b>Oui</b></td></tr>
+<tr><td>K. Revente de données sensibles</td><td><b>Oui</b></td></tr>
+<tr><td>L. Vol d'avatar</td><td><b>Oui</b></td></tr>
+<tr><td>M. Vol d'identité</td><td><b>Oui</b></td></tr>
+</tbody></table></div>
+
+<h4>Quels sont les impacts d'une cyberattaque ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. Notification client de l'intrusion</td><td><b>Oui</b></td></tr>
+<tr><td>B. Mise en conformité réglementaire</td><td><b>Oui</b></td></tr>
+<tr><td>C. Amélioration des dispositifs de cybersécurité</td><td><b>Oui</b></td></tr>
+<tr><td>D. Augmentation des primes d'assurance</td><td><b>Oui</b></td></tr>
+<tr><td>E. Perturbation ou interruption des activités</td><td><b>Oui</b></td></tr>
+<tr><td>F. Dépréciation de la valeur de la marque</td><td><b>Oui</b></td></tr>
+<tr><td>G. Perte de propriété intellectuelle</td><td><b>Oui</b></td></tr>
+</tbody></table></div>
+
+<h4>Quels outils sont utiles pour de l'OSINT ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. censys.io</td><td><b>Oui</b></td></tr>
+<tr><td>B. exploit-db.com</td><td>Non — une base d'exploits, pas de l'OSINT</td></tr>
+<tr><td>C. factionc2.com</td><td>Non — un outil de commande et de contrôle</td></tr>
+<tr><td>D. github.com</td><td><b>Oui</b></td></tr>
+<tr><td>E. haveibeenpwned.com</td><td><b>Oui</b></td></tr>
+<tr><td>F. robtex.com</td><td><b>Oui</b></td></tr>
+<tr><td>G. shodan.io</td><td><b>Oui</b></td></tr>
+<tr><td>H. tineye.com</td><td><b>Oui</b></td></tr>
+<tr><td>I. virustotal.com</td><td><b>Oui</b></td></tr>
+</tbody></table></div>
+
+<h4>Quels formats utilisent des images matricielles, et non vectorielles ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. Adobe Illustrator (.ai)</td><td>Non — vectoriel</td></tr>
+<tr><td>B. Bitmap (.bmp)</td><td><b>Oui</b> — matriciel</td></tr>
+<tr><td>C. Drawing File (.drw)</td><td>Non — vectoriel</td></tr>
+<tr><td>D. Encapsulated PostScript (.eps)</td><td>Non — vectoriel</td></tr>
+<tr><td>E. GIF (.gif)</td><td><b>Oui</b> — matriciel</td></tr>
+<tr><td>F. JPEG (.jpg)</td><td><b>Oui</b> — matriciel</td></tr>
+<tr><td>G. PNG (.png)</td><td><b>Oui</b> — matriciel</td></tr>
+<tr><td>H. RAW</td><td><b>Oui</b> — matriciel</td></tr>
+<tr><td>I. SVG (.svg)</td><td>Non — vectoriel</td></tr>
+<tr><td>J. TIFF (.tif)</td><td><b>Oui</b> — matriciel</td></tr>
+</tbody></table></div>
+
+<h3 id="ch17-j2">17.2 Jour 2</h3>
+
+<h4>Lesquels de ces points sont vrais pour les preuves numériques par rapport aux preuves physiques ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. Plus faciles à détruire</td><td>Non — exige des droits d'accès importants</td></tr>
+<tr><td>B. Contiennent moins d'informations</td><td>Non — difficile à dire, les deux en contiennent énormément</td></tr>
+<tr><td>C. Dures à dupliquer</td><td>Non — copie bit à bit instantanée</td></tr>
+<tr><td>D. Facilement modifiables</td><td><b>Oui</b></td></tr>
+<tr><td>E. Une capture d'écran est une preuve numérique</td><td>Pas au sens judiciaire, mais suffisante en entreprise</td></tr>
+<tr><td>F. Manque de procédures et de standards établis</td><td><b>Oui</b></td></tr>
+</tbody></table></div>
+
+<h4>Ces éléments peuvent-ils servir de preuve dans le monde de l'entreprise ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Type de preuve</th></tr></thead><tbody>
+<tr><td>A. Observation visuelle d'une suite antivirale</td><td>Physique</td></tr>
+<tr><td>B. Calcul « 140/150 équipements supervisés = 93,33 % »</td><td>Mathématique</td></tr>
+<tr><td>C. Plusieurs personnes confirment le déploiement de l'antivirus</td><td>Confirmative</td></tr>
+<tr><td>D. Vérification de la configuration réseau</td><td>Technique</td></tr>
+<tr><td>E. Analyse des journaux d'alerte réseau</td><td>Analytique</td></tr>
+<tr><td>F. La documentation l'exige</td><td>Documentaire</td></tr>
+<tr><td>G. « On m'a dit à l'oral que le schéma est à jour »</td><td>Orale</td></tr>
+</tbody></table></div>
+
+<h4>Quelles traces peuvent être détruites en débranchant l'alimentation d'un ordinateur ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. Certaines clés de registre</td><td>Non — stockées dans des fichiers</td></tr>
+<tr><td>B. Des clés de chiffrement</td><td><b>Oui</b>, si elles ne vivent qu'en mémoire</td></tr>
+<tr><td>C. Des paramètres de configuration</td><td>Non — dans des fichiers</td></tr>
+<tr><td>D. La MFT</td><td>Non — sur le disque</td></tr>
+<tr><td>E. Le BIOS</td><td>Non — sur une puce de la carte mère</td></tr>
+<tr><td>F. Les applications installées</td><td>Non</td></tr>
+<tr><td>G. Les fichiers ouverts</td><td><b>Oui</b></td></tr>
+<tr><td>H. Les fichiers temporaires</td><td>Plutôt non — purgés au démarrage suivant, pas à l'extinction</td></tr>
+<tr><td>I. Les processus</td><td><b>Oui</b></td></tr>
+<tr><td>J. Un logiciel malveillant</td><td><b>Oui</b>, s'il ne réside qu'en mémoire sans persistance</td></tr>
+</tbody></table></div>
+
+<h4>Système Windows éteint : comment récupérer ce qu'il y avait en mémoire vive ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. Le dump de la clé USB</td><td>Non — aucun rapport</td></tr>
+<tr><td>B. <code>%WINDIR%\MEMORY.DMP</code></td><td><b>Oui</b> — réplique de la RAM au moment d'un plantage</td></tr>
+<tr><td>C. Le fichier <code>hosts</code></td><td>Non — aucun rapport</td></tr>
+<tr><td>D. <code>hiberfile.sys</code></td><td><b>Oui</b> — image compressée de la RAM</td></tr>
+<tr><td>E. <code>pagefile.sys</code></td><td><b>Oui</b> — pages de la mémoire swap</td></tr>
+<tr><td>F. Un fichier Python / <code>sqlite3.dll</code></td><td>Non — aucun rapport</td></tr>
+</tbody></table></div>
+
+<h4>Ces outils de rétro-ingénierie sont-ils statiques ou dynamiques ?</h4>
+<div class="tw"><table><thead><tr><th>Outil</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. Cuckoo</td><td>Principalement dynamique</td></tr>
+<tr><td>B. Frida</td><td>Dynamique</td></tr>
+<tr><td>C. gdb</td><td>Dynamique</td></tr>
+<tr><td>D. Ghidra</td><td>Statique</td></tr>
+<tr><td>E. IDA Pro</td><td>Principalement statique</td></tr>
+<tr><td>F. OllyDbg</td><td>Dynamique</td></tr>
+<tr><td>G. radare2</td><td>Principalement statique (les deux)</td></tr>
+</tbody></table></div>
+
+<h4>Comment un logiciel malveillant peut-il savoir qu'il est exécuté dans une VM ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. Valeurs dans la base de registre</td><td><b>Oui</b></td></tr>
+<tr><td>B. Certains services</td><td><b>Oui</b></td></tr>
+<tr><td>C. L'adresse MAC</td><td><b>Oui</b></td></tr>
+<tr><td>D. Noms de compte utilisateur</td><td><b>Oui</b></td></tr>
+<tr><td>E. Noms de répertoire</td><td><b>Oui</b></td></tr>
+<tr><td>F. Noms de processus (DLL utilisées)</td><td><b>Oui</b></td></tr>
+<tr><td>G. Mouvements de la souris (absence)</td><td><b>Oui</b></td></tr>
+<tr><td>H. Présence d'un antivirus</td><td><b>Oui</b></td></tr>
+<tr><td>I. Espace disque libre restant</td><td><b>Oui</b></td></tr>
+<tr><td>J. Le serveur DNS utilisé</td><td><b>Oui</b></td></tr>
+</tbody></table></div>
+<p style="margin-top:-8px;font-size:.92em;opacity:.85">Tous ces indices sont de vrais vecteurs de détection d'environnement : d'où l'intérêt d'un bac à sable « durci » qui ressemble à un vrai poste (§12.2).</p>
+
+<h4>Pourquoi peut-on récupérer des fichiers effacés de la corbeille sur Windows ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. La corbeille est dans une partition dédiée</td><td>Non</td></tr>
+<tr><td>B. Le fichier reste accessible dans la mémoire vive</td><td>Non</td></tr>
+<tr><td>C. La suppression se contente de modifier l'index</td><td><b>Oui</b></td></tr>
+<tr><td>D. Windows fait une sauvegarde avant suppression</td><td>Non</td></tr>
+</tbody></table></div>
+
+<h4>Comment récupérer le mot de passe de session Windows d'une personne suspectée ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. Depuis les journaux Windows</td><td>Non</td></tr>
+<tr><td>B. Depuis les métadonnées de la MFT</td><td>Non</td></tr>
+<tr><td>C. Depuis le dump mémoire de <code>lsass.exe</code></td><td>Oui, si l'on a pu faire le dump</td></tr>
+<tr><td>D. En cassant par force brute le condensat de la SAM</td><td>Peu envisageable si le mot de passe est robuste</td></tr>
+<tr><td>E. En le demandant à la personne</td><td>Oui, si elle donne signe de vie</td></tr>
+<tr><td>F. Dans la ruche de registre SYSTEM</td><td>Non — elle contient la clé, pas le mot de passe</td></tr>
+<tr><td>G. En clair dans un fichier effacé</td><td>Oui, ou même dans un fichier en clair (Excel, configuration)</td></tr>
+<tr><td>H. En l'extrayant du service Volume Shadow Copy</td><td>Non</td></tr>
+</tbody></table></div>
+
+<h4>Pourquoi est-ce inquiétant de retrouver la trace d'une commande <code>ntdsutil</code> (IFM) sur une machine compromise ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. Elle défragmente le disque et efface des traces</td><td>Non</td></tr>
+<tr><td>B. Elle permet de ne pas respecter les GPO</td><td>Non</td></tr>
+<tr><td>C. Elle permet de récupérer des informations sensibles</td><td><b>Oui</b></td></tr>
+<tr><td>D. Elle joint la machine au domaine de l'AD</td><td>Non</td></tr>
+<tr><td>E. Elle risque d'endommager le système</td><td>Non</td></tr>
+</tbody></table></div>
+
+<h4>Comment obtenir la clé de déchiffrement d'un disque Linux chiffré ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. Depuis les journaux Linux</td><td>Non</td></tr>
+<tr><td>B. Depuis les options de démarrage</td><td>Non</td></tr>
+<tr><td>C. Depuis le dump mémoire</td><td>Oui, à condition de pouvoir l'avoir</td></tr>
+<tr><td>D. En cassant <code>/etc/shadow</code> par force brute</td><td>Non — ce sont les mots de passe des comptes, pas la clé du disque</td></tr>
+<tr><td>E. En la demandant à la personne</td><td><b>Oui</b></td></tr>
+<tr><td>F. Dans la puce CMOS ou un autre endroit physique</td><td>Ça dépend de la machine (TPM)</td></tr>
+<tr><td>G. En clair dans un fichier effacé</td><td>Non</td></tr>
+<tr><td>H. En utilisant la commande <code>dd</code></td><td>Non — copie fidèlement, mais reste chiffrée</td></tr>
+</tbody></table></div>
+
+<h4>Comment les forces de l'ordre ont-elles retrouvé l'administrateur d'un service pédocriminel caché derrière Tor ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. En exploitant une faille pour trouver le portefeuille Bitcoin</td><td>Non — il était déjà public (il fallait l'alimenter)</td></tr>
+<tr><td>B. Une investigation du fisc américain (IRS)</td><td><b>Oui</b> — point de départ de l'enquête</td></tr>
+<tr><td>C. Une porte dérobée de la NSA dans le code source</td><td>Non — désinformation</td></tr>
+<tr><td>D. Une enquête du FBI sur un kidnapping d'extraterrestres</td><td>Non — blague</td></tr>
+<tr><td>E. Une miniature d'image non servie à travers Tor</td><td><b>Oui</b> — a révélé l'adresse IP réelle du serveur</td></tr>
+<tr><td>F. Une adresse électronique proche d'une autre, sur un service de cryptomonnaie</td><td>Vrai, mais a identifié un <i>utilisateur</i>, pas l'administrateur</td></tr>
+<tr><td>G. En interrogeant un utilisateur qui s'est suicidé</td><td>Non, pas pour identifier l'administrateur</td></tr>
+<tr><td>H. Le portefeuille ne payait que les personnes derrière le service</td><td><b>Oui</b> — a permis de suivre l'argent</td></tr>
+</tbody></table></div>
+
+<h3 id="ch17-j3">17.3 Jour 3</h3>
+
+<h4>Lequel de ces périphériques n'est pas un périphérique réseau ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. Antivirus</td><td><b>C'est lui</b> — un logiciel de sécurité sur l'hôte, pas un équipement réseau</td></tr>
+<tr><td>B. Hub</td><td>Périphérique réseau (couche 1)</td></tr>
+<tr><td>C. IDS</td><td>Périphérique réseau</td></tr>
+<tr><td>D. Pare-feu</td><td>Périphérique réseau</td></tr>
+<tr><td>E. Routeur</td><td>Périphérique réseau</td></tr>
+<tr><td>F. Serveur DHCP</td><td>Périphérique réseau</td></tr>
+<tr><td>G. Serveur DNS</td><td>Périphérique réseau</td></tr>
+<tr><td>H. Serveur Proxy</td><td>Périphérique réseau</td></tr>
+<tr><td>I. Serveur SMTP</td><td>Périphérique réseau</td></tr>
+<tr><td>J. Serveur Web</td><td>Périphérique réseau</td></tr>
+<tr><td>K. Switch</td><td>Périphérique réseau (couche 2)</td></tr>
+</tbody></table></div>
+
+<h4>Lesquels de ces éléments sont des indicateurs de compromission (IoC) ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. Adresse IP</td><td><b>Oui</b></td></tr>
+<tr><td>B. Hash MD5</td><td><b>Oui</b> (même si le SHA-256 est préféré aujourd'hui)</td></tr>
+<tr><td>C. Mutex</td><td><b>Oui</b> — très discriminant</td></tr>
+<tr><td>D. Nom de domaine</td><td><b>Oui</b></td></tr>
+<tr><td>E. Nom de fichier</td><td>Oui, mais un indice vague</td></tr>
+<tr><td>F. Nom de virus</td><td>Non — pas standardisé entre éditeurs</td></tr>
+<tr><td>G. Numéro de série de smartphone</td><td>Non — jamais présent dans les traces</td></tr>
+<tr><td>H. Protocole réseau</td><td>Non — trop générique</td></tr>
+<tr><td>I. URL</td><td><b>Oui</b></td></tr>
+</tbody></table></div>
+
+<h4>Quels sont les moyens disponibles pour extraire des preuves inforensiques d'Android ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. La prise jack du smartphone</td><td>Non</td></tr>
+<tr><td>B. Demander le support de la NSA</td><td>Non — humour</td></tr>
+<tr><td>C. Retirer la puce du smartphone</td><td>Oui, en dernier recours</td></tr>
+<tr><td>D. Le port JTAG</td><td><b>Oui</b></td></tr>
+<tr><td>E. Logique, en copiant les fichiers accessibles</td><td><b>Oui</b>, idéalement avec un accès root</td></tr>
+<tr><td>F. Physique, en acquérant l'image du backup</td><td><b>Oui</b></td></tr>
+<tr><td>G. Via l'alimentation (port USB) du smartphone</td><td><b>Oui</b> — beaucoup de smartphones y transfèrent encore des données</td></tr>
+</tbody></table></div>
+
+<h4>Quelles sont les différences entre un test d'intrusion et une attaque réelle ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. Pas de limite de temps dans une attaque réelle</td><td><b>Oui</b></td></tr>
+<tr><td>B. Il faut supprimer ses traces dans une attaque réelle</td><td>Non — un pentester aussi efface les siennes : ce n'est pas une différence</td></tr>
+<tr><td>C. On peut finir en prison dans une attaque réelle</td><td><b>Oui</b></td></tr>
+<tr><td>D. Pas de règles dans une attaque réelle</td><td><b>Oui</b></td></tr>
+</tbody></table></div>
+
+<h4>Quelles sont les compétences nécessaires pour être pentester ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. Esprit créatif, imagination</td><td><b>Oui</b></td></tr>
+<tr><td>B. Communication écrite et orale</td><td><b>Oui</b></td></tr>
+<tr><td>C. Développement, réseau, système, sécurité défensive</td><td><b>Oui</b></td></tr>
+<tr><td>D. Mathématiques, physique, traitement du signal</td><td>Non</td></tr>
+</tbody></table></div>
+
+<h4>Quel est le mode le plus réaliste entre boîte blanche et boîte noire ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. Boîte blanche</td><td>Non</td></tr>
+<tr><td>B. Boîte noire</td><td><b>Oui</b></td></tr>
+<tr><td>C. Pas de différence</td><td>Non</td></tr>
+<tr><td>D. « La réponse D »</td><td>Non — humour</td></tr>
+</tbody></table></div>
+
+<h4>Le périmètre autorisé est <code>www.monclient.target</code>. Puis-je attaquer… ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. <code>preprod.www.monclient.target</code></td><td><b>Oui</b> — sous-domaine du périmètre défini</td></tr>
+<tr><td>B. <code>ldap.monclient.target</code></td><td>Non — un sous-domaine parallèle, pas sous <code>www</code></td></tr>
+<tr><td>C. <code>monclient.target</code></td><td>Non — c'est le domaine parent, au-dessus du périmètre défini</td></tr>
+<tr><td>D. <code>www.monclient.com</code></td><td>Non — un autre domaine de tête de ligne</td></tr>
+</tbody></table></div>
+
+<h4>Un formulaire d'administration répond en <code>admin</code>/<code>admin</code>. Comment en profiter ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. Modifier le code source de la page</td><td>Non — accès en lecture seule au formulaire</td></tr>
+<tr><td>B. Essayer d'élever ses droits sur l'application</td><td>Non — déjà administrateur</td></tr>
+<tr><td>C. Tenter une injection SQL</td><td><b>Oui</b></td></tr>
+<tr><td>D. « Fuzzer » les champs du formulaire</td><td><b>Oui</b></td></tr>
+</tbody></table></div>
+
+<h4>Un accès à la base de données est obtenu. Comment en profiter ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. Modifier le code source de la page</td><td>Non — le code n'est pas dans la base</td></tr>
+<tr><td>B. Essayer d'exécuter du code sur le système</td><td><b>Oui</b> — le premier réflexe</td></tr>
+<tr><td>C. Utiliser l'accès pour une attaque DDoS</td><td>Non — une base de données ne fait pas sortir de flux</td></tr>
+<tr><td>D. « Dumper » le contenu de la base</td><td><b>Oui</b></td></tr>
+</tbody></table></div>
+
+<h4>Quelle post-exploitation tester en premier, après un accès initial sans antivirus détecté ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. L'élévation de privilèges</td><td><b>Oui</b> — si l'accès initial est passé, l'élévation a aussi des chances de passer</td></tr>
+<tr><td>B. Le vol d'identifiants</td><td>Intéressant, mais pas la priorité</td></tr>
+<tr><td>C. Le rebond vers d'autres machines</td><td>Non — réservé à la fin</td></tr>
+<tr><td>D. L'exfiltration de données</td><td>Non — souvent déjà possible avant</td></tr>
+</tbody></table></div>
+
+<h4>Comment un attaquant peut-il monétiser son intrusion ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. Vendre l'accès sur le darknet</td><td><b>Oui</b></td></tr>
+<tr><td>B. Exfiltrer la donnée pour la vendre</td><td><b>Oui</b></td></tr>
+<tr><td>C. Déployer un rançongiciel</td><td><b>Oui</b></td></tr>
+<tr><td>D. Rebondir vers des partenaires ou fournisseurs</td><td><b>Oui</b></td></tr>
+</tbody></table></div>
+<p style="margin-top:-8px;font-size:.92em;opacity:.85">Les quatre sont possibles, et pas exclusives entre elles.</p>
+
+<h4>À part aider des clients, à quoi peuvent servir des compétences en hacking ?</h4>
+<div class="tw"><table><thead><tr><th>Option</th><th>Verdict</th></tr></thead><tbody>
+<tr><td>A. Aider des sources journalistiques à rester anonymes</td><td><b>Oui</b></td></tr>
+<tr><td>B. Lutter contre le cyberharcèlement en retrouvant des personnes qui se croient anonymes</td><td><b>Oui</b></td></tr>
+<tr><td>C. Lutter contre le revenge porn</td><td><b>Oui</b></td></tr>
+<tr><td>D. Au Green IT</td><td><b>Oui</b></td></tr>
+</tbody></table></div>
+
+<!-- ===================================================================== -->
+<h2 id="ch18"><span class="num">18.</span> S'entraîner : questions ouvertes</h2>
 
 <p>L'examen comporte quelques questions ouvertes. Formulez votre réponse, puis dépliez.</p>
 
@@ -2187,8 +2943,32 @@ les <b>magic numbers</b> du format : pour un ZIP, <code>50 4B 03 04</code> au d�
 les deux, les reconvertir en binaire, ouvrir l'archive. Un outil de carving fait la même chose ; il faut
 savoir le faire à la main pour vérifier l'outil.</p></div></details>
 
+<details class="case"><summary>Cas 20 — Le Mutex méconnu<span class="sit">Un collègue propose de bloquer un logiciel malveillant sur son seul nom de virus, tel qu'affiché par l'antivirus du client.</span></summary>
+<div><p>Un nom de virus n'est pas standardisé d'un éditeur à l'autre : ce n'est pas un indicateur de
+compromission fiable. Préférer une empreinte (hash), une adresse IP ou un domaine de commande, ou un
+<b>mutex</b> si le logiciel malveillant en crée un : une chaîne très spécifique, peu sujette aux faux
+positifs.</p></div></details>
+
+<details class="case"><summary>Cas 21 — Le smartphone encore allumé<span class="sit">Lors d'une perquisition, un smartphone déverrouillé est saisi. Un collègue propose de l'éteindre immédiatement pour « le sécuriser ».</span></summary>
+<div><p>Au contraire : il faut le garder allumé et alimenté. L'éteindre impose de retaper le mot de passe
+au redémarrage et peut faire basculer le chiffrement dans un état où les clés ne sont plus récupérables.
+Le risque à gérer est qu'il reste connecté au réseau (un ordre d'effacement à distance reste possible) :
+on l'isole dans une cage de Faraday, alimentation branchée pour ne pas le laisser se décharger en cherchant
+un réseau.</p></div></details>
+
+<details class="case"><summary>Cas 22 — Le scanner dit « moyen »<span class="sit">Un scan de vulnérabilités automatisé classe une faille en criticité « moyenne » sur une passerelle VPN exposée sur Internet.</span></summary>
+<div><p>Ne jamais se fier uniquement au score automatique : une faille de traversée de répertoire sur une
+passerelle d'accès distant peut exposer des identifiants de connexion en clair, donc un accès direct au
+réseau interne — bien plus critique que « moyen ». Le contexte (ce qui est exposé, ce qu'on peut en faire)
+prime sur le score brut d'un outil.</p></div></details>
+
+<details class="case"><summary>Cas 23 — Le lien réseau oublié<span class="sit">En auditant une filiale, vous remarquez un saut dans le plan d'adressage IP (des plages manquantes entre deux segments).</span></summary>
+<div><p>Un saut dans un plan d'adressage signale souvent un ancien lien réseau non documenté et jamais
+fermé proprement. À creuser : un segment qui répond encore peut relier à une autre filiale ou un ancien
+système, ouvrant un chemin latéral que personne n'a prévu de surveiller.</p></div></details>
+
 <!-- ===================================================================== -->
-<h2 id="qcm-sec"><span class="num">15.</span> QCM — <span id="count-badge" class="badge acc"></span></h2>
+<h2 id="qcm-sec"><span class="num">19.</span> QCM — <span id="count-badge" class="badge acc"></span></h2>
 <p><b>Une seule bonne réponse par question</b>, ordre tiré au hasard, correction expliquée. Les
 chapitres suivent ceux de la fiche.</p>
 <div id="qcm"></div>
@@ -2197,7 +2977,7 @@ chapitres suivent ceux de la fiche.</p>
 </div>
 
 <button id="top" title="Haut de page">↑</button>
-<script src="qcm.js?v=7"></script>
+<script src="qcm.js?v=11"></script>
 <script src="../assets/app.js?v=35"></script>
 <script>initQCM(window.QCM_DATA, window.QCM_CHAPTERS, 'inf5051');</script>
 </body>

@@ -29,7 +29,7 @@ window.CATALOGUE = [
   titre: "Investigation numérique (forensic)",
   dossier: "inf5051-forensic",
   sources: "../Forensic",
-  etat: "en cours",
+  etat: "terminé",
   couleur: "red",
   resume: "Comprendre ce qui s'est passé à partir des traces : la justice veut des preuves, l'entreprise veut fermer le chemin d'attaque.",
   programme: [
@@ -45,14 +45,17 @@ window.CATALOGUE = [
     "Analyse d'une image disque Windows à la main, timeline pour le client",
     "Collecte et préservation : recevabilité, chaîne de possession, mémoire, SSD",
     "Analyse de logiciels malveillants, statique et dynamique",
-    "Forensic Windows, Mac et Linux, analyse mémoire et capture réseau"
+    "Forensic Windows, Mac et Linux, analyse mémoire et capture réseau",
+    "Forensic réseau et mobiles : Cyber Kill Chain, IoC, saisie d'un smartphone",
+    "Le pentest, miroir du forensic : boîte noire/grise/blanche, périmètre",
+    "Études de cas : Megacorp, audits, TP réseau (déchiffrement TLS, exfiltration)"
   ],
   ressources: [
     { type: "fiche", page: "fiche.html", titre: "Fiche de révision",
-      desc: "Jours 1 et 2 : introduction, rapports forensic, problématiques légales, collecte et préservation, malware, Windows, Mac et Linux, 19 questions ouvertes",
+      desc: "Les trois jours complets, plus les 34 quiz du prof repris diapositive par diapositive, et 23 questions ouvertes",
       qcm: { src: "qcm.js", cle: "inf5051" } },
     { type: "examen", page: "points-examen.html", titre: "Ce que le prof a signalé",
-      desc: "48 passages des jours 1 et 2, avec la réponse attendue" }
+      desc: "56 passages des trois jours, avec la réponse attendue" }
   ]
 },
 
