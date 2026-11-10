@@ -43,14 +43,18 @@ window.CATALOGUE = [
     "Temps de la crise : détecter, alerter, mobiliser… PCA, PRA",
     "Émotions, croyances et valeurs ; Système 1 et Système 2",
     "Stress : CINÉ, double estimation, sidération, adrénaline, cohérence cardiaque",
-    "Les 5 règles d'or du travail en équipe"
+    "Les 5 règles d'or du travail en équipe",
+    "Côté État : SGDSN, contrat 10 000, PIV, dissuasion, PPS-A et PPS-M",
+    "Opérations intérieures : Sentinelle, Résilience, Harpie, Héphaïstos",
+    "Règle des 4I, concours et réquisition, OTIAD et structure miroir",
+    "DMD, expression de besoin, ordre d'engagement, main courante"
   ],
   ressources: [
     { type: "fiche", page: "fiche.html", titre: "Fiche de révision",
-      desc: "Volet entreprise : fondamentaux, seuil de crise, organisation, facteur humain et stress",
+      desc: "Volet entreprise (fondamentaux, seuil de crise, facteur humain) et volet État (les armées dans la sécurité nationale)",
       qcm: { src: "qcm.js", cle: "inf5059" } },
     { type: "examen", page: "points-examen.html", titre: "Ce que le prof a signalé",
-      desc: "14 passages où l'intervenant insiste, avec la réponse attendue" }
+      desc: "18 passages où les intervenants insistent, avec la réponse attendue" }
   ]
 },
 
@@ -59,6 +63,7 @@ window.CATALOGUE = [
   titre: "Intelligence économique et esprit de défense",
   dossier: "inf5061-intelligence-economique",
   sources: "../Intelligence économique et esprit de défense",
+  exclure: ["LAB_IE_*"],
   etat: "en cours",
   couleur: "amber",
   resume: "La maîtrise légale de l'information stratégique pour les entreprises et l'État, et l'esprit de défense qui fait de chacun un acteur de la résilience nationale.",
@@ -72,11 +77,13 @@ window.CATALOGUE = [
     "Souveraineté, vassalisation, contre-ingérence",
     "Prédation capitalistique et due diligence",
     "Usurpation d'identité : hypertrucage, fraude au président, domaines",
-    "Approches de salariés hors du cadre professionnel"
+    "Approches de salariés hors du cadre professionnel",
+    "Contexte stratégique : compétition, contestation, affrontement ; LPM",
+    "Programmes d'armement, SCORPION, infovalorisation, drones"
   ],
   ressources: [
     { type: "fiche", page: "fiche.html", titre: "Fiche de révision",
-      desc: "Séance d'ouverture et Flash ingérence DGSI n° 101 et 102",
+      desc: "Séance d'ouverture, Flash ingérence DGSI n° 101 et 102, évolution des armées",
       qcm: { src: "qcm.js", cle: "inf5061" } }
   ]
 },
