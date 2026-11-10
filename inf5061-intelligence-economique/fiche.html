@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>INF5061 — Intelligence économique et esprit de défense</title>
+<link rel="stylesheet" href="../assets/core.css?v=28">
+<link rel="stylesheet" href="../assets/viz.css?v=12">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><span class="dot"></span> INF5061 <small>· Intelligence économique</small></div>
+  <div class="spacer"></div>
+  <input id="search" type="search" placeholder="Rechercher…  (Ctrl+K)">
+  <a class="home" href="../index.html">← Accueil</a>
+  <button class="btn ghost" onclick="toggleTheme()" title="Thème clair / sombre">◐</button>
+  <button class="btn ghost" onclick="window.print()" title="Imprimer / PDF">⎙</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar"><h4>Parcours</h4><div id="toc"></div></nav>
+  <main class="content">
+<h1>Intelligence économique et esprit de défense</h1>
+<p class="lead">
+Les entreprises et les États se battent pour survivre et peser : avec quelles armes, et comment se défendre ?
+L'intelligence économique (IE) est la maîtrise <b>légale</b> de l'information stratégique — la chercher, l'analyser,
+la diffuser, la protéger, l'utiliser pour influencer. L'esprit de défense rappelle que la sécurité du pays ne repose
+pas que sur les armées mais aussi sur les entreprises, les chercheurs et les ingénieurs.
+</p>
+
+<div class="callout"><div class="t">Sources de cette fiche</div>
+Séance d'ouverture de la mineure I2ED (9 novembre) : diaporama et enregistrement, plus les deux
+<i>Flash ingérence économique</i> de la DGSI distribués pour le lab (n° 101, usurpation d'identité ; n° 102, approches
+hors du cadre professionnel). Les interventions suivantes (DMD, influence, facteur humain, INPI) viendront compléter la fiche.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="essentiel">★ L'essentiel — à relire la veille</h2>
+
+<div class="exam"><div class="t">Le format de l'évaluation</div>
+<ul>
+<li>La mineure compte quatre modules au bulletin : <b>IE et esprit de défense</b> (INF5061), <b>propriété intellectuelle</b> (INF5060),
+<b>gestion de crise</b> (INF5059), <b>OSINT et CTI</b> (INF5002). <b>Une seule note</b> : la moyenne des deux contrôles et des labs,
+recopiée sur les quatre modules (« les thématiques sont imbriquées »).</li>
+<li><b>Vendredi 20/11, 10 h 30</b> : contrôle esprit de défense, CTI, gestion de crise, OSINT. <b>Vendredi 27/11, 10 h 30</b> : IE et PI.
+Sur Moodle avec Safe Exam Browser (SEB) — à tester et mettre à jour avant —, 1 h 30, sur la semaine écoulée.</li>
+<li>Le cours « facteur humain » (23/11) est suivi d'une évaluation d'une heure dans la foulée.</li>
+<li>Lab IE par binôme : une diapositive par <i>Flash ingérence</i> (deux flashs, un seul présenté) et un sujet de souveraineté numérique ;
+à rendre sur Moodle le 23/11 avant minuit, restitution le 24/11 au matin.</li>
+</ul>
+</div>
+
+<div class="key-points">
+<li><b>IE</b> : ensemble des actions <b>légales</b> et coordonnées de recherche, de traitement, de distribution et de protection de l'information utile aux acteurs économiques (rapport Martre, 1994).</li>
+<li>La légalité fait toute la différence : dès qu'il y a intrusion informatique, vol, micro ou corruption, ce n'est plus de l'IE mais de l'<b>espionnage</b>, sanctionné pénalement.</li>
+<li>Trois fonctions : <b>veille</b> (surveiller l'environnement), <b>influence</b> (modifier l'environnement), <b>protection</b> (défendre son information). Le cours en ajoute une quatrième : la <b>gestion des risques et des crises</b>.</li>
+<li><b>Esprit de défense</b> : être un citoyen actif, prêt à défendre les valeurs du pays et à contribuer à la résilience nationale. La défense dépasse le militaire.</li>
+<li>Le <b>SGDSN</b>, rattaché au Premier ministre, coordonne la sécurité nationale et rédige les plans gouvernementaux (Vigipirate…). Sur le territoire, le <b>préfet</b> dirige la crise ; l'armée n'intervient que sur <b>réquisition</b>.</li>
+<li><b>Souveraineté</b> : capacité d'un État à faire ses choix stratégiques dans ses domaines régaliens, ce qui suppose une maîtrise relative des technologies critiques. Sans elle, on est « vassalisé ».</li>
+<li><b>Contre-ingérence</b> : prévenir toute atteinte aux intérêts fondamentaux de la Nation <b>sans confrontation directe</b>.</li>
+<li>Usurpation d'identité : vérifier <b>par un autre canal</b> tout ordre inhabituel, même urgent ; l'urgence ne justifie jamais une dérogation aux procédures.</li>
+<li>Approches hors du travail : <b>tout salarié</b> d'une entité sensible est une cible ; discrétion dans les lieux publics, signalement à la sûreté puis à la DGSI.</li>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch1"><span class="num">1.</span> Esprit de défense et sécurité nationale</h2>
+
+<h3 id="ch1-pourquoi">1.1 Pourquoi un ingénieur doit s'y intéresser</h3>
+<p>Un ingénieur devient cadre : responsable de personnes et de projets, puis inscrit dans la <b>fonction sociétale</b> de son
+organisation (la raison d'être d'une entreprise, les objectifs fixés à un ministère ou à une collectivité). Or ces organisations
+vivent dans un monde concurrentiel : elles se battent pour survivre, contre des concurrents, contre les événements, et s'allient
+(« si on reste tout seul dans notre coin, nous France, nous Autriche, nous Allemagne, on est juste laminés »).</p>
+
+<div class="grid c2">
+<div class="card"><h4>Les deux objectifs de la mineure</h4>
+Comprendre les <b>intérêts, les fonctions et les acteurs</b> de l'intelligence économique pour une entreprise ou pour un État ;
+et développer un <b>esprit de défense</b>.</div>
+<div class="card"><h4>Esprit de défense</h4>
+Être un <b>citoyen actif</b> participant à la vie politique, économique et sociale du pays ; prêt à en <b>défendre les valeurs</b>
+et à contribuer à la <b>résilience nationale</b>.</div>
+</div>
+
+<div class="callout"><div class="t">Hygiène de l'information</div>
+Une des retombées attendues : aller chercher son information « à trois endroits différents », pour ne pas se laisser orienter par
+un média unique. L'<b>infobésité</b> (surabondance d'informations), amplifiée par les réseaux sociaux et l'IA générative, fait de
+l'<b>esprit critique</b> la vraie valeur ajoutée : vérifier la traçabilité d'une source, croiser les faits, distinguer le flux
+gratuit non vérifié d'une information qualifiée.</div>
+
+<div class="example"><div class="t">L'intelligence de situation</div>
+Connaître les mécanismes cognitifs qui orientent un interlocuteur permet de l'amener quelque part — et de reconnaître quand
+on vous le fait. Dans la vie courante, c'est aussi savoir <b>ne pas réagir</b> à chaud : laisser dire, réorienter le débat,
+plutôt que d'abîmer la relation. « Un, savoir le faire ; deux, savoir le reconnaître. »</div>
+
+<h3 id="ch1-perimetre">1.2 Sécurité nationale, défense nationale : le périmètre</h3>
+<p>Le diaporama place la sécurité nationale dans la sécurité internationale, et la découpe ainsi :</p>
+
+<div class="viz"><div class="t">De la sécurité internationale à la cyberdéfense</div>
+<div class="vz-grid g3">
+<button class="vz-c k-blue"><span class="n">Sécurité nationale · 1</span><h5>Résilience et gestion de crise</h5><span class="q">Sécurité intérieure et sécurité civile</span>
+<span class="more"><span class="t">Contenu</span><b>Sécurité intérieure</b> : renseignement, ordre public, antiterrorisme, contre-espionnage.<br><b>Sécurité civile</b> : pandémies, catastrophes naturelles et technologiques.</span></button>
+<button class="vz-c k-amber"><span class="n">Défense nationale · 2</span><h5>Défense des intérêts nationaux</h5><span class="q">Institutions, économie, information, cyber</span>
+<span class="more"><span class="t">Contenu</span>Protéger les <b>institutions</b>, les <b>intérêts économiques</b> (c'est là que se loge l'IE), l'espace <b>informationnel</b> et le <b>cyber</b>.</span></button>
+<button class="vz-c k-red"><span class="n">Défense nationale · 3</span><h5>Défense militaire</h5><span class="q">Cinq volets</span>
+<span class="more"><span class="t">Contenu</span>Dissuasion nucléaire · défense opérationnelle du territoire · défense maritime · défense aérienne et spatiale · cyberdéfense.</span></button>
+</div>
+<div class="vz-bar"><button class="btn" data-cards="open">Tout déplier</button><button class="btn ghost" data-cards="close">Tout replier</button><span class="cnt"></span></div>
+</div>
+
+<p>À l'oral, l'enseignant résume l'esprit de défense par <b>trois cercles</b> :</p>
+<div class="tw"><table><thead><tr><th>Cercle</th><th>Qui</th></tr></thead><tbody>
+<tr><td>Le « kaki » (centre)</td><td>Les forces armées : Terre, Air, Mer, et le cyberespace avec le COMCYBER (commandement de la cyberdéfense)</td></tr>
+<tr><td>Le « bleu »</td><td>Les institutions régaliennes : police, gendarmerie, douanes, préfectures, justice</td></tr>
+<tr><td>Le « rose » (extérieur)</td><td>Les citoyens, la société civile, les entreprises stratégiques, les universités et la recherche, les ingénieurs, le champ informationnel</td></tr>
+</tbody></table></div>
+<div class="callout warn"><div class="t">L'idée à retenir</div>
+Si l'armée tient mais que le reste de la nation s'effondre face à une guerre hybride ou à une crise économique majeure, l'armée
+ne sert à rien. La souveraineté et la résilience reposent sur <b>tout le monde</b>.</div>
+
+<h3 id="ch1-acteurs">1.3 Qui pilote la sécurité nationale et la crise</h3>
+<div class="grid c2">
+<div class="card"><h4>SGDSN</h4>
+Secrétariat général de la défense et de la sécurité nationale, <b>rattaché au Premier ministre</b> (pas à l'état-major des armées).
+Il ne commande pas de troupes : il coordonne la <b>résilience</b> et la planification <b>interministérielle</b> de crise, et rédige
+et tient à jour les <b>plans gouvernementaux</b> — Vigipirate, pandémie, coupure électrique massive, inondation majeure, jusqu'à des
+événements très improbables (chute de météore, raz-de-marée).</div>
+<div class="card"><h4>Le préfet</h4>
+Préfet de zone, de région, de département : représentant de l'État dans les territoires. En crise (tempête, pollution, crise
+sanitaire, attentat), il active le <b>centre opérationnel départemental (COD)</b> et dirige secours et ordre public.
+<b>L'autorité civile prime toujours.</b></div>
+<div class="card"><h4>L'armée sur le territoire</h4>
+Elle n'intervient qu'en <b>dernier recours</b>, sur <b>réquisition</b> de l'autorité préfectorale, quand les moyens civils
+(pompiers, police, gendarmerie, sécurité civile) sont dépassés ou qu'il faut une logistique lourde.</div>
+<div class="card"><h4>Le DMD</h4>
+Délégué militaire départemental : l'interface entre le <b>ministère des Armées</b> et le <b>préfet</b>. Il lui dit ce que l'armée
+peut lui prêter et va chercher des moyens dans d'autres départements. Effectif réduit là où il n'y a pas d'unité militaire,
+renforcé ailleurs.</div>
+</div>
+
+<div class="tw"><table><thead><tr><th>Sigle</th><th>Ce que c'est</th></tr></thead><tbody>
+<tr><td>IHEDN</td><td>Institut des hautes études de défense nationale : établissement public placé auprès du Premier ministre, réflexion stratégique et diffusion de l'esprit de défense. Ses « Jeunes IHEDN » ont conçu le jeu <i>Opération Hexagone</i>.</td></tr>
+<tr><td>COMCYBER</td><td>Commandement de la cyberdéfense, au sein des armées.</td></tr>
+<tr><td>DGA</td><td>Direction générale de l'armement : conduit les programmes d'armement avec les industriels.</td></tr>
+<tr><td>CSNJ</td><td>Centre du service national et de la jeunesse : anime le wargame <i>Décision-Défense</i>, qui reconstitue la décision en crise comme dans un état-major (« ce que je veux faire » contre « ce que je peux faire »).</td></tr>
+<tr><td>DGSI</td><td>Direction générale de la sécurité intérieure (ministère de l'Intérieur) : contre-espionnage et sécurité économique ; publie les <i>Flash ingérence économique</i>.</td></tr>
+<tr><td>SISSE</td><td>Service de l'information stratégique et de la sécurité économiques (ministère de l'Économie) : pilote la politique de sécurité économique et protège les entreprises stratégiques, notamment face aux investissements étrangers.</td></tr>
+<tr><td>EGE</td><td>École de guerre économique : école spécialisée en IE, auteur de la « rosace » de référence (§ 3.3).</td></tr>
+</tbody></table></div>
+
+<div class="example"><div class="t">Le contexte change : les armées doivent accélérer</div>
+Le modèle français où la DGA lance avec les industriels des programmes sur 5, 10 ou 15 ans ne tient plus, sauf pour les très gros
+objets (porte-avions, missiles). Le reste doit être livré <b>en moins d'un an</b>, sinon il est dépassé. D'où un fort besoin
+d'ingénieurs du numérique et de la cyber.</div>
+
+<h3 id="ch1-entreprise">1.4 La même logique en entreprise</h3>
+<p>La culture de crise de l'État se transpose : si le système d'information est paralysé par un rançongiciel, le directeur général,
+le directeur de crise et le DSI sont en première ligne. Sans <b>PCA</b> (plan de continuité d'activité) ni <b>PRA</b> (plan de
+reprise d'activité) rédigés et testés, l'entreprise peut disparaître en quelques semaines. Pour un ingénieur, l'esprit de défense
+consiste à intégrer le risque dès la conception : isoler un réseau compromis, basculer sur des secours, communiquer en mode
+dégradé, préserver les données vitales. (Voir le cours <a href="../inf5059-gestion-crise/fiche.html">Gestion de crise</a>.)</p>
+
+<!-- ===================================================================== -->
+<h2 id="ch2"><span class="num">2.</span> L'intelligence économique : définitions</h2>
+
+<h3 id="ch2-def">2.1 Trois définitions officielles</h3>
+<div class="tw"><table><thead><tr><th>Source</th><th>Définition</th><th>Ce qu'elle apporte</th></tr></thead><tbody>
+<tr><td>Rapport Martre (1994)</td><td>« Ensemble des actions <b>légales</b> et coordonnées de recherche, de traitement, de distribution et de protection de l'information utile aux acteurs économiques. »</td><td>La légalité est dans la définition même.</td></tr>
+<tr><td>Circulaire n° 5554/SG du 15/09/2011</td><td>Ensemble des actions coordonnées de recherche, de traitement, de diffusion et de protection de l'information <b>stratégique</b>, associant éventuellement l'<b>État et les entreprises</b> : collecter, analyser, valoriser, diffuser et protéger l'information stratégique pour renforcer la <b>compétitivité</b> d'un État, d'une entreprise ou d'un établissement de recherche.</td><td>Le lien public-privé et la finalité de compétitivité.</td></tr>
+<tr><td>Cours (oral)</td><td>Maîtrise et protection de l'information stratégique pour éclairer la décision, prévenir les risques et renforcer la compétitivité face à l'adversité.</td><td>L'IE sert la <b>décision</b>.</td></tr>
+</tbody></table></div>
+
+<div class="grid c2">
+<div class="card"><h4>Origine</h4>
+Le concept est formalisé en <b>1967</b> par le politologue américain <b>Harold Wilensky</b>. Les pratiques sont bien plus anciennes :
+on en trouve trace à l'époque de <b>Marco Polo</b> (vers 1270, <i>Le Livre des merveilles</i>).</div>
+<div class="card"><h4>Un outil de pilotage</h4>
+L'IE est un facteur de performance qui permet de :
+<ul><li>maîtriser et protéger l'information stratégique ;</li>
+<li>produire de l'information (capacité d'analyse et d'anticipation des collaborateurs) ;</li>
+<li>durer et se développer face à la concurrence, avec réactivité ;</li>
+<li>repérer des opportunités et conquérir de nouveaux marchés ;</li>
+<li>révéler les menaces et les réduire.</li></ul></div>
+</div>
+
+<h3 id="ch2-cycle">2.2 Le cycle de l'IE</h3>
+<p>Le schéma du cours place l'IE au centre de quatre activités reliées en boucle :</p>
+<div class="viz"><div class="t">Les quatre activités autour de l'IE</div>
+<svg viewBox="0 0 900 300" role="img" aria-label="Cycle : recherche, gestion, protection des informations, lobbying">
+<circle cx="450" cy="150" r="125" style="fill:none;stroke:var(--fg-mute);stroke-width:2;stroke-dasharray:6 5"/>
+<g class="vz-step"><rect x="350" y="20" width="200" height="50" rx="25" class="vz-ok"/><text x="450" y="50" text-anchor="middle" class="vz-lbl">Recherche d'informations</text></g>
+<g class="vz-step"><rect x="600" y="125" width="200" height="50" rx="25" class="vz-filt"/><text x="700" y="155" text-anchor="middle" class="vz-lbl">Gestion des informations</text></g>
+<g class="vz-step"><rect x="350" y="230" width="200" height="50" rx="25" class="vz-bad"/><text x="450" y="260" text-anchor="middle" class="vz-lbl">Protection des informations</text></g>
+<g class="vz-step"><rect x="100" y="125" width="200" height="50" rx="25" class="vz-dec"/><text x="200" y="155" text-anchor="middle" class="vz-lbl">Lobbying (influence)</text></g>
+<text x="450" y="145" text-anchor="middle" class="vz-lbl">Intelligence</text><text x="450" y="168" text-anchor="middle" class="vz-lbl">économique</text>
+</svg></div>
+
+<h3 id="ch2-legal">2.3 La frontière absolue : IE ou espionnage</h3>
+<div class="grid c2">
+<div class="card"><h4>Intelligence économique</h4>
+Information obtenue par des <b>moyens légaux et éthiques</b> : sources ouvertes, bases de données (y compris payantes), brevets publiés,
+salons, analyse. L'analyste en IE est « un analyste de haut vol, pas un barbouze hors-la-loi ».</div>
+<div class="card"><h4>Espionnage économique ou industriel</h4>
+Intrusion dans un système de traitement automatisé de données, vol de fichiers, pose de micros, corruption d'un salarié pour
+obtenir des secrets d'affaires : on bascule dans le <b>droit pénal</b> (prison, lourdes amendes).</div>
+</div>
+<div class="exam"><div class="t">Piège classique</div>
+« Récupérer le plan technique d'un concurrent en piratant son serveur, c'est de l'IE offensive » : <b>faux</b>, c'est de l'espionnage.
+L'offensive en IE passe par l'<b>influence</b>, jamais par l'illégalité.</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch3"><span class="num">3.</span> Les fonctions de l'IE</h2>
+
+<h3 id="ch3-trois">3.1 Veille, influence, protection</h3>
+<div class="viz"><div class="t">Les trois fonctions du diaporama</div>
+<div class="vz-grid g3">
+<button class="vz-c k-blue"><span class="n">Comprendre</span><h5>La veille</h5><span class="q">Surveiller en permanence l'environnement</span>
+<span class="more"><span class="t">Détail</span>Acquérir l'information pertinente. Elle doit être <b>internationale</b> pour suivre les concurrents étrangers présents ou à venir sur son territoire. Types : stratégique, technologique, commerciale, concurrentielle, juridique, réglementaire, institutionnelle, financière…</span></button>
+<button class="vz-c k-purple"><span class="n">Agir</span><h5>L'influence</h5><span class="q">Modifier l'environnement à son avantage</span>
+<span class="more"><span class="t">Détail</span><b>Lobbying</b> : pressions informationnelles pour faire évoluer l'environnement (règles, normes, standards). Propager une information favorable à sa stratégie pour faire concorder intérêt public et intérêt particulier, en jouant sur des leviers de persuasion : <b>preuve sociale, rareté, bien commun, autorité</b>.</span></button>
+<button class="vz-c k-red"><span class="n">Se défendre</span><h5>La protection</h5><span class="q">L'IE doit aussi être défensive</span>
+<span class="more"><span class="t">Détail</span>Maîtriser le risque informatique grâce à la sécurité de son SI, protéger savoir-faire, brevets, données critiques et infrastructures contre l'espionnage et le pillage.</span></button>
+</div>
+<div class="vz-bar"><button class="btn" data-cards="open">Tout déplier</button><button class="btn ghost" data-cards="close">Tout replier</button><span class="cnt"></span></div>
+</div>
+
+<h3 id="ch3-quatre">3.2 Les quatre pans retenus à l'oral</h3>
+<p>À l'oral, l'enseignant reprend le référentiel d'une école spécialisée et compte <b>quatre pans</b> : la veille et la collecte
+(OSINT, brevets, concurrents), la protection du patrimoine informationnel et matériel, l'influence et la diplomatie économique,
+et la <b>gestion des risques et des crises</b> (anticipation, continuité face aux chocs géopolitiques, cyber ou économiques).
+L'IE est <b>transversale</b> : numérique, chimie, physique, politique, géographie, histoire — ce qui compte est la position occupée
+dans l'organisation, pas la discipline d'origine.</p>
+
+<h3 id="ch3-rosace">3.3 La rosace de l'EGE</h3>
+<p>Au cœur, quatre mots : <b>veille, analyse, influence, protection</b>. Autour, huit domaines métiers qui les mettent en œuvre :</p>
+<div class="tw"><table><thead><tr><th>Domaine</th><th>Exemples de métiers ou de pratiques</th></tr></thead><tbody>
+<tr><td>Communication</td><td>Journalisme d'investigation, communication et stratégie d'influence, affaires publiques</td></tr>
+<tr><td>Stratégie</td><td>Business development, planning stratégique, analyse stratégique, intelligence territoriale, opérations psychologiques (Psy Ops), diplomatie économique</td></tr>
+<tr><td>Audit, conseil</td><td>Enquête privée, certification, conseil en cybersécurité, conseil en IE, audit interne, renseignement économique</td></tr>
+<tr><td>Comptabilité, finance</td><td>Enquête financière, lutte anti-corruption, anti-blanchiment, anti-fraude, due diligence</td></tr>
+<tr><td>Gestion des risques</td><td>Gestion de crise, PCA et PMA, audit de sûreté, prévention des risques, risque pays, compliance et conformité</td></tr>
+<tr><td>Juridique, RH</td><td>Propriété intellectuelle, secret des affaires, contrefaçons, brevets et normes, profiling, éthique, audit juridique</td></tr>
+<tr><td>TIC</td><td>Logiciels de veille, bases de données, cartographie, mindmapping, knowledge management, transformation digitale, RSSI, DPO et RGPD, cybersécurité</td></tr>
+<tr><td>Commerce, marketing</td><td>Market intelligence, marketing stratégique, études et prospective, HUMINT, OSINT, analyse de données, e-réputation, sourcing (fournisseurs, clients, partenaires)</td></tr>
+</tbody></table></div>
+
+<div class="callout"><div class="t">Comment la mineure découpe la rosace</div>
+<b>OSINT</b> (Open Source Intelligence : renseignement d'origine sources ouvertes) et <b>CTI</b> (Cyber Threat Intelligence : « de l'OSINT dédié au numérique », pour connaître la menace) · <b>propriété intellectuelle</b> (INPI) ·
+<b>gestion de crise</b> (État, entreprise, DSI) · <b>contre-ingérence économique</b> (le lab) · <b>influence et communication</b>
+(conférences sur la désinformation et l'influence).</div>
+
+<h3 id="ch3-pi">3.4 Propriété intellectuelle : à qui appartient une invention ?</h3>
+<p>Protéger son code, ses algorithmes, ses dessins, modèles et marques est « le nerf de la guerre économique » : un concurrent qui
+dépose avant vous peut vous interdire d'exploiter votre propre technologie. Les dépôts se font auprès de l'<b>INPI</b> (Institut
+national de la propriété industrielle).</p>
+<div class="tw"><table><thead><tr><th>Situation</th><th>Propriétaire des droits patrimoniaux</th><th>L'inventeur</th></tr></thead><tbody>
+<tr><td>Agent de l'État (militaire, ingénieur DGA) inventant dans son service</td><td>L'État (ministère des Armées)</td><td>Nommé comme inventeur ; peut toucher une prime d'intéressement ; ne peut pas céder le brevet</td></tr>
+<tr><td>Salarié du privé, invention de mission</td><td>L'employeur</td><td>Nommé ; droit à une rémunération supplémentaire (convention collective ou contrat)</td></tr>
+<tr><td>Salarié du privé, invention hors mission</td><td>En principe le salarié (l'employeur peut, dans certains cas, se la faire attribuer contre un juste prix)</td><td>—</td></tr>
+</tbody></table></div>
+
+<!-- ===================================================================== -->
+<h2 id="ch4"><span class="num">4.</span> Ingérence, contre-ingérence, souveraineté</h2>
+
+<h3 id="ch4-def">4.1 Les définitions du diaporama</h3>
+<div class="callout def"><div class="t">Souveraineté nationale</div>
+Qualité qui donne à un État la capacité de faire des <b>choix stratégiques dans ses domaines régaliens</b> : acquisitions de défense,
+technologies de sécurité, autonomie alimentaire, contrôle des flux financiers et d'informations, etc. Elle suppose une
+<b>maîtrise relative des technologies critiques</b>, pour garder une liberté dans ses approvisionnements et une autonomie face aux
+acteurs dominants.</div>
+<div class="callout def"><div class="t">Contre-ingérence</div>
+Prévenir toute atteinte aux intérêts fondamentaux de la Nation <b>sans confrontation directe</b>.</div>
+<p>En pratique, la contre-ingérence économique consiste à repérer les <b>signaux faibles</b> de prédation et à protéger le patrimoine
+informationnel et technologique : ne pas laisser une délégation étrangère circuler seule avec ses téléphones dans les salles de R&amp;D
+ou de serveurs, chiffrer et isoler l'ordinateur emporté en déplacement à l'étranger, contrôler partenariats et visites de sites
+sensibles.</p>
+
+<h3 id="ch4-souv">4.2 Souveraineté numérique : le problème européen</h3>
+<p>Pour le numérique, l'IE en Europe est « beaucoup un problème de souveraineté » : savoir <b>de qui l'on dépend</b>. Quand on dépend
+complètement d'autrui pour certaines briques, on est <b>vassalisé</b> : le fournisseur peut faire pression. Retrouver une souveraineté,
+c'est retrouver la capacité de faire ses propres choix et de diriger son système. Les sujets du lab l'illustrent : matières premières
+et métaux critiques (lithium, terres rares, dont l'origine est difficile à tracer), investissements étrangers dans l'IA, protection des
+infrastructures sensibles et des chaînes de valeur européennes.</p>
+
+<h3 id="ch4-predation">4.3 La prédation capitalistique et la due diligence</h3>
+<p>Un « investisseur » ou un <i>business angel</i> peut cacher un État étranger. Une fois majoritaire au capital, il récupère les brevets,
+évince le fondateur (« tu as beau être DG ou créateur, tu disparais »), voire fait disparaître l'entreprise. Si l'opération n'est pas
+détectée, l'enseignant parle d'une espérance de vie de <b>six mois</b>.</p>
+<div class="callout ok"><div class="t">La parade : la due diligence</div>
+Vérifier l'<b>honorabilité</b> d'un investisseur avant son entrée au capital : bénéficiaires effectifs, liens avec un gouvernement étranger,
+intentions réelles. Les services de l'État peuvent aider gratuitement — encore faut-il les prévenir qu'on cherche des capitaux.</div>
+
+<h3 id="ch4-flash">4.4 Les <i>Flash ingérence économique</i></h3>
+<p>Notes publiées par la DGSI environ tous les un ou deux mois : chacune raconte, anonymisés, deux ou trois <b>cas réels</b> d'ingérence
+visant des entreprises, des laboratoires, des écoles, puis donne des <b>préconisations</b>. Elles servent à diffuser une culture de
+sécurité interne. Les deux chapitres suivants en tirent les leçons, cas par cas.</p>
+
+<!-- ===================================================================== -->
+<h2 id="ch5"><span class="num">5.</span> Escroqueries par usurpation d'identité</h2>
+<p>Cible : tout type de structure (start-up, PME, grand groupe, laboratoire). Le mode opératoire est ancien — <b>ingénierie sociale</b>,
+<b>fraude au président</b> — mais il se renouvelle sans cesse, notamment grâce à l'<b>IA</b> qui rend l'usurpation plus crédible.
+Le télétravail et les échanges à distance ont accru la vulnérabilité. Le but : obtenir un <b>virement</b> ou des <b>informations sensibles</b>.</p>
+
+<h3 id="ch5-cas">5.1 Trois techniques à reconnaître</h3>
+<details class="case"><summary>Cas 1 — L'hypertrucage du dirigeant<span class="sit">Un responsable de site reçoit un courriel annonçant que le PDG veut lui parler en visio, via une messagerie instantanée. En visio, visage et voix sont bien ceux du PDG, qui insiste sur la confidentialité et demande un virement pour une acquisition.</span></summary>
+<div><b>Hypertrucage (deepfake)</b> : visage et voix générés par IA. Les signaux d'alerte : un canal inhabituel, l'appel à la <b>confidentialité</b>
+et à la <b>confiance</b>, une demande financière hors procédure. Le bon réflexe : interrompre l'échange et alerter la direction par un
+autre canal. La ressemblance physique et vocale n'est plus une preuve d'identité.</div></details>
+<details class="case"><summary>Cas 2 — Le faux dirigeant et le faux partenaire<span class="sit">La comptabilité d'une start-up en forte croissance reçoit, d'une adresse proche de celle de son dirigeant, une demande de virement. En parallèle, de faux salariés d'un partenaire sollicitent sur un réseau professionnel des informations sur des contrats et appels d'offres.</span></summary>
+<div>Une <b>fraude au président</b> par adresse imitée et une <b>ingénierie sociale</b> via réseau professionnel. La demande est
+<b>non conforme aux procédures habituelles</b> et l'extension du domaine renvoie à un pays étranger : deux signaux suffisants pour refuser.
+Les entreprises en croissance qui signent avec des clients sensibles deviennent des cibles.</div></details>
+<details class="case"><summary>Cas 3 — L'usurpation de nom de domaine<span class="sit">Le principal fournisseur d'un groupe stratégique reçoit un appel d'un prétendu comptable du groupe : le compte de facturation aurait été piraté, il faut renvoyer toutes les factures à une « adresse de récupération temporaire » utilisant le domaine de l'ancienne raison sociale du groupe.</span></summary>
+<div>Le fraudeur exploite un <b>nom de domaine plausible</b> (ici, l'ancien nom de l'entreprise) et l'<b>urgence</b>. Le fournisseur a
+vérifié auprès de ses <b>interlocuteurs habituels</b>, n'a rien envoyé, et tous les fournisseurs du groupe ont été prévenus : une attaque
+vise souvent plusieurs personnes à la fois.</div></details>
+
+<div class="callout warn"><div class="t">Comment on falsifie une adresse</div>
+Changer quelques lettres du nom de domaine, utiliser des <b>caractères cyrilliques</b> qui ressemblent aux latins (homoglyphes), changer
+l'extension (« .fr » contre « .com »), réutiliser un ancien nom de l'entreprise. Une adresse douteuse, un domaine inhabituel ou une prise de
+contact singulière doivent être des <b>facteurs d'alerte systématiques</b>.</div>
+
+<h3 id="ch5-reco">5.2 Les préconisations de la DGSI</h3>
+<div class="grid c2">
+<div class="card"><h4>Prévenir</h4>
+<ul>
+<li><b>Réserver les noms de domaine</b> proches de celui de l'entreprise, pour en bloquer l'usage malveillant.</li>
+<li>Usage <b>prudent des réseaux sociaux</b>, professionnels et personnels : ce sont des mines d'informations pour cibler une société.</li>
+<li><b>Sensibiliser tous les salariés</b> : la formation reste le moyen le plus efficace contre l'ingénierie sociale (la DGSI fait des conférences).</li>
+<li>Appliquer les procédures <b>strictement, sans dérogation</b> : l'urgence invoquée n'en est pas une.</li>
+<li>Organiser des <b>tests d'intrusion</b> plusieurs fois par an : faux courriels piégés, fausses clés USB déposées dans les lieux de passage.</li>
+<li><b>Vérifier systématiquement l'origine</b> des demandes, même légitimes en apparence.</li>
+</ul></div>
+<div class="card"><h4>En cas de suspicion</h4>
+<ul>
+<li><b>Couper rapidement</b> les échanges, pour limiter la captation de données et l'atteinte à la réputation.</li>
+<li><b>Alerter vite</b> le service informatique et/ou la sûreté : d'autres collègues sont peut-être visés au même moment. Prévenir la
+personne dont l'identité est usurpée, pour qu'elle alerte ses interlocuteurs.</li>
+<li><b>Signaler à la DGSI</b> (adresse dédiée aux ingérences économiques).</li>
+<li><b>Porter plainte</b>, même sans préjudice : cela permet les recoupements et caractérise les modes opératoires ; en cas de préjudice,
+c'est le préalable à toute indemnisation par la banque ou l'assurance. Joindre les preuves (journaux de connexion, messages, coordonnées
+bancaires, numéros).</li>
+</ul></div>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch6"><span class="num">6.</span> Approches hors du cadre professionnel</h2>
+<p>La cybersécurité n'est pas tout : les <b>approches humaines</b> restent un mode opératoire privilégié. Qui approche ? Des entités
+étrangères concurrentes, des cabinets d'IE, des services de renseignement étrangers. Qui est visé ? <b>Tout salarié</b> d'une entité
+stratégique, quel que soit son poste, pour les informations auxquelles il a accès. Pourquoi hors du travail ? Pour profiter d'une
+<b>vigilance amoindrie</b> dans un cadre informel. Objectifs : capter des informations sensibles, recueillir des <b>éléments d'ambiance</b>,
+ou bâtir un réseau d'influence.</p>
+
+<h3 id="ch6-cas">6.1 Trois terrains d'approche</h3>
+<details class="case"><summary>Cas 1 — L'association sportive<span class="sit">Le président d'un club de sport réunissant des salariés du même secteur stratégique remarque l'adhésion croissante de ressortissants d'une même nationalité. Lors d'un dîner dans le restaurant de l'un d'eux, le gérant multiplie les gestes commerciaux et met des membres en relation avec des étrangers extérieurs au club.</span></summary>
+<div>Les <b>engagements associatifs, sportifs ou culturels</b> sont autant d'occasions d'évoquer ses fonctions. Signal : un afflux inhabituel
+de profils homogènes et des mises en relation insistantes. Le bon réflexe a été de <b>signaler</b> à la DGSI.</div></details>
+<details class="case"><summary>Cas 2 — La soirée privée<span class="sit">Dans une fête entre amis, un ingénieur d'une société sensible parle de son métier. Un chercheur étranger se montre très intéressé et l'interroge sur un projet mené avec un pays étranger, avec une connaissance fine du secteur.</span></summary>
+<div>Signal : une curiosité <b>trop précise</b> pour une rencontre fortuite. L'enquête a révélé la proximité du chercheur avec les services
+de renseignement de son pays et une tentative antérieure auprès d'un autre ingénieur — d'où l'intérêt de <b>signaler</b> : l'employeur
+peut recouper plusieurs approches.</div></details>
+<details class="case"><summary>Cas 3 — Le restaurant voisin<span class="sit">Des chercheurs de plusieurs structures sensibles déjeunent souvent dans le restaurant d'à côté. Les gérants questionnent les clients sur leur métier et leur employeur, et les prennent régulièrement en photo ou en vidéo.</span></summary>
+<div>Les <b>lieux de convivialité proches</b> des sites sensibles sont des cibles privilégiées. Ici, les gérants menaient en parallèle une
+activité de mise en relation d'entreprises françaises avec des marchés étrangers : l'emplacement du restaurant servait leurs affaires.</div></details>
+
+<h3 id="ch6-reco">6.2 Les préconisations de la DGSI</h3>
+<div class="grid c3">
+<div class="card"><h4>Se protéger</h4>
+L'employeur <b>sensibilise tous les salariés</b>, y compris ceux sans accès sensible : ils peuvent livrer sans le savoir des éléments
+d'ambiance, des mouvements de personnel, des projets de déménagement.</div>
+<div class="card"><h4>En public</h4>
+Discrétion sur son activité, surtout autour des locaux et dans les événements privés. Ne pas consulter de documents sensibles dans les
+transports ou au restaurant, éviter les appels confidentiels en public, utiliser un <b>filtre de confidentialité</b> d'écran.
+Ne pas détailler ses missions sensibles lors de nouvelles rencontres ; garder <b>secrète</b> son habilitation. Rester discret sur les
+réseaux sociaux et les plateformes d'échange de biens ou de services : plus on s'expose, plus on est facile à identifier et à approcher.</div>
+<div class="card"><h4>Si l'approche est suspecte</h4>
+<b>Mettre fin</b> immédiatement aux échanges ; <b>signaler</b> à sa hiérarchie ou à la direction sûreté, même un fait anecdotique ;
+contacter la <b>DGSI</b>.</div>
+</div>
+<div class="callout danger"><div class="t">Délit de compromission</div>
+Divulguer une information classifiée constitue le <b>délit de compromission</b>. Une habilitation au secret doit rester confidentielle :
+la révéler attire l'intérêt sur son titulaire.</div>
+
+<!-- ===================================================================== -->
+<h2 id="qcm-sec"><span class="num">7.</span> QCM — <span id="count-badge" class="badge acc"></span></h2>
+<p><b>Une seule bonne réponse par question</b>, ordre tiré au hasard, correction expliquée.</p>
+<div id="qcm"></div>
+
+  </main>
+</div>
+
+<button id="top" title="Haut de page">↑</button>
+<script src="qcm.js?v=2"></script>
+<script src="../assets/app.js?v=35"></script>
+<script>initQCM(window.QCM_DATA, window.QCM_CHAPTERS, 'inf5061');</script>
+</body>
+</html>

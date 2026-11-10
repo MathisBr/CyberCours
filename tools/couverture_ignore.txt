@@ -1342,3 +1342,177 @@ inf5051-forensic | Émulateurs vs Téléphones Physiques
 inf5051-forensic | Équipements d'interconnexion et de détection
 inf5051-forensic | Éradication des identifiants par défaut
 inf5051-forensic | MobSF
+inf5061-intelligence-economique | PRÉCONISATION DE LA DGSI
+inf5061-intelligence-economique | B1
+inf5061-intelligence-economique | B10
+inf5061-intelligence-economique | B15
+inf5061-intelligence-economique | CNS
+inf5061-intelligence-economique | ECTS
+inf5061-intelligence-economique | ED
+inf5061-intelligence-economique | EXAMEN
+inf5061-intelligence-economique | GIGN
+inf5061-intelligence-economique | IT
+inf5061-intelligence-economique | OUTRE
+inf5061-intelligence-economique | POINT
+inf5061-intelligence-economique | REDS
+inf5061-intelligence-economique | URSS
+inf5061-intelligence-economique | 10 minutes
+inf5061-intelligence-economique | 10h30
+inf5061-intelligence-economique | 16h00
+inf5061-intelligence-economique | 16h15
+inf5061-intelligence-economique | Ancrage opérationnel
+inf5061-intelligence-economique | Attribution par tirage au sort
+inf5061-intelligence-economique | Barème et péréquation des notes
+inf5061-intelligence-economique | Business Angels
+inf5061-intelligence-economique | Calendrier des interrogations
+inf5061-intelligence-economique | Contraintes logistiques
+inf5061-intelligence-economique | Deux volets indissociables
+inf5061-intelligence-economique | Double dotation par binôme
+inf5061-intelligence-economique | Double responsabilité du cadre
+inf5061-intelligence-economique | ECTS
+inf5061-intelligence-economique | Enjeu central
+inf5061-intelligence-economique | Enjeux géostratégiques
+inf5061-intelligence-economique | Facteur humain et négociation
+inf5061-intelligence-economique | Fermeté logistique
+inf5061-intelligence-economique | Format de l'exercice
+inf5061-intelligence-economique | GIGN
+inf5061-intelligence-economique | Impératif d'agilité
+inf5061-intelligence-economique | Lien institutionnel avec l'IHEDN
+inf5061-intelligence-economique | Modalité d'organisation
+inf5061-intelligence-economique | Mécanismes cognitifs et rhétoriques
+inf5061-intelligence-economique | Objectif de la séance inaugurale
+inf5061-intelligence-economique | Objectif de restitution orale
+inf5061-intelligence-economique | Objectif pédagogique
+inf5061-intelligence-economique | Outils imposés
+inf5061-intelligence-economique | Philosophie d'enseignement
+inf5061-intelligence-economique | Prérequis technique impératif
+inf5061-intelligence-economique | Public concerné
+inf5061-intelligence-economique | Recrutement
+inf5061-intelligence-economique | Rupture doctrinale
+inf5061-intelligence-economique | Règle de notation
+inf5061-intelligence-economique | Réalité darwinienne des marchés
+inf5061-intelligence-economique | Régime des inventions
+inf5061-intelligence-economique | Rôle de l'enseignant
+inf5061-intelligence-economique | Rôle des pointeurs thématiques
+inf5061-intelligence-economique | Statut militaire / DGA
+inf5061-intelligence-economique | Sujets abordés par les étudiants
+inf5061-intelligence-economique | Thématique
+inf5061-intelligence-economique | Tolérance de départ
+inf5061-intelligence-economique | Transposition aux organisations et à la DSI
+inf5061-intelligence-economique | Transversalité totale
+inf5061-intelligence-economique | Typologie de la menace
+inf5061-intelligence-economique | URSS
+inf5061-intelligence-economique | ÉPITA
+inf5061-intelligence-economique | Échéance des Labs IE
+inf5061-intelligence-economique | École des Transmissions (ETRS)
+inf5061-intelligence-economique | Élargissement de la défense nationale
+inf5061-intelligence-economique | Étudiant
+inf5061-intelligence-economique | Étudiant (présentateur)
+inf5061-intelligence-economique | Étudiant 1
+inf5061-intelligence-economique | Étudiant 2
+inf5061-intelligence-economique | Étudiant 3
+inf5061-intelligence-economique | Étudiant 4
+inf5061-intelligence-economique | Étudiants
+inf5061-intelligence-economique | Évaluation immédiate
+inf5059-gestion-crise | GIGN
+inf5059-gestion-crise | IP
+inf5059-gestion-crise | SNCF
+inf5059-gestion-crise | SSI
+inf5059-gestion-crise | 2 milliards
+inf5059-gestion-crise | 2. Dynamique de propagation incontrôlée
+inf5059-gestion-crise | 3. Transversalité organisationnelle
+inf5059-gestion-crise | 40 % de votre cognition
+inf5059-gestion-crise | 70% des journalistes avaient leurs infos sur
+inf5059-gestion-crise | ANSSI
+inf5059-gestion-crise | Acceptation des rôles
+inf5059-gestion-crise | Activation de l'amygdale
+inf5059-gestion-crise | Ambition personnelle vs Mission
+inf5059-gestion-crise | Antagonisme Cognition vs Émotion
+inf5059-gestion-crise | Anticipation vs arbitrage budgétaire
+inf5059-gestion-crise | Brainstorming
+inf5059-gestion-crise | CNIL
+inf5059-gestion-crise | Champs d'intervention
+inf5059-gestion-crise | ChatGPT
+inf5059-gestion-crise | Chiffrage du coût à la minute
+inf5059-gestion-crise | Cinétique d'intrusion rapide
+inf5059-gestion-crise | Commandement vertical strict
+inf5059-gestion-crise | Comportement réactif appris
+inf5059-gestion-crise | Consignes d'analyse critique
+inf5059-gestion-crise | Contrainte d'autoportance
+inf5059-gestion-crise | Critères d'entrée en crise
+inf5059-gestion-crise | DDoS
+inf5059-gestion-crise | Dangerosité de la désinformation sur TikTok
+inf5059-gestion-crise | Dette technique et sédimentation des SI
+inf5059-gestion-crise | Discipline informationnelle
+inf5059-gestion-crise | Distorsion temporelle
+inf5059-gestion-crise | Dotation matérielle restreinte
+inf5059-gestion-crise | Déconstruction réflexe
+inf5059-gestion-crise | Dépendances critiques aux télécommunications
+inf5059-gestion-crise | Déprogrammation du réflexe comportemental
+inf5059-gestion-crise | Déséquilibre asymétrique
+inf5059-gestion-crise | EFS
+inf5059-gestion-crise | Eustress (Stress positif)
+inf5059-gestion-crise | Explosion de la surface d'attaque
+inf5059-gestion-crise | Fight, Flight, Freeze
+inf5059-gestion-crise | Fin du huis clos
+inf5059-gestion-crise | Friction organisationnelle initiale
+inf5059-gestion-crise | Fuite et instantanéité de l'information
+inf5059-gestion-crise | GIGN
+inf5059-gestion-crise | Gestion du risque résiduel
+inf5059-gestion-crise | Gestion temporelle séquentielle
+inf5059-gestion-crise | Glissement de plateforme d'influence
+inf5059-gestion-crise | Gouvernance du risque résiduel
+inf5059-gestion-crise | Gravité des impacts
+inf5059-gestion-crise | Hiérarchie immuable des priorités
+inf5059-gestion-crise | Identification lucide des déclencheurs
+inf5059-gestion-crise | Impact majeur
+inf5059-gestion-crise | Impact sociétal et humain
+inf5059-gestion-crise | Inhibition du cortex préfrontal
+inf5059-gestion-crise | Inévitabilité de l'émotion
+inf5059-gestion-crise | L'anecdote de la vipère à cornes
+inf5059-gestion-crise | L'illusion de la prédictibilité rétrospective
+inf5059-gestion-crise | L'imprévu critique
+inf5059-gestion-crise | La posture de la direction
+inf5059-gestion-crise | Le masque émotionnel
+inf5059-gestion-crise | Le paradigme asymétrique du RSSI
+inf5059-gestion-crise | Le piège de la surinterprétation
+inf5059-gestion-crise | LinkedIn
+inf5059-gestion-crise | Maîtrise du récit et confiance
+inf5059-gestion-crise | Mesure du succès
+inf5059-gestion-crise | Microsoft
+inf5059-gestion-crise | Microsoft Teams
+inf5059-gestion-crise | Nature volatile de la menace
+inf5059-gestion-crise | Nécessité d'argumenter sur les 4 critères
+inf5059-gestion-crise | Objectif pédagogique
+inf5059-gestion-crise | Origine dominante des crises
+inf5059-gestion-crise | Parades méthodologiques
+inf5059-gestion-crise | Parcours professionnel
+inf5059-gestion-crise | Pensée et croyance sous-jacente
+inf5059-gestion-crise | Pensées parasites aggravantes
+inf5059-gestion-crise | Phase d'alarme (Adrénaline)
+inf5059-gestion-crise | Positionnement du RSSI
+inf5059-gestion-crise | Posture attendue
+inf5059-gestion-crise | Posture professionnelle
+inf5059-gestion-crise | Priorisation factuelle
+inf5059-gestion-crise | Procédures vs Réalité du terrain
+inf5059-gestion-crise | Préparation du mode dégradé
+inf5059-gestion-crise | Questionnement de l'intention
+inf5059-gestion-crise | RATP
+inf5059-gestion-crise | RCE
+inf5059-gestion-crise | Remobilisation du cognitif
+inf5059-gestion-crise | Restructuration cognitive
+inf5059-gestion-crise | Réaction physiologique immédiate
+inf5059-gestion-crise | SNCF
+inf5059-gestion-crise | SNCF Connect
+inf5059-gestion-crise | SSI
+inf5059-gestion-crise | Signification fonctionnelle des émotions
+inf5059-gestion-crise | Surprise systémique
+inf5059-gestion-crise | Teams
+inf5059-gestion-crise | Technique de régulation et respiration
+inf5059-gestion-crise | Typologie étendue des crises
+inf5059-gestion-crise | Verticalité et chaîne de commandement
+inf5059-gestion-crise | VoIP
+inf5059-gestion-crise | Vulnérabilité contextuelle
+inf5059-gestion-crise | Vulnérabilité structurelle
+inf5059-gestion-crise | X (Twitter)
+* | h:6c70da685e63

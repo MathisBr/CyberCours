@@ -25,6 +25,63 @@
 window.CATALOGUE = [
 
 {
+  code: "INF5059",
+  titre: "Gestion de crise",
+  dossier: "inf5059-gestion-crise",
+  sources: "../Gestion de crise",
+  etat: "en cours",
+  couleur: "red",
+  resume: "Reconnaître le seuil de crise, piloter sur des faits avec une cellule verticale, et garder sa tête quand le stress ampute la réflexion.",
+  programme: [
+    "Incident ou crise, seuil de crise, mode dégradé",
+    "Impacts, analyse de risques, types de crises",
+    "Pourquoi de plus en plus de crises : SI, menace volatile, CrowdStrike",
+    "Les 4 critères : impacts, propagation, transversalité, enjeux externes",
+    "Redonner l'heure juste, réseaux sociaux, cas de l'hôpital",
+    "Faits, suppositions, interprétations ; biais de disponibilité, tunnel, confirmation",
+    "Cellule de crise : décideur, coordinateur, gestionnaire de l'information",
+    "Temps de la crise : détecter, alerter, mobiliser… PCA, PRA",
+    "Émotions, croyances et valeurs ; Système 1 et Système 2",
+    "Stress : CINÉ, double estimation, sidération, adrénaline, cohérence cardiaque",
+    "Les 5 règles d'or du travail en équipe"
+  ],
+  ressources: [
+    { type: "fiche", page: "fiche.html", titre: "Fiche de révision",
+      desc: "Volet entreprise : fondamentaux, seuil de crise, organisation, facteur humain et stress",
+      qcm: { src: "qcm.js", cle: "inf5059" } },
+    { type: "examen", page: "points-examen.html", titre: "Ce que le prof a signalé",
+      desc: "14 passages où l'intervenant insiste, avec la réponse attendue" }
+  ]
+},
+
+{
+  code: "INF5061",
+  titre: "Intelligence économique et esprit de défense",
+  dossier: "inf5061-intelligence-economique",
+  sources: "../Intelligence économique et esprit de défense",
+  etat: "en cours",
+  couleur: "amber",
+  resume: "La maîtrise légale de l'information stratégique pour les entreprises et l'État, et l'esprit de défense qui fait de chacun un acteur de la résilience nationale.",
+  programme: [
+    "Esprit de défense, sécurité et défense nationales",
+    "SGDSN, préfet, réquisition, DMD, IHEDN",
+    "Définitions de l'IE : rapport Martre, circulaire de 2011, Wilensky",
+    "IE ou espionnage : la frontière légale",
+    "Veille, influence, protection ; la rosace de l'EGE",
+    "Propriété intellectuelle : à qui appartient une invention",
+    "Souveraineté, vassalisation, contre-ingérence",
+    "Prédation capitalistique et due diligence",
+    "Usurpation d'identité : hypertrucage, fraude au président, domaines",
+    "Approches de salariés hors du cadre professionnel"
+  ],
+  ressources: [
+    { type: "fiche", page: "fiche.html", titre: "Fiche de révision",
+      desc: "Séance d'ouverture et Flash ingérence DGSI n° 101 et 102",
+      qcm: { src: "qcm.js", cle: "inf5061" } }
+  ]
+},
+
+{
   code: "INF5051",
   titre: "Investigation numérique (forensic)",
   dossier: "inf5051-forensic",

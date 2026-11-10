@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>INF5059 — Gestion de crise</title>
+<link rel="stylesheet" href="../assets/core.css?v=28">
+<link rel="stylesheet" href="../assets/viz.css?v=12">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><span class="dot"></span> INF5059 <small>· Gestion de crise</small></div>
+  <div class="spacer"></div>
+  <input id="search" type="search" placeholder="Rechercher…  (Ctrl+K)">
+  <a class="home" href="../index.html">← Accueil</a>
+  <button class="btn ghost" onclick="toggleTheme()" title="Thème clair / sombre">◐</button>
+  <button class="btn ghost" onclick="window.print()" title="Imprimer / PDF">⎙</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar"><h4>Parcours</h4><div id="toc"></div></nav>
+  <main class="content">
+<h1>Gestion de crise</h1>
+<p class="lead">
+Tout n'est pas crise : il faut savoir reconnaître le <b>seuil de crise</b>, puis piloter sur des <b>faits</b> et non sur des
+interprétations, avec une organisation verticale et des rôles clairs. Mais le vrai défi est cognitif : l'incertitude et le stress
+amputent la capacité de réflexion, et la performance d'une cellule tient d'abord à la façon dont l'équipe est gérée.
+</p>
+
+<div class="callout"><div class="t">Sources de cette fiche</div>
+Volet « entreprise » (9 novembre, après-midi), donné par un ancien officier de gendarmerie et négociateur de crise devenu consultant :
+fondamentaux, seuil de crise, organisation de la cellule, puis facteur humain (émotions, stress, travail en équipe). Pas de diaporama
+distribué : tout vient de l'enregistrement. Les volets « État » (délégué militaire départemental) et « DSI » viendront compléter la fiche.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="essentiel">★ L'essentiel — à relire la veille</h2>
+
+<div class="exam"><div class="t">Le format de l'évaluation</div>
+<ul>
+<li>Contrôle de la mineure le <b>vendredi 20/11 à 10 h 30</b> (gestion de crise avec l'esprit de défense, la CTI et l'OSINT), sur Moodle
+avec Safe Exam Browser, 1 h 30. Une seule note pour toute la mineure.</li>
+<li>L'intervenant prépare « un petit questionnaire » sur son cours : « des concepts qu'il est intéressant de garder en mémoire a minima ».
+Il a lui-même désigné les 4 critères du seuil de crise, les temps de la crise et les 5 règles d'or comme à retenir
+(<a href="points-examen.html">ce qu'il a signalé</a>).</li>
+</ul>
+</div>
+
+<div class="key-points">
+<li>Une <b>crise</b> commence quand l'équipe habituelle ne peut plus traiter l'événement avec ses moyens habituels : il faut des arbitrages transversaux, des ressources exceptionnelles, une coordination renforcée.</li>
+<li><b>Seuil de crise — 4 critères</b> : impacts majeurs (l'<b>humain d'abord</b>, « pas négociable ») · propagation incertaine · transversalité · enjeux externes (clients, partenaires, autorités, salariés, médias).</li>
+<li>Une crise est <b>publique</b> : elle sort de l'entreprise en 3 heures au plus. Si l'on ne communique pas, d'autres le feront : « <b>redonner l'heure juste</b> ».</li>
+<li>Première tâche de la cellule : <b>gérer l'information</b> — séparer les faits confirmés des suppositions et des interprétations. Trois biais : <b>disponibilité</b> (ancrage sur la première info), <b>tunnel attentionnel</b>, <b>confirmation</b>.</li>
+<li>La cellule est <b>verticale</b> : un ou des <b>décideurs</b> décident, le <b>coordinateur</b> coordonne, le <b>gestionnaire de l'information</b> qualifie l'info et la transmet à qui a besoin d'en connaître.</li>
+<li>Les temps : <b>détecter, alerter, mobiliser</b> → <b>évaluer, circonscrire, remédier</b> → <b>reprise</b> (PCA, PRA, sortie de crise) ; la <b>communication</b> ne s'arrête jamais.</li>
+<li>Priorité n° 1 : la <b>sécurité des personnes</b>. Le PCA est précieux, mais « le premier truc qui saute, c'est le plan ».</li>
+<li><b>Stress</b> : jusqu'à <b>40 %</b> de capacité cognitive perdue. Déclencheurs <b>CINÉ</b> : Contrôle faible, Imprévisibilité, Nouveauté, Ego menacé (le plus fort).</li>
+<li>Les émotions naissent de nos <b>croyances</b> et de nos <b>valeurs</b> : on agit sur l'<b>interprétation</b>. Stop, respirer, s'interroger sur l'intention de l'autre, poser une question (passer du Système 1 au Système 2).</li>
+<li><b>5 règles d'or</b> de l'équipe : cap clair et partagé · organiser la pensée collective (sans museler la dissidence) · rôles explicites · trier l'information · tester et corriger.</li>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch1"><span class="num">1.</span> Qu'est-ce qu'une crise ?</h2>
+
+<h3 id="ch1-incident">1.1 Incident ou crise : tout n'est pas crise</h3>
+<div class="grid c2">
+<div class="card"><h4>Un incident</h4>
+Une faille PHP permettant de prendre la main à distance sur des serveurs, corrigée en 30 minutes sans conséquence : l'équipe
+responsable a traité l'événement <b>avec ses moyens habituels</b>. Ce n'est pas une crise, même si on l'a vécue comme telle.</div>
+<div class="card"><h4>Une crise</h4>
+Un problème du système d'information arrête 80 % d'une production pendant deux semaines : il faut des <b>arbitrages transversaux</b>,
+des <b>ressources exceptionnelles</b>, une <b>coordination renforcée</b>. La différence entre les deux : les <b>impacts</b>.</div>
+</div>
+
+<div class="callout def"><div class="t">Le seuil de crise</div>
+La limite entre un événement et une crise. Se déclarer « en crise » change le fonctionnement : on alloue d'autres moyens, on change
+ses habitudes et surtout on <b>travaille en mode dégradé</b>. Les critères qui permettent de dire qu'il est franchi sont au chapitre 3.</div>
+
+<h3 id="ch1-enjeu">1.2 Ce qu'une crise menace</h3>
+<p>« La vocation d'une entreprise, c'est <b>produire pour vendre</b>. » Une crise qui arrête la production arrête la vie de l'entreprise,
+et toutes n'ont pas la trésorerie pour tenir deux semaines sans chiffre d'affaires. Ordre de grandeur cité : arrêter le trafic d'une ligne
+de RER coûte environ <b>10 000 € par minute</b>.</p>
+<div class="grid c3">
+<div class="card"><h4>Impacts</h4>Humains, financiers (manque à gagner), réputationnels (confiance), fonctionnels.</div>
+<div class="card"><h4>Durée</h4>Les conséquences d'une vraie crise (rançongiciel, fuite de données) se vivent environ <b>deux ans</b>. Des entreprises ferment après une crise mal gérée, surtout cyber.</div>
+<div class="card"><h4>Valorisation</h4>Les <b>licornes</b> vivent de leur valorisation, une richesse estimée, en partie virtuelle : une crise qui l'entame les fait chuter vite.</div>
+</div>
+<div class="callout warn"><div class="t">L'instabilité, pire ennemie de l'entreprise</div>
+Tous ces facteurs génèrent du stress et de l'<b>instabilité</b>, qui attaque le capital de l'entreprise. « Tout est une question d'argent » —
+même un hôpital (§ 3.4).</div>
+
+<h3 id="ch1-types">1.3 Types de crises</h3>
+<p>Cyber, de production, sociale, logistique ou d'approvisionnement, de réputation, sanitaire (épidémie, épizootie, pandémie), alimentaire,
+naturelle ou technologique. Une crise peut en déclencher une autre : si demain plus aucun réfrigérateur ne fonctionne dans les
+supermarchés, la rupture de la chaîne du froid devient une crise alimentaire, puis des <b>émeutes</b> (« ventre affamé n'a point
+d'oreilles »). À l'inverse, le stockage du sang a été protégé parce qu'une analyse de risques avait été faite et des mesures prises.</p>
+
+<h3 id="ch1-risques">1.4 Analyse de risques et gestion de crise</h3>
+<div class="steps" id="anim-risques">
+<div class="step"><b>1. Analyser les risques</b> <span class="who">avant</span><br>Recenser les risques liés aux activités.</div>
+<div class="step"><b>2. Traiter les risques</b><br>Certains sont <b>réduits</b>, d'autres <b>éliminés</b>, d'autres <b>transférés</b> (assurance — les grands groupes en ont souvent plusieurs, et déclencher l'assurance se décide : la prime peut rendre l'opération peu rentable).</div>
+<div class="step"><b>3. Accepter le reste</b><br>Les risques <b>acceptés</b> font partie de l'activité : on décide de vivre avec.</div>
+<div class="step"><b>4. Monter un dispositif de gestion de crise</b> <span class="who">conséquence</span><br>Accepter des risques, c'est accepter d'avoir des crises : il faut un système qui permette de survivre à leurs impacts.</div>
+</div>
+<button class="btn primary" onclick="playSteps('anim-risques')">▶ Lancer l'animation</button>
+<p>On peut prévoir presque <b>tous les types</b> de crises, mais pas tous les paramètres qui feront dégénérer une situation : on peut au
+mieux <b>s'y préparer</b>. Constat de l'intervenant : en entreprise, seuls s'intéressent à la gestion de crise ceux qui en ont déjà vécu une
+et ceux qui sont passés tout près.</p>
+
+<!-- ===================================================================== -->
+<h2 id="ch2"><span class="num">2.</span> Pourquoi de plus en plus de crises</h2>
+
+<h3 id="ch2-si">2.1 La dépendance au numérique</h3>
+<p>Aucune entreprise ne fonctionne plus sans système d'information : c'est aujourd'hui <b>par le SI que viennent majoritairement les crises</b>.
+La <b>surface d'attaque</b> explose (Internet, numérisation des métiers, IA), et le SI n'est jamais figé : on ajoute des briques à gauche et à
+droite, ce qui accroît la complexité à défendre.</p>
+
+<div class="viz"><div class="t">Les facteurs qui multiplient les crises</div>
+<div class="vz-grid g3">
+<button class="vz-c k-red"><span class="n">Menace</span><h5>Volatile</h5><span class="q">On ne la voit pas arriver, elle évolue</span>
+<span class="more"><span class="t">Détail</span>On ne sait pas d'où elle viendra. Elle passe le plus souvent par les <b>personnes</b> : un collaborateur a déjà des accès et des privilèges validés, c'est plus simple que de forcer un défaut technique.</span></button>
+<button class="vz-c k-amber"><span class="n">Technique</span><h5>IA à double tranchant</h5><span class="q">Elle défend… et elle attaque</span>
+<span class="more"><span class="t">Détail</span>L'IA aide à détecter et à circonscrire, mais sert aussi les attaquants. Elle « sait déjà pas mal de choses » sur ceux qui l'utilisent tous les jours.</span></button>
+<button class="vz-c k-blue"><span class="n">Interdépendance</span><h5>Tous en réseau</h5><span class="q">Un prestataire unique peut tout bloquer</span>
+<span class="more"><span class="t">Détail</span>La panne <b>CrowdStrike</b> (juillet 2024) : une mise à jour défectueuse d'un seul fournisseur, présent partout, a handicapé transports aériens et affichages pendant près d'une semaine : un <b>point unique de défaillance</b> (SPOF, <i>single point of failure</i>).</span></button>
+<button class="vz-c k-purple"><span class="n">Économie</span><h5>Le paradigme budgétaire</h5><span class="q">La surface grandit, pas les budgets</span>
+<span class="more"><span class="t">Détail</span>Les budgets de cybersécurité ne suivent pas l'extension du champ à défendre : un RSSI est toujours « en dette », et les profils sont chers et rares.</span></button>
+<button class="vz-c k-green"><span class="n">Visibilité</span><h5>Des crises publiques</h5><span class="q">3 heures au plus pour sortir</span>
+<span class="more"><span class="t">Détail</span>« Il y a toujours quelqu'un pour prendre son écran en photo » : les salariés sont les premiers reporters de la crise. Une crise cyber sort en un quart d'heure (réseaux, sites de fuite du dark web).</span></button>
+<button class="vz-c k-red"><span class="n">Imprévisibilité</span><h5>Des surprises stratégiques</h5><span class="q">Covid, Ukraine, blackout</span>
+<span class="more"><span class="t">Détail</span>Voir le § 2.3 : même quand le type de crise est connu, son ampleur surprend.</span></button>
+</div>
+<div class="vz-bar"><button class="btn" data-cards="open">Tout déplier</button><button class="btn ghost" data-cards="close">Tout replier</button><span class="cnt"></span></div>
+</div>
+
+<h3 id="ch2-identite">2.2 L'attaque d'identité multi-sources</h3>
+<p>« Demain, vous êtes les cibles des hackers. » L'attaquant combine les <b>bases de données volées</b> (qui permettent de reconstituer des vies
+entières, contacts compris) et les <b>réseaux sociaux professionnels</b> (qui travaille avec qui).</p>
+<div class="steps" id="anim-intrusion">
+<div class="step"><b>1. Cartographier</b> <span class="who">reconnaissance</span><br>Une entreprise fait recoder une partie de son SI par un prestataire. L'attaquant repère sur les réseaux qui échange avec qui, et identifie le fournisseur.</div>
+<div class="step"><b>2. Usurper</b><br>Il copie le site et la charte graphique du partenaire (une quinzaine de secondes) et crée une adresse en <b>changeant une lettre</b> de celle du prestataire.</div>
+<div class="step"><b>3. Piéger</b><br>Il écrit au contact interne : « teste ce petit bout de code, ce serait intéressant de l'ajouter ».</div>
+<div class="step"><b>4. Entrer</b> <span class="who">moins de 2 heures</span><br>La personne exécute le code : porte dérobée installée, l'attaquant est dans le réseau avec les droits de sa victime.</div>
+</div>
+<button class="btn primary" onclick="playSteps('anim-intrusion')">▶ Lancer l'animation</button>
+
+<h3 id="ch2-surprise">2.3 Connu ne veut pas dire anticipé</h3>
+<div class="tw"><table><thead><tr><th>Crise</th><th>Ce qu'on savait</th><th>Ce qui a surpris</th></tr></thead><tbody>
+<tr><td>Covid-19</td><td>Le type de crise (épidémie, coronavirus) était connu ; des stocks stratégiques de contre-mesures existaient (masques)</td><td>L'extension mondiale. Les stocks de masques n'avaient pas été renouvelés : un <b>choix stratégique</b> d'allouer l'argent ailleurs</td></tr>
+<tr><td>Invasion de l'Ukraine</td><td>Des signaux existaient</td><td>La veille encore, beaucoup d'agences de renseignement, dont françaises, ne croyaient pas à l'invasion. « Après coup, c'est facile de le dire »</td></tr>
+<tr><td>Blackout</td><td>Les délestages sectoriels sont quotidiens pour les entreprises</td><td>Une coupure <b>totale</b> comme en Espagne : plus d'ordinateurs, de réseau, de transports, d'eau courante, de frigo. La France prépare son premier exercice de blackout</td></tr>
+</tbody></table></div>
+
+<h3 id="ch2-degrade">2.4 Le mode dégradé</h3>
+<div class="example"><div class="t">Une mairie au papier-crayon</div>
+La mairie d'Angers, victime d'une cyberattaque, a vécu plus de dix mois sans système d'information : retour au papier et au crayon,
+délais très allongés pour les pièces d'identité. « C'est ça la vraie vie d'une crise : vous allez travailler en dégradé. »
+Les <b>fiches réflexes</b> aident, à condition d'avoir préparé un dispositif de gestion de crise.</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch3"><span class="num">3.</span> Le seuil de crise</h2>
+
+<h3 id="ch3-criteres">3.1 Les quatre critères</h3>
+<div class="viz"><div class="t">Faut-il déclencher la cellule de crise ?</div>
+<div class="vz-grid g2">
+<button class="vz-c k-red"><span class="n">Critère 1</span><h5>Des impacts majeurs</h5><span class="q">L'entreprise ne fonctionne plus, ou très mal</span>
+<span class="more"><span class="t">L'humain d'abord</span>Les directions regardent en premier l'impact sur les <b>collaborateurs</b>, avant le financier et le fonctionnel : « un impact humain, ce n'est <b>pas négociable</b> ». Y compris l'effet sur leur quotidien : seront-ils moins heureux dans l'entreprise ? Les « grands départs » (vagues de démissions par perte de sens, jusque dans la police et la gendarmerie) rappellent ce risque.</span></button>
+<button class="vz-c k-amber"><span class="n">Critère 2</span><h5>Une propagation incertaine</h5><span class="q">Sait-on circonscrire l'événement ?</span>
+<span class="more"><span class="t">Détail</span>Si l'on ne sait pas s'il va s'étendre, ni où, c'est un facteur de déclenchement. Liée à la <b>volatilité</b> : on ne connaît pas la finalité des impacts.</span></button>
+<button class="vz-c k-blue"><span class="n">Critère 3</span><h5>La transversalité</h5><span class="q">Plusieurs services doivent se coordonner</span>
+<span class="more"><span class="t">Détail</span>On ne peut pas décider seul : il faut interroger tout le monde et coordonner. Le <b>SI</b> est presque toujours au milieu.</span></button>
+<button class="vz-c k-purple"><span class="n">Critère 4</span><h5>Les enjeux externes</h5><span class="q">Ajouté plus tard aux trois premiers</span>
+<span class="more"><span class="t">Détail</span>Clients, partenaires, autorités, <b>salariés</b> (« rappelez-vous ça »), médias, population spectatrice. Un emballement autour d'un événement peut à lui seul en faire une crise : les spectateurs sont les <b>catalyseurs</b> de la crise. Et pour un hôpital, les autorités de santé demanderont de <b>justifier</b> chaque décision.</span></button>
+</div>
+<div class="vz-bar"><button class="btn" data-cards="open">Tout déplier</button><button class="btn ghost" data-cards="close">Tout replier</button><span class="cnt"></span></div>
+</div>
+
+<div class="exam"><div class="t">Argumenter, critère par critère</div>
+Affirmer « c'est une crise » ne suffit pas : il faut confronter chaque critère aux <b>faits vérifiés</b>. Et la réponse est rarement
+nette : « tout n'est pas noir et blanc, dans une crise c'est toujours gris ». D'où l'intérêt de prendre le pouls des parties prenantes
+pour pouvoir <b>justifier</b> la décision.</div>
+
+<h3 id="ch3-reseaux">3.2 Les réseaux sociaux, révélateurs de crise</h3>
+<div class="grid c2">
+<div class="card"><h4>Hier : X</h4>Environ 70 % des journalistes y prenaient leurs informations. Elles n'étaient <b>pas vérifiées</b> : on ne savait pas si elles étaient vraies.</div>
+<div class="card"><h4>Aujourd'hui : TikTok</h4>Il prend le relais ; environ <b>20 %</b> des informations y sont fausses. Modération faible : avis débridés, négativité, déformation, interprétation, scénarios trop complexes.</div>
+</div>
+<div class="callout ok"><div class="t">Redonner l'heure juste</div>
+Face aux parties prenantes, la première chose est de donner les <b>vraies informations</b>, pour montrer qu'on a la main et qu'on agit.
+« Si vous ne communiquez pas, les autres le feront pour vous », et ils raconteront n'importe quoi. Préserver la réputation, rassurer
+les partenaires : c'est de l'<b>influence</b>.</div>
+
+<h3 id="ch3-precaution">3.3 Le piège de la précaution</h3>
+<p>« On veut tous se mettre en crise, c'est plutôt rassurant. » Mais se déclarer en crise entraîne des décisions lourdes — par exemple
+<b>dérouter</b> les patients d'un hôpital vers les établissements voisins — qui coûtent du chiffre d'affaires, inquiètent patients et
+collaborateurs et désorganisent les urgences de toute une région. Un hôpital est aussi un <b>système financier</b> : chaque soin est facturé,
+sans facturation il ne paie plus ses médecins. On regarde d'abord le danger pour les personnes, mais sans basculer dans la précaution
+par réflexe.</p>
+
+<h3 id="ch3-cas">3.4 Cas pratique : l'hôpital</h3>
+<details class="case"><summary>Le centre hospitalier<span class="sit">Messages d'erreur, puis des circuits électriques défaillants, des systèmes qui ne démarrent plus, les dossiers patients informatisés (DPI) inaccessibles. Des écrans de rançongiciel avec une demande de rançon. Les respirateurs basculent en mode manuel. La presse locale en parle dans l'édition du soir, la direction demande de « gérer ». Seuil de crise atteint ? Quels biais ?</span></summary>
+<div>
+<p><b>Les faits confirmés</b> : messages d'erreur, demande de rançon, panne électrique partielle, respirateurs passés en manuel, article
+de presse, sollicitation de la direction. Rien de plus.</p>
+<p><b>Critères validés</b> : la <b>transversalité</b> (plusieurs services, les médecins ne donnent pas de diagnostic tranché seuls),
+la <b>propagation incertaine</b> (l'enchaînement erreurs → électricité → systèmes, sans savoir quoi lâchera ensuite), les <b>enjeux
+externes</b> (presse, autorités de santé comme l'agence régionale de santé, ARS). Les <b>impacts réels</b> sur les patients, eux, ne sont pas connus — ce qui n'empêche pas de
+devoir décider.</p>
+<p><b>Les biais</b> : « les soins vont s'arrêter », « le patient peut mourir » — rien dans les faits ne le dit. C'est de l'<b>interprétation</b>
+(biais de scénarisation : « ce n'est pas parce que vous pensez à un scénario qu'il est établi » ; puis biais de confirmation). Les dossiers inaccessibles sont un <b>manque d'information</b>,
+pas un arrêt des soins. Conclusion de l'intervenant : la décision n'est pas évidente, et le vote de la salle ne l'a pas été non plus.</p>
+</div></details>
+
+<!-- ===================================================================== -->
+<h2 id="ch4"><span class="num">4.</span> Gérer l'information</h2>
+
+<h3 id="ch4-tri">4.1 Faits, suppositions, interprétations</h3>
+<p>Avant de prendre la moindre décision, la cellule <b>gère l'information</b> : elle sépare ce qui est un <b>fait confirmé</b> de ce qui
+est une <b>supposition</b> ou une <b>interprétation</b>. Les réseaux sociaux charrient surtout les deux dernières. Décider et communiquer se
+font sur les faits en priorité ; le reste n'est pas jeté, il est mis de côté. « On ne doit regarder que les faits, et surtout au départ. »</p>
+
+<h3 id="ch4-biais">4.2 Trois biais qui faussent le tri</h3>
+<div class="grid c3">
+<div class="card"><h4>Biais de disponibilité</h4>
+La <b>première information</b> pèse bien plus que celles qui suivent (effet d'<b>ancrage</b>). Une décision prise sur la seule première
+info est rarement juste.</div>
+<div class="card"><h4>Tunnel attentionnel</h4>
+On se polarise sur un symptôme — un applicatif en panne — et on ne regarde plus que lui. On perd la <b>vision à 360°</b> : ce symptôme
+cache peut-être autre chose.</div>
+<div class="card"><h4>Biais de confirmation</h4>
+Un scénario s'impose vite, et l'on ne retient que les informations qui le <b>confirment</b> : on veut avoir raison.</div>
+</div>
+<div class="callout"><div class="t">Les trois questions à se poser devant une information</div>
+Est-ce que je m'ancre sur elle parce qu'elle est arrivée la première ? Est-ce qu'elle capte toute mon attention ? Est-ce que je la
+retiens seulement parce qu'elle confirme mon hypothèse ?</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch5"><span class="num">5.</span> Organiser la cellule de crise</h2>
+
+<h3 id="ch5-roles">5.1 Une organisation verticale</h3>
+<p>« La gestion de crise, ce n'est pas un comité de hippies » : il y a autant de stratégies possibles que de participants, et toutes
+peuvent être bonnes. L'efficacité vient d'une décision claire, transmise et appliquée.</p>
+<div class="tw"><table><thead><tr><th>Rôle</th><th>Ce qu'il fait</th><th>Ce qu'il ne fait pas</th></tr></thead><tbody>
+<tr><td><b>Décideur(s)</b></td><td>Tranche et donne sa vision. Souvent un <b>pool</b> (deux ou trois ; davantage dans un grand groupe, avec actionnaires et juristes)</td><td>Écrire au tableau</td></tr>
+<tr><td><b>Coordinateur de crise</b></td><td>Assure la transversalité : le travail collectif des acteurs, la bonne compréhension, l'application des décisions</td><td>Décider — « le décideur décide, le coordinateur coordonne »</td></tr>
+<tr><td><b>Gestionnaire de l'information</b> (<i>info manager</i>)</td><td>Tient l'état de l'information ; la <b>trie</b>, la <b>qualifie</b> (fiable ou non, à prendre en compte ou non), puis la <b>transmet</b> à qui a <b>besoin d'en connaître</b></td><td>Retenir suppositions et interprétations</td></tr>
+</tbody></table></div>
+<div class="callout warn"><div class="t">Des rôles acceptés</div>
+« La crise est toujours une opportunité », notamment de se faire remarquer. Si l'on ne sait pas clairement qui est le chef, quelqu'un se
+battra pour être « calife à la place du calife » — l'intervenant l'a vu plusieurs fois. Entrer en cellule, c'est accepter son poste et
+respecter la décision du décideur, même en désaccord. La responsabilité est partagée : remontées d'information, points de coordination…</div>
+
+<h3 id="ch5-ressources">5.2 Des ressources disponibles en mode dégradé</h3>
+<div class="example"><div class="t">La cellule de crise dans la zone inondable</div>
+La crue centennale de la Seine, attendue statistiquement au cours du siècle, noierait environ un tiers de Paris : plus de routes, plus
+d'électricité, plus de ravitaillement. Une entreprise avait pourtant installé sa cellule de crise au milieu de la zone inondable…
+Les lieux et moyens de la cellule doivent survivre aux scénarios qu'elle est censée gérer.</div>
+<p>Même logique pour les communications : si tout passe par une seule plateforme (messagerie, visio et téléphonie sur le même outil),
+la panne du SI coupe à la fois les décisions et les remontées : c'est un point unique de défaillance. Un second moyen (réseau maillé dit <i>mesh</i>, radios…) doit être
+<b>préparé avant</b> : on ne le déploie pas le jour de la crise.</p>
+
+<h3 id="ch5-priorites">5.3 Les règles de conduite : des priorités</h3>
+<div class="callout danger"><div class="t">Priorité n° 1 : la sécurité des personnes</div>
+Elle passe avant le retour à la normale, la communication ou la continuité. Exemple : plus d'électricité dans un bâtiment de
+10 000 collaborateurs — les garde-t-on ? les renvoie-t-on chez eux ? Ce sont ces priorités, fixées d'avance, qui règlent la conduite de la crise.</div>
+<p>Le <b>PCA</b> (plan de continuité d'activité) est utile parce qu'il oblige à réfléchir en amont et fournit des briques prêtes à l'emploi.
+Mais il n'est jamais parfaitement adapté : « le premier truc qui saute, c'est le plan ».</p>
+
+<h3 id="ch5-temps">5.4 Les temps de la crise</h3>
+<div class="phase-band">
+<div class="p1"><b>Détecter · Alerter · Mobiliser</b><br>Voir qu'un système sort de la normale ; faire remonter à un responsable qui décide si le seuil est franchi ; appeler les membres de la cellule (environ <b>2 heures</b> pour mobiliser).</div>
+<div class="p2"><b>Évaluer · Circonscrire · Remédier</b><br>Estimer les impacts malgré des remontées incomplètes ; empêcher l'extension (l'IA y aide beaucoup) ; mettre en œuvre le plan d'action pour redémarrer.</div>
+<div class="p3"><b>Reprise d'activité</b><br>Mobiliser au mieux le <b>PCA</b> et le <b>PRA</b> (plan de reprise d'activité), puis la <b>sortie de crise</b>.</div>
+</div>
+<div class="callout"><div class="t">En parallèle, du début à la fin</div>
+La <b>communication</b>, interne et externe, ne s'arrête jamais. Les temps, eux, sont « toujours les mêmes ».</div>
+<p>Chaque entreprise choisit son organisation : parfois figée, avec des membres désignés, formés et entraînés ; parfois floue ; parfois
+inexistante.</p>
+
+<!-- ===================================================================== -->
+<h2 id="ch6"><span class="num">6.</span> Le facteur humain : incertitude et émotions</h2>
+
+<h3 id="ch6-equipe">6.1 Un défi cognitif plus qu'organisationnel</h3>
+<p>« L'organisation, vous l'aurez » : l'entreprise la fournit, et l'on trouve toujours à se débrouiller. Ce qui fait la performance en crise,
+c'est la <b>gestion de l'équipe</b> et la <b>capacité cognitive</b>, pas le dernier ordinateur. Et la vie humaine passe avant toute ambition.</p>
+<div class="grid c2">
+<div class="card"><h4>L'intolérance à l'incertitude</h4>
+Personne n'aime ne pas savoir. Pour retrouver sa zone de sécurité, on est prêt à tout : tirer des conclusions, échafauder une hypothèse,
+agir sans vision globale — une « fausse bonne action ». En crise réelle, on n'a <b>jamais</b> toutes les informations : c'est le
+<b>brouillard de crise</b>.</div>
+<div class="card"><h4>Le coût du stress</h4>
+Un stress avancé peut faire perdre jusqu'à <b>40 % des capacités cognitives</b> — et on ne s'en rend pas compte tout de suite.
+Or en cellule de crise, l'outil de travail est le cerveau.</div>
+</div>
+<div class="example"><div class="t">RETEX — la rançon volée</div>
+Un enlèvement à l'étranger, une semaine de négociation, un accord pour un échange. Le messager se fait voler la rançon en chemin ;
+la famille n'a pas les moyens de payer une seconde fois. Le stress gagne le négociateur comme n'importe qui (« on regarde le fond de
+ses baskets »). La sortie : ne pas se laisser aller, <b>reprendre les informations vérifiées</b>, le scénario, les interlocuteurs, et faire
+preuve de créativité. L'otage est libéré le jour même.</div>
+
+<h3 id="ch6-emotion">6.2 Comment naît une émotion</h3>
+<p>On ne peut ni éviter ni refuser une émotion : elle « vous transperce quoi qu'il se passe ». Ce qu'on peut faire : connaître ses
+<b>déclencheurs</b> et donner une autre réponse que la réponse <b>programmée</b> (apprise par l'éducation et l'expérience). Quand
+l'émotion est haute, la charge cognitive est basse : l'émotion ne fait pas réfléchir, elle guide vers un réflexe.</p>
+<div class="steps" id="anim-emotion">
+<div class="step"><b>1. Déclencheur externe</b> <span class="who">stimulus</span><br>Je vois un serpent tout près de moi.</div>
+<div class="step"><b>2. Réaction physiologique</b><br>Les poils se dressent, je sursaute.</div>
+<div class="step"><b>3. Comportement réactif</b><br>Je m'écarte, je fuis.</div>
+<div class="step"><b>4. Pensée, croyance</b><br>« Tous les serpents sont dangereux, il veut m'attaquer. »</div>
+<div class="step"><b>5. Identification de l'émotion</b> <span class="who">en dernier</span><br>« J'ai eu peur. » Une construction : la plupart du temps, le danger réel est bien moindre (l'araignée microscopique, le chien inoffensif).</div>
+</div>
+<button class="btn primary" onclick="playSteps('anim-emotion')">▶ Lancer l'animation</button>
+
+<div class="callout def"><div class="t">Ce ne sont pas les événements qui créent nos émotions</div>
+… mais l'<b>interprétation</b> que nous en faisons, filtrée par deux choses : nos <b>croyances</b> (« les araignées, c'est dangereux ») et
+nos <b>valeurs</b>. Si l'on piétine nos valeurs, l'émotion se déclenche. L'émotion n'est que le <b>masque</b>, la réaction visible.</div>
+
+<details class="case"><summary>L'histoire du pont<span class="sit">Une femme traverse un pont pour rejoindre son amant. Au retour, un fou menace de la tuer si elle traverse. Le taxi et le batelier refusent de la transporter sans argent, un ami refuse de l'aider. Elle passe par le pont, le fou la tue. Qui est responsable ?</span></summary>
+<div>Les votes se dispersent (la femme, le fou, le mari, le taxi, le batelier, l'ami, l'amant…) : chacun juge à travers ses <b>valeurs</b>.
+La question n'est pas pénale — « si tu étais son ami, te sentirais-tu responsable ? ». Leçon : jugement et émotion passent par le filtre
+de nos valeurs.</div></details>
+
+<div class="grid c2">
+<div class="card"><h4>Chaque émotion porte un message</h4>
+<b>Colère</b> : « je ne suis pas d'accord, il faut que ça change ». <b>Joie</b> : « la situation me convient ». L'<b>intensité</b> indique
+l'importance de l'enjeu.</div>
+<div class="card"><h4>Un environnement dégradé abaisse le seuil</h4>
+Fatigue, partiels, déménagement, soucis financiers : on devient plus sensible sur ses valeurs et croyances, et l'émotion se déclenche plus
+facilement. Exemple de l'intervenant : un ancien réflexe de conduite agressive, lié à l'habitude d'être prioritaire en mission, identifié
+puis « déprogrammé ».</div>
+</div>
+
+<h3 id="ch6-stop">6.3 Reprendre la main : agir sur l'interprétation</h3>
+<p>Exemple : « il me manque de respect » → colère → je me braque, je claque la porte. Le seul endroit où agir, c'est l'<b>interprétation</b> :
+« il ne me manque pas de respect, il fait son travail, il a des horaires imposés ».</p>
+<div class="steps" id="anim-stop">
+<div class="step"><b>1. Stop</b> <span class="who">dès les premiers signes</span><br>Je sens l'émotion monter : je mets le système automatique en pause.</div>
+<div class="step"><b>2. Respirer</b><br>Je m'accorde un temps.</div>
+<div class="step"><b>3. Réviser l'interprétation</b><br>M'interroger sur l'intention de l'autre : attaque-t-il ou est-il sous pression ? Critique-t-il ou exprime-t-il un besoin ?</div>
+<div class="step"><b>4. Poser une question</b> <span class="who">à l'intéressé</span><br>Vérifier son intention, sans agressivité. Cela remet la réflexion en marche et coupe le ressenti (le « kinesthésique »).</div>
+</div>
+<button class="btn primary" onclick="playSteps('anim-stop')">▶ Lancer l'animation</button>
+
+<h3 id="ch6-kahneman">6.4 Système 1 et Système 2</h3>
+<div class="grid c2">
+<div class="card"><h4>Système 1</h4>Les automatismes (taper au clavier sans chercher les touches). <b>Rapide</b>, peu coûteux en énergie, mais très <b>ouvert aux biais</b> et aux interprétations.</div>
+<div class="card"><h4>Système 2</h4>La réflexion. <b>Lent</b>, coûteux, il faut « appuyer sur le bouton » pour l'enclencher ; beaucoup <b>moins sujet aux biais</b>, donc moins d'erreurs.</div>
+</div>
+<p>Modèle popularisé par <b>Daniel Kahneman</b>. D'où le conseil : <b>poser des questions</b> est le meilleur moyen de réactiver le Système 2.</p>
+
+<!-- ===================================================================== -->
+<h2 id="ch7"><span class="num">7.</span> Le stress</h2>
+
+<h3 id="ch7-cine">7.1 Ce qui déclenche le stress : CINÉ</h3>
+<div class="viz"><div class="t">Les quatre déclencheurs (Sonia Lupien, Centre d'études sur le stress humain, Canada)</div>
+<div class="vz-grid g2">
+<button class="vz-c k-blue"><span class="n">C</span><h5>Contrôle faible</h5><span class="q">Je n'ai pas prise sur la situation</span><span class="more"><span class="t">Exemple</span>Le lâcher-prise forcé : ce qu'on a perdu, c'est le contrôle.</span></button>
+<button class="vz-c k-amber"><span class="n">I</span><h5>Imprévisibilité</h5><span class="q">Je ne sais pas ce qui va arriver</span><span class="more"><span class="t">Proche de</span>L'inconnu, l'incertitude.</span></button>
+<button class="vz-c k-green"><span class="n">N</span><h5>Nouveauté</h5><span class="q">Je n'ai jamais vécu ça</span><span class="more"><span class="t">Proche de</span>Le changement.</span></button>
+<button class="vz-c k-red"><span class="n">É</span><h5>Ego menacé</h5><span class="q">Mes compétences, mon image sont mises en cause</span><span class="more"><span class="t">À retenir</span>« Le plus gros des déclencheurs. »</span></button>
+</div>
+<div class="vz-bar"><button class="btn" data-cards="open">Tout déplier</button><button class="btn ghost" data-cards="close">Tout replier</button><span class="cnt"></span></div>
+</div>
+
+<h3 id="ch7-balance">7.2 La double estimation</h3>
+<p>Face à une situation, on estime d'un côté la <b>difficulté</b> (la menace), de l'autre ses <b>capacités</b> à la surmonter. Si les
+capacités estimées sont bien en dessous de la difficulté estimée, on stresse ; dans le cas inverse, beaucoup moins. « C'est vous qui
+vous créez votre propre dose de stress. »</p>
+<div class="split"><span class="a" style="flex-basis:50%">Difficulté estimée</span><span class="b" style="flex-basis:50%">Capacités estimées</span></div>
+<div class="split-cap"><span>alourdie par les pensées parasites</span><span>rééquilibrées par la réévaluation cognitive</span></div>
+<div class="tw"><table><thead><tr><th>Pensée parasite</th><th>Exemple</th></tr></thead><tbody>
+<tr><td>Le tout ou rien</td><td>« Soit je réussis cet examen, soit ma vie est foutue. »</td></tr>
+<tr><td>La lecture d'intentions hostiles</td><td>« S'il me dit ça, c'est qu'il veut me mettre des bâtons dans les roues. »</td></tr>
+<tr><td>La dramatisation</td><td>« Ça se passe toujours mal, l'équipe va être licenciée. »</td></tr>
+<tr><td>Le biais de confirmation</td><td>Ne réunir que les informations qui vont dans le sens négatif.</td></tr>
+</tbody></table></div>
+
+<h3 id="ch7-courbe">7.3 Du stress utile au débordement</h3>
+<div class="phase-band">
+<div class="p1"><b>Eustress</b><br>Le stress porteur : action mobilisée, concentration, décisions effectives. « Le stress n'est pas toujours négatif. »</div>
+<div class="p2"><b>Suractivation</b><br>Il devient handicapant : temps de réaction allongé, perte d'analyse, troubles de l'attention, démotivation, perte de confiance, agressivité, perte de la notion du temps.</div>
+<div class="p3"><b>Débordement</b><br>Des réactions automatiques qu'on ne contrôle plus : <b>sidération</b>, <b>fuite panique</b>, action automatique, <b>agitation désordonnée</b>.</div>
+</div>
+<div class="grid c3">
+<div class="card"><h4>Sidération</h4>Le cerveau anticipe toujours de quelques millisecondes. Devant l'impossible, il « bugue » et stoppe tout : le corps se fige (les passants le 11 septembre 2001).</div>
+<div class="card"><h4>Fuite panique</h4>Une réaction non maîtrisée : il faut sortir. Lors d'une prise d'otages, des personnes ont essayé de creuser un mur avec leurs doigts.</div>
+<div class="card"><h4>Agitation désordonnée</h4>« On va tous mourir ! » : ce n'est pas de la panique, c'est un moyen d'expulser la tension.</div>
+</div>
+<div class="callout warn"><div class="t">Personne n'est un « King Cobra »</div>
+La résistance au stress dépend de l'état du moment : sommeil, fatigue, moyens de vivre, réussite des études, entourage social. Quand
+plusieurs se dégradent, on passe plus facilement en suractivation, voire en débordement. Avant d'entrer en crise, savoir <b>où l'on en est</b>.</div>
+
+<h3 id="ch7-bio">7.4 Ce qui se passe dans le cerveau et le corps</h3>
+<div class="grid c3">
+<div class="card"><h4>Cortex préfrontal</h4>Le siège de la réflexion, à l'avant du crâne. Le cas célèbre d'un ouvrier des chemins de fer au XIX<sup>e</sup> siècle, le crâne traversé par une barre de fer : il ne distinguait plus le bien du mal. Sous stress, le cerveau <b>l'abandonne</b> : ce n'est plus le moment de réfléchir, mais de survivre.</div>
+<div class="card"><h4>Amygdale et adrénaline</h4>L'amygdale prend la main et déclenche une décharge d'<b>adrénaline</b> : cœur et tension en hausse, transpiration, pupilles dilatées, digestion et système reproducteur arrêtés, vaisseaux resserrés au profit des muscles utiles à la <b>fuite ou à l'attaque</b> (<i>flight or fight</i>). Effet d'environ <b>30 minutes</b>.</div>
+<div class="card"><h4>Cortisol</h4>Il prend le relais de l'adrénaline. Répété, il a des <b>effets délétères au long cours</b> : immunité affaiblie, glycémie et tension en hausse, troubles du sommeil.</div>
+</div>
+<div class="tw"><table><thead><tr><th>Effet sur les perceptions</th><th>Ce que c'est</th></tr></thead><tbody>
+<tr><td>Perte de la notion du temps</td><td>En cellule, on ne sait plus si 24 heures ont passé.</td></tr>
+<tr><td>Effet tunnel</td><td>Le champ de vision se resserre comme des œillères.</td></tr>
+<tr><td>Exclusions auditives</td><td>On n'entend plus tout.</td></tr>
+<tr><td>Régression</td><td>Retour à un apprentissage ancien : des pilotes de ligne repassent de l'anglais à leur langue maternelle.</td></tr>
+</tbody></table></div>
+
+<h3 id="ch7-regulation">7.5 Se réguler</h3>
+<div class="grid c2">
+<div class="card"><h4>La respiration</h4>
+Expirer par la bouche <b>plus longtemps</b> qu'on inspire par le nez <b>relaxe</b> (un temps d'inspiration, trois d'expiration). L'inverse
+— inspiration longue par le nez, expiration courte — <b>dynamise</b>. Si l'on est très stressé, c'est cette respiration qu'il faut, pas la
+cohérence cardiaque.</div>
+<div class="card"><h4>La cohérence cardiaque</h4>
+<b>Six respirations par minute</b> : 5 secondes d'inspiration, 5 d'expiration. Respiration, cœur et ondes cérébrales se coordonnent, ce qui
+aide à se concentrer. Une minute dépanne ; en entraînement quotidien, plutôt cinq minutes.</div>
+<div class="card"><h4>La réévaluation cognitive</h4>
+Poser le scénario redouté (« je vais m'écraser »), puis mesurer sa <b>probabilité réelle</b> : altitude, pannes effectives, procédures.
+« Peut-être 5 % de ne pas s'en sortir, donc 95 % de s'en sortir. » On réévalue objectivement la difficulté et ses capacités : la balance se
+rééquilibre. Ce n'est pas du déni (« ça va passer ») ; des travaux menés au RAID ont montré son efficacité sur des situations ponctuelles.</div>
+<div class="card"><h4>Reformuler les pensées négatives</h4>
+Repérer les phrases automatiques qui démolissent (« ils me détestent ») et les remplacer par une lecture factuelle (« ils font leur travail »).</div>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch8"><span class="num">8.</span> Travailler en équipe : les 5 règles d'or</h2>
+
+<div class="viz"><div class="t">Les cinq règles d'une gestion d'équipe efficace en crise</div>
+<div class="vz-grid g3">
+<button class="vz-c k-red"><span class="n">Règle 1</span><h5>Un cap clair et partagé</h5><span class="q">L'alignement précède l'action</span><span class="more"><span class="t">Pourquoi</span>Si l'équipe n'est pas d'accord sur la stratégie et le cap, ou ne les comprend pas, l'exécution sera mauvaise. Sans cap commun, pas d'intelligence collective.</span></button>
+<button class="vz-c k-amber"><span class="n">Règle 2</span><h5>Organiser la pensée collective</h5><span class="q">Collecter → trier → décider</span><span class="more"><span class="t">Comment</span>Tout mettre sur la table, trier selon les priorités, décider. <b>Ne pas museler la dissidence</b> : la pensée unique, « c'est la mort ». On peut même désigner quelqu'un pour « assassiner » le scénario et en trouver les failles.</span></button>
+<button class="vz-c k-blue"><span class="n">Règle 3</span><h5>Des rôles explicites</h5><span class="q">Chacun connaît le sien</span><span class="more"><span class="t">Les rôles cités</span>Décideur · analyste · voix externe (communique avec l'extérieur) · capteur terrain (fait remonter) · gardien du temps · gestionnaire de l'information.</span></button>
+<button class="vz-c k-purple"><span class="n">Règle 4</span><h5>Trier l'information</h5><span class="q">Ne pas se laisser polluer</span><span class="more"><span class="t">Trois tas</span>Faits observables · hypothèses ou interprétations · ressentis et états émotionnels. Le filtre contre les rumeurs et les bruits de couloir.</span></button>
+<button class="vz-c k-green"><span class="n">Règle 5</span><h5>Tester et corriger</h5><span class="q">Aucune décision n'est perpétuelle</span><span class="more"><span class="t">Pourquoi</span>Les facteurs bougent sans cesse : tester, regarder les résultats, corriger, retester — comme en ingénierie.</span></button>
+</div>
+<div class="vz-bar"><button class="btn" data-cards="open">Tout déplier</button><button class="btn ghost" data-cards="close">Tout replier</button><span class="cnt"></span></div>
+</div>
+
+<div class="callout"><div class="t">Contre la vision tunnel collective</div>
+L'intervenant ajoute trois parades : un animateur de crise « aux mains libres » qui ne touche pas au clavier et garde la vue d'ensemble,
+des <b>points de situation</b> réguliers où l'on refait le tour complet, et une séparation entre la cellule stratégique et l'équipe
+opérationnelle pour protéger celle-ci des pressions de la direction et des médias.</div>
+
+<div class="example"><div class="t">Mise en pratique : le <i>Marshmallow Challenge</i></div>
+Par équipes de dix : 15 spaghettis, du scotch, de la ficelle, des ciseaux et un marshmallow, pour bâtir la tour <b>autoportante</b> la plus
+haute (mesurée au marshmallow). Cinq minutes de stratégie sans rien assembler, puis dix minutes de construction. Rien que former les
+équipes a pris du temps — « la crise est déjà finie, le temps que vous vous organisiez ». L'exercice met à l'épreuve les cinq règles,
+surtout le cap partagé et la règle 5 : tester tôt plutôt que découvrir à la dernière minute que la structure ne tient pas.</div>
+
+<!-- ===================================================================== -->
+<h2 id="qcm-sec"><span class="num">9.</span> QCM — <span id="count-badge" class="badge acc"></span></h2>
+<p><b>Une seule bonne réponse par question</b>, ordre tiré au hasard, correction expliquée.</p>
+<div id="qcm"></div>
+
+  </main>
+</div>
+
+<button id="top" title="Haut de page">↑</button>
+<script src="qcm.js?v=2"></script>
+<script src="../assets/app.js?v=35"></script>
+<script>initQCM(window.QCM_DATA, window.QCM_CHAPTERS, 'inf5059');</script>
+</body>
+</html>
