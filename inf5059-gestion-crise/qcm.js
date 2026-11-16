@@ -1371,6 +1371,33 @@ window.QCM_DATA = [
      "Le retrait des risques acceptés de la liste",
      "La différence entre impact et probabilité"],
   a:[0],
-  e:"Le risque brut est évalué sans mesure ; une mesure d'atténuation réduit l'occurrence ou l'impact et donne le risque net. Ce n'est ni une conversion monétaire, ni une suppression, ni la différence entre les deux facteurs." }
+  e:"Le risque brut est évalué sans mesure ; une mesure d'atténuation réduit l'occurrence ou l'impact et donne le risque net. Ce n'est ni une conversion monétaire, ni une suppression, ni la différence entre les deux facteurs." },
+
+{ id:"M15", ch:13, d:2,
+  q:"Quelles organisations le règlement DORA vise-t-il ?",
+  o:["Toutes les entités financières de l'Union européenne : banques, assurances, mutuelles, et leurs prestataires informatiques critiques",
+     "Les seuls opérateurs d'importance vitale désignés par l'État, tous secteurs confondus",
+     "Toutes les entreprises des secteurs essentiels et importants : santé, énergie, transports, administrations",
+     "Les seules banques systémiques supervisées directement par la Banque centrale européenne"],
+  a:[0],
+  e:"DORA est un règlement propre au secteur financier, et à tout ce secteur, pas seulement aux grandes banques. Le large éventail santé, énergie, transports, administrations correspond à NIS 2. Les opérateurs d'importance vitale relèvent du dispositif national de sécurité des activités d'importance vitale." },
+
+{ id:"M16", ch:13, d:2,
+  q:"Où en est le système de management de la résilience opérationnelle (SMRO) dans les entreprises ?",
+  o:["Il n'a pas encore d'équivalent normalisé du SMSI ; quelques organisations le construisent, souvent après une vraie crise cyber",
+     "Il est défini par l'ISO 22301 et certifiable depuis sa première version",
+     "Il est imposé à toutes les entreprises européennes par la directive NIS 2",
+     "Il remplace le SMSI dans les organisations certifiées ISO 27001 depuis sa dernière révision"],
+  a:[0],
+  e:"L'ISO 22301 porte le SMCA (continuité d'activité), pas le SMRO. NIS 2 n'impose pas de SMRO, et le SMRO ne remplace pas le SMSI : il manque justement un équivalent du SMSI pour la résilience opérationnelle." },
+
+{ id:"M17", ch:13, d:2,
+  q:"Les coordonnées personnelles d'un agent d'un service de renseignement sont publiées en clair dans un annuaire d'anciens élèves. Quel est l'enjeu principal ?",
+  o:["La sécurité physique de la personne, en plus de la non-conformité au RGPD que le DPO doit prévenir",
+     "Une simple gêne commerciale : l'agent risque de recevoir des sollicitations publicitaires",
+     "Aucun enjeu dès lors que l'annuaire est réservé aux anciens élèves de l'école",
+     "Uniquement une amende de la CNIL, le risque pour la personne restant théorique"],
+  a:[0],
+  e:"Exposer une personne affectée au renseignement ou aux forces de sécurité permet de la cibler, jusqu'à l'enlèvement à l'étranger. Un annuaire restreint n'est pas un espace maîtrisé, et réduire l'affaire à une amende ou à de la publicité ignore le danger physique." }
 
 ];

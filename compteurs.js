@@ -1,7 +1,7 @@
 /* Généré par tools/generer.py : ne pas modifier à la main. */
 window.QCM_COMPTES = {
  "ent5002-osint-cti/qcm.js": 78,
- "inf5059-gestion-crise/qcm.js": 149,
+ "inf5059-gestion-crise/qcm.js": 152,
  "inf5061-intelligence-economique/qcm.js": 72,
  "inf5051-forensic/qcm.js": 218,
  "inf5049-controle-audit/qcm.js": 126,

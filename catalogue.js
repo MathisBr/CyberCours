@@ -86,7 +86,7 @@ window.CATALOGUE = [
       desc: "Volets entreprise, État et DSI : seuil de crise, facteur humain, armées, continuité d'activité",
       qcm: { src: "qcm.js", cle: "inf5059" } },
     { type: "examen", page: "points-examen.html", titre: "Ce que le prof a signalé",
-      desc: "22 passages où les intervenants insistent, avec la réponse attendue" }
+      desc: "23 passages où les intervenants insistent, avec la réponse attendue" }
   ]
 },
 

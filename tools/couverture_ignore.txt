@@ -2035,3 +2035,10 @@ inf5059-gestion-crise | Temporalité circonscrite
 inf5059-gestion-crise | Typologie des groupes
 inf5059-gestion-crise | Vulnérabilité des PME
 inf5059-gestion-crise | Étymologie
+inf5059-gestion-crise | GT
+inf5059-gestion-crise | PGI
+inf5059-gestion-crise | TJ
+inf5059-gestion-crise | IMA
+inf5059-gestion-crise | Taux Journalier
+inf5059-gestion-crise | Étudiante
+inf5059-gestion-crise | Convergence des méthodologies
