@@ -1745,3 +1745,293 @@ inf5059-gestion-crise | Étudiant 1
 inf5059-gestion-crise | Étudiant 2
 inf5059-gestion-crise | Étudiant 3
 inf5059-gestion-crise | Évolution doctrinale
+# 16/11 : ENT5002 (identifiants d'exemples, titres de diapositives et étiquettes de résumé) et volet DSI de INF5059 (titres de résumé, passage reconstitué 12:45-15:00 écarté)
+ent5002-osint-cti | Anticipation des Menaces Futures
+ent5002-osint-cti | Cas d’étude sur les enjeux éthiques et légaux
+ent5002-osint-cti | Certifications et formations complémentaires
+ent5002-osint-cti | Communautés et ressources pour rester à jour
+ent5002-osint-cti | La typologie de la CTI
+ent5002-osint-cti | Le risque en cybersécurité
+ent5002-osint-cti | Le risque en cybersécurité – la priorisation du risque
+ent5002-osint-cti | Les graphes de STIX
+ent5002-osint-cti | Planning du module
+ent5002-osint-cti | Principales relations standards de STIX
+ent5002-osint-cti | Protection de la marque
+ent5002-osint-cti | Quelle est l’importance de la CTI ?
+ent5002-osint-cti | Références bibliographiques
+ent5002-osint-cti | Table des matières
+ent5002-osint-cti | Un exemple dans la cybersécurité moderne
+ent5002-osint-cti | Vocabulaire minimal (rappels)
+ent5002-osint-cti | AAAI
+ent5002-osint-cti | AI
+ent5002-osint-cti | BPB
+ent5002-osint-cti | C0062
+ent5002-osint-cti | C0064
+ent5002-osint-cti | C3
+ent5002-osint-cti | CHU
+ent5002-osint-cti | CNS
+ent5002-osint-cti | CS0043
+ent5002-osint-cti | CS0044
+ent5002-osint-cti | CS0053
+ent5002-osint-cti | CS0055
+ent5002-osint-cti | DGA
+ent5002-osint-cti | ER
+ent5002-osint-cti | ESN
+ent5002-osint-cti | GIGN
+ent5002-osint-cti | GO
+ent5002-osint-cti | IBM
+ent5002-osint-cti | OIG
+ent5002-osint-cti | ONG
+ent5002-osint-cti | PS
+ent5002-osint-cti | RH
+ent5002-osint-cti | RM
+ent5002-osint-cti | S9035
+ent5002-osint-cti | SEA
+ent5002-osint-cti | SEO
+ent5002-osint-cti | SNCF
+ent5002-osint-cti | T0051
+ent5002-osint-cti | T0080
+ent5002-osint-cti | T0086
+ent5002-osint-cti | T0104
+ent5002-osint-cti | T1078
+ent5002-osint-cti | T1136
+ent5002-osint-cti | T1190
+ent5002-osint-cti | T1213
+ent5002-osint-cti | T1486
+ent5002-osint-cti | T1552
+ent5002-osint-cti | T1566
+ent5002-osint-cti | T1567
+ent5002-osint-cti | T1587
+ent5002-osint-cti | T1588
+ent5002-osint-cti | T1595
+ent5002-osint-cti | T1608
+ent5002-osint-cti | T1682
+ent5002-osint-cti | T1683
+ent5002-osint-cti | T1685
+ent5002-osint-cti | T1698
+ent5002-osint-cti | T1699
+ent5002-osint-cti | T1700
+ent5002-osint-cti | T1702
+ent5002-osint-cti | TA2541
+ent5002-osint-cti | TI
+ent5002-osint-cti | TIC
+ent5002-osint-cti | 2. Réduction des risques
+ent5002-osint-cti | 3. Détection accélérée
+ent5002-osint-cti | 4. Amélioration de la réponse à incident
+ent5002-osint-cti | 60% des employés
+ent5002-osint-cti | Abaissement de la barrière technique
+ent5002-osint-cti | Adresses IP (Facile / Easy)
+ent5002-osint-cti | Advanced Persistent Threat
+ent5002-osint-cti | Airbus
+ent5002-osint-cti | Alignement dans la Kill Chain
+ent5002-osint-cti | Ampleur et propagation
+ent5002-osint-cti | Analyse comportementale offensive
+ent5002-osint-cti | Articulation avec l'analyse de risque
+ent5002-osint-cti | Blue Team
+ent5002-osint-cti | COMSEC
+ent5002-osint-cti | CTI Opérationnelle
+ent5002-osint-cti | CTI opérationnelle
+ent5002-osint-cti | Cas emblématique (2015)
+ent5002-osint-cti | Chiffre clé
+ent5002-osint-cti | Contraintes humaines et organisationnelles
+ent5002-osint-cti | DGA
+ent5002-osint-cti | Deutsche Bahn
+ent5002-osint-cti | Disponibilité (Socle / Base)
+ent5002-osint-cti | Domain Names (Simple)
+ent5002-osint-cti | Décomposition de la Vraisemblance
+ent5002-osint-cti | ESN
+ent5002-osint-cti | Entités emblématiques touchées
+ent5002-osint-cti | Facteurs de la Menace
+ent5002-osint-cti | Facteurs de la Vulnérabilité
+ent5002-osint-cti | Faux ami linguistique
+ent5002-osint-cti | Finalités
+ent5002-osint-cti | Formulation mathématique
+ent5002-osint-cti | Front Al-Nosra
+ent5002-osint-cti | GIGN
+ent5002-osint-cti | Gouvernance (COMEX, COMSEC)
+ent5002-osint-cti | Gravité extrême
+ent5002-osint-cti | Hash Values (Trivial)
+ent5002-osint-cti | Hash values (Trivial)
+ent5002-osint-cti | Hiérarchie pyramidale des dépendances
+ent5002-osint-cti | Honda
+ent5002-osint-cti | IBM
+ent5002-osint-cti | IP Addresses (Facile)
+ent5002-osint-cti | Impact économique
+ent5002-osint-cti | Incident Manager
+ent5002-osint-cti | Indicators of Compromise
+ent5002-osint-cti | J'ai décidé de faire plus de
+ent5002-osint-cti | La Poste
+ent5002-osint-cti | Les 3 composantes obligatoires de la menace
+ent5002-osint-cti | Linux
+ent5002-osint-cti | MacronLeaks
+ent5002-osint-cti | Mention explicite d'examen
+ent5002-osint-cti | Mitigation (Atténuation)
+ent5002-osint-cti | Modus operandi
+ent5002-osint-cti | Moodle
+ent5002-osint-cti | Motivation première
+ent5002-osint-cti | Motivations
+ent5002-osint-cti | NHS
+ent5002-osint-cti | OIG
+ent5002-osint-cti | ONG
+ent5002-osint-cti | Optimisation des ressources d'infrastructure
+ent5002-osint-cti | Orientation pédagogique
+ent5002-osint-cti | Palo Alto
+ent5002-osint-cti | Piliers de sécurité
+ent5002-osint-cti | PlayStation Network
+ent5002-osint-cti | Pratique en ESN et entreprise
+ent5002-osint-cti | Profil & Acteurs types
+ent5002-osint-cti | Propagande politique
+ent5002-osint-cti | Purple Team
+ent5002-osint-cti | Pyramid of Pain
+ent5002-osint-cti | Ransomware
+ent5002-osint-cti | Red Team
+ent5002-osint-cti | Rôle catalyseur pour la CTI
+ent5002-osint-cti | SNCF
+ent5002-osint-cti | Saint-Gobain
+ent5002-osint-cti | Sensibilisation et formation
+ent5002-osint-cti | Solution de contournement (Workaround)
+ent5002-osint-cti | Sopra Steria
+ent5002-osint-cti | Standards & Référentiels
+ent5002-osint-cti | TTPs (Douloureux / Tough)
+ent5002-osint-cti | Taxonomie MITRE ATT&CK
+ent5002-osint-cti | Tools (Difficile)
+ent5002-osint-cti | Traitement (Processing)
+ent5002-osint-cti | Typologie d'observables
+ent5002-osint-cti | Vecteurs & Armes d'attaque
+ent5002-osint-cti | Vecteurs d'attaque
+ent5002-osint-cti | Vodafone
+ent5002-osint-cti | Vulnérabilités récurrentes
+ent5002-osint-cti | Windows
+ent5002-osint-cti | Windows Registry keys
+ent5002-osint-cti | État islamique
+inf5059-gestion-crise | A vous de jouer !
+inf5059-gestion-crise | Citation Finale
+inf5059-gestion-crise | Concrètement, on commence par où ?
+inf5059-gestion-crise | En présentiel
+inf5059-gestion-crise | Extia
+inf5059-gestion-crise | Extia 2024 © C1 - Diffusion interne
+inf5059-gestion-crise | Extia 2025 © C1 - Diffusion interne
+inf5059-gestion-crise | Impacter le risque
+* | h:7453782012f0
+inf5059-gestion-crise | Ouverture
+inf5059-gestion-crise | Préambule
+inf5059-gestion-crise | Questions en suspend
+inf5059-gestion-crise | Synthèse
+inf5059-gestion-crise | Une crise, vous dîtes ?
+inf5059-gestion-crise | ALE
+inf5059-gestion-crise | AS
+inf5059-gestion-crise | ATG
+inf5059-gestion-crise | ATU
+inf5059-gestion-crise | BCM
+inf5059-gestion-crise | C1
+inf5059-gestion-crise | CCO
+inf5059-gestion-crise | CCS
+inf5059-gestion-crise | CDS
+inf5059-gestion-crise | CR
+inf5059-gestion-crise | CV
+inf5059-gestion-crise | DATA
+inf5059-gestion-crise | DC
+inf5059-gestion-crise | DETI
+inf5059-gestion-crise | DEV
+inf5059-gestion-crise | DGSI
+inf5059-gestion-crise | EBL
+inf5059-gestion-crise | EDF
+inf5059-gestion-crise | FEEL
+inf5059-gestion-crise | FISA
+inf5059-gestion-crise | FISE
+inf5059-gestion-crise | GOOD
+inf5059-gestion-crise | GPEC
+inf5059-gestion-crise | IEC
+inf5059-gestion-crise | IT
+inf5059-gestion-crise | MCO
+inf5059-gestion-crise | MIAM
+inf5059-gestion-crise | NB
+inf5059-gestion-crise | PCIT
+inf5059-gestion-crise | PRIT
+inf5059-gestion-crise | RAM
+inf5059-gestion-crise | SM
+inf5059-gestion-crise | SOC
+inf5059-gestion-crise | SOFT
+inf5059-gestion-crise | TECH
+inf5059-gestion-crise | TOEIC
+inf5059-gestion-crise | UI
+inf5059-gestion-crise | UX
+inf5059-gestion-crise | Agilité vs lourdeur opérationnelle
+inf5059-gestion-crise | Alors le mot
+inf5059-gestion-crise | Analyse à chaud
+inf5059-gestion-crise | CCO
+inf5059-gestion-crise | CCS
+inf5059-gestion-crise | CFA
+inf5059-gestion-crise | CSIRT
+inf5059-gestion-crise | Cloisonnement sectoriel
+inf5059-gestion-crise | Conduite du changement et acceptation
+inf5059-gestion-crise | Configuration matérielle
+inf5059-gestion-crise | Connaissance fine de l'entreprise
+inf5059-gestion-crise | DGSI
+inf5059-gestion-crise | DLL
+inf5059-gestion-crise | Dette technique et migrations
+inf5059-gestion-crise | Dette technique et obsolescence (ex. AS/400)
+inf5059-gestion-crise | Dispositif pédagogique
+inf5059-gestion-crise | Dualité de la gouvernance
+inf5059-gestion-crise | Dépendances fondamentales
+inf5059-gestion-crise | EBL
+inf5059-gestion-crise | EDF
+inf5059-gestion-crise | ESXi
+inf5059-gestion-crise | Erreurs humaines et reconfigurations
+inf5059-gestion-crise | Excel
+inf5059-gestion-crise | Facteurs clés de redressement
+inf5059-gestion-crise | Formule canonique du risque
+inf5059-gestion-crise | Gestion par tickets
+inf5059-gestion-crise | ISO/IEC 27001
+inf5059-gestion-crise | Identification des dysfonctionnements
+inf5059-gestion-crise | Indispensable secrétaire de crise
+inf5059-gestion-crise | Indépendance des scénarios
+inf5059-gestion-crise | Key Performance Indicator
+inf5059-gestion-crise | Lean Management & Muda
+inf5059-gestion-crise | Les 5 scénarios d'indisponibilité génériques
+inf5059-gestion-crise | Les ravages de l'impréparation
+inf5059-gestion-crise | Linux
+inf5059-gestion-crise | Loi de Murphy
+inf5059-gestion-crise | MTB
+inf5059-gestion-crise | Maintien en conditions opérationnelles
+inf5059-gestion-crise | Menaces physiques vs Cybermenaces
+inf5059-gestion-crise | Mobilisation de ressources
+inf5059-gestion-crise | Modes dégradés
+inf5059-gestion-crise | Muda
+inf5059-gestion-crise | Mythe du Cloud
+inf5059-gestion-crise | Normalisation de la dérive
+inf5059-gestion-crise | Notification aux autorités
+inf5059-gestion-crise | Notifications d'incident
+inf5059-gestion-crise | Nvidia
+inf5059-gestion-crise | OODA
+inf5059-gestion-crise | Olvid
+inf5059-gestion-crise | Out-of-band communication
+inf5059-gestion-crise | Phasage d'intervention
+inf5059-gestion-crise | Piège managérial
+inf5059-gestion-crise | Positionnement de la cellule
+inf5059-gestion-crise | Postulat fondamental de direction
+inf5059-gestion-crise | Principe de propriété des actions
+inf5059-gestion-crise | Priorisation opérationnelle
+inf5059-gestion-crise | Psychologie décisionnelle des directeurs
+inf5059-gestion-crise | Purple Team
+inf5059-gestion-crise | Périmètre global d'entraînement
+inf5059-gestion-crise | QSE
+inf5059-gestion-crise | RAM
+inf5059-gestion-crise | Règle d'or de la documentation et du contrôle
+inf5059-gestion-crise | Réalité du terrain
+inf5059-gestion-crise | Réalité opérationnelle
+inf5059-gestion-crise | Réalité économique
+inf5059-gestion-crise | Régime d'astreinte
+inf5059-gestion-crise | Résilience et virtualisation
+inf5059-gestion-crise | Rôle de l'expert en résilience
+inf5059-gestion-crise | Rôle des observateurs neutres
+inf5059-gestion-crise | SOC
+inf5059-gestion-crise | Scénarios de menaces
+inf5059-gestion-crise | Slack
+inf5059-gestion-crise | Spécificité des crises cyber
+inf5059-gestion-crise | Spécificité étatique
+inf5059-gestion-crise | TOEIC
+inf5059-gestion-crise | Temporalité circonscrite
+inf5059-gestion-crise | Typologie des groupes
+inf5059-gestion-crise | Vulnérabilité des PME
+inf5059-gestion-crise | Étymologie

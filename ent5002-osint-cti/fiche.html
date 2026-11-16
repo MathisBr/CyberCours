@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ENT5002 — OSINT et Cyber Threat Intelligence</title>
+<link rel="stylesheet" href="../assets/core.css?v=28">
+<link rel="stylesheet" href="../assets/viz.css?v=12">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><span class="dot"></span> ENT5002 <small>· OSINT et CTI</small></div>
+  <div class="spacer"></div>
+  <input id="search" type="search" placeholder="Rechercher…  (Ctrl+K)">
+  <a class="home" href="../index.html">← Accueil</a>
+  <button class="btn ghost" onclick="toggleTheme()" title="Thème clair / sombre">◐</button>
+  <button class="btn ghost" onclick="window.print()" title="Imprimer / PDF">⎙</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar"><h4>Parcours</h4><div id="toc"></div></nav>
+  <main class="content">
+<h1>OSINT et Cyber Threat Intelligence</h1>
+<p class="lead">
+La CTI (<i>Cyber Threat Intelligence</i>, renseignement sur la menace) recueille, étudie et partage l'information sur les attaques pour
+protéger des systèmes numériques. Le cours part du plus technique — un indicateur de compromission — pour remonter vers la tactique
+(comment l'adversaire opère) et la stratégie (combien ça coûte, qui est derrière). Fil rouge : un indicateur seul vaut peu ; c'est le
+<b>comportement</b> de l'attaquant qu'il est douloureux pour lui de changer.
+</p>
+
+<div class="callout"><div class="t">Sources de cette fiche</div>
+Le support complet du cours ENT5002 (137 diapositives : les trois cours de la semaine), l'enregistrement de la première séance
+(16 novembre) et les deux notebooks de travaux pratiques (triage d'indicateurs, puis projection des vulnérabilités sur ATT&amp;CK). Les
+chapitres 6 à 10 ne sont, pour l'instant, que dans le support : les séances qui les traitent compléteront la fiche.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="essentiel">★ L'essentiel — à relire la veille</h2>
+
+<div class="exam"><div class="t">Le format de l'évaluation</div>
+<ul>
+<li><b>TP noté : 30 %</b> (jeudi matin). La dernière partie du TP « chemin d'attaque et heatmap » est notée : une couche ATT&amp;CK Navigator
+comparant le SI à la menace jugée prioritaire, et une page des 5 actions prioritaires, chacune reliée à une étape du chemin et à une mitigation ATT&amp;CK.</li>
+<li><b>Examen final : 70 %</b>, jeudi 16 h 30 – 18 h. L'accès au cours sera peut-être autorisé. Il y aura « quelques questions de cours ».</li>
+<li><b>L'IA est proscrite</b> à l'examen (et en TP sauf indication contraire) : « conseil de discipline direct ».</li>
+</ul>
+</div>
+
+<div class="key-points">
+<li><b>CTI</b> : recueil, étude et partage d'informations sur les attaques, pour des destinataires qui protègent des systèmes (définition ANSSI). <b>CTH</b> (chasse aux menaces) : proactive, elle traque l'attaquant pendant qu'il opère. La CTI est « à froid ».</li>
+<li><b>Menace</b> = capacités + intentions hostiles + opportunités : il faut les trois.</li>
+<li><b>Cycle du renseignement</b> : expression des besoins → collecte → traitement → analyse → diffusion. Un bon traitement, « c'est déjà la moitié de l'analyse ».</li>
+<li><b>Quatre niveaux</b> : technique (qu'est-ce qui s'est passé : IoC) · opérationnel (traiter l'incident) · tactique (comment : TTP) · stratégique (combien ça coûte, qui, va-t-il revenir).</li>
+<li><b>Six sources de menace</b> : script kiddies, hacktivistes, cyberterroristes, cyberespions, cybercriminels, menace interne (la plus importante).</li>
+<li><b>Pyramide de la douleur</b> : hash (trivial) · IP (facile) · domaine (simple) · artefacts réseau/hôte (pénible) · outils (difficile) · TTP (dur).</li>
+<li><b>IoC</b> réactif (on constate la compromission) ; <b>IoA</b> proactif (attaque en cours). <b>Observable</b> = fait brut ; <b>artefact</b> = observable concret et analysable ; <b>indicateur</b> = motif d'observables + contexte (une règle de détection).</li>
+<li><b>CVE</b> = vulnérabilité d'un produit précis ; <b>CWE</b> = faiblesse générale, sa cause. Sans correctif : <b>mitigation</b> ou <b>contournement</b>. Une <b>0-day</b> n'a pas de correctif.</li>
+<li><b>Risque</b> = vraisemblance × gravité ; vraisemblance = menace × vulnérabilité. Le danger est intrinsèque, le risque une éventualité, le dommage le préjudice subi.</li>
+<li>Modèles d'analyse : <b>Kill Chain</b> (7 étapes), <b>Diamond</b> (adversaire, infrastructure, capacité, victime), <b>ATT&amp;CK</b> (14 tactiques). Chaîne CVE → CWE → CAPEC → ATT&amp;CK.</li>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch1"><span class="num">1.</span> La CTI : définition, cycle, sources</h2>
+
+<h3 id="ch1-def">1.1 Définitions</h3>
+<div class="callout def"><div class="t">CTI (définition de l'ANSSI)</div>
+La <i>Cyber Threat Intelligence</i>, ou renseignement sur la menace, est l'ensemble des activités de <b>recueil</b>, d'<b>étude</b> et de
+<b>partage</b> d'informations liées à des attaques informatiques, pour fournir des connaissances qualifiées et adaptées à de multiples
+destinataires qui veulent protéger des systèmes numériques.</div>
+<div class="tw"><table><thead><tr><th></th><th>CTI</th><th>CTH (<i>Cyber Threat Hunting</i>)</th></tr></thead><tbody>
+<tr><td>Approche</td><td>Renseignement après coup, « à froid »</td><td><b>Proactive</b> : chasser la menace avancée qui échappe aux outils, pendant qu'elle opère</td></tr>
+<tr><td>Sources</td><td>Internes et externes</td><td>Données internes de l'organisation</td></tr>
+<tr><td>Résultats</td><td>Guider les politiques de sécurité, prioriser les vulnérabilités</td><td>Détecter activement une attaque en cours</td></tr>
+<tr><td>Actions</td><td>Ajuster les contrôles et les processus</td><td>Remédiation immédiate</td></tr>
+<tr><td>Compétences</td><td>Collecter, analyser, communiquer ; comprendre les TTP</td><td>Analyse comportementale, détection d'anomalies, connaissance fine de l'environnement (leurres, <i>honeypots</i>)</td></tr>
+</tbody></table></div>
+<div class="grid c2">
+<div class="card"><h4>D'où elle vient</h4>
+Années 1960, début de l'informatique ; 1970, premiers virus et intrusions ; 1980, premiers systèmes de sécurité ; 1990, premiers groupes
+de hackers ; 2000, technologies avancées (SIEM, antivirus) ; <b>2010, la CTI devient une discipline</b> ; 2020, attaques orchestrées par IA.
+« Si tu connais l'ennemi et te connais toi-même… » (Sun Tzu).</div>
+<div class="card"><h4>À quoi elle sert</h4>
+<b>Prévenir</b> les attaques (la CTI « pure ») · <b>réduire les risques</b> (lien avec les événements redoutés de l'analyse de risque) ·
+<b>détecter et répondre</b> plus vite (lien avec les événements produits ; réduire le temps de présence de l'attaquant) ·
+<b>optimiser les ressources</b> (ce que l'équipe d'infrastructure doit prévoir).</div>
+</div>
+<p><b>À qui</b> ? À tout le monde, sous des formes différentes : RSSI (plaque tournante), sensibilisation, gestion des vulnérabilités, SOC
+(enrichir et étiqueter les alertes), CERT et CSIRT (premiers producteurs de bulletins, et consommateurs), red, blue et purple teams, gestion
+des risques, gouvernance (COMEX).</p>
+<div class="example"><div class="t">WannaCry (2017)</div>
+Plus de 200 000 ordinateurs dans plus de 150 pays (Renault, FedEx, Telefónica, le service de santé britannique…), plus de 4 milliards de
+dollars de coût. Le plus grand rançongiciel selon Europol a donné un coup d'accélérateur à la CTI : analyse des vulnérabilités et des
+menaces, mesures de sécurité, impact réduit.</div>
+
+<h3 id="ch1-cycle">1.2 La menace et le cycle du renseignement</h3>
+<div class="callout def"><div class="t">Une menace, trois conditions</div>
+<b>Capacités</b> (savoir-faire, outils) + <b>intentions hostiles</b> + <b>opportunités</b> (vulnérabilités, exposition). Sans l'une des trois, pas de menace.</div>
+<div class="steps" id="anim-cycle">
+<div class="step"><b>1. Expression des besoins</b> <span class="who">direction</span><br>Fixer les objectifs et les questions prioritaires de renseignement.</div>
+<div class="step"><b>2. Collecte</b><br>Actualités, flux de menace, réseaux sociaux, dark web, rapports de sécurité, bases de vulnérabilités, incidents passés, leurres… Attention au faux ami : <i>collection</i> veut dire collecte.</div>
+<div class="step"><b>3. Traitement</b> <span class="who">l'étape négligée</span><br>Nettoyer, normaliser, dédoublonner, qualifier. Une analyse lancée sur des données sales est bâclée : un bon traitement, c'est la moitié de l'analyse.</div>
+<div class="step"><b>4. Analyse</b><br>Transformer la donnée en renseignement exploitable et contextualisé (suivi d'acteurs, modélisation, attribution).</div>
+<div class="step"><b>5. Diffusion</b><br>La « dissémination » : adapter le produit à chaque public (rapports, règles YARA ou SIGMA, objets STIX, listes d'IoC pour le SOC, synthèse pour la direction).</div>
+</div>
+<button class="btn primary" onclick="playSteps('anim-cycle')">▶ Lancer l'animation</button>
+
+<h3 id="ch1-sources">1.3 Les sources du renseignement</h3>
+<div class="tw"><table><thead><tr><th>Sigle</th><th>Origine</th></tr></thead><tbody>
+<tr><td>OSINT</td><td><i>Open Source Intelligence</i> : sources ouvertes, informations publiques sur Internet</td></tr>
+<tr><td>HUMINT</td><td><i>Human Intelligence</i> : sources humaines</td></tr>
+<tr><td>SIGINT</td><td><i>Signals Intelligence</i> : signaux électromagnétiques</td></tr>
+<tr><td>IMINT</td><td><i>Imagery Intelligence</i> : images et vidéos</td></tr>
+<tr><td>SOCMINT</td><td><i>Social Media Intelligence</i> : réseaux sociaux</td></tr>
+<tr><td>CCI</td><td><i>Cyber Counterintelligence</i> : informations du contre-espionnage</td></tr>
+</tbody></table></div>
+<p>Toute information collectée doit être <b>vérifiée</b> ; la collecte doit être <b>éthique et légale</b>.</p>
+
+<!-- ===================================================================== -->
+<h2 id="ch2"><span class="num">2.</span> Les quatre niveaux de la CTI</h2>
+<p>On commence toujours par le technique et l'on remonte. Certaines présentations n'en comptent que trois, en rangeant le technique dans l'opérationnel.</p>
+<div class="viz"><div class="t">Du plus technique au plus stratégique</div>
+<div class="vz-grid g2">
+<button class="vz-c k-blue"><span class="n">Technique · court terme</span><h5>Qu'est-ce qui s'est passé ?</h5><span class="q">Les indicateurs de compromission</span>
+<span class="more"><span class="t">Pour qui</span>Le SOC, la réponse à incident, les outils (pare-feu, SIEM, EDR). Contenu : IP, hash, domaines, URL, signatures de malwares — la « signature du criminel ». Très automatisable, mais durée de vie très courte.</span></button>
+<button class="vz-c k-green"><span class="n">Opérationnel · court terme</span><h5>Comment traiter l'incident ?</h5><span class="q">Utiliser le renseignement pour agir</span>
+<span class="more"><span class="t">Pour qui</span>Les défenseurs face à une attaque précise : campagnes en cours, acteurs actifs, paramétrage des équipements et de l'orchestrateur de réponse (SOAR).</span></button>
+<button class="vz-c k-amber"><span class="n">Tactique · long terme</span><h5>Comment ont-ils fait ?</h5><span class="q">Tactiques, techniques et procédures (TTP)</span>
+<span class="more"><span class="t">Pour qui</span>Architectes, administrateurs, concepteurs de règles de détection. Cœur : MITRE ATT&amp;CK. Comprendre la méthode permet d'anticiper la prochaine attaque ; une IP change en dix secondes, une méthode coûte cher à changer.</span></button>
+<button class="vz-c k-red"><span class="n">Stratégique · long terme</span><h5>Combien ça coûte ? Qui ?</h5><span class="q">Tendances, risques métiers</span>
+<span class="more"><span class="t">Pour qui</span>Direction, conseil d'administration, RSSI : risque géopolitique, groupes qui visent le secteur, probabilité qu'ils reviennent, coût des correctifs. Pas d'IP ni de code.</span></button>
+</div>
+<div class="vz-bar"><button class="btn" data-cards="open">Tout déplier</button><button class="btn ghost" data-cards="close">Tout replier</button><span class="cnt"></span></div>
+</div>
+<p>La CTI alimente aussi l'<b>analyse de risque</b> : les sources de risque, ce sont les attaquants qu'elle permet d'identifier.</p>
+
+<!-- ===================================================================== -->
+<h2 id="ch3"><span class="num">3.</span> Les acteurs de la menace</h2>
+<p>Les articles en comptent souvent cinq ; le cours en distingue six en séparant <b>hacktivistes</b> et <b>cyberterroristes</b>, qui n'agissent pas
+de la même façon. La <b>menace interne</b> figure toujours dans les listes : c'est la plus importante.</p>
+<div class="tw"><table><thead><tr><th>Acteur</th><th>Qui</th><th>Cibles</th><th>Buts</th><th>Armes</th><th>Exemple</th></tr></thead><tbody>
+<tr><td>Script kiddies</td><td>Amateurs</td><td>Les mêmes que les grands</td><td>Apprendre, se faire remarquer</td><td>Déni de service</td><td>Réseau PlayStation (2014)</td></tr>
+<tr><td>Hacktivistes</td><td>Anonymous, Chaos Computer Club, LulzSec…</td><td>Institutions, médias</td><td>Faire passer un message, dénoncer</td><td>Déni de service, <i>doxxing</i> (divulgation de données personnelles), défacement (modification d'un site)</td><td>Site du Sénat (2016)</td></tr>
+<tr><td>Cyberterroristes</td><td>Syrian Electronic Army, Cybercaliphate…</td><td>États, OIV, tout le monde</td><td>Propagande, intimider, provoquer la panique</td><td>Déni de service, vol de données, ingénierie sociale</td><td>TV5 Monde (2015)</td></tr>
+<tr><td>Cyberespions</td><td>Agences étatiques, sociétés privées</td><td>États, institutions, concurrents</td><td>Récupérer de l'information, avantage concurrentiel</td><td>Portes dérobées, vol de données</td><td>Macron Leaks (Fancy Bear, 2017)</td></tr>
+<tr><td>Cybercriminels</td><td>Groupes, individus</td><td>Entreprises, particuliers</td><td>Financier</td><td>Rançongiciel, phishing, malware bancaire, fraude au président (FOVI, ou BEC en anglais), déni de service (DoS, DDoS)</td><td>Dridex (2014)</td></tr>
+<tr><td>Menace interne</td><td>Collaborateurs, ex-collaborateurs</td><td>L'entreprise</td><td>Argent, vengeance</td><td>Bombe logique (code qui se déclenche à une date ou sur un événement), vol d'informations</td><td>60 % des partants gardent des données confidentielles</td></tr>
+</tbody></table></div>
+
+<!-- ===================================================================== -->
+<h2 id="ch4"><span class="num">4.</span> Les indicateurs</h2>
+
+<h3 id="ch4-ioc">4.1 Indicateurs de compromission (IoC)</h3>
+<p>Un <b>IoC</b> suggère qu'un système ou un réseau a été compromis : IP, domaine, fichier, comportement suspects, mais aussi une technique
+ATT&amp;CK (tactique <b>TA</b>xxxx, technique <b>T</b>xxxx, sous-technique <b>T</b>xxxx.yyy, par exemple T1518.001), une CVE, une adresse e-mail,
+un chemin, une empreinte (MD5, SHA-256), une URL.</p>
+<div class="grid c2">
+<div class="card"><h4>IoC côté hôte</h4>Clé de registre, nom de fichier, chaîne de caractères, processus, mutex, empreinte de fichier, compte utilisateur, chemin.</div>
+<div class="card"><h4>IoC côté réseau</h4>Adresse IPv4 ou IPv6, empreinte de certificat X.509, nom de domaine, chaîne de caractères réseau, protocole de communication, URL.</div>
+</div>
+
+<h3 id="ch4-pyramide">4.2 La pyramide de la douleur</h3>
+<p>Proposée par David Bianco, elle classe les indicateurs selon ce qu'il en coûte à l'attaquant d'en changer quand on les bloque.</p>
+<div class="tw"><table><thead><tr><th>Niveau</th><th>Pour l'attaquant</th><th>Pourquoi</th></tr></thead><tbody>
+<tr><td>TTP</td><td><b>Dur</b></td><td>Il doit repenser toute sa stratégie, réapprendre une façon d'opérer</td></tr>
+<tr><td>Outils</td><td>Difficile</td><td>Il doit développer ou obtenir de nouveaux outils</td></tr>
+<tr><td>Artefacts réseau et hôte</td><td>Pénible</td><td>Motifs d'URI, informations de C2 dans les protocoles, valeurs SMTP : il doit modifier ses outils</td></tr>
+<tr><td>Noms de domaine</td><td>Simple</td><td>Il faut en acheter et en enregistrer d'autres</td></tr>
+<tr><td>Adresses IP</td><td>Facile</td><td>Rien de plus simple que de changer d'IP</td></tr>
+<tr><td>Empreintes (hash)</td><td><b>Trivial</b></td><td>Changer un seul octet change toute l'empreinte</td></tr>
+</tbody></table></div>
+
+<h3 id="ch4-ioa">4.3 Indicateurs d'attaque (IoA)</h3>
+<div class="grid c2">
+<div class="card"><h4>IoC : réactif</h4>On constate qu'un système a été compromis ; c'est l'autopsie, du côté de la forensique.</div>
+<div class="card"><h4>IoA : proactif</h4>On détermine qu'une attaque est <b>en cours</b> pour la contenir avant les dégâts ; c'est l'outil de la CTH. Exemples : exécution de commandes ou de code à distance, tunnel DNS, exfiltration, scan de ports, C2 et ses battements (<i>heartbeat</i>), attaque par point d'eau. Une analyse comportementale du réseau repère un nœud vers lequel tout converge : quelqu'un explore.</div>
+</div>
+<div class="example"><div class="t">L'attaque par point d'eau</div>
+Plutôt que d'attaquer de front une cible bien protégée, on piège une ressource qu'elle utilisera forcément (un site qu'elle fréquente, un
+fournisseur). L'image du cours : face à un forcené retranché, on n'attaque pas le bunker, on agit sur la pizza qu'il a commandée — la charge
+utile voyage dans quelque chose qui n'éveille pas les soupçons.</div>
+
+<h3 id="ch4-observable">4.4 Observable, artefact, indicateur</h3>
+<div class="exam"><div class="t">Question de cours annoncée</div>
+« Ne confondez pas, ça peut être une question de cours à l'examen. »
+<ul>
+<li><b>Observable</b> : un <b>fait brut</b> constaté sur un système ou un réseau, une propriété ou un événement mesurable (requête HTTP, fichier, entrée de registre, connexion, processus lancé).</li>
+<li><b>Artefact</b> : un observable particulier, un <b>objet numérique concret, manipulable ou analysable</b> (fichier, binaire, document, script, paquet capturé, pièce jointe) — comme le tesson qu'exhume l'archéologue ; on les réassemble pour reconstituer l'attaque.</li>
+<li><b>Indicateur</b> : un <b>motif d'observables accompagné de contexte</b>, utilisé pour détecter une menace. C'est la règle de détection, plus riche que le fait brut.</li>
+</ul></div>
+
+<!-- ===================================================================== -->
+<h2 id="ch5"><span class="num">5.</span> Vulnérabilités et risque</h2>
+
+<h3 id="ch5-besoins">5.1 Les besoins de sécurité</h3>
+<p><b>Disponibilité</b>, <b>intégrité</b>, <b>confidentialité</b>, <b>authenticité</b> (lier un identifiant public à un secret pour gérer les droits),
+<b>non-répudiation</b> (ou imputation : personne ne peut contester ses actes ni s'attribuer ceux d'un autre). Ils s'ordonnent en pyramide :
+la disponibilité à la base, puis intégrité, confidentialité, authentification, non-répudiation au sommet.</p>
+<div class="example"><div class="t">Confidentialité n'est pas authentification</div>
+Le Wi-Fi d'un parc public, protégé par un mot de passe affiché à l'entrée : il crée un espace confidentiel pour ceux qui sont dans le parc,
+mais personne ne vous a demandé qui vous êtes. Confidentialité, oui ; authentification, non.</div>
+
+<h3 id="ch5-vuln">5.2 Vulnérabilité, faiblesse, 0-day</h3>
+<div class="callout def"><div class="t">Vulnérabilité</div>
+Une faille d'un système, d'un logiciel ou d'une configuration qu'un attaquant peut exploiter pour compromettre la sécurité d'un SI. La CTI
+aide à l'<b>identifier</b> de façon proactive, à <b>analyser le risque</b>, à <b>prioriser les correctifs</b> (les attaquants ont exploité telle CVE :
+si vous l'avez, patchez vite) et à <b>anticiper</b> les exploits. En analyse de risque, elle sert dès l'atelier 1 à repérer les événements redoutés.</div>
+<div class="grid c2">
+<div class="card"><h4>CVE : vulnérabilité</h4>Un problème <b>précis et confirmé dans un produit donné</b> (tel modèle de pare-feu). Ex. Log4Shell (2021), dans la bibliothèque Log4j. Les équipes de gestion des vulnérabilités ne manipulent que des CVE.</div>
+<div class="card"><h4>CWE : faiblesse</h4>Un <b>défaut général</b> de conception ou de codage qui peut mener à des vulnérabilités : la <b>cause</b>. « Une vulnérabilité n'est pas une faiblesse. »</div>
+</div>
+<div class="grid c2">
+<div class="card"><h4>Quand on ne peut pas patcher</h4>Système hérité, risque d'arrêt, équipe incomplète, absence de feu vert de la direction : des vulnérabilités restent ouvertes des mois, d'autres reviennent après correction. Le bulletin de sécurité propose alors deux options : la <b>mitigation</b> (atténuer le risque) et la <b>solution de contournement</b> (désactiver ou éviter le composant vulnérable, comme on prend une autre porte en attendant la réparation).</div>
+<div class="card"><h4>Zero-day</h4>Vulnérabilité <b>inconnue de l'éditeur</b> au moment où elle est exploitée : pas de correctif, potentiel d'exploitation élevé. Ex. Atlassian Confluence (CVE-2023-22515), qui permettait de créer des comptes administrateur sans authentification.</div>
+</div>
+
+<h3 id="ch5-risque">5.3 Le risque</h3>
+<div class="tw"><table><thead><tr><th>Danger</th><th>Risque</th><th>Dommage</th></tr></thead><tbody>
+<tr><td>Propriété <b>intrinsèque</b> d'une situation ou d'un équipement (une plaque de verglas, une falaise)</td><td>L'<b>éventualité</b> de rencontrer le danger (passer près de la plaque ou du bord)</td><td>Le <b>préjudice</b> subi (la chute)</td></tr>
+</tbody></table></div>
+<div class="callout"><div class="t">Mesurer le risque</div>
+<b>Risque = vraisemblance × gravité.</b> La vraisemblance se décompose en <b>menace</b> (attractivité de la cible, vecteur d'accès requis : local,
+réseau adjacent, à distance) × <b>vulnérabilité</b> (nombre, type et gravité des failles, complexité de l'attaque). Trois vulnérabilités alignées
+sur un même chemin d'attaque sont bien plus dangereuses que trois failles dispersées : elles laissent progresser l'attaquant dans sa kill chain.</div>
+<div class="tw"><table><thead><tr><th>Méthode</th><th>Principe</th><th>Limite</th></tr></thead><tbody>
+<tr><td>CVSS</td><td>Score de gravité de 0 à 10 (métriques de base, temporelles, environnementales)</td><td>Ne mesure ni la probabilité réelle d'exploitation ni le contexte de l'organisation, ni les combinaisons de failles</td></tr>
+<tr><td>EPSS</td><td>Probabilité qu'une vulnérabilité soit exploitée prochainement (développé par le FIRST)</td><td>Une probabilité générale, pas votre exposition</td></tr>
+<tr><td>SSVC</td><td>Catégorisation par arbre de décision selon le contexte de l'organisation (surtout l'administration américaine)</td><td>Pas de score numérique</td></tr>
+<tr><td>KEV</td><td>Catalogue de la CISA des vulnérabilités <b>connues pour être exploitées</b></td><td>Ne couvre que l'exploitation constatée</td></tr>
+<tr><td>MITRE ATT&amp;CK</td><td>Prioriser selon les techniques réellement employées par les attaquants</td><td>Approche comportementale, plus lourde</td></tr>
+</tbody></table></div>
+
+<!-- ===================================================================== -->
+<h2 id="ch6"><span class="num">6.</span> Méthodes de modélisation et d'analyse</h2>
+
+<h3 id="ch6-modelisation">6.1 Modéliser ou analyser la menace</h3>
+<div class="grid c2">
+<div class="card"><h4>Modélisation de la menace</h4>
+Identifier, évaluer et prioriser les menaces potentielles, dès la conception (approche proactive). Étapes : actifs à protéger, représentation du
+système (flux de données), identification des menaces par une méthode, évaluation (impact et probabilité), mesures, révision régulière.
+Méthodes : <b>STRIDE</b> (Microsoft : <i>Spoofing, Tampering, Repudiation, Information disclosure, Denial of service, Elevation of privilege</i>),
+<b>DREAD</b> (gravité : <i>Damage, Reproducibility, Exploitability, Affected users, Discoverability</i>), Trike, PASTA, OCTAVE, VAST,
+<b>LINDDUN</b> (vie privée), arbres d'attaque.</div>
+<div class="card"><h4>Analyse de la menace</h4>
+Comprendre le comportement des attaquants et coordonner la réponse (détection, réponse à incident) : <b>Cyber Kill Chain</b>, <b>modèle Diamond</b>,
+<b>MITRE ATT&amp;CK</b>. Approche réactive et proactive.</div>
+</div>
+
+<h3 id="ch6-modeles">6.2 Kill Chain, APT, Diamond</h3>
+<div class="phase-band">
+<div class="p1"><b>Cyber Kill Chain</b><br>Lockheed Martin, 2011, inspirée de la chaîne militaire. 7 étapes : reconnaissance, armement, livraison, exploitation, installation, commande et contrôle, actions sur l'objectif. L'attaquant ne les suit pas forcément dans l'ordre.</div>
+<div class="p2"><b>APT</b><br>Menace persistante avancée (rapport Mandiant APT1) : attaque <b>ciblée</b>, <b>avancée</b> (techniques sophistiquées, 0-day) et <b>persistante</b> (accès furtif et durable) pour voler ou perturber. Ex. Stuxnet, APT29.</div>
+<div class="p3"><b>Modèle Diamond</b><br>Quatre sommets : <b>adversaire</b>, <b>infrastructure</b> (C2, serveurs), <b>capacité</b> (outils, techniques), <b>victime</b>. Un événement : un adversaire déploie une capacité, sur une infrastructure, contre une victime. On pivote d'un sommet à l'autre.</div>
+</div>
+
+<h3 id="ch6-attack">6.3 MITRE ATT&amp;CK et l'arbre d'attaque</h3>
+<p>Base de connaissance publiée par le MITRE depuis 2013, qui décrit les tactiques et techniques des adversaires (14 tactiques, environ 190
+techniques et 380 sous-techniques selon le support). Une <b>tactique</b> est l'objectif de l'attaquant, une <b>technique</b> la façon de l'atteindre,
+une <b>procédure</b> sa mise en œuvre concrète.</p>
+<div class="tw"><table><thead><tr><th>#</th><th>Tactique (ID)</th><th>L'adversaire essaie de…</th></tr></thead><tbody>
+<tr><td>1</td><td>Reconnaissance (TA0043)</td><td>rassembler des informations pour planifier</td></tr>
+<tr><td>2</td><td>Préparation des ressources (TA0042)</td><td>se doter de ressources (infrastructure, comptes, outils)</td></tr>
+<tr><td>3</td><td>Accès initial (TA0001)</td><td>entrer dans votre réseau</td></tr>
+<tr><td>4</td><td>Exécution (TA0002)</td><td>exécuter du code malveillant</td></tr>
+<tr><td>5</td><td>Persistance (TA0003)</td><td>garder son emprise</td></tr>
+<tr><td>6</td><td>Élévation de privilèges (TA0004)</td><td>obtenir des droits supérieurs</td></tr>
+<tr><td>7</td><td>Évasion (TA0005)</td><td>ne pas être détecté</td></tr>
+<tr><td>8</td><td>Accès aux identifiants (TA0006)</td><td>voler comptes et mots de passe</td></tr>
+<tr><td>9</td><td>Découverte (TA0007)</td><td>comprendre l'environnement</td></tr>
+<tr><td>10</td><td>Déplacement latéral (TA0008)</td><td>se déplacer dans l'environnement</td></tr>
+<tr><td>11</td><td>Collecte (TA0009)</td><td>rassembler les données visées</td></tr>
+<tr><td>12</td><td>Commande et contrôle (TA0011)</td><td>communiquer avec les systèmes compromis</td></tr>
+<tr><td>13</td><td>Exfiltration (TA0010)</td><td>voler les données</td></tr>
+<tr><td>14</td><td>Impact (TA0040)</td><td>manipuler, interrompre ou détruire</td></tr>
+</tbody></table></div>
+<div class="grid c2">
+<div class="card"><h4>L'arbre d'attaque</h4>La racine est l'objectif de l'attaquant, les feuilles des actions ; les nœuds intermédiaires sont des sous-objectifs. Dérivé des arbres de défaillance (Bruce Schneier, 1999). Il décrit la <b>surface</b> d'attaque (les branches) quand la kill chain décrit la <b>profondeur</b> de chaque phase : ils se complètent.</div>
+<div class="card"><h4>Relier vulnérabilités, menaces, actifs</h4>Chaque vulnérabilité (<b>CVE</b>, recensée avec son score dans la NVD, la base nationale des vulnérabilités du NIST américain, qui gère la nomenclature) a pour cause une faiblesse (<b>CWE</b>) ; son exploitation suit un modèle d'attaque (<b>CAPEC</b>) ; ce modèle s'appuie sur des TTP (<b>ATT&amp;CK</b>). Les <b>CPE</b> nomment les produits et font le lien avec la gestion des actifs. Chaque base a ses lacunes : la chaîne se casse souvent au niveau de CAPEC. Ces bases de « bas niveau » se relient aux ontologies générales, comme l'UCO (<i>Unified Cybersecurity Ontology</i>).</div>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch7"><span class="num">7.</span> Plateformes, STIX et production de renseignement</h2>
+
+<h3 id="ch7-tip">7.1 Fournisseurs de CTI et TIP</h3>
+<div class="grid c2">
+<div class="card"><h4>Fournisseur de CTI</h4>
+Un service qui centralise, analyse, enrichit et partage l'information sur les menaces : c'est le <b>renseignement</b> lui-même. OTX (AlienVault,
+« pulses » communautaires), VirusTotal (analyses antivirales agrégées de fichiers et d'URL), Recorded Future, GreyNoise (classe le bruit de
+fond : scans, bots), AbuseIPDB (signalements d'abus sur des IP)…</div>
+<div class="card"><h4>TIP (<i>Threat Intelligence Platform</i>)</h4>
+Un <b>outil</b> pour gérer et exploiter ce renseignement : agrégation, analyse, alertes, contextualisation, partage, intégration au SOC,
+automatisation. Open source : <b>MISP</b>, <b>OpenCTI</b> ; commerciales : ThreatConnect, Anomali ThreatStream (qui sont aussi fournisseurs).
+Un fournisseur vous donne une liste d'IP ; la TIP vous permet de détecter, prévenir, répondre et vous améliorer.</div>
+</div>
+
+<h3 id="ch7-stix">7.2 STIX, l'ontologie de la menace</h3>
+<p><b>STIX</b> (<i>Structured Threat Information Expression</i>) est un langage et un format d'échange du renseignement, libre. Il décrit des
+<b>objets</b> (SDO : acteur de la menace, campagne, ensemble d'intrusions, malware, outil, motif d'attaque, indicateur, vulnérabilité,
+infrastructure, identité, plan d'action…) reliés par des <b>relations</b> (SRO : <i>uses</i>, <i>indicates</i>, <i>targets</i>, <i>attributed-to</i>,
+<i>mitigates</i>…). On obtient un <b>graphe</b> où les relations servent de pivots. <b>TAXII</b> transporte les objets STIX entre organisations ;
+<b>CybOX</b> décrit les observations de sécurité, là où STIX décrit les menaces.</p>
+
+<h3 id="ch7-analyse">7.3 Analyser, évaluer, rapporter</h3>
+<div class="grid c2">
+<div class="card"><h4>Analyse structurée</h4>Analyse de <b>réseaux</b> (relations entre entités, infrastructures partagées), de <b>contenu</b> (documents, métadonnées), de <b>comportement</b>. Exemple : une campagne de phishing ciblé dont domaines récents, fuseaux horaires et modèles de campagne mènent à un groupe connu ; résultats partagés via OpenCTI ou MISP, IP et domaines bloqués.</div>
+<div class="card"><h4>Crédibilité des sources</h4>Critères : authenticité, fiabilité, pertinence. Méthodes : analyser la source, le contenu, vérifier. L'évaluation doit être objective, documentée et justifiée.</div>
+</div>
+<div class="callout"><div class="t">L'analyse des hypothèses concurrentes (ACH)</div>
+On confronte chaque indice à <b>toutes</b> les hypothèses (cybercriminels, hacktivistes, APT étatique…) en notant sa cohérence (++, +, −, −−),
+au lieu de chercher des preuves pour une seule : c'est une parade au biais de confirmation. Exemple : forte sophistication, ciblage précis,
+persistance et absence de revendication désignent plutôt une APT étatique.</div>
+<p><b>Automatiser</b> : collecter des flux (STIX, OSINT), analyser et enrichir les IoC, les pousser vers un SOAR (<i>Security Orchestration,
+Automation and Response</i>) et un SIEM, déployer des règles sur pare-feu et EDR, partager via MISP. <b>Rapporter</b> : un en-tête, une
+introduction, l'analyse, la conclusion, des recommandations. Le partage se marque avec le <b>TLP</b> (<i>Traffic Light Protocol</i> :
+CLEAR, GREEN, AMBER, RED, du plus au moins diffusable).</p>
+
+<!-- ===================================================================== -->
+<h2 id="ch8"><span class="num">8.</span> Applications pratiques</h2>
+<div class="viz"><div class="t">Ce que la CTI apporte concrètement</div>
+<div class="vz-grid g3">
+<button class="vz-c k-blue"><span class="n">Détection</span><h5>Détecter et prévenir</h5><span class="q">Alimenter SIEM, pare-feu, IDS</span><span class="more"><span class="t">Détail</span>Enrichir les outils (SIEM, pare-feu, IDS et IPS, systèmes de détection et de prévention d'intrusion) avec des IoC ; repérer des menaces avant qu'elles visent l'organisation ; suivre les campagnes émergentes ; réduire les faux positifs en filtrant le bruit.</span></button>
+<button class="vz-c k-red"><span class="n">Incident</span><h5>Répondre</h5><span class="q">Contexte, attribution, automatisation</span><span class="more"><span class="t">Détail</span>Enrichir les enquêtes, attribuer à un groupe à partir des TTP et IoC, automatiser par un SOAR, anticiper les attaques suivantes.</span></button>
+<button class="vz-c k-amber"><span class="n">Vulnérabilités</span><h5>Prioriser les correctifs</h5><span class="q">Ce qui est réellement exploité</span><span class="more"><span class="t">Détail</span>Corriger d'abord ce qui est exploité dans la nature, surveiller les exploits, réduire la surface d'attaque, aligner sur les risques métiers.</span></button>
+<button class="vz-c k-green"><span class="n">Partage</span><h5>Défense collective</h5><span class="q">MISP, OpenCTI, ISAC, CERT</span><span class="more"><span class="t">Détail</span>Partager via STIX et TAXII ; les ISAC (centres sectoriels de partage et d'analyse) ; les CERT et CSIRT ; éviter de refaire les mêmes recherches.</span></button>
+<button class="vz-c k-purple"><span class="n">Anticipation</span><h5>Prévoir</h5><span class="q">Tendances, suivi des groupes</span><span class="more"><span class="t">Détail</span>Évolution des TTP, suivi des APT et de leurs prochaines cibles, veille sur les nouveaux outils, planification des ressources.</span></button>
+<button class="vz-c k-blue"><span class="n">Stratégique</span><h5>Protéger la marque</h5><span class="q">Faux domaines, faux comptes</span><span class="more"><span class="t">Détail</span>Repérer fausses campagnes de phishing, faux domaines, faux comptes de réseaux sociaux, fausses pages imitant l'organisation.</span></button>
+</div>
+<div class="vz-bar"><button class="btn" data-cards="open">Tout déplier</button><button class="btn ghost" data-cards="close">Tout replier</button><span class="cnt"></span></div>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch9"><span class="num">9.</span> IA, agents et CTI</h2>
+
+<h3 id="ch9-vocab">9.1 Vocabulaire et trois rôles de l'IA</h3>
+<div class="grid c3">
+<div class="card"><h4>LLM</h4>Grand modèle de langage : il produit la suite la plus plausible d'une consigne. Il ne « sait » pas, d'où les <b>hallucinations</b> (faits inventés avec assurance).</div>
+<div class="card"><h4>Agent IA</h4>Un LLM dans une boucle : il planifie, appelle des outils (shell, navigateur, API), observe, mémorise, recommence — avec les droits qu'on lui a délégués.</div>
+<div class="card"><h4>MCP</h4><i>Model Context Protocol</i> (Anthropic, fin 2024) : standard pour connecter un agent à des outils et des données via des « serveurs MCP ». Pratique pour l'intégration… et pour l'attaquant.</div>
+</div>
+<div class="tw"><table><thead><tr><th>L'IA…</th><th>Ce qu'elle fait</th><th>Dans le modèle Diamond</th></tr></thead><tbody>
+<tr><td>de l'attaquant</td><td>Génère phishing, faux profils, deepfakes ; écrit du code malveillant ; pilote des phases d'intrusion</td><td>Une nouvelle <b>capacité</b></td></tr>
+<tr><td>comme cible</td><td>Assistants et agents de l'organisation lisent du contenu non fiable et disposent d'accès</td><td>Une nouvelle <b>surface d'attaque</b></td></tr>
+<tr><td>de l'analyste</td><td>Collecte, traduction, résumé ; extraction d'IoC et de TTP ; tri automatisé</td><td>Un gain de temps… et un risque d'erreur</td></tr>
+</tbody></table></div>
+
+<h3 id="ch9-attaquant">9.2 L'échelle d'autonomie de l'attaquant</h3>
+<div class="steps" id="anim-autonomie">
+<div class="step"><b>1. Assistant</b> <span class="who">l'humain exécute</span><br>L'IA rédige, traduit, cherche, débogue. Mêmes TTP, plus de volume et de qualité.</div>
+<div class="step"><b>2. IA dans le malware</b><br>Le code interroge un LLM pendant son exécution (LAMEHUG, attribué à APT28 en 2025 ; PROMPTFLUX se fait réécrire). Les empreintes et signatures statiques deviennent inopérantes ; le trafic vers des API d'IA devient un indicateur.</div>
+<div class="step"><b>3. Agent opérateur</b> <span class="who">l'humain valide</span><br>L'agent enchaîne les phases ; l'humain intervient aux points de décision. Vitesse machine, campagnes parallèles, outils banals : l'attribution se complique.</div>
+</div>
+<button class="btn primary" onclick="playSteps('anim-autonomie')">▶ Lancer l'animation</button>
+<div class="example"><div class="t">GTG-1002 (2025), une campagne orchestrée par un agent</div>
+Un groupe évalué comme étatique chinois a visé une trentaine d'organisations en détournant un agent de programmation (en se présentant comme
+une société de tests d'intrusion), via des serveurs MCP et des outils open source. L'IA a fait 80 à 90 % du travail tactique. Leçons :
+ATT&amp;CK a modélisé la campagne avec 27 techniques dont seulement deux propres à l'IA — <b>l'IA change qui exécute, pas ce qui est exécuté</b> ;
+peu d'IoC, mais un <b>IoA comportemental</b> (des milliers de requêtes, une cadence impossible pour un humain) ; c'est le fournisseur d'IA qui l'a
+vu en premier ; et l'IA surestimait souvent ses résultats : les hallucinations freinent encore l'autonomie complète. Retour à la pyramide :
+dès le niveau 2, le code change à chaque exécution ; seul le haut de la pyramide (TTP, comportement) reste un point d'appui.</div>
+
+<h3 id="ch9-cible">9.3 L'IA comme cible</h3>
+<div class="grid c2">
+<div class="card"><h4>Injection de prompt</h4><b>Directe</b> : l'attaquant donne lui-même des instructions malveillantes au modèle. <b>Indirecte</b> : les instructions sont cachées dans un contenu que l'agent lira (page web, e-mail, ticket, document, description d'outil). Exemple : un e-mail piégé faisant fuiter des données via un assistant de messagerie, sans aucun clic.</div>
+<div class="card"><h4>La « trifecta létale »</h4>Un agent qui cumule <b>données privées</b> + <b>contenu non fiable</b> + <b>communication vers l'extérieur</b> peut être amené à exfiltrer. Un agent compromis agit comme un <b>initié</b> avec des accès légitimes. Autres risques : serveur MCP piégé dans la chaîne d'approvisionnement, fausses pages pour agents qui pilotent un navigateur.</div>
+</div>
+<p><b>Référentiels</b> : ATT&amp;CK intègre des techniques liées à l'IA (interroger des services d'IA, générer du contenu, empoisonner les réponses
+d'IA, injection directe et indirecte, exfiltration via l'IA) ; <b>MITRE ATLAS</b> décrit, sur le modèle d'ATT&amp;CK, les attaques <b>contre</b> les
+systèmes d'IA ; le <b>Top 10 agentique de l'OWASP</b> (fin 2025) joue pour une application à agents le rôle de STRIDE : détournement d'objectif,
+mauvais usage des outils, abus d'identité et de privilèges, chaîne d'approvisionnement, exécution de code inattendue, empoisonnement de la mémoire,
+communications inter-agents non sûres, défaillances en cascade, confiance aveugle de l'humain, agents incontrôlés.</p>
+
+<h3 id="ch9-analyste">9.4 L'IA de l'analyste : utile, sous garde-fous</h3>
+<div class="grid c2">
+<div class="card"><h4>Où elle aide</h4>À chaque étape du cycle : reformuler les besoins, traduire et résumer des sources étrangères, extraire IoC et TTP d'un rapport, produire des objets STIX, proposer un mapping ATT&amp;CK et des hypothèses concurrentes, décliner un rapport pour le SOC, le RSSI et le COMEX.</div>
+<div class="card"><h4>Risques et parades</h4><b>Hallucinations</b> → chaque affirmation renvoie à une source vérifiable ; vérifier automatiquement chaque identifiant contre le référentiel ATT&amp;CK. <b>Complaisance</b> (le modèle confirme l'hypothèse suggérée) → demander explicitement les hypothèses concurrentes. <b>Sources piégées</b>. <b>Confidentialité</b> (TLP AMBER ou RED, journaux internes) → modèle local ou contrat adapté. « L'IA propose, l'analyste dispose » : l'attribution reste humaine, et l'on signale l'usage de l'IA.</div>
+</div>
+<details class="case"><summary>Relire le mapping d'un LLM<span class="sit">À partir d'un résumé décrivant scans, exploitation d'applications web, vol d'identifiants dans des fichiers, réutilisation de ces identifiants, extraction de bases et exfiltration vers un service web, un LLM propose dix techniques ATT&amp;CK et une attribution « APT41, confiance élevée ».</span></summary>
+<div>Six lignes sont justes. Une est <b>non étayée</b> (un accès par phishing dont le résumé ne parle pas), une a la <b>bonne technique mais la mauvaise
+tactique</b> (comptes valides rangés en exfiltration), une est <b>inventée</b> (un identifiant qui n'existe pas), une <b>contredit</b> l'objectif
+d'espionnage (chiffrement pour impact). Précision : 60 %. L'attribution est un <b>saut analytique</b> : « lié à la Chine » ne veut pas dire « APT41 ».
+Contrôles : vérifier chaque identifiant et chaque couple technique-tactique contre le référentiel, exiger la phrase source de chaque ligne.</div></details>
+
+<!-- ===================================================================== -->
+<h2 id="ch10"><span class="num">10.</span> Éthique, droit et tendances</h2>
+<div class="grid c2">
+<div class="card"><h4>Le cadre</h4>Le <b>RGPD</b> s'applique aussi à la CTI (restrictions sur les données personnelles) ; la directive <b>NIS</b> impose des mesures aux entités essentielles. Principes : licéité, loyauté, transparence ; proportionnalité et limitation de la finalité ; responsabilité et sécurisation (traçabilité).</div>
+<div class="card"><h4>Les dilemmes</h4>Surveiller le dark web ou des forums privés, partager du renseignement sensible, biais des algorithmes. Bonnes pratiques : collecter le strict nécessaire, anonymiser, documenter ; objectif légitime, autorisations formelles, accès limité à des personnes qualifiées ; classification, accords de partage, audits.</div>
+</div>
+<div class="tw"><table><thead><tr><th>Tendances 2026-2027</th><th>Défis de la CTI</th></tr></thead><tbody>
+<tr><td>Attaques pilotées par IA et agents autonomes ; défense outillée par IA</td><td>Volume croissant de données à filtrer</td></tr>
+<tr><td>Chaîne d'approvisionnement et tiers (cloud, SaaS)</td><td>Qualité et fraîcheur du renseignement</td></tr>
+<tr><td>Identités et privilèges, y compris non humains ; architectures zero trust</td><td>Normalisation et interopérabilité (STIX, TAXII)</td></tr>
+<tr><td>Menace quantique : « récolter maintenant, déchiffrer plus tard », migration post-quantique</td><td>Manque de compétences, automatisation</td></tr>
+</tbody></table></div>
+
+<!-- ===================================================================== -->
+<h2 id="ch11"><span class="num">11.</span> Trier des indicateurs de compromission</h2>
+<p>Situation type : un éditeur publie un rapport sur l'exploitation active d'une vulnérabilité (ici, la chaîne <b>ToolShell</b> de SharePoint
+sur site, juillet 2025, exploitée par plusieurs groupes et suivie d'un rançongiciel). La direction demande : « Qu'est-ce qu'on fait de tous ces
+indicateurs ? » Un rapport n'est pas un flux d'IoC : il faut le traiter.</p>
+
+<h3 id="ch11-extraire">11.1 Extraire, normaliser, nettoyer</h3>
+<div class="steps" id="anim-triage">
+<div class="step"><b>1. Garder une copie de la source</b><br>Une page web peut être modifiée par son auteur : l'analyse doit rester reproductible.</div>
+<div class="step"><b>2. Extraire</b><br>Une extraction automatique (expressions régulières) produit beaucoup d'observables, et en rate d'autres (noms de fichiers cités dans un tableau, par exemple) qu'il faut ajouter à la main.</div>
+<div class="step"><b>3. Normaliser</b><br>Les rapports « désamorcent » volontairement leurs IoC (<code>131.226.2[.]6</code>, <code>hxxp://</code>) pour éviter les clics et les détections accidentelles ; il faut les remettre en forme (<i>refang</i>) avant de comparer, dédoublonner, interroger.</div>
+<div class="step"><b>4. Nettoyer et motiver</b> <span class="who">chaque rejet justifié</span><br>Écarter les IP non routables, les liens de navigation et de documentation (listes blanches de domaines <b>exacts</b> — écarter tout ce qui « contient » un mot rejetterait des domaines malveillants qui imitent ce mot), les faux positifs repérés à la main. Un analyste justifie ce qu'il écarte autant que ce qu'il garde.</div>
+</div>
+<button class="btn primary" onclick="playSteps('anim-triage')">▶ Lancer l'animation</button>
+
+<h3 id="ch11-enrichir">11.2 Enrichir, en sachant ce que mesure chaque source</h3>
+<div class="key-points">
+<li>Chaque fournisseur observe autre chose : analyses antivirales et relations entre objets, signalements communautaires, signalements d'abus sur des IP (sur 30 jours).</li>
+<li>« Le fournisseur a répondu » ne veut pas dire « l'IoC est malveillant » : il faut distinguer <b>qui répond</b> et <b>qui alerte</b>. Un résolveur DNS public ou un grand site légitime peuvent ressortir avec une sévérité élevée, par simple association.</li>
+<li>Une <b>alerte convergente</b> de plusieurs sources vaut plus qu'une seule.</li>
+<li>On ne téléverse <b>jamais</b> un fichier interne sur un service d'analyse public : il devient visible des abonnés. On cherche par <b>empreinte</b>.</li>
+<li>Tout résultat porte une <b>date de consultation</b> : la réputation d'un IoC change.</li>
+</div>
+
+<h3 id="ch11-prioriser">11.3 Prioriser et décider</h3>
+<div class="grid c2">
+<div class="card"><h4>Un score qui vieillit</h4>Il combine la <b>nature</b> de l'IoC (une empreinte est plus fiable qu'une IP), le <b>verdict</b> des fournisseurs qui alertent, le <b>vieillissement</b> (une demi-vie par type : une IP perd vite sa valeur) et la <b>pertinence pour le SI</b> (possède-t-on l'actif visé ?). On calcule un score <b>historique</b> (sans vieillissement) pour chercher dans les journaux si l'on a été touché, et un score <b>actuel</b> pour décider quoi bloquer aujourd'hui.</div>
+<div class="card"><h4>Une action par IoC</h4><b>Bloquer</b> (priorité haute, hors service légitime) · <b>ne pas bloquer</b> ce qui est hébergé par un service légitime utilisé en interne (bloquer tout un service de tunnel employé par une équipe casserait son travail : on cherche ces IoC sans les bloquer en bloc) · <b>surveiller</b> · <b>archiver</b>. Et <b>tous</b> partent en <b>recherche rétrospective</b> dans les journaux depuis le début de l'exploitation connue.</div>
+</div>
+<div class="callout ok"><div class="t">Des IoC aux comportements</div>
+Une règle par <b>signature</b> (l'empreinte du fichier déposé est dans la liste) rate l'intrusion dès que l'attaquant change de fichier. Une règle
+<b>comportementale</b> (le processus du serveur web, <code>w3wp.exe</code>, lance un interpréteur de commandes qui exécute du PowerShell encodé) la
+voit : elle est plus haut dans la pyramide. Trop élargie (« le serveur web lance un interpréteur, quel qu'il soit »), elle produit des faux
+positifs ; on l'affine. Conclusion : les IoC servent surtout à <b>chercher dans le passé</b> ; pour se protéger à l'avenir, il faut détecter des
+comportements. Et bloquer tous les IoC ne protège pas tant que la vulnérabilité n'est pas corrigée.</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch12"><span class="num">12.</span> Des vulnérabilités aux chemins d'attaque</h2>
+<p>Situation type : l'inventaire des vulnérabilités d'un hôpital (des CVE et des faiblesses de configuration, chacune liée à un actif et à
+une exposition : Internet, interne, isolé) confronté aux menaces documentées dans ATT&amp;CK.</p>
+<div class="grid c2">
+<div class="card"><h4>De la CVE à la technique</h4>La chaîne CVE → CWE → CAPEC → ATT&amp;CK se casse souvent. Le <b>Center for Threat-Informed Defense</b> (MITRE) propose pour les CVE du catalogue KEV un mapping direct : technique d'exploitation, impact principal, impacts secondaires. Utile, mais pas infaillible : il faut relire les mappings, et les adapter quand la version d'ATT&amp;CK change.</div>
+<div class="card"><h4>Le profil technique du SI</h4>Chaque vulnérabilité donne un poids aux techniques qu'elle rend possibles, pondéré par son <b>exposition</b> (une faille sur une machine isolée pèse peu, même avec un CVSS de 9,8). Une technique prend le poids de la <b>pire</b> vulnérabilité qui l'ouvre (un seul chemin suffit à l'attaquant).</div>
+</div>
+<div class="viz"><div class="t">Deux façons de confronter le SI aux menaces</div>
+<div class="vz-grid g2">
+<button class="vz-c k-red"><span class="n">Par hypothèse</span><h5>Tel acteur trouverait-il un chemin ?</h5><span class="q">Comparer le profil du SI à une campagne ou un groupe</span>
+<span class="more"><span class="t">À retenir</span>Un recouvrement de techniques ne suffit pas : il faut que l'acteur puisse <b>enchaîner</b>, tactique par tactique, de l'accès initial à l'impact. Un groupe qui partage beaucoup de techniques n'est pas forcément la menace la plus pressante ; un groupe qui en partage peu peut exploiter la faille d'entrée puis apporter ses propres moyens. Pour chaque étape du chemin, on cherche la mesure qui le casse.</span></button>
+<button class="vz-c k-blue"><span class="n">Par recherche</span><h5>Qui exploite le mieux nos faiblesses ?</h5><span class="q">Classer tous les groupes et campagnes documentés</span>
+<span class="more"><span class="t">À retenir</span>Le nombre de techniques communes favorise les acteurs les plus documentés ; l'indice de Jaccard ignore la banalité des techniques ; un indice pondéré par la <b>rareté</b> (IDF, comme les moteurs de recherche) donne peu de poids aux techniques que tout le monde emploie. On ajoute le <b>contexte</b> (accès initial exposé, secteur visé, activité récente). Le résultat : des <b>hypothèses</b> à discuter, ni une attribution, ni une prédiction.</span></button>
+</div>
+<div class="vz-bar"><button class="btn" data-cards="open">Tout déplier</button><button class="btn ghost" data-cards="close">Tout replier</button><span class="cnt"></span></div>
+</div>
+<div class="callout warn"><div class="t">Ce qu'il faut en retenir</div>
+Le <b>CVSS</b> classe les failles une par une : il ne dit rien de leurs <b>combinaisons</b> ni de votre <b>exposition</b>. Projeter les vulnérabilités
+sur ATT&amp;CK permet de raisonner en <b>chemins d'attaque</b>. Les CVE ouvrent souvent la porte, mais le reste du chemin passe par des
+<b>faiblesses de configuration</b>. Les couches se visualisent dans <b>ATT&amp;CK Navigator</b> (carte de chaleur, comparaison SI / acteur).</div>
+
+<!-- ===================================================================== -->
+<h2 id="qcm-sec"><span class="num">13.</span> QCM — <span id="count-badge" class="badge acc"></span></h2>
+<p><b>Une seule bonne réponse par question</b>, ordre tiré au hasard, correction expliquée.</p>
+<div id="qcm"></div>
+
+  </main>
+</div>
+
+<button id="top" title="Haut de page">↑</button>
+<script src="qcm.js?v=2"></script>
+<script src="../assets/app.js?v=35"></script>
+<script>initQCM(window.QCM_DATA, window.QCM_CHAPTERS, 'ent5002');</script>
+</body>
+</html>

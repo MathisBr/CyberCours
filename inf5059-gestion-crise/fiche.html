@@ -32,7 +32,8 @@ amputent la capacité de réflexion, et la performance d'une cellule tient d'abo
 Volet « entreprise » (9 novembre, après-midi), donné par un ancien officier de gendarmerie et négociateur de crise devenu consultant :
 fondamentaux, seuil de crise, organisation de la cellule, puis facteur humain (émotions, stress, travail en équipe). Pas de diaporama
 distribué : tout vient de l'enregistrement. Puis le volet « État » (10 novembre, matin, chapitres 9 et 10) : les armées dans la
-défense et la sécurité nationale, présentées par le délégué militaire départemental. Le volet « DSI » (16 novembre) viendra compléter la fiche.
+défense et la sécurité nationale, présentées par le délégué militaire départemental. Enfin le volet « DSI » (16 novembre,
+chapitres 11 à 13) : support « Masterclass gestion de crise DSI » et enregistrements, exercice de crise compris.
 </div>
 
 <!-- ===================================================================== -->
@@ -62,6 +63,8 @@ Il a lui-même désigné les 4 critères du seuil de crise, les temps de la cris
 <li><b>Côté État</b> : les armées ne sont « qu'un pan » de la défense et sécurité nationale (SGDSN, Premier ministre). <b>Menantes</b> dans les airs (PPS-A) et sur mer (PPS-M), <b>concourantes</b> au sol, en appui des FSI et FSC.</li>
 <li>Elles n'interviennent au sol que sur <b>demande de concours</b> (refus possible) ou <b>réquisition</b> (ordre : préfet ou procureur), et seulement si les moyens civils sont <b>insuffisants, inexistants, inadaptés ou indisponibles</b> (règle des 4I).</li>
 <li><b>Structure miroir</b> de l'OTIAD : préfet / DMD au département, préfet de zone / officier général de zone, CIC / CPCO au niveau national. Seul le préfet émet l'expression de besoin ; l'ordre d'engagement redescend vers l'unité.</li>
+<li><b>Côté DSI</b> : RPO (données perdues depuis la dernière sauvegarde), RT (réponse), RTO (jusqu'au mode dégradé), <b>DMIA = RT + RTO</b>, WRT (mode dégradé), MTD (le tout). Le BIA fixe DMIA et RPO par activité, toujours de façon pessimiste, validé par la direction.</li>
+<li>PCM, PCA (continuité, mode dégradé), PCI, PRA (reprise), PRI ; <b>continuité</b> n'est pas <b>disponibilité</b>, <b>nominal</b> (documenté) n'est pas <b>normal</b> (habituel). Un directeur décide, une secrétaire tient la main courante ; on communique tôt.</li>
 <li>Gérer une crise, ce n'est pas répondre, c'est <b>durer</b>. Le chef d'un centre opérationnel « démêle », tient une <b>main courante</b> et vient avec des propositions.</li>
 </div>
 
@@ -617,7 +620,251 @@ confirmer les moyens avant même l'arrivée de l'ordre écrit.</div>
 </div>
 
 <!-- ===================================================================== -->
-<h2 id="qcm-sec"><span class="num">11.</span> QCM —<span id="count-badge" class="badge acc"></span></h2>
+<h2 id="ch11"><span class="num">11.</span> Côté DSI : la crise informatique et ses délais</h2>
+<p>Volet « DSI » (16 novembre), donné par un consultant en gestion de crise et continuité d'activité, ancien élève de la mineure.
+Fil rouge : « une crise pas préparée n'est pas une situation d'avenir » — et l'on ne prépare bien que ce que l'on connaît.</p>
+
+<h3 id="ch11-crise">11.1 Ce qui fait une crise</h3>
+<div class="grid c2">
+<div class="card"><h4>Krisis : la faculté de décider</h4>
+Le mot grec désigne la capacité de décider : une crise appelle des <b>décisions</b> menant à des actions, et l'on juge leur <b>qualité</b> autant
+que leur <b>moment</b>. Le terme chinois mêle <b>danger</b> et <b>opportunité</b>.</div>
+<div class="card"><h4>Quatre caractéristiques</h4>
+<ul><li><b>Limitée dans le temps</b> : une entreprise « en crise toute l'année » est mal gérée.</li>
+<li><b>Atypique</b> : rien d'habituel.</li>
+<li>Elle <b>met en cause la pérennité</b> de l'entreprise (à rapporter à sa taille et à son « souffle »).</li>
+<li>Elle exige des <b>moyens dédiés</b> : humains, financiers, matériels.</li></ul></div>
+</div>
+<p>On distingue souvent les crises par domaine (informatique, RH, métier), même si elles se contaminent. Plus l'enjeu est grave, plus on empile les protections, comme les couches de sécurité d'une centrale nucléaire (défense en profondeur). Les PME sont les plus exposées :
+selon l'intervenant, une grande part ne survit pas à une crise informatique majeure.</p>
+
+<h3 id="ch11-delais">11.2 La chronologie d'une perte du SI</h3>
+<p>Le vocabulaire est à connaître : c'est celui des métiers, des auditeurs et des contrats. Le plus important pour la DSI : la
+<b>DMIA</b> et le <b>RPO</b> — combien de temps les métiers ne travailleront pas, combien de données ils perdront.</p>
+<div class="viz"><div class="t">De la dernière sauvegarde au retour à la normale</div>
+<svg viewBox="0 0 900 250" role="img" aria-label="Frise : RPO avant l'incident ; après l'incident RT puis RTO forment la DMIA ; puis WRT ; l'ensemble RT, RTO et WRT forme le MTD.">
+<line x1="30" y1="120" x2="880" y2="120" style="stroke:var(--fg-mute);stroke-width:2"/>
+<g class="vz-step"><rect x="40" y="95" width="150" height="50" rx="6" class="vz-bad"/><text x="115" y="125" text-anchor="middle" class="vz-lbl">RPO</text>
+<text x="40" y="85" class="vz-sub">dernière sauvegarde</text><text x="115" y="165" text-anchor="middle" class="vz-sub">données perdues</text></g>
+<g class="vz-step"><line x1="190" y1="60" x2="190" y2="200" style="stroke:var(--d-red);stroke-width:2;stroke-dasharray:4 3"/><text x="190" y="52" text-anchor="middle" class="vz-sub vz-t-bad">incident</text></g>
+<g class="vz-step"><rect x="190" y="95" width="130" height="50" rx="6" class="vz-filt"/><text x="255" y="125" text-anchor="middle" class="vz-lbl">RT</text>
+<text x="255" y="165" text-anchor="middle" class="vz-sub">réponse</text></g>
+<g class="vz-step"><rect x="320" y="95" width="200" height="50" rx="6" class="vz-bad"/><text x="420" y="125" text-anchor="middle" class="vz-lbl">RTO</text>
+<text x="420" y="165" text-anchor="middle" class="vz-sub">reconstruction, personne ne travaille</text>
+<path d="M190 190 L520 190" style="stroke:var(--d-red);stroke-width:2"/><text x="355" y="208" text-anchor="middle" class="vz-sub vz-t-bad">DMIA = RT + RTO (2 à 5 jours)</text></g>
+<g class="vz-step"><rect x="520" y="95" width="250" height="50" rx="6" class="vz-ok"/><text x="645" y="125" text-anchor="middle" class="vz-lbl">WRT</text>
+<text x="645" y="165" text-anchor="middle" class="vz-sub">travail en mode dégradé</text>
+<line x1="770" y1="60" x2="770" y2="200" style="stroke:var(--d-green,#3a8);stroke-width:2;stroke-dasharray:4 3"/><text x="770" y="52" text-anchor="middle" class="vz-sub vz-t-ok">retour à la normale</text></g>
+<g class="vz-step"><path d="M190 232 L770 232" style="stroke:var(--fg-mute);stroke-width:2"/><text x="480" y="248" text-anchor="middle" class="vz-sub">MTD = RT + RTO + WRT (quelques jours à plusieurs semaines)</text></g>
+</svg></div>
+<div class="tw"><table><thead><tr><th>Sigle</th><th>Signification</th><th>Ce qu'il mesure</th></tr></thead><tbody>
+<tr><td>RPO</td><td><i>Recovery Point Objective</i> (perte de données maximale admissible)</td><td>Le temps entre la <b>dernière sauvegarde</b> et l'incident : ces données-là sont perdues pour de bon</td></tr>
+<tr><td>RT</td><td><i>Response Time</i></td><td>La réponse incompressible des équipes et de la cellule : détecter, remonter, qualifier, mobiliser (dix minutes ou deux jours, selon l'heure et l'astreinte)</td></tr>
+<tr><td>RTO</td><td><i>Recovery Time Objective</i></td><td>L'inactivité maximale entre l'incident et la <b>reprise en mode dégradé</b></td></tr>
+<tr><td>DMIA</td><td>Durée maximale d'interruption admissible (en anglais MTPD)</td><td>RT + RTO : la période où l'on ne peut <b>pas travailler du tout</b> ; souvent 2 à 5 jours</td></tr>
+<tr><td>WRT</td><td><i>Work Recovery Time</i></td><td>La durée du <b>mode dégradé</b>, jusqu'au retour aux conditions normales</td></tr>
+<tr><td>MTD</td><td><i>Maximum Tolerable Downtime</i></td><td>La perturbation totale acceptable ; souvent RT + RTO + WRT</td></tr>
+</tbody></table></div>
+<div class="callout warn"><div class="t">Combien de temps dure une crise ?</div>
+Le support donne une moyenne de 21 jours, citée par l'intervenant d'après l'ANSSI (une moyenne, pas une médiane, et seulement sur ce qui
+lui est déclaré). En cas d'<b>attaque cyber</b>, tous les délais s'allongent : l'intervenant a rarement vu une entreprise revenir en
+fonctionnement nominal en moins de <b>trois mois</b>.</div>
+
+<h3 id="ch11-escalade">11.3 Incident, cellule DSI, cellule groupe</h3>
+<div class="steps" id="anim-escalade">
+<div class="step"><b>1. L'incident</b> <span class="who">ITIL</span><br>Signaler, classer, hiérarchiser la priorité, diagnostiquer, résoudre, clôturer — les étapes du référentiel ITIL de gestion des services informatiques (d'où le ticket qui justifie le travail des équipes de support).</div>
+<div class="step"><b>2. La cellule de crise DSI</b><br>Ouverte par la production informatique quand l'incident devient grave. Par définition, elle traite ce qui n'a pas besoin de monter plus haut ; c'est le <b>manager d'astreinte</b> qui décide de la déclencher.</div>
+<div class="step"><b>3. La cellule de crise groupe</b> <span class="who">escalade</span><br>Dès que la crise touche autre chose que la DSI (métiers, finance, image, juridique), on escalade : la cellule groupe absorbe celle de la DSI.</div>
+</div>
+<button class="btn primary" onclick="playSteps('anim-escalade')">▶ Lancer l'animation</button>
+<div class="grid c2">
+<div class="card"><h4>Remonter le socle d'abord</h4>
+Pour faire retravailler les métiers sur un datacenter reconstruit, il faut d'abord l'<b>annuaire</b> (Active Directory), les
+<b>middlewares</b>, les API, les flux, le <b>réseau</b>. Et le cloud ne protège de rien : « c'est dans le cloud » n'est pas un plan de secours.</div>
+<div class="card"><h4>L'automatisation n'est pas prioritaire</h4>
+En mode dégradé, ce qui peut se faire à la main se fait à la main ; l'automatisation revient ensuite, parfois jamais. Exemple : une usine
+privée de ses capteurs qualité a tout noté sur papier une semaine… puis passé trois semaines à le ressaisir.</div>
+</div>
+
+<h3 id="ch11-scenarios">11.4 Cinq scénarios, des responsables</h3>
+<div class="tw"><table><thead><tr><th>Scénario</th><th>Responsable principal</th></tr></thead><tbody>
+<tr><td>1. Indisponibilité totale du datacenter et du SI</td><td>DSI</td></tr>
+<tr><td>2. Attaque cyber</td><td>DSI</td></tr>
+<tr><td>3. Indisponibilité des bâtiments</td><td>Services généraux, direction technique (DTI), sûreté (HSE, QHSE) ; souvent compensée par le télétravail</td></tr>
+<tr><td>4. Indisponibilité massive des collaborateurs</td><td>RH — mais la DSI doit tenir la charge du télétravail généralisé</td></tr>
+<tr><td>5. Indisponibilité des prestataires</td><td>Achats, métiers ; en partie la DSI pour ses prestataires informatiques</td></tr>
+</tbody></table></div>
+<p>Les risques derrière ces scénarios : incendie, inondation, catastrophe naturelle, attaque cyber, coupure de courant, erreur humaine
+(une reconfiguration qui arrête tout), défaillance d'un fournisseur. Le même raisonnement se décline à toutes les échelles : entreprise,
+DSI, service, individu.</p>
+<div class="key-points">
+<li><b>Toute action a un propriétaire</b> : demander quelque chose sans dire qui le fait garantit que personne ne le fera.</li>
+<li>Voir un trou hors de son périmètre : <b>prévenir le responsable</b>, gentiment, et en <b>garder une trace écrite</b>. La culture du bouc émissaire existe ; chaque entreprise a sa culture, qu'il faut apprendre.</li>
+<li>Une crise <b>prévue</b> (déménagement de datacenter, bascule majeure) se gère presque comme une vraie : on fait un <b>pré-armement</b> de la cellule.</li>
+</div>
+
+<h3 id="ch11-exercices">11.5 S'exercer, encore</h3>
+<p>« Entraînement difficile, guerre facile. » On ne rend pas une entreprise prête à la crise en trois mois : seule celle qui l'est presque
+déjà y parvient (c'est une question de <b>maturité</b>). On teste donc, en continu :</p>
+<div class="grid c2">
+<div class="card"><h4>Partie organisationnelle</h4>
+<b>Qui</b> : équipes techniques, chaîne managériale, direction informatique, direction du groupe.<br>
+<b>Quoi</b> : processus, briques fonctionnelles, architecture, communication interne (et externe), <b>annuaire de crise</b>.</div>
+<div class="card"><h4>Partie technique</h4>
+<b>Qui</b> : équipes techniques, maîtrise d'œuvre (MOE) et maîtrise d'ouvrage (MOA).<br>
+<b>Quoi</b> : procédures, <b>fiches réflexes</b>, choix techniques, délais de réponse à incident.</div>
+</div>
+<div class="callout"><div class="t">Écrire, faire, vérifier</div>
+On écrit ce que l'on fait, on fait ce que l'on écrit, on vérifie que l'on a bien écrit ce que l'on fait et que l'on fait ce que l'on a écrit.
+Comme un régulateur de vitesse en automatique, tout système dérive avec le temps : les exercices sont les petites impulsions qui l'empêchent
+de dérailler pour de bon.</div>
+<div class="example"><div class="t">Le premier exercice : sur table (<i>tabletop</i>)</div>
+Avec une direction qui n'a jamais géré de crise, on ne commence pas par couper le SI ni par une red team : on la réunit une matinée sur un
+scénario écrit. Attendus : les <b>rôles</b>, les <b>priorités</b>, les <b>premières actions</b>, un <b>compte rendu</b>. Des observateurs tiennent
+une main courante pour le retour d'expérience. Astuce citée : présenter à un directeur trois options, dont deux médiocres et une bonne.</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch12"><span class="num">12.</span> Leçons d'un exercice de crise cyber</h2>
+<details class="case"><summary>Le scénario<span class="sit">Une panne inattendue : tous les systèmes sont hors service depuis 5 minutes, plus de messagerie, de données partagées, de site web. La cellule doit fixer rôles, priorités, premières actions et compte rendu. En cours de route : une revendication sur un réseau social, la défiguration du site.</span></summary>
+<div>Ce qui était caché : une attaque visant les <b>données à caractère personnel</b>, par une faille connue ayant fait l'objet d'une alerte du
+CERT-FR, avec exécution de code pour attaquer l'annuaire LDAP. Le flou du scénario était volontaire : sans bien connaître son entreprise,
+on se plante. Les équipes ont dû choisir entre une cellule DSI escaladée ensuite ou une cellule groupe d'emblée — les deux se défendent.</div></details>
+
+<h3 id="ch12-roles">12.1 Les rôles</h3>
+<div class="tw"><table><thead><tr><th>Rôle</th><th>À retenir</th></tr></thead><tbody>
+<tr><td>Directeur de crise</td><td>Il <b>décide</b> et lance des actions. « Un directeur ne prend pas de notes, il voit trois couleurs » : vert, orange, rouge.</td></tr>
+<tr><td>Secrétaire (un, voire deux)</td><td>Tient la <b>main courante</b>, horodatée. Mieux vaut ne pas cumuler avec la coordination : dans le bruit d'une crise, on ne peut pas à la fois noter et distribuer la parole.</td></tr>
+<tr><td>Facilitateur, gardien du temps</td><td>Gère les temps de parole, coupe les discussions à faible valeur, s'occupe de la logistique de la cellule. Rôle jugé essentiel.</td></tr>
+<tr><td>Directeur de la communication</td><td>Seul à parler pour l'entreprise ; prépare les <b>éléments de langage</b>.</td></tr>
+<tr><td>DSI, RSSI, DRH, experts</td><td>Selon le niveau de la cellule (DSI ou groupe) ; les experts sont mobilisables à la demande, y compris des prestataires spécialisés en réponse à incident.</td></tr>
+</tbody></table></div>
+<div class="callout warn"><div class="t">L'écueil du « one man army »</div>
+Une personne qui veut tout faire elle-même sature et aveugle l'équipe. L'équipe qui n'a ni rôles ni méthode perd son temps à s'organiser —
+dans l'exercice, une cellule a « déposé le bilan » avant de repartir correctement. Dans la vraie vie, il n'y a pas de seconde partie : rôles,
+processus et fiches réflexes se fixent <b>avant</b> la crise.</div>
+
+<h3 id="ch12-com">12.2 Communiquer tôt</h3>
+<div class="grid c2">
+<div class="card"><h4>Pourquoi tôt</h4>
+Plus on cache, plus c'est mal pris. Si la crise sort sur un réseau social avant que l'entreprise ait parlé, c'est un retour de bâton
+(<i>backlash</i>) immédiat — doublement pour une mutuelle ou une assurance, accusée de manquer d'honnêteté envers clients et salariés.
+Un salarié interrogé par un journaliste risque aussi de donner de mauvaises informations.</div>
+<div class="card"><h4>Comment, par étapes</h4>
+1. « Nous suspectons un incident, nous enquêtons ; signalez-nous tout dysfonctionnement. »<br>
+2. « Nous avons identifié tel problème (peut-être des données personnelles), voici l'aide proposée. »<br>
+3. « Nous gérons la crise avec les entités concernées. »<br>
+4. « C'est terminé, merci pour votre patience. »<br>
+Les <b>éléments de langage</b> évitent par exemple de paniquer les marchés pour une société cotée.</div>
+</div>
+
+<h3 id="ch12-lecons">12.3 Les autres leçons du débriefing</h3>
+<div class="key-points">
+<li><b>Quinze minutes d'incident ne font pas une crise.</b> C'est l'équipe de crise réunie qui qualifie, pendant le temps de réponse.</li>
+<li><b>Ne pas rogner le temps de réponse</b> ni rebasculer trop vite : passer d'un datacenter A à B peut bien se passer, revenir aussitôt de B à A beaucoup moins. On stabilise d'abord.</li>
+<li>Une <b>salle dédiée</b>, à l'écart, aide à réfléchir.</li>
+<li>Les <b>coûts</b> de la crise se calculent à la fin, pas pendant.</li>
+<li><b>Prendre soin des équipes</b> : nourrir les gens qui restent tard est un vrai geste de confiance.</li>
+<li>Un <b>canal de secours</b> hors de l'infrastructure de l'entreprise (une messagerie chiffrée de bout en bout), car l'attaquant peut lire la messagerie interne.</li>
+<li><b>Notifier</b> : la CNIL sous 72 heures en cas de violation de données personnelles (RGPD), l'ANSSI ou le CERT, l'assureur cyber.</li>
+<li><b>La rançon</b> : pas de posture de principe. Les groupes ont une « réputation » de restitution, les assurances peuvent désormais la rembourser ; bien préparée, une entreprise a souvent intérêt à ne pas payer, mais il ne faut pas jeter la pierre à celles qui paient.</li>
+<li>Sans organisation, tout le monde parle à tout le monde (témoins, presse…) : la cellule doit faire <b>entonnoir</b> et garder du calme au centre de la tempête.</li>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch13"><span class="num">13.</span> Connaître l'entreprise pour assurer sa continuité</h2>
+
+<h3 id="ch13-entreprise">13.1 Valeur, activités, processus</h3>
+<div class="grid c2">
+<div class="card"><h4>Les questions à poser</h4>
+Quelle est la <b>valeur</b> de l'entreprise (sa mission, sa valeur ajoutée) ? Quelles <b>activités</b> la portent ? Quels <b>processus</b> portent
+les activités ? Quels textes s'imposent à elles ? Quels sont les risques ? Quel est le <b>cœur applicatif critique</b> ? Pour une école,
+l'activité critique est la scolarité : sans cours, c'est la crise.</div>
+<div class="card"><h4>De la politique au mode opératoire</h4>
+<b>Politique</b> : ce que la direction décide, et pourquoi. <b>Processus</b> : des entrées transformées en sorties. <b>Procédure</b> : quoi faire, dans quel
+ordre. <b>Mode opératoire</b> (MODOP) : comment le faire, au point qu'un néophyte y arrive. C'est la pyramide des systèmes qualité (ISO 9001).</div>
+</div>
+<div class="tw"><table><thead><tr><th>Texte</th><th>Portée</th></tr></thead><tbody>
+<tr><td>Règlement européen</td><td>S'applique directement dans tous les États membres, <b>sans transposition</b> (ex. RGPD, DORA)</td></tr>
+<tr><td>Directive européenne</td><td>Doit être <b>transposée</b> par chaque État dans sa loi (ex. NIS 2)</td></tr>
+<tr><td>Loi</td><td>Nationale ; s'impose à toute entité opérant dans le pays, y compris une filiale étrangère</td></tr>
+<tr><td>Norme</td><td><b>Volontaire</b>, issue d'un consensus d'experts ; valeur de confiance commerciale (ex. ISO 27001 n'est pas légalement obligatoire)</td></tr>
+</tbody></table></div>
+
+<h3 id="ch13-bia">13.2 Le bilan d'impact sur l'activité (BIA)</h3>
+<div class="steps" id="anim-bia">
+<div class="step"><b>1. Lister les activités</b><br>Grâce à la cartographie des processus.</div>
+<div class="step"><b>2. Fixer le référentiel de qualification des impacts</b><br>Quatre types courants — <b>financier</b>, <b>image</b> (confiance, clientèle), <b>productivité</b> (désorganisation), <b>pénalités contractuelles et réglementaires</b> — sur quatre niveaux : mineur, considérable, majeur, catastrophique. Les seuils dépendent de la taille de l'entreprise (« David contre Goliath »).</div>
+<div class="step"><b>3. Dresser le BIA</b> <span class="who">pessimiste</span><br>Pour chaque activité : impacts, <b>DMIA</b>, <b>RPO</b>, toujours dans l'hypothèse la plus pessimiste ; ranger les activités par DMIA et RPO croissants. Les projets et la saisie des temps passés ne sont pas critiques.</div>
+<div class="step"><b>4. Estimer la montée en charge</b><br>Combien de personnes, de quelles compétences, à quelle échéance (H+4, J+1, J+2…) ; les autres en télétravail, à d'autres tâches ou en chômage partiel.</div>
+<div class="step"><b>5. Faire valider par la direction</b><br>Les métiers jugent toujours leur activité critique : c'est la direction qui tranche.</div>
+</div>
+<button class="btn primary" onclick="playSteps('anim-bia')">▶ Lancer l'animation</button>
+<p>La priorité est de <b>retravailler</b> (DMIA) plus que de retrouver l'historique (RPO) — sauf pour les données critiques au sens légal,
+comme les données financières ou de santé (hébergement de données de santé, HDS), dont le RPO est exigeant.</p>
+
+<h3 id="ch13-dependances">13.3 Les dépendances, récursivement</h3>
+<p>Chaque activité dépend de personnes, de bâtiments, de logistique et d'<b>applications</b> ; chaque application de dépendances internes et
+externes, de machines, d'un <b>site</b>, de courant, d'un <b>datacenter</b> qu'il faut maintenir ; sans oublier les <b>flux</b> et les traitements
+par lots. Une grande entreprise compte facilement une cinquantaine d'applications critiques. Quand un arrêt coûte plus que le contournement,
+on paie le contournement (un hélicoptère pour livrer des pièces coûte moins que les pénalités de retard).</p>
+<div class="callout"><div class="t">La résilience est d'abord une affaire de connaissance</div>
+La base des actifs (CMDB) n'est jamais à jour, les dossiers d'architecture manquent, les métiers renomment leurs applications. Le travail
+consiste souvent à enquêter pour reconstituer qui dépend de quoi, et dans quel délai.</div>
+
+<h3 id="ch13-resilience">13.4 Résilience, continuité, nominal</h3>
+<div class="example"><div class="t">Partir à l'étranger</div>
+Actifs critiques : moyens de paiement, papiers d'identité, espèces, vêtements. Scénarios : <b>vol</b> (peu probable pour des vêtements),
+<b>perte</b> et <b>dégradation</b> (tout est concerné). Pourquoi distinguer perte et dégradation ? Parce que la criticité diffère : un billet
+abîmé reste échangeable, c'est un <b>mode dégradé</b>, pas une perte totale. D'où deux cartes bancaires rangées séparément — mais il n'existe
+pas de seconde carte Vitale : on en imprime l'attestation. Ne pas mettre ses œufs dans le même panier.</div>
+<div class="grid c2">
+<div class="card"><h4>Disponibilité ou continuité</h4>
+La <b>disponibilité</b> est un pourcentage de tolérance aux pannes en fonctionnement nominal (99,5 %, 99,9 %… chaque « neuf » coûte plus cher).
+La <b>continuité</b> est la capacité à maintenir les activités essentielles, ou à les rétablir vite, face à un événement majeur.</div>
+<div class="card"><h4>Normal ou nominal</h4>
+<b>Normal</b> : conforme au comportement habituel. <b>Nominal</b> : conforme au standard <b>documenté</b>. Avec le temps, départs, passations bâclées et
+changements créent une <b>dérive</b> : le jour de la crise, le plan écrit ne correspond plus au terrain. On se rattache au nominal.</div>
+</div>
+
+<h3 id="ch13-plans">13.5 Les plans et leurs liens</h3>
+<div class="tw"><table><thead><tr><th>Plan</th><th>Rôle</th></tr></thead><tbody>
+<tr><td>PCM — plan de continuité métier</td><td>Le lien entre un métier, ses besoins et les parades : peut-on remplacer les prestataires, télétravailler, travailler sur papier (le papier fait partie du système d'<b>information</b>), pallier le manque de personnel, quels fournisseurs clés…</td></tr>
+<tr><td>PCA — plan de continuité d'activité</td><td>Relie les PCM et le PCI ; maintient l'activité en <b>mode dégradé</b></td></tr>
+<tr><td>PCI — plan de continuité informatique</td><td>La partie informatique de la continuité</td></tr>
+<tr><td>PRA — plan de reprise d'activité</td><td>Activé lors de la perte totale des activités critiques ; <b>reconstruit</b></td></tr>
+<tr><td>PRI — plan de reprise informatique</td><td>La partie informatique du PRA</td></tr>
+</tbody></table></div>
+<div class="grid c2">
+<div class="card"><h4>Construire un plan d'action</h4>
+Six étapes : objectifs, actions, personnes impliquées, mise en œuvre, période, critères de réussite — un projet <b>SMART</b> (spécifique, mesurable,
+atteignable, aligné, borné dans le temps), conduit en <b>PDCA</b> (roue de Deming : planifier, faire, vérifier, agir). « Le mieux est l'ennemi
+du bien » : faire bien d'abord, mieux ensuite.</div>
+<div class="card"><h4>L'annuaire de crise</h4>
+Qui appeler, dans quel rôle (cellule, managers d'astreinte, experts, prestataires), dans les deux sens. Chaque métier et chaque cellule a le sien ;
+il change souvent et se révise, comme le BIA, l'analyse de risques et l'architecture, <b>au moins une fois par an</b>.</div>
+</div>
+<div class="callout warn"><div class="t">Ne pas se précipiter vers le PRA</div>
+On peut choisir de rester en mode dégradé sur les activités critiques, puisqu'il fonctionne, plutôt que d'infliger une nouvelle perte de
+productivité à des équipes épuisées. Une crise pèse sur le moral de tous : une cellule de soutien psychologique n'est parfois pas de trop.</div>
+
+<h3 id="ch13-cadres">13.6 Systèmes de management et risque</h3>
+<div class="tw"><table><thead><tr><th>Système</th><th>Référentiels</th></tr></thead><tbody>
+<tr><td>SMSI — sécurité de l'information</td><td>ISO 27001 ; TISAX (déclinaison pour l'automobile)</td></tr>
+<tr><td>SMCA — continuité d'activité</td><td>ISO 22301 ; DORA (règlement européen sur la résilience opérationnelle numérique du secteur financier)</td></tr>
+<tr><td>SMRO — résilience opérationnelle</td><td>Pas encore normalisé ; couvre sauvegardes, résilience applicative, « SI de survie »</td></tr>
+</tbody></table></div>
+<p>Le risque se note <b>impact × probabilité</b> sur une matrice 4 × 4 (de 1 à 16), à condition d'avoir bien décrit son référentiel d'impact.
+Une solution d'atténuation fait passer d'un <b>risque brut</b> à un <b>risque net</b> (redondance du datacenter, télétravail, clauses de
+niveau de service ou SLA, sensibilisation). Pour chiffrer, on s'appuie sur une étude d'impact, des situations comparables et des statistiques
+(ANSSI, expérience).</p>
+<div class="grid c3">
+<div class="card"><h4>Projet ou qualité</h4>Le projet va de 0 à 100 % vers un livrable ; la qualité vise l'amélioration continue (« 2 %, c'est mieux que 0 % »), au risque de la surqualité. Les indicateurs clés de performance (KPI) mesurent, sans s'y noyer.</div>
+<div class="card"><h4>AMDEC et cinq pourquoi</h4>L'analyse des modes de défaillance, de leurs effets et de leur criticité anticipe ce qui peut mal tourner ; les « cinq pourquoi » remontent à la cause racine.</div>
+<div class="card"><h4>Lean</h4>Éliminer les gaspillages et travailler à flux tendu : efficace, mais les entreprises à flux tendu ont souffert pendant le Covid.</div>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="qcm-sec"><span class="num">14.</span> QCM —<span id="count-badge" class="badge acc"></span></h2>
 <p><b>Une seule bonne réponse par question</b>, ordre tiré au hasard, correction expliquée.</p>
 <div id="qcm"></div>
 
@@ -625,7 +872,7 @@ confirmer les moyens avant même l'arrivée de l'ordre écrit.</div>
 </div>
 
 <button id="top" title="Haut de page">↑</button>
-<script src="qcm.js?v=3"></script>
+<script src="qcm.js?v=4"></script>
 <script src="../assets/app.js?v=35"></script>
 <script>initQCM(window.QCM_DATA, window.QCM_CHAPTERS, 'inf5059');</script>
 </body>

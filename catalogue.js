@@ -25,6 +25,35 @@
 window.CATALOGUE = [
 
 {
+  code: "ENT5002",
+  titre: "OSINT et Cyber Threat Intelligence",
+  dossier: "ent5002-osint-cti",
+  sources: "../OSINT et C.T.I",
+  etat: "en cours",
+  couleur: "green",
+  resume: "Le renseignement sur la menace, de l'indicateur de compromission aux tactiques de l'attaquant : un IoC se change en secondes, un comportement coûte cher.",
+  programme: [
+    "CTI et CTH, cycle du renseignement, sources (OSINT, HUMINT, SIGINT…)",
+    "Les quatre niveaux : technique, opérationnel, tactique, stratégique",
+    "Les six sources de menace",
+    "IoC, IoA, pyramide de la douleur ; observable, artefact, indicateur",
+    "Vulnérabilités : CVE, CWE, 0-day, CVSS, EPSS, KEV ; risque",
+    "STRIDE, Kill Chain, Diamond, MITRE ATT&CK, arbre d'attaque",
+    "TIP, MISP, OpenCTI, STIX, TLP, ACH",
+    "IA et CTI : agents, injection de prompt, ATLAS, garde-fous",
+    "Trier des IoC : désamorcer, enrichir, vieillir, décider",
+    "Des vulnérabilités aux chemins d'attaque sur ATT&CK"
+  ],
+  ressources: [
+    { type: "fiche", page: "fiche.html", titre: "Fiche de révision",
+      desc: "Le support complet des trois cours, la première séance et les deux TP",
+      qcm: { src: "qcm.js", cle: "ent5002" } },
+    { type: "examen", page: "points-examen.html", titre: "Ce que le prof a signalé",
+      desc: "Évaluation, IA proscrite et notions annoncées comme questions de cours" }
+  ]
+},
+
+{
   code: "INF5059",
   titre: "Gestion de crise",
   dossier: "inf5059-gestion-crise",
@@ -47,14 +76,17 @@ window.CATALOGUE = [
     "Côté État : SGDSN, contrat 10 000, PIV, dissuasion, PPS-A et PPS-M",
     "Opérations intérieures : Sentinelle, Résilience, Harpie, Héphaïstos",
     "Règle des 4I, concours et réquisition, OTIAD et structure miroir",
-    "DMD, expression de besoin, ordre d'engagement, main courante"
+    "DMD, expression de besoin, ordre d'engagement, main courante",
+    "Côté DSI : RPO, RT, RTO, DMIA, WRT, MTD ; escalade DSI vers groupe",
+    "Exercice de crise cyber : rôles, main courante, communiquer tôt",
+    "BIA, PCM, PCA, PRA ; continuité ou disponibilité, nominal ou normal"
   ],
   ressources: [
     { type: "fiche", page: "fiche.html", titre: "Fiche de révision",
-      desc: "Volet entreprise (fondamentaux, seuil de crise, facteur humain) et volet État (les armées dans la sécurité nationale)",
+      desc: "Volets entreprise, État et DSI : seuil de crise, facteur humain, armées, continuité d'activité",
       qcm: { src: "qcm.js", cle: "inf5059" } },
     { type: "examen", page: "points-examen.html", titre: "Ce que le prof a signalé",
-      desc: "18 passages où les intervenants insistent, avec la réponse attendue" }
+      desc: "22 passages où les intervenants insistent, avec la réponse attendue" }
   ]
 },
 
