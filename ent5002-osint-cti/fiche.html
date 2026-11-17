@@ -30,9 +30,10 @@ protéger des systèmes numériques. Le cours part du plus technique — un indi
 </p>
 
 <div class="callout"><div class="t">Sources de cette fiche</div>
-Le support complet du cours ENT5002 (137 diapositives : les trois cours de la semaine), l'enregistrement de la première séance
-(16 novembre) et les deux notebooks de travaux pratiques (triage d'indicateurs, puis projection des vulnérabilités sur ATT&amp;CK). Les
-chapitres 6 à 10 ne sont, pour l'instant, que dans le support : les séances qui les traitent compléteront la fiche.
+Le support complet du cours ENT5002 (137 diapositives : les trois cours de la semaine), les enregistrements des deux premières
+séances (16 et 17 novembre) et les deux notebooks de travaux pratiques (triage d'indicateurs, puis projection des vulnérabilités sur ATT&amp;CK).
+La séance 2 a repris les chapitres 5 à 7 ; les chapitres 8 à 10 ne sont, pour l'instant, que dans le support. Les chapitres 13 et 14 viennent
+du module OSINT du 17 novembre après-midi : son diaporama, ses deux TD (Google Dorks, GEOINT) et ses enregistrements.
 </div>
 
 <!-- ===================================================================== -->
@@ -44,6 +45,7 @@ chapitres 6 à 10 ne sont, pour l'instant, que dans le support : les séances qu
 comparant le SI à la menace jugée prioritaire, et une page des 5 actions prioritaires, chacune reliée à une étape du chemin et à une mitigation ATT&amp;CK.</li>
 <li><b>Examen final : 70 %</b>, jeudi 16 h 30 – 18 h. L'accès au cours sera peut-être autorisé. Il y aura « quelques questions de cours ».</li>
 <li><b>L'IA est proscrite</b> à l'examen (et en TP sauf indication contraire) : « conseil de discipline direct ».</li>
+<li><b>Module OSINT</b> : noté sur la présentation orale de l'enquête de groupe (4 à 5 minutes, groupes de 5) ; le CTF (<i>Capture The Flag</i>) final, en autonomie, avec Internet mais sans moyen de communication, rapporte des points bonus.</li>
 </ul>
 </div>
 
@@ -58,6 +60,11 @@ comparant le SI à la menace jugée prioritaire, et une page des 5 actions prior
 <li><b>CVE</b> = vulnérabilité d'un produit précis ; <b>CWE</b> = faiblesse générale, sa cause. Sans correctif : <b>mitigation</b> ou <b>contournement</b>. Une <b>0-day</b> n'a pas de correctif.</li>
 <li><b>Risque</b> = vraisemblance × gravité ; vraisemblance = menace × vulnérabilité. Le danger est intrinsèque, le risque une éventualité, le dommage le préjudice subi.</li>
 <li>Modèles d'analyse : <b>Kill Chain</b> (7 étapes), <b>Diamond</b> (adversaire, infrastructure, capacité, victime), <b>ATT&amp;CK</b> (14 tactiques). Chaîne CVE → CWE → CAPEC → ATT&amp;CK.</li>
+<li><b>Prioriser les vulnérabilités</b> : CVSS (gravité, sans contexte) · SSVC (arbre de décision contextuel, demande une enquête) · EPSS (probabilité d'exploitation) · ATT&amp;CK (TTP réelles). L'idéal combine CVSS, EPSS et ATT&amp;CK.</li>
+<li><b>Modélisation</b> de la menace (théorique, conception : STRIDE, DREAD, PASTA, LINDDUN) ≠ <b>analyse</b> de la menace (comportement de l'attaquant, détection et réponse : Kill Chain, Diamond, ATT&amp;CK, arbre d'attaque).</li>
+<li>Un <b>fournisseur</b> de CTI (VirusTotal, OTX, AbuseIPDB) n'est <b>pas une plateforme</b> : la <b>TIP</b> (MISP, OpenCTI) ingère, analyse et partage. <b>STIX</b> décrit les menaces (T = <i>Threat</i>), <b>CybOX</b> les observables.</li>
+<li>Trois mondes autrefois cloisonnés, reliés par les ontologies : actifs (<b>CPE</b>) → vulnérabilités (<b>CVE</b>) → faiblesse (<b>CWE</b>, la charnière) → motif d'attaque (<b>CAPEC</b>) → techniques (<b>ATT&amp;CK</b>) → attaquant.</li>
+<li><b>OSINT</b> (ROSO) : collecte → agrégation → analyse, sur des sources publiques uniquement. Le cœur du métier : <b>vérifier</b> par une double source (collisions d'homonymes, fausses informations, aperçus d'IA). Limites légales : art. 323-1 (accès ou maintien frauduleux), 226-18 (collecte déloyale) ; automatiser sur une personne ciblée est interdit.</li>
 </div>
 
 <!-- ===================================================================== -->
@@ -224,11 +231,18 @@ réseau adjacent, à distance) × <b>vulnérabilité</b> (nombre, type et gravit
 sur un même chemin d'attaque sont bien plus dangereuses que trois failles dispersées : elles laissent progresser l'attaquant dans sa kill chain.</div>
 <div class="tw"><table><thead><tr><th>Méthode</th><th>Principe</th><th>Limite</th></tr></thead><tbody>
 <tr><td>CVSS</td><td>Score de gravité de 0 à 10 (métriques de base, temporelles, environnementales)</td><td>Ne mesure ni la probabilité réelle d'exploitation ni le contexte de l'organisation, ni les combinaisons de failles</td></tr>
-<tr><td>EPSS</td><td>Probabilité qu'une vulnérabilité soit exploitée prochainement (développé par le FIRST)</td><td>Une probabilité générale, pas votre exposition</td></tr>
+<tr><td>EPSS</td><td>Probabilité (de 0 à 1) qu'une vulnérabilité soit exploitée dans les <b>30 prochains jours</b> (développé par le FIRST)</td><td>Une probabilité générale, pas votre exposition</td></tr>
 <tr><td>SSVC</td><td>Catégorisation par arbre de décision selon le contexte de l'organisation (surtout l'administration américaine)</td><td>Pas de score numérique</td></tr>
 <tr><td>KEV</td><td>Catalogue de la CISA des vulnérabilités <b>connues pour être exploitées</b></td><td>Ne couvre que l'exploitation constatée</td></tr>
 <tr><td>MITRE ATT&amp;CK</td><td>Prioriser selon les techniques réellement employées par les attaquants</td><td>Approche comportementale, plus lourde</td></tr>
 </tbody></table></div>
+<div class="callout"><div class="t">Pourquoi prioriser</div>
+Une trentaine de vulnérabilités ouvertes sur un SI, c'est courant ; on ne peut pas tout corriger à la fois. Le <b>CVSS</b> a un seul avantage :
+la décision est immédiate (9,8 : « la porte est ouverte » ; 5 : moyen ; 2-3 : faible). Mais une faille critique sur un équipement que personne
+n'atteint peut attendre, alors qu'avec le <b>SSVC</b> (CISA) une vulnérabilité notée 6 mais <b>activement exploitée</b> dans votre environnement
+passe devant ; le prix est une <b>enquête</b> CTI (est-elle exploitée, où, depuis quand, l'est-elle encore ?). L'<b>EPSS</b> (FIRST) regarde la
+vulnérabilité elle-même et prédit son exploitation, pas votre organisation. La méthode jugée la meilleure <b>combine</b> CVSS, EPSS et les
+schémas d'attaque d'ATT&amp;CK, au prix de beaucoup de temps d'analyste.</div>
 
 <!-- ===================================================================== -->
 <h2 id="ch6"><span class="num">6.</span> Méthodes de modélisation et d'analyse</h2>
@@ -243,14 +257,27 @@ Méthodes : <b>STRIDE</b> (Microsoft : <i>Spoofing, Tampering, Repudiation, Info
 <b>LINDDUN</b> (vie privée), arbres d'attaque.</div>
 <div class="card"><h4>Analyse de la menace</h4>
 Comprendre le comportement des attaquants et coordonner la réponse (détection, réponse à incident) : <b>Cyber Kill Chain</b>, <b>modèle Diamond</b>,
-<b>MITRE ATT&amp;CK</b>. Approche réactive et proactive.</div>
+<b>MITRE ATT&amp;CK</b>, arbres d'attaque. Approche réactive et proactive.</div>
 </div>
+<div class="tw"><table><thead><tr><th>Méthode</th><th>Niveau, orientation</th><th>Outil associé</th></tr></thead><tbody>
+<tr><td>STRIDE, DREAD, Trike</td><td>Bas niveau : composants, réseaux, hôtes (STRIDE est la plus utilisée)</td><td>Microsoft Threat Modeling Tool (STRIDE), OWASP Threat Dragon (DREAD)</td></tr>
+<tr><td>PASTA, OCTAVE</td><td>Haut niveau, risques métier ; OCTAVE, « couteau suisse », va jusqu'à l'analyse de risque</td><td>—</td></tr>
+<tr><td>LINDDUN</td><td>Données personnelles et vie privée (RGPD, confidentialité, non-répudiation)</td><td>—</td></tr>
+<tr><td>MITRE ATT&amp;CK</td><td>Polyvalent : du bas au haut niveau</td><td>ATT&amp;CK Navigator</td></tr>
+</tbody></table></div>
+<p>La modélisation sert la <b>prévention et la conception sécurisée</b> : elle reste théorique, sans regarder l'attaquant agir. L'analyse est
+<b>opérationnelle</b> : elle sert la détection et la réponse aux incidents, et c'est elle que la CTI pratique surtout.</p>
 
 <h3 id="ch6-modeles">6.2 Kill Chain, APT, Diamond</h3>
 <div class="phase-band">
 <div class="p1"><b>Cyber Kill Chain</b><br>Lockheed Martin, 2011, inspirée de la chaîne militaire. 7 étapes : reconnaissance, armement, livraison, exploitation, installation, commande et contrôle, actions sur l'objectif. L'attaquant ne les suit pas forcément dans l'ordre.</div>
 <div class="p2"><b>APT</b><br>Menace persistante avancée (rapport Mandiant APT1) : attaque <b>ciblée</b>, <b>avancée</b> (techniques sophistiquées, 0-day) et <b>persistante</b> (accès furtif et durable) pour voler ou perturber. Ex. Stuxnet, APT29.</div>
 <div class="p3"><b>Modèle Diamond</b><br>Quatre sommets : <b>adversaire</b>, <b>infrastructure</b> (C2, serveurs), <b>capacité</b> (outils, techniques), <b>victime</b>. Un événement : un adversaire déploie une capacité, sur une infrastructure, contre une victime. On pivote d'un sommet à l'autre.</div>
+</div>
+<div class="grid c3">
+<div class="card"><h4>Le Diamond en pratique</h4>La victime découvre un logiciel malveillant (la <b>capacité</b>), remonte à l'<b>infrastructure</b> qui l'a livré, puis par les adresses IP à l'<b>adversaire</b> ; de là, on retrouve les <b>autres victimes</b> de la même campagne. C'est ainsi que travaillent les analystes : documenter une victime pour agréger toute une campagne.</div>
+<div class="card"><h4>Exemples d'APT</h4><b>Stuxnet</b>, « l'an zéro » de la cybersécurité moderne : il a saboté les centrifugeuses d'enrichissement d'uranium iraniennes en agissant sur les automates, et fait perdre des années au programme. <b>APT29</b>, alias <b>Cozy Bear</b> : cyberespionnage contre des agences gouvernementales. Chaque groupe a un identifiant et un surnom.</div>
+<div class="card"><h4>Pourquoi la Kill Chain recule</h4>ATT&amp;CK en reprend la logique en <b>deux fois plus détaillé</b> (14 tactiques contre 7 étapes), et un attaquant réel ne suit pas un couloir de sept portes : il avance par <b>percolation</b> dans un arbre (voir 6.3). Les modèles restent complémentaires ; le plus utilisé aujourd'hui est l'approche APT et ATT&amp;CK.</div>
 </div>
 
 <h3 id="ch6-attack">6.3 MITRE ATT&amp;CK et l'arbre d'attaque</h3>
@@ -274,9 +301,28 @@ une <b>procédure</b> sa mise en œuvre concrète.</p>
 <tr><td>14</td><td>Impact (TA0040)</td><td>manipuler, interrompre ou détruire</td></tr>
 </tbody></table></div>
 <div class="grid c2">
-<div class="card"><h4>L'arbre d'attaque</h4>La racine est l'objectif de l'attaquant, les feuilles des actions ; les nœuds intermédiaires sont des sous-objectifs. Dérivé des arbres de défaillance (Bruce Schneier, 1999). Il décrit la <b>surface</b> d'attaque (les branches) quand la kill chain décrit la <b>profondeur</b> de chaque phase : ils se complètent.</div>
+<div class="card"><h4>L'arbre d'attaque</h4>La racine est l'objectif de l'attaquant, les feuilles des actions ; les nœuds intermédiaires sont des sous-objectifs. Dérivé des arbres de défaillance (Bruce Schneier, 1999). Il décrit la <b>surface</b> d'attaque (les branches) quand la kill chain décrit la <b>profondeur</b> de chaque phase : ils se complètent. L'attaquant <b>percole</b> : il force toutes les portes, avance là où l'une cède, rebondit par mouvement latéral ; bloqué dans une branche, il progresse dans une autre. La kill chain en est une simplification.</div>
 <div class="card"><h4>Relier vulnérabilités, menaces, actifs</h4>Chaque vulnérabilité (<b>CVE</b>, recensée avec son score dans la NVD, la base nationale des vulnérabilités du NIST américain, qui gère la nomenclature) a pour cause une faiblesse (<b>CWE</b>) ; son exploitation suit un modèle d'attaque (<b>CAPEC</b>) ; ce modèle s'appuie sur des TTP (<b>ATT&amp;CK</b>). Les <b>CPE</b> nomment les produits et font le lien avec la gestion des actifs. Chaque base a ses lacunes : la chaîne se casse souvent au niveau de CAPEC. Ces bases de « bas niveau » se relient aux ontologies générales, comme l'UCO (<i>Unified Cybersecurity Ontology</i>).</div>
 </div>
+<div class="viz"><div class="t">Attaque d'un système industriel : profondeur et surface</div>
+<svg viewBox="0 0 900 230" role="img" aria-label="Superviseur SCADA, automates, capteurs et actionneurs ; attaque par Modbus">
+<g class="vz-step"><rect class="vz-box" x="330" y="10" width="240" height="44" rx="8"/><text class="vz-lbl" x="450" y="30" text-anchor="middle">Supervision SCADA</text><text class="vz-sub" x="450" y="46" text-anchor="middle">pilote l'ensemble</text></g>
+<g class="vz-step"><rect class="vz-filt" x="330" y="92" width="240" height="44" rx="8"/><text class="vz-lbl" x="450" y="112" text-anchor="middle">Automates (API / PLC)</text><text class="vz-sub" x="450" y="128" text-anchor="middle">dialoguent en Modbus</text><line x1="450" y1="54" x2="450" y2="92" class="vz-wire"/></g>
+<g class="vz-step"><rect class="vz-ok" x="160" y="176" width="240" height="44" rx="8"/><text class="vz-lbl" x="280" y="196" text-anchor="middle">Capteurs</text><text class="vz-sub" x="280" y="212" text-anchor="middle">remontent l'état vers l'automate</text><rect class="vz-ok" x="500" y="176" width="240" height="44" rx="8"/><text class="vz-lbl" x="620" y="196" text-anchor="middle">Actionneurs</text><text class="vz-sub" x="620" y="212" text-anchor="middle">exécutent ses ordres (vannes, pompes)</text><line x1="400" y1="136" x2="300" y2="176" class="vz-wire"/><line x1="500" y1="136" x2="600" y2="176" class="vz-wire"/></g>
+<g class="vz-step"><rect class="vz-bad" x="610" y="70" width="270" height="62" rx="8"/><text class="vz-lbl vz-t-bad" x="745" y="94" text-anchor="middle">Attaque sur Modbus</text><text class="vz-sub" x="745" y="112" text-anchor="middle">protocole sans authentification</text><text class="vz-sub" x="745" y="126" text-anchor="middle">ni chiffrement : ordres injectés</text><line x1="610" y1="114" x2="570" y2="114" class="vz-wire"/></g>
+<g class="vz-step"><text class="vz-sub" x="20" y="60">Vertical : la kill chain,</text><text class="vz-sub" x="20" y="76">profondeur de l'attaque</text><text class="vz-sub" x="20" y="120">Horizontal : l'arbre d'attaque,</text><text class="vz-sub" x="20" y="136">surface des composants visés</text></g>
+</svg></div>
+<div class="callout"><div class="t">Trois mondes reliés par les ontologies</div>
+Il y a dix ans, la <b>gestion des actifs</b>, la <b>gestion des vulnérabilités</b> et la <b>gestion de la menace</b> étaient des silos qui ne se
+comprenaient pas ; les ontologies servent à les connecter. Partant d'un équipement de l'inventaire, on remonte : son <b>CPE</b> → les <b>CVE</b>
+qui l'affectent (avec leur CVSS) → la <b>CWE</b>, faiblesse sous-jacente et <b>charnière</b> entre vulnérabilités et menace → les <b>CAPEC</b>, motifs
+d'attaque qui se faufilent à travers plusieurs faiblesses → les <b>techniques ATT&amp;CK</b> qui leur correspondent → les <b>acteurs</b> qui les emploient.
+La question posée : « voici mon équipement, qu'est-ce qui pourrait m'arriver, et par quelle technique ? ». C'est à cela que sert la CTI :
+aider la gestion des vulnérabilités à corriger <b>dans le bon ordre</b>.</div>
+<div class="example"><div class="t">Le CPE et la CMDB</div>
+La base de gestion des configurations (CMDB) recense matériels, logiciels, parfois le middleware, chacun sous un identifiant précis. Un bulletin
+de sécurité vise une version exacte (tel pare-feu en 4.1.012, pas un autre) ; sous Windows, l'identification descend jusqu'au <b>build</b> et au
+<b>patch</b>. Un actif mal identifié, c'est une gestion des vulnérabilités qui se trompe de cible.</div>
 
 <!-- ===================================================================== -->
 <h2 id="ch7"><span class="num">7.</span> Plateformes, STIX et production de renseignement</h2>
@@ -292,13 +338,33 @@ Un <b>outil</b> pour gérer et exploiter ce renseignement : agrégation, analyse
 automatisation. Open source : <b>MISP</b>, <b>OpenCTI</b> ; commerciales : ThreatConnect, Anomali ThreatStream (qui sont aussi fournisseurs).
 Un fournisseur vous donne une liste d'IP ; la TIP vous permet de détecter, prévenir, répondre et vous améliorer.</div>
 </div>
+<div class="callout warn"><div class="t">Un fournisseur n'est pas une plateforme</div>
+On appelle parfois, à tort, les fournisseurs « plateformes de CTI » : la confusion avec les TIP est alors assurée. Le fournisseur <b>collecte et
+enrichit</b> des données ; la plateforme permet de se concentrer sur l'<b>étude</b> de la menace et sur son <b>partage</b> : reliée au SI, elle croise
+vos propres incidents avec les flux externes. Les fournisseurs, eux, sont nourris par les analystes qui remontent les attaques subies.</div>
+<div class="tw"><table><thead><tr><th>Acteur</th><th>Point fort</th></tr></thead><tbody>
+<tr><td>OTX (AlienVault)</td><td>Enrichissement d'IoC</td></tr>
+<tr><td>VirusTotal</td><td>Réputation d'URL, de fichiers et d'IP</td></tr>
+<tr><td>Recorded Future</td><td>Dark web, forums, rapports (payant)</td></tr>
+<tr><td>ThreatStream (Anomali)</td><td>Menaces émergentes et campagnes ; aussi plateforme</td></tr>
+<tr><td>ThreatConnect</td><td>Fournisseur et plateforme à la fois</td></tr>
+<tr><td>GreyNoise</td><td>Scans de ports, bots, bruit de fond d'Internet</td></tr>
+<tr><td>MISP</td><td>TIP open source la plus ancienne et la plus documentée</td></tr>
+<tr><td>OpenCTI</td><td>TIP open source française, récente, orientée graphe</td></tr>
+<tr><td>Sekoia</td><td>Solution commerciale française, approche en graphe, orientée gestion des vulnérabilités</td></tr>
+</tbody></table></div>
 
 <h3 id="ch7-stix">7.2 STIX, l'ontologie de la menace</h3>
 <p><b>STIX</b> (<i>Structured Threat Information Expression</i>) est un langage et un format d'échange du renseignement, libre. Il décrit des
-<b>objets</b> (SDO : acteur de la menace, campagne, ensemble d'intrusions, malware, outil, motif d'attaque, indicateur, vulnérabilité,
-infrastructure, identité, plan d'action…) reliés par des <b>relations</b> (SRO : <i>uses</i>, <i>indicates</i>, <i>targets</i>, <i>attributed-to</i>,
+<b>objets</b> (SDO : acteur de la menace <i>Threat Actor</i>, campagne <i>Campaign</i>, ensemble d'intrusions <i>Intrusion Set</i>, malware, outil <i>Tool</i>,
+motif d'attaque <i>Attack Pattern</i>, indicateur <i>Indicator</i>, vulnérabilité <i>Vulnerability</i>, données observées <i>Observed Data</i>,
+rapport <i>Report</i>, infrastructure, identité, plan d'action <i>Course of Action</i>…) reliés par des <b>relations</b> (SRO : <i>uses</i>, <i>indicates</i>, <i>targets</i>, <i>attributed-to</i>,
 <i>mitigates</i>…). On obtient un <b>graphe</b> où les relations servent de pivots. <b>TAXII</b> transporte les objets STIX entre organisations ;
 <b>CybOX</b> décrit les observations de sécurité, là où STIX décrit les menaces.</p>
+<div class="grid c2">
+<div class="card"><h4>Un format d'échange</h4>STIX 2 est un langage <b>déclaratif</b> sérialisé en <b>JSON</b> enrichi, pas un format de mise en page. Les ontologies de cybersécurité sont la tendance la plus récente : elles ne se sont stabilisées que depuis un à deux ans et servent l'<b>interopérabilité</b> entre plateformes. Les relations (SRO) sont standard ou définies sur mesure. Exemples : une infrastructure <i>contrôle</i> un malware, un ensemble d'intrusions l'<i>utilise</i>, un indicateur l'<i>indique</i>, un malware est une <i>variante</i> d'un autre.</div>
+<div class="card"><h4>STIX ou CybOX</h4>Dans STIX, la lettre qui compte est le <b>T</b> : <i>Threat</i>, la menace (acteurs, campagnes, intentions). Dans CybOX, c'est <b>Ob</b> : <i>observable</i>, des faits techniques bas niveau (IP, empreintes, clés de registre) dont beaucoup ne sont <b>liés à aucune attaque</b>. Le graphe STIX d'une attaque montre d'un coup d'œil qui a attaqué, dans quelle campagne, avec quel malware et quel outil.</div>
+</div>
 
 <h3 id="ch7-analyse">7.3 Analyser, évaluer, rapporter</h3>
 <div class="grid c2">
@@ -398,6 +464,12 @@ Contrôles : vérifier chaque identifiant et chaque couple technique-tactique co
 <p>Situation type : un éditeur publie un rapport sur l'exploitation active d'une vulnérabilité (ici, la chaîne <b>ToolShell</b> de SharePoint
 sur site, juillet 2025, exploitée par plusieurs groupes et suivie d'un rançongiciel). La direction demande : « Qu'est-ce qu'on fait de tous ces
 indicateurs ? » Un rapport n'est pas un flux d'IoC : il faut le traiter.</p>
+<div class="example"><div class="t">Le cas réel : ToolShell</div>
+Microsoft Threat Intelligence a décrit le 22 juillet 2025 l'exploitation de SharePoint Server sur site (CVE-2025-53770, CVE-2025-49704,
+CVE-2025-49706, toutes au catalogue KEV de la CISA) par <b>Linen Typhoon</b> (APT27), <b>Violet Typhoon</b> (APT31) et <b>Storm-2603</b>,
+ce dernier déployant ensuite le rançongiciel <b>Warlock</b>. ATT&amp;CK a depuis ajouté la campagne <b>C0058</b> (<i>SharePoint ToolShell Exploitation</i>).
+Outil employé pour le triage : <b>MSTICPy</b>, bibliothèque Python de Microsoft pour les analystes SOC, DFIR et CTI : extraction d'IoC par
+expressions régulières, interrogation des fournisseurs (VirusTotal, OTX, AbuseIPDB), synthèse des résultats.</div>
 
 <h3 id="ch11-extraire">11.1 Extraire, normaliser, nettoyer</h3>
 <div class="steps" id="anim-triage">
@@ -434,7 +506,7 @@ comportements. Et bloquer tous les IoC ne protège pas tant que la vulnérabilit
 <p>Situation type : l'inventaire des vulnérabilités d'un hôpital (des CVE et des faiblesses de configuration, chacune liée à un actif et à
 une exposition : Internet, interne, isolé) confronté aux menaces documentées dans ATT&amp;CK.</p>
 <div class="grid c2">
-<div class="card"><h4>De la CVE à la technique</h4>La chaîne CVE → CWE → CAPEC → ATT&amp;CK se casse souvent. Le <b>Center for Threat-Informed Defense</b> (MITRE) propose pour les CVE du catalogue KEV un mapping direct : technique d'exploitation, impact principal, impacts secondaires. Utile, mais pas infaillible : il faut relire les mappings, et les adapter quand la version d'ATT&amp;CK change.</div>
+<div class="card"><h4>De la CVE à la technique</h4>La chaîne CVE → CWE → CAPEC → ATT&amp;CK se casse souvent. Le <b>Center for Threat-Informed Defense</b> (CTID, MITRE) propose pour les CVE du catalogue KEV un mapping direct : technique d'exploitation, impact principal, impacts secondaires. Utile, mais pas infaillible : il faut relire les mappings, et les adapter quand la version d'ATT&amp;CK change.</div>
 <div class="card"><h4>Le profil technique du SI</h4>Chaque vulnérabilité donne un poids aux techniques qu'elle rend possibles, pondéré par son <b>exposition</b> (une faille sur une machine isolée pèse peu, même avec un CVSS de 9,8). Une technique prend le poids de la <b>pire</b> vulnérabilité qui l'ouvre (un seul chemin suffit à l'attaquant).</div>
 </div>
 <div class="viz"><div class="t">Deux façons de confronter le SI aux menaces</div>
@@ -446,13 +518,164 @@ une exposition : Internet, interne, isolé) confronté aux menaces documentées 
 </div>
 <div class="vz-bar"><button class="btn" data-cards="open">Tout déplier</button><button class="btn ghost" data-cards="close">Tout replier</button><span class="cnt"></span></div>
 </div>
+<div class="example"><div class="t">Lire une couche de comparaison dans Navigator</div>
+Pour un acteur donné (la campagne C0058 ; APT27, alias Threat Group-3390, G0027 ; APT31, alias ZIRCONIUM, G0128), la couche colore en
+<b>bleu</b> les techniques que permettent seulement les faiblesses du SI, en <b>rouge</b> celles que seul l'acteur emploie, en <b>violet</b> celles
+qui cumulent les deux : c'est là que se trouvent les étapes de chemin à casser en priorité. Une menace « par défaut » (un groupe dont la fiche
+mentionne la santé, pour un hôpital) doit elle aussi être justifiée par cette confrontation, pas par le seul secteur.</div>
 <div class="callout warn"><div class="t">Ce qu'il faut en retenir</div>
 Le <b>CVSS</b> classe les failles une par une : il ne dit rien de leurs <b>combinaisons</b> ni de votre <b>exposition</b>. Projeter les vulnérabilités
 sur ATT&amp;CK permet de raisonner en <b>chemins d'attaque</b>. Les CVE ouvrent souvent la porte, mais le reste du chemin passe par des
 <b>faiblesses de configuration</b>. Les couches se visualisent dans <b>ATT&amp;CK Navigator</b> (carte de chaleur, comparaison SI / acteur).</div>
 
 <!-- ===================================================================== -->
-<h2 id="qcm-sec"><span class="num">13.</span> QCM — <span id="count-badge" class="badge acc"></span></h2>
+<h2 id="ch13"><span class="num">13.</span> L'OSINT : définition, disciplines, cadre</h2>
+<p>Le module OSINT (17 novembre après-midi) est donné par deux anciens élèves devenus ingénieurs en cybersécurité, sous forme de cours intégré :
+de courts apports, puis des challenges d'enquête en ligne sur la plateforme OSINTopia.</p>
+
+<h3 id="ch13-def">13.1 Définition et méthode</h3>
+<div class="callout def"><div class="t">OSINT ou ROSO</div>
+Le <b>renseignement d'origine sources ouvertes</b> (ROSO ; <i>Open Source Intelligence</i>) est une méthode de renseignement qui n'utilise que des
+sources d'information <b>publiques</b>. Elle procède en entonnoir : la <b>collecte</b> ramène la plus grande masse de données, l'<b>agrégation</b>
+réduit et structure, l'<b>analyse</b> ne garde que ce qui répond au besoin.</div>
+<div class="grid c2">
+<div class="card"><h4>Usages civils</h4>Ressources humaines (l'empreinte numérique d'un candidat, à partir d'un nom et d'une photo), journalistes
+(vérifier une information avant de la publier), individus.</div>
+<div class="card"><h4>Usages militaires et cyber</h4>Armées, gendarmerie, services de renseignement ; en cyber, la <b>LID</b> (lutte informatique défensive),
+la <b>L2I</b> (lutte informatique d'influence), l'enquête numérique et la forensique. Un enquêteur, à partir d'un nom et d'une ville, réduit déjà
+fortement son champ de recherche.</div>
+</div>
+<div class="callout warn"><div class="t">Le vrai travail : aligner l'information</div>
+Les homonymes abondent. Une enquête professionnelle ne dit pas seulement « j'ai trouvé ceci » : elle dit comment l'information a été
+<b>vérifiée</b>, avec une <b>double source</b> jugée de confiance. Sans cela, ce n'est qu'une navigation sur un moteur de recherche.</div>
+
+<h3 id="ch13-disciplines">13.2 Les familles de renseignement</h3>
+<div class="tw"><table><thead><tr><th>Famille</th><th>Ce qu'elle exploite</th><th>Exemples d'outils ou de sous-branches</th></tr></thead><tbody>
+<tr><td><b>SOCMINT</b> (<i>Social Media Intelligence</i>)</td><td>Les réseaux sociaux et les moteurs de recherche, pour une personne comme pour une entreprise</td><td>Instagram, LinkedIn, X, Facebook, YouTube ; Google, Bing, DuckDuckGo, <b>Yandex</b> (utile pour l'espace russophone) ; Copains d'avant, Wikipédia, Strava</td></tr>
+<tr><td><b>GEOINT</b> (<i>Geospatial Intelligence</i>)</td><td>Les images et données liées à un lieu précis</td><td>Flightradar (avions), MarineTraffic (navires), OpenStreetMap et <b>Overpass Turbo</b>, Google Maps, Plans d'Apple</td></tr>
+<tr><td><b>IMINT</b> (<i>Imagery Intelligence</i>)</td><td>Branche du GEOINT : les images, notamment aériennes et satellitaires</td><td>Google Earth (historique d'images), Time and Date, <b>SunCalc</b>, GeoGuessr</td></tr>
+<tr><td><b>SIGINT</b> (<i>Signals Intelligence</i>)</td><td>Interception et exploitation de signaux</td><td><b>COMINT</b> (communications), <b>ELINT</b> (électronique, radars), <b>FISINT</b> (signaux d'instrumentation étrangers)</td></tr>
+<tr><td><b>MASINT</b> (<i>Measurement and Signature Intelligence</i>)</td><td>Détection, suivi et identification de signatures distinctives</td><td>RADINT (radar), ACOUSTINT (acoustique), IRINT (infrarouge), NUCINT (nucléaire), TELINT (télémesure)</td></tr>
+<tr><td><b>HUMINT</b> (ROHUM)</td><td>Le renseignement d'origine humaine : entretiens, témoins, populations</td><td>—</td></tr>
+</tbody></table></div>
+<p>SIGINT, MASINT et HUMINT ne sont <b>pas</b> des sources ouvertes : le support les range parmi les « types d'OSINT » par souci d'exhaustivité,
+mais ils relèvent de services spécialisés. Les intervenants ont reconnu des approximations sur ces diapositives et dit qu'ils n'interrogeraient
+pas précisément dessus.</p>
+<div class="grid c3">
+<div class="card"><h4>Copains d'avant</h4>Précieux pour une personne de 50 à 60 ans : une seule photo de classe identifiée suffit à <b>pré-créer</b> un compte pour une vingtaine de personnes, qui ne le savent pas.</div>
+<div class="card"><h4>Wikipédia</h4>L'<b>historique des modifications</b> d'un contributeur révèle ses centres d'intérêt et ses compétences.</div>
+<div class="card"><h4>Strava</h4>Réglée sur <b>public par défaut</b>, l'application a trahi des bases militaires et la position de militaires (un officier russe tué après avoir publié ses parcours).</div>
+</div>
+
+<h3 id="ch13-droit">13.3 Ce que dit la loi</h3>
+<div class="tw"><table><thead><tr><th>Texte</th><th>Ce qu'il punit</th><th>Peine</th></tr></thead><tbody>
+<tr><td>Code pénal, art. <b>323-1</b></td><td>Accéder ou se <b>maintenir</b> frauduleusement dans un système de traitement automatisé de données (STAD) : la frontière avec le piratage</td><td>3 ans, 100 000 €</td></tr>
+<tr><td>Code pénal, art. <b>226-17</b></td><td>Traiter des données personnelles sans les mesures de sécurité prescrites par le RGPD et la loi Informatique et libertés</td><td>5 ans, 300 000 €</td></tr>
+<tr><td>Code pénal, art. <b>226-18</b></td><td><b>Collecte déloyale</b> de données personnelles : faux profils, usurpation, ingénierie sociale</td><td>5 ans, 300 000 €</td></tr>
+</tbody></table></div>
+<div class="grid c2">
+<div class="card"><h4>Chercher, oui ; automatiser sur une personne, non</h4>La recherche en sources ouvertes n'est pas interdite en soi. Ce qui l'est : <b>automatiser</b> la collecte sur une personne <b>ciblée</b> sans son autorisation. Un recruteur peut regarder ce qui est public ; s'en servir pour discriminer est illégal. Le RGPD et le secret professionnel s'appliquent à ce que l'on collecte.</div>
+<div class="card"><h4>Visible ne veut pas dire autorisé</h4>Un répertoire ouvert trouvé par une requête ou un port exposé ne donnent <b>aucun droit</b> d'y entrer : s'y connecter, c'est s'introduire dans un système qui n'est pas à soi. Et si un agent d'IA le fait, il le fait <b>en votre nom</b>.</div>
+</div>
+
+<h3 id="ch13-opsec">13.4 Se protéger quand on enquête</h3>
+<div class="key-points">
+<li>Tout ce qui est publié, même dans une messagerie privée, peut <b>ressortir publiquement</b> un jour : limiter au strict minimum ce que l'on publie.</li>
+<li>Utiliser un <b>VPN</b>, et un <b>persona</b> (ou <i>sock puppet</i>) : une identité fictive et jetable qui cache celle de l'enquêteur. Outils : Fake Name Generator (identité), messagerie jetable, OnlineSim (numéro de téléphone), Fake Company Generator (entreprise), This Person Does Not Exist (photo générée) ; l'IA fait aujourd'hui tout cela.</li>
+<li>Les sites filtrent les inscriptions par nom de domaine : une adresse d'un grand webmail passe partout, car on ne peut pas le bloquer. À l'inverse, les numéros jetables publics sont connus et souvent <b>bannis</b>, car les escrocs les utilisent aussi.</li>
+<li>Trop tard ? La <b>CNIL</b> propose des modèles de courrier : demande d'effacement (article 17 du RGPD), réponse attendue sous un mois, saisine de la CNIL à défaut.</li>
+</div>
+<div class="viz"><div class="t">Le routage en oignon de Tor</div>
+<svg viewBox="0 0 900 170" role="img" aria-label="Utilisateur, nœud d'entrée, nœud intermédiaire, nœud de sortie, site">
+<g class="vz-step"><rect class="vz-box" x="10" y="60" width="130" height="50" rx="8"/><text class="vz-lbl" x="75" y="90" text-anchor="middle">Enquêteur</text></g>
+<g class="vz-step"><rect class="vz-filt" x="190" y="60" width="150" height="50" rx="8"/><text class="vz-lbl" x="265" y="82" text-anchor="middle">Nœud d'entrée</text><text class="vz-sub" x="265" y="100" text-anchor="middle">connaît l'origine</text><path class="vz-wire" d="M140,85 H190"/></g>
+<g class="vz-step"><rect class="vz-filt" x="390" y="60" width="150" height="50" rx="8"/><text class="vz-lbl" x="465" y="82" text-anchor="middle">Nœud intermédiaire</text><text class="vz-sub" x="465" y="100" text-anchor="middle">ne connaît ni l'un ni l'autre</text><path class="vz-wire" d="M340,85 H390"/></g>
+<g class="vz-step"><rect class="vz-filt" x="590" y="60" width="150" height="50" rx="8"/><text class="vz-lbl" x="665" y="82" text-anchor="middle">Nœud de sortie</text><text class="vz-sub" x="665" y="100" text-anchor="middle">connaît la destination</text><path class="vz-wire" d="M540,85 H590"/></g>
+<g class="vz-step"><rect class="vz-box" x="780" y="60" width="110" height="50" rx="8"/><text class="vz-lbl" x="835" y="90" text-anchor="middle">Site</text><path class="vz-wire" d="M740,85 H780"/><text class="vz-sub" x="450" y="30" text-anchor="middle">une couche de chiffrement par relais : aucun relais ne connaît à la fois l'origine et la destination</text></g>
+</svg></div>
+<div class="callout warn"><div class="t">Tor n'est pas une cape d'invisibilité</div>
+Débit très dégradé ; des <b>gouvernements</b> contrôlent des nœuds ; et <b>JavaScript</b> permet de collecter de quoi vous pister (empreinte
+du navigateur) : pour un anonymat maximal, le désactiver complètement.</div>
+
+<h3 id="ch13-limites">13.5 Les limites de l'OSINT</h3>
+<div class="grid c2">
+<div class="card"><h4>Collision des données</h4>Deux homonymes : les informations de la personne A sont attribuées à la personne B, et l'enquête part sur une fausse piste.</div>
+<div class="card"><h4>Corrélation compliquée</h4>Une personne très connue ou un nom très répandu noient la cible sous les résultats.</div>
+<div class="card"><h4>Fausses informations</h4>Elles se multiplient avec l'IA : il faut démêler le vrai du faux.</div>
+<div class="card"><h4>Masse d'information</h4>Trouver ce qui est pertinent dans un volume énorme fait toute la difficulté du métier.</div>
+</div>
+
+<h3 id="ch13-l2i">13.6 L2I, IA et avenir</h3>
+<div class="example"><div class="t">Portal Kombat, étudié par VIGINUM</div>
+VIGINUM (le service de vigilance et de protection contre les ingérences numériques étrangères, rattaché au SGDSN) a décrit en février 2024
+<b>Portal Kombat</b>, un réseau structuré et coordonné de propagande prorusse : des sites « pravda » déclinés par pays (France, Allemagne,
+Pologne, Espagne, Royaume-Uni et États-Unis), construits sur le même modèle, qui reprennent des contenus pour pousser des <b>narratifs</b>.
+La L2I transpose la démarche de la CTI : là où la CTI s'appuie sur MITRE ATT&amp;CK, la L2I s'appuie sur <b>DISARM</b>, l'équivalent pour les
+techniques d'influence. Le rapport est aussi publié en <b>bundles STIX</b> : visualisé en graphe ou ingéré dans OpenCTI, il permet des pivots
+(un domaine utilisé aujourd'hui l'était peut-être, il y a trois ans, par un groupe apparenté). Attribuer une opération à un État exige
+plusieurs faisceaux d'indices.</div>
+<div class="tw"><table><thead><tr><th>Ce que l'IA apporte</th><th>Ce qui demande de la vigilance</th></tr></thead><tbody>
+<tr><td>Agréger des données <b>non structurées</b> (fuites de données, JSON, certificats SSL, HTML, code JavaScript illisible)</td><td><b>Accès non autorisés</b> commis par un agent, en votre nom ; clés d'accès confiées trop largement</td></tr>
+<tr><td>Déléguer des tâches à des <b>agents</b> (des modèles de langue à qui l'on fait exécuter des actions)</td><td><b>Hallucinations</b>, erreurs de corrélation, <b>empoisonnement</b> de données</td></tr>
+<tr><td>Automatiser le GEOINT <b>sans EXIF</b> : des <i>Vision Transformers</i> (ViT) remplacent la recherche d'image inversée</td><td><b>Blocages applicatifs</b> : un site qui détecte qu'il n'est pas consulté par un vrai navigateur client montre une vitrine anodine et cache son vrai contenu au robot</td></tr>
+</tbody></table></div>
+<div class="callout danger"><div class="t">Un aperçu d'IA n'est pas une preuve</div>
+Une adresse soumise à un moteur de recherche : l'aperçu d'IA annonce une boutique de vêtements, sources à l'appui. En creusant, c'était une
+<b>société vitrine</b> renommée plusieurs fois, liée à un trafic d'animaux. Les aperçus et les recherches visuelles des assistants d'IA sont
+utiles, mais produisent faux positifs et faux négatifs : tout se <b>vérifie</b>.</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch14"><span class="num">14.</span> Méthodes et outils de l'enquête OSINT</h2>
+
+<h3 id="ch14-dorks">14.1 Les Google Dorks</h3>
+<p>Des opérateurs qui rendent la recherche beaucoup plus précise, sur Google comme sur Bing (chaque moteur a sa syntaxe).</p>
+<div class="tw"><table><thead><tr><th>Besoin</th><th>Opérateur</th></tr></thead><tbody>
+<tr><td>Un site précis</td><td><code>site:example.com</code></td></tr>
+<tr><td>Contient exactement / ne contient pas</td><td><code>"texte"</code> / <code>-"texte"</code></td></tr>
+<tr><td>Le titre contient</td><td><code>intitle:"texte"</code> (ex. <code>intitle:"index of"</code> : répertoires ouverts)</td></tr>
+<tr><td>Le texte de la page contient</td><td><code>intext:"texte"</code></td></tr>
+<tr><td>Type de fichier</td><td><code>filetype:pdf</code></td></tr>
+<tr><td>L'URL contient</td><td><code>inurl:8081</code> (un port, un chemin)</td></tr>
+<tr><td>Une plage de valeurs</td><td><code>2010..2012</code></td></tr>
+<tr><td>L'un ou l'autre</td><td><code>truc | bidule | machin</code></td></tr>
+</tbody></table></div>
+<div class="grid c2">
+<div class="card"><h4>La Google Hacking Database</h4>La <b>GHDB</b>, branche d'<b>Exploit-DB</b>, recense des requêtes éprouvées par la communauté (fichiers contenant des mots de passe, serveurs vulnérables, pages de connexion). Les lire et les comprendre avant de les lancer.</div>
+<div class="card"><h4>Au-delà de Google</h4><b>Shodan</b> indexe les équipements connectés et leurs services exposés. Toujours la même limite : voir n'autorise pas à entrer.</div>
+</div>
+
+<h3 id="ch14-geoint">14.2 GEOINT : faire parler une image</h3>
+<div class="steps" id="anim-geoint">
+<div class="step"><b>1. Recherche inversée</b> <span class="who">Google Lens, Yandex</span><br>Images similaires, lieu, texte lu dans l'image ; l'IA ajoute du contexte.</div>
+<div class="step"><b>2. Métadonnées EXIF</b><br>Date, appareil, réglages, parfois coordonnées GPS. Elles peuvent être <b>falsifiées</b> ou fausses (un appareil qui perd sa pile repart en 1970), ou purgées par les réseaux sociaux.</div>
+<div class="step"><b>3. Indices visuels</b> <span class="who">zoomer</span><br>Enseignes, architecture, bornes, plaques, marquages au sol, sens de circulation : <b>GeoHints</b> les répertorie par pays.</div>
+<div class="step"><b>4. Recouper sur la carte</b><br>Overpass Turbo pour une requête précise (un café près d'une poste), Google Earth pour l'historique satellite, Street View pour le sol.</div>
+<div class="step"><b>5. Vérifier le temps</b><br><b>SunCalc</b> : la direction et la longueur des ombres confirment ou démentent l'heure et la date ; Street View garde des prises de vue datées (les enseignes changent).</div>
+</div>
+<button class="btn primary" onclick="playSteps('anim-geoint')">▶ Lancer l'animation</button>
+<div class="grid c2">
+<div class="card"><h4>Attention aux visualiseurs en ligne</h4>On ignore ce qu'un site d'analyse EXIF fait des images envoyées (stockage, suppression) : n'y mettre aucune image sensible, préférer un outil local open source (<code>exiftool</code>).</div>
+<div class="card"><h4>Street View, au-delà de la route</h4>Des <b>photosphères</b> permettent d'entrer dans des commerces ou de monter à un étage : un point de vue introuvable depuis la chaussée l'est parfois depuis une de ces pastilles. Une hypothèse vraisemblable n'est pas une certitude tant qu'on ne l'a pas vue.</div>
+</div>
+
+<h3 id="ch14-socmint">14.3 SOCMINT et outils de l'enquêteur</h3>
+<div class="tw"><table><thead><tr><th>Outil</th><th>Usage</th></tr></thead><tbody>
+<tr><td><b>WhatsMyName</b></td><td>Cherche un pseudonyme sur des centaines de sites ; un même pseudo n'est pas forcément la même personne (faux positifs)</td></tr>
+<tr><td><b>PimEyes</b></td><td>Recherche par reconnaissance faciale à partir d'une photo</td></tr>
+<tr><td><b>Yandex</b></td><td>Moteur russe, très efficace en recherche d'images</td></tr>
+<tr><td><b>Maltego</b></td><td>Graphe d'enquête : entités reliées par des transformations automatiques</td></tr>
+<tr><td><b>OSINTracker</b></td><td>Cartographier une enquête sous forme de graphe, pour la restituer</td></tr>
+<tr><td><b>OSINT Framework</b></td><td>Arborescence de ressources classées par type de donnée (pseudo, e-mail, domaine, image…)</td></tr>
+<tr><td><b>Unredacter</b></td><td>Retrouve un texte <b>pixelisé</b> : la pixellisation n'est pas un caviardage sûr</td></tr>
+<tr><td>theHarvester, Epieos, Hunter.io, Have I Been Pwned, urlscan.io, Whois</td><td>Adresses e-mail, comptes associés, fuites, analyse d'URL, propriétaire d'un domaine</td></tr>
+</tbody></table></div>
+<div class="example"><div class="t">Quand l'OPSEC fait défaut</div>
+Dans un challenge d'enquête, le membre d'un groupe d'hacktivistes qui néglige son OPSEC donne son pseudo, et de là tout le groupe.
+Dans la réalité : un blanchisseur de cryptomonnaie interpellé après s'être trahi sur les réseaux sociaux, des positions militaires
+révélées par une application de course.</div>
+
+<!-- ===================================================================== -->
+<h2 id="qcm-sec"><span class="num">15.</span> QCM — <span id="count-badge" class="badge acc"></span></h2>
 <p><b>Une seule bonne réponse par question</b>, ordre tiré au hasard, correction expliquée.</p>
 <div id="qcm"></div>
 
@@ -460,7 +683,7 @@ sur ATT&amp;CK permet de raisonner en <b>chemins d'attaque</b>. Les CVE ouvrent 
 </div>
 
 <button id="top" title="Haut de page">↑</button>
-<script src="qcm.js?v=2"></script>
+<script src="qcm.js?v=4"></script>
 <script src="../assets/app.js?v=35"></script>
 <script>initQCM(window.QCM_DATA, window.QCM_CHAPTERS, 'ent5002');</script>
 </body>

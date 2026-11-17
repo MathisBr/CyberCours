@@ -29,6 +29,7 @@ window.CATALOGUE = [
   titre: "OSINT et Cyber Threat Intelligence",
   dossier: "ent5002-osint-cti",
   sources: "../OSINT et C.T.I",
+  exclure: ["rapport_TP*", "Script_Oral_*"],
   etat: "en cours",
   couleur: "green",
   resume: "Le renseignement sur la menace, de l'indicateur de compromission aux tactiques de l'attaquant : un IoC se change en secondes, un comportement coûte cher.",
@@ -42,11 +43,13 @@ window.CATALOGUE = [
     "TIP, MISP, OpenCTI, STIX, TLP, ACH",
     "IA et CTI : agents, injection de prompt, ATLAS, garde-fous",
     "Trier des IoC : désamorcer, enrichir, vieillir, décider",
-    "Des vulnérabilités aux chemins d'attaque sur ATT&CK"
+    "Des vulnérabilités aux chemins d'attaque sur ATT&CK",
+    "OSINT : disciplines, cadre légal, persona, Tor, limites, L2I",
+    "Enquête OSINT : Google Dorks, GEOINT, SOCMINT, outils"
   ],
   ressources: [
     { type: "fiche", page: "fiche.html", titre: "Fiche de révision",
-      desc: "Le support complet des trois cours, la première séance et les deux TP",
+      desc: "Le support complet des trois cours, les deux premières séances, les deux TP et le module OSINT",
       qcm: { src: "qcm.js", cle: "ent5002" } },
     { type: "examen", page: "points-examen.html", titre: "Ce que le prof a signalé",
       desc: "Évaluation, IA proscrite et notions annoncées comme questions de cours" }
