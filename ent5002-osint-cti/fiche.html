@@ -31,7 +31,7 @@ protéger des systèmes numériques. Le cours part du plus technique — un indi
 
 <div class="callout"><div class="t">Sources de cette fiche</div>
 Le support complet du cours ENT5002 (137 diapositives : les trois cours de la semaine), les enregistrements des deux premières
-séances (16 et 17 novembre) et les deux notebooks de travaux pratiques (triage d'indicateurs, puis projection des vulnérabilités sur ATT&amp;CK).
+séances (16 et 17 novembre) et les trois notebooks de travaux pratiques (triage d'indicateurs, projection des vulnérabilités sur ATT&amp;CK, puis modélisation STIX et attribution par ACH).
 La séance 2 a repris les chapitres 5 à 7 ; les chapitres 8 à 10 ne sont, pour l'instant, que dans le support. Les chapitres 13 et 14 viennent
 du module OSINT du 17 novembre après-midi : son diaporama, ses deux TD (Google Dorks, GEOINT) et ses enregistrements.
 </div>
@@ -380,6 +380,60 @@ Automation and Response</i>) et un SIEM, déployer des règles sur pare-feu et E
 introduction, l'analyse, la conclusion, des recommandations. Le partage se marque avec le <b>TLP</b> (<i>Traffic Light Protocol</i> :
 CLEAR, GREEN, AMBER, RED, du plus au moins diffusable).</p>
 
+<h3 id="ch7-partage">7.4 Modéliser un incident en STIX 2.1 et le partager</h3>
+<p>Situation type (TP3) : les règles de détection ont parlé — un webshell <b>inconnu</b> vu par une règle comportementale, un autre
+<b>connu</b> vu par sa signature. La direction pose deux questions : « que dit-on, et à qui ? » et « qui est dans notre SI ? ».</p>
+<div class="grid c3">
+<div class="card"><h4>Ce qu'on observe</h4>Le <b>sighting</b> (observation) : tel indicateur a été vu chez nous, à telle date, tant de fois, sur tel serveur.</div>
+<div class="card"><h4>Ce qu'on déduit</h4>Les relations <b>indicates</b> (cet indicateur désigne tel outil ou tel acteur) et <b>attributed-to</b> (cette campagne est attribuée à tel acteur).</div>
+<div class="card"><h4>Avec quelle confiance</h4>La propriété <b>confidence</b> (0 à 100) et une <b>note</b> qui résume le raisonnement : STIX oblige à séparer le fait de l'interprétation.</div>
+</div>
+<div class="key-points">
+<li>Les <b>connaissances publiques</b> (vulnérabilités, techniques ATT&amp;CK, logiciels malveillants, ensembles d'intrusion cités par l'éditeur) sont marquées TLP:CLEAR.</li>
+<li>On ne transforme en <b>indicator</b> que les IoC qualifiés (priorité suffisante, hors services légitimes), chacun avec une <b>date de fin de validité</b> cohérente avec son vieillissement (environ deux demi-vies pour une IP, une URL ou un domaine ; aucune limite pour un hash). Créer une relation pour chaque IoC extrait, même un site officiel cité dans le rapport, noie le graphe sous des centaines d'objets inutiles.</li>
+<li><b>Qu'indique un indicateur ?</b> Le hash d'un webshell partagé par plusieurs groupes indique le <b>webshell</b>, pas un acteur ; seuls les IoC propres à un acteur (son domaine de commande et contrôle, sa porte dérobée) l'indiquent.</li>
+<li>STIX 2.1 n'a pas d'objet « incident » exploitable : on regroupe l'intrusion dans une <b>campaign</b>, qui <i>cible</i> l'organisation (<b>identity</b>) et <i>utilise</i> les techniques ; une variante inconnue est un <b>malware</b> (<i>is_family</i> faux) relié par <b>variant-of</b> à sa famille.</li>
+</div>
+<div class="tw"><table><thead><tr><th>Marquage TLP 2.0 (FIRST)</th><th>Diffusion autorisée</th></tr></thead><tbody>
+<tr><td>TLP:CLEAR</td><td>Sans restriction</td></tr>
+<tr><td>TLP:GREEN</td><td>La communauté du destinataire (par exemple les établissements de santé, l'ISAC)</td></tr>
+<tr><td>TLP:AMBER</td><td>L'organisation du destinataire et ses clients, au besoin d'en connaître</td></tr>
+<tr><td>TLP:AMBER+STRICT</td><td>L'organisation du destinataire uniquement</td></tr>
+<tr><td>TLP:RED</td><td>Les seuls participants à l'échange</td></tr>
+</tbody></table></div>
+<div class="callout warn"><div class="t">Partager, c'est filtrer</div>
+Le marquage se décide <b>objet par objet, dès la création</b>. Chaque destinataire reçoit les objets que son niveau autorise (le public :
+CLEAR ; un ISAC : jusqu'à GREEN ; un CERT sectoriel : jusqu'à AMBER). Une <b>relation hérite du marquage le plus restrictif</b> de ses deux
+extrémités, et une relation, une observation ou une note qui pointe vers un objet retiré est retirée aussi : sinon elle <b>trahirait</b>
+l'objet absent. Les observations (quand, sur quel serveur) restent en interne ; l'attribution aussi, même jugée probable.</div>
+
+<h3 id="ch7-ach">7.5 Attribuer : la matrice ACH</h3>
+<p>L'analyse des hypothèses concurrentes (Richards J. Heuer, <i>Psychology of Intelligence Analysis</i>, CIA, 1999) inverse le réflexe
+naturel : au lieu de chercher ce qui <b>confirme</b> l'hypothèse favorite, on cherche ce qui <b>réfute</b> chacune ; on retient la
+<b>moins réfutée</b>. Les hypothèses doivent couvrir les possibles : un groupe criminel, des services de renseignement, un opportuniste
+qui réutilise un code public, et <b>plusieurs acteurs</b> à la fois.</p>
+<div class="steps" id="anim-ach">
+<div class="step"><b>1. Coter chaque élément</b> <span class="who">code de l'Amirauté</span><br>Fiabilité de la source de A (totalement fiable) à F (impossible à évaluer), crédibilité de l'information de 1 (confirmée) à 6 (impossible à évaluer). Une rumeur rapportée par un contact se cote F6.</div>
+<div class="step"><b>2. Le confronter à chaque hypothèse</b><br>CC très cohérent, C cohérent, N neutre, I incohérent, II très incohérent. Exemple : une exploitation antérieure à la diffusion des codes publics est très incohérente avec l'opportuniste.</div>
+<div class="step"><b>3. Ne compter que les incohérences</b><br>Chaque I (1 point) ou II (2 points) est pondéré par le poids de l'élément (fiabilité × crédibilité, de 1 pour A1 à presque rien pour F6). Plus le total est bas, moins l'hypothèse est réfutée.</div>
+<div class="step"><b>4. Repérer les éléments non diagnostiques</b><br>Un élément coté pareil pour toutes les hypothèses (un webshell, Mimikatz : tout le monde les emploie) ne départage rien, même s'il vient de la source la plus fiable.</div>
+<div class="step"><b>5. Tester la sensibilité</b><br>Retirer chaque élément tour à tour : si le classement change, la conclusion repose sur peu d'éléments, qu'il faut consolider.</div>
+<div class="step"><b>6. Conclure en langage normé</b><br>Puis reporter la conclusion dans le bundle : relation <i>attributed-to</i> avec sa <i>confidence</i>, et une note.</div>
+</div>
+<button class="btn primary" onclick="playSteps('anim-ach')">▶ Lancer l'animation</button>
+<div class="tw"><table><thead><tr><th>Expression</th><th>Probabilité</th></tr></thead><tbody>
+<tr><td>Quasi certain</td><td>95 – 99 %</td></tr>
+<tr><td>Très probable</td><td>80 – 95 %</td></tr>
+<tr><td>Probable</td><td>55 – 80 %</td></tr>
+<tr><td>Chances égales</td><td>45 – 55 %</td></tr>
+<tr><td>Improbable</td><td>20 – 45 %</td></tr>
+<tr><td>Très improbable</td><td>5 – 20 %</td></tr>
+</tbody></table></div>
+<div class="callout"><div class="t">Ce que l'ACH donne, et ne donne pas</div>
+Elle ne donne pas la vérité : elle rend le raisonnement <b>explicite</b>, discutable et révisable. Deux hypothèses à égalité signalent que
+les éléments ne suffisent pas à trancher, et montrent <b>où investiguer</b>. La cotation des sources empêche des indices fragiles (des
+commentaires dans une langue étrangère, faciles à imiter sous faux drapeau, ou une rumeur) de peser autant qu'une trace technique.</div>
+
 <!-- ===================================================================== -->
 <h2 id="ch8"><span class="num">8.</span> Applications pratiques</h2>
 <div class="viz"><div class="t">Ce que la CTI apporte concrètement</div>
@@ -683,7 +737,7 @@ révélées par une application de course.</div>
 </div>
 
 <button id="top" title="Haut de page">↑</button>
-<script src="qcm.js?v=4"></script>
+<script src="qcm.js?v=5"></script>
 <script src="../assets/app.js?v=35"></script>
 <script>initQCM(window.QCM_DATA, window.QCM_CHAPTERS, 'ent5002');</script>
 </body>

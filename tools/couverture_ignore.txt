@@ -2191,3 +2191,170 @@ ent5002-osint-cti | Vérification d'intégrité EXIF
 ent5002-osint-cti | Vérification de la certitude
 ent5002-osint-cti | Vérification systématique des sources
 ent5002-osint-cti | Étudiant
+inf5061-intelligence-economique | CERN
+inf5061-intelligence-economique | CIAE
+inf5061-intelligence-economique | DANE
+inf5061-intelligence-economique | DWS
+inf5061-intelligence-economique | FDI
+inf5061-intelligence-economique | GAFAM
+inf5061-intelligence-economique | GONE
+inf5061-intelligence-economique | LLM
+inf5061-intelligence-economique | LM
+inf5061-intelligence-economique | MI6
+inf5061-intelligence-economique | MIT
+inf5061-intelligence-economique | PC
+inf5061-intelligence-economique | RAID
+inf5061-intelligence-economique | RIB
+inf5061-intelligence-economique | SNLE
+inf5061-intelligence-economique | UE
+inf5061-intelligence-economique | 0-day
+inf5061-intelligence-economique | 0-days
+inf5061-intelligence-economique | 3e RIMA
+inf5061-intelligence-economique | 3e RIMa
+inf5061-intelligence-economique | Affaire Shadow Brokers
+inf5061-intelligence-economique | Affaire Snowden (2013)
+inf5061-intelligence-economique | Ancrage institutionnel local
+inf5061-intelligence-economique | Android
+inf5061-intelligence-economique | Anthropic
+inf5061-intelligence-economique | Apple Watch
+inf5061-intelligence-economique | Ariane
+inf5061-intelligence-economique | Atlantic Council
+* | h:9f0c9be43cd6
+inf5061-intelligence-economique | Attaques ciblant les modèles d'IA
+inf5061-intelligence-economique | Automatisation et valeur de l'humain
+inf5061-intelligence-economique | BATX
+inf5061-intelligence-economique | BITD
+inf5061-intelligence-economique | Bitcoin
+inf5061-intelligence-economique | Black Friday
+* | h:7efcaf4dadd7
+inf5061-intelligence-economique | CIA
+inf5061-intelligence-economique | CND
+inf5061-intelligence-economique | CODIR
+inf5061-intelligence-economique | Changement de paradigme économique
+inf5061-intelligence-economique | Claude
+inf5061-intelligence-economique | Composition tripartite
+inf5061-intelligence-economique | Conséquences écologiques et industrielles
+inf5061-intelligence-economique | Contournement algorithmique RH
+inf5061-intelligence-economique | Cortana
+* | h:d88ad2dcbcee
+* | h:5a82d71491a4
+inf5061-intelligence-economique | DGX
+inf5061-intelligence-economique | DGX Spark
+inf5061-intelligence-economique | DRH
+inf5061-intelligence-economique | Dark Web
+inf5061-intelligence-economique | DeepSeek
+inf5061-intelligence-economique | Destroy Windows Spying
+inf5061-intelligence-economique | Difficulté de l'attribution
+inf5061-intelligence-economique | Dissymétrie des effectifs cyber
+inf5061-intelligence-economique | Donc on a mis une
+inf5061-intelligence-economique | DoublePulsar
+inf5061-intelligence-economique | Démocratisation applicative par les LLM
+inf5061-intelligence-economique | Déploiement des diasporas
+inf5061-intelligence-economique | Dérive du ciblage à distance
+inf5061-intelligence-economique | Déséquilibre démographique en Asie
+inf5061-intelligence-economique | ECHDAEN
+* | h:0aa99e39ee4a
+* | h:2bedaeaa981e
+inf5061-intelligence-economique | European Cyber Week
+inf5061-intelligence-economique | Extraterritorialité et dépendances critiques
+inf5061-intelligence-economique | FOST
+inf5061-intelligence-economique | Facebook
+inf5061-intelligence-economique | Facteur morphologique des robots
+inf5061-intelligence-economique | Financement et accessibilité
+inf5061-intelligence-economique | Formats de veille et de vulgarisation
+* | h:107529692279
+inf5061-intelligence-economique | Gmail
+inf5061-intelligence-economique | Gradation d'intensité
+inf5061-intelligence-economique | Guerre cognitive et minorités
+* | h:dd9e2ae728a0
+inf5061-intelligence-economique | HDD LLF
+inf5061-intelligence-economique | Historique du réseau
+inf5061-intelligence-economique | IMT
+inf5061-intelligence-economique | Impossibilité de détection visuelle
+inf5061-intelligence-economique | Impératif de résilience
+inf5061-intelligence-economique | Indicateurs de menace en Europe (2023-2026)
+inf5061-intelligence-economique | Inflation normative
+inf5061-intelligence-economique | Intelligence collective vs individualisme
+inf5061-intelligence-economique | Intifada
+inf5061-intelligence-economique | J'utilisais
+inf5061-intelligence-economique | Jaff
+inf5061-intelligence-economique | KGB
+inf5061-intelligence-economique | Kanaks
+* | h:6303ec5bdd6b
+inf5061-intelligence-economique | L'IA comme arme cognitive
+inf5061-intelligence-economique | LGBTQ+
+inf5061-intelligence-economique | LM Studio
+inf5061-intelligence-economique | La Suite
+inf5061-intelligence-economique | Lien mathématique et cryptographique
+inf5061-intelligence-economique | LinkedIn
+* | h:5057cf18ab03
+inf5061-intelligence-economique | Maintien sous le seuil de riposte
+inf5061-intelligence-economique | Maltego
+inf5061-intelligence-economique | Melo
+inf5061-intelligence-economique | Metasploit
+inf5061-intelligence-economique | Mistral
+inf5061-intelligence-economique | Modèle d'agilité français
+* | h:123209787241
+inf5061-intelligence-economique | Multiculturalisme vs Pluriculturalisme
+inf5061-intelligence-economique | NAMFI
+inf5061-intelligence-economique | Naval Group
+inf5061-intelligence-economique | Nmap
+inf5061-intelligence-economique | Nvidia
+inf5061-intelligence-economique | Nvidia DGX
+inf5061-intelligence-economique | Office
+inf5061-intelligence-economique | Omnibus
+inf5061-intelligence-economique | On peut empoisonner les
+inf5061-intelligence-economique | Paradigme d'ingénierie
+inf5061-intelligence-economique | Partenariats institutionnels de zone
+inf5061-intelligence-economique | Perte d'influence stratégique
+inf5061-intelligence-economique | Petya
+inf5061-intelligence-economique | PlayStation
+inf5061-intelligence-economique | PowerPoint
+inf5061-intelligence-economique | Privatisation de l'espace et militarisation
+inf5061-intelligence-economique | Production et publication doctrinale
+inf5061-intelligence-economique | Proton
+inf5061-intelligence-economique | Proton Mail
+inf5061-intelligence-economique | Prédation RH et captation de cerveaux
+inf5061-intelligence-economique | Qwen
+inf5061-intelligence-economique | Rapports de référence Viginum
+inf5061-intelligence-economique | Red Teams
+inf5061-intelligence-economique | Relativisme culturel et sémiotique
+inf5061-intelligence-economique | Relativité cognitive du temps
+inf5061-intelligence-economique | Remise en cause des dogmes
+* | h:760ca926d03f
+inf5061-intelligence-economique | Rosatom
+inf5061-intelligence-economique | Rotation interarmées
+inf5061-intelligence-economique | Réseau international
+inf5061-intelligence-economique | Rôle de la mineure académique
+inf5061-intelligence-economique | Satan 2
+inf5061-intelligence-economique | Sciences Po
+inf5061-intelligence-economique | Siri
+inf5061-intelligence-economique | Sony
+inf5061-intelligence-economique | Souveraineté des usages quotidiens
+inf5061-intelligence-economique | Spetsnaz
+inf5061-intelligence-economique | Statistiques nationales de l'ANSSI
+inf5061-intelligence-economique | Structure de la désinformation moderne
+inf5061-intelligence-economique | Synergie académique et professionnelle
+inf5061-intelligence-economique | Tchernobyl
+inf5061-intelligence-economique | Thales
+* | h:c81a7bf8533a
+inf5061-intelligence-economique | Total
+* | h:a60a52382d70
+inf5061-intelligence-economique | Utilisation de réseaux d'influence (ex. l'
+inf5061-intelligence-economique | Vanuatu
+inf5061-intelligence-economique | Vous avez vu
+inf5061-intelligence-economique | WikiLeaks
+inf5061-intelligence-economique | Windows
+inf5061-intelligence-economique | Windows 10
+inf5061-intelligence-economique | Windows 8
+inf5061-intelligence-economique | Yahoo! Mail
+inf5061-intelligence-economique | YouTube
+* | h:e57b4de4a08e
+inf5061-intelligence-economique | Évolution du périmètre défensif
+i2ed-partiel-20-11 | Photo utilisée pour la
+i2ed-partiel-20-11 | A01
+i2ed-partiel-20-11 | C2
+i2ed-partiel-20-11 | TD
+i2ed-partiel-20-11 | Agents LLM & Automatisation
+i2ed-partiel-20-11 | Format d'évaluation
+i2ed-partiel-20-11 | Maintenant avec l'

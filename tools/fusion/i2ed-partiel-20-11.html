@@ -1,0 +1,102 @@
+<!-- Parties rédigées à la main de la fiche fusionnée i2ed-partiel-20-11 (tools/fusionner.py).
+     Chaque bloc commence par une ligne « @nom ». Les liens #chN visent la numérotation de la fiche fusionnée. -->
+
+@tete
+<h1>Partiel du 20 novembre — fiche unique</h1>
+<p class="lead">
+Tout ce qui tombe vendredi, en une seule page : la <b>gestion de crise</b> (entreprise, DSI, État), l'<b>esprit de défense</b> et
+l'<b>intelligence économique</b>, les <b>menaces hybrides</b>, et le module <b>OSINT</b>. Fil rouge commun : une crise, une ingérence
+ou une enquête se gagnent sur des <b>faits vérifiés</b>, avec une organisation claire, des dépendances connues et une équipe qui
+garde la tête froide.
+</p>
+<div class="callout"><div class="t">Comment cette fiche est construite</div>
+Elle reprend <b>intégralement</b> les fiches <a href="../inf5059-gestion-crise/fiche.html">Gestion de crise</a> (INF5059),
+<a href="../inf5061-intelligence-economique/fiche.html">Intelligence économique et esprit de défense</a> (INF5061) et les chapitres OSINT
+de la fiche <a href="../ent5002-osint-cti/fiche.html#ch13">OSINT et CTI</a> (ENT5002, chapitres 13 et 14), réordonnées par thème :
+<b>A</b> la crise en entreprise (1 à 8) · <b>B</b> la crise informatique et la continuité (9 à 11) · <b>C</b> l'État, la défense et les
+armées (12 à 16) · <b>D</b> l'intelligence économique (17 à 21) · <b>E</b> menaces hybrides, IA, souveraineté (22 et 23) · <b>F</b> l'OSINT
+(24 et 25). Le chapitre <a href="#liens">« Les ponts entre les cours »</a> relie ce qui se recoupe et tranche ce qui se contredisait.
+Le QCM retient 127 questions, les plus utiles des trois cours (les QCM complets restent dans chaque fiche) ; la CTI (chapitres 1 à 12 d'ENT5002) a sa propre fiche, pour l'examen de jeudi.
+Cette page est générée par <code>tools/fusionner.py</code> à partir des fiches de cours : toute correction se fait dans la fiche d'origine.
+</div>
+
+@examen
+<div class="exam"><div class="t">Les deux examens de la semaine</div>
+<ul>
+<li><b>Jeudi 19/11, 16 h 30 – 18 h</b> : examen de <b>CTI</b> (70 % de la note du cours, le TP noté comptant pour 30 %), sur la fiche
+<a href="../ent5002-osint-cti/fiche.html">OSINT et CTI</a>, chapitres 1 à 12, et ses <a href="../ent5002-osint-cti/points-examen.html">signaux d'examen</a>. IA interdite.</li>
+<li><b>Vendredi 20/11, 10 h 30</b> : contrôle de la mineure sur Moodle avec Safe Exam Browser (à tester et mettre à jour avant), 1 h 30 :
+gestion de crise, esprit de défense, OSINT, et tout ce qui a été vu depuis le 9 novembre (cette fiche). Le diaporama d'ouverture citait
+aussi la CTI pour ce contrôle : elle a désormais son propre examen jeudi, mais rien n'empêche une question de culture CTI.</li>
+<li><b>Une seule note</b> pour toute la mineure : la moyenne des deux contrôles et des labs, recopiée sur les quatre modules.
+Le second contrôle (IE et propriété intellectuelle) a lieu le <b>vendredi 27/11</b>.</li>
+<li>Ce que les intervenants ont eux-mêmes désigné comme à retenir : les <b>4 critères du seuil de crise</b>, les <b>temps de la crise</b>
+et les <b>5 règles d'or</b> (volet entreprise) ; la chronologie <b>RPO, RT, RTO, DMIA, WRT, MTD</b> et le <b>BIA</b> (volet DSI) ; la règle des
+<b>4I</b> et la chaîne d'engagement des armées (volet État) ; la <b>paralysie de la décision</b> et l'effet <b>psychologique</b> des
+stratégies hybrides. Tous les passages sont sur la page <a href="points-examen.html">Ce que les profs ont signalé</a>.</li>
+</ul>
+</div>
+
+@synthese
+<!-- ===================================================================== -->
+<h2 id="liens">◆ Les ponts entre les cours</h2>
+<p>Ce chapitre ne remplace aucun autre : il rassemble ce que plusieurs intervenants ont abordé sous des angles différents, et renvoie
+au détail. À relire en dernier, pour vérifier qu'on sait passer d'un cours à l'autre.</p>
+
+<h3 id="liens-acteurs">Qui fait quoi : les acteurs cités dans tous les cours</h3>
+<div class="tw"><table><thead><tr><th>Acteur</th><th>Rattachement</th><th>Ce qu'il fait</th><th>Détail</th></tr></thead><tbody>
+<tr><td><b>SGDSN</b></td><td>Premier ministre</td><td>Coordonne la défense et la sécurité nationale, la planification interministérielle de crise ; rédige les plans gouvernementaux (Vigipirate…) ; ne commande aucune troupe. VIGINUM lui est rattaché.</td><td><a href="#ch12-acteurs">§ 12.3</a>, <a href="#ch13-cadre">§ 13.1</a></td></tr>
+<tr><td><b>Préfet de département</b></td><td>Ministre de l'Intérieur (pas le préfet de région)</td><td>Dirige la crise sur le territoire avec son centre opérationnel départemental (COD) ; seul à pouvoir émettre l'expression de besoin de moyens militaires.</td><td><a href="#ch12-acteurs">§ 12.3</a>, <a href="#ch14-otiad">§ 14.2</a>, <a href="#ch14-chaine">§ 14.3</a></td></tr>
+<tr><td><b>Préfet de zone</b> et préfet délégué à la sécurité</td><td>Intérieur</td><td>Échelon zonal : reçoit l'expression de besoin et arbitre avec l'état-major de zone.</td><td><a href="#ch14-otiad">§ 14.2</a></td></tr>
+<tr><td><b>DMD</b></td><td>Armées</td><td>Conseiller militaire du préfet, facilitateur de l'engagement des armées, vecteur de leur rayonnement ; donne son avis, que le préfet peut ne pas suivre.</td><td><a href="#ch12-acteurs">§ 12.3</a>, <a href="#ch14-chaine">§ 14.3</a></td></tr>
+<tr><td><b>OGZDS</b></td><td>Armées</td><td>Pendant militaire du préfet de zone, dont dépendent les DMD ; interlocuteur des préfets et des associations de défense.</td><td><a href="#ch14-otiad">§ 14.2</a>, <a href="#ch23-ihedn">§ 23.3</a></td></tr>
+<tr><td><b>CIC</b> / <b>CPCO</b></td><td>Intérieur / état-major des armées</td><td>Le couple national de la structure miroir : cellule interministérielle de crise, centre de planification et de conduite des opérations.</td><td><a href="#ch14-otiad">§ 14.2</a></td></tr>
+<tr><td><b>Les armées</b></td><td>Ministère des Armées</td><td>Menantes dans les airs (PPS-A) et sur mer (PPS-M), concourantes au sol, en appui des forces de sécurité intérieure et civile.</td><td><a href="#ch13-milieux">§ 13.3</a></td></tr>
+<tr><td><b>COMCYBER</b></td><td>Armées (créé en 2017)</td><td>Cyberdéfense et lutte informatique des armées ; le « kaki » du cyberespace.</td><td><a href="#ch12-perimetre">§ 12.2</a>, <a href="#ch22-cyber">§ 22.3</a></td></tr>
+<tr><td><b>ANSSI</b></td><td>—</td><td>Sécurité des systèmes d'information, réponse aux incidents majeurs ; destinataire des notifications d'incident.</td><td><a href="#ch10-lecons">§ 10.3</a>, <a href="#ch22-cyber">§ 22.3</a></td></tr>
+<tr><td><b>VIGINUM</b></td><td>SGDSN</td><td>Détecte et caractérise les ingérences numériques étrangères (Portal Kombat).</td><td><a href="#ch22-info">§ 22.2</a>, <a href="#ch24-l2i">§ 24.6</a></td></tr>
+<tr><td><b>DGSI</b></td><td>Intérieur</td><td>Contre-espionnage et sécurité économique ; publie les <i>Flash ingérence</i> ; reçoit les signalements ; judiciarise.</td><td><a href="#ch12-acteurs">§ 12.3</a>, <a href="#ch19-flash">§ 19.4</a>, <a href="#ch22-cyber">§ 22.3</a></td></tr>
+<tr><td><b>DRSD</b></td><td>Armées</td><td>Contre-ingérence de défense, enquêtes d'habilitation ; pas de procédure judiciaire.</td><td><a href="#ch22-cyber">§ 22.3</a></td></tr>
+<tr><td><b>DGSE</b>, <b>DRM</b></td><td>Armées</td><td>Renseignement extérieur ; renseignement militaire.</td><td><a href="#ch22-cyber">§ 22.3</a></td></tr>
+<tr><td><b>SISSE</b></td><td>Économie</td><td>Politique de sécurité économique, protection des entreprises stratégiques face aux investissements étrangers.</td><td><a href="#ch12-acteurs">§ 12.3</a></td></tr>
+<tr><td><b>DGA</b></td><td>Armées</td><td>Donneur d'ordre des programmes d'armement, seule à traiter avec les industriels.</td><td><a href="#ch16-programme">§ 16.1</a></td></tr>
+<tr><td><b>CNIL</b></td><td>Autorité administrative indépendante</td><td>Reçoit sous 72 heures la notification d'une violation de données personnelles ; propose des modèles de demande d'effacement.</td><td><a href="#ch10-lecons">§ 10.3</a>, <a href="#ch24-opsec">§ 24.4</a></td></tr>
+<tr><td><b>IHEDN</b></td><td>Premier ministre</td><td>Culture de défense, cohésion nationale, culture stratégique ; cycles Jeunes et association des Jeunes de l'IHEDN.</td><td><a href="#ch12-acteurs">§ 12.3</a>, <a href="#ch23-ihedn">§ 23.3</a></td></tr>
+</tbody></table></div>
+
+<div class="callout warn"><div class="t">L'armée sur le territoire : la règle complète</div>
+À l'ouverture de la mineure, on a retenu la formule courte « l'armée n'intervient que sur réquisition ». Le délégué militaire
+départemental l'a précisée, et c'est cette version qui fait foi : l'<b>autorité civile prime</b> ; le ministère de l'Intérieur est
+<b>menant</b>, les armées <b>concourent</b> (sauf dans les airs et sur mer, où elles sont menantes). Au sol, deux voies : la
+<b>demande de concours</b> de la préfecture, que les armées peuvent refuser, et la <b>réquisition</b> (administrative par la préfecture,
+judiciaire par le procureur), qui est un ordre. Dans tous les cas, seulement si les moyens civils sont <b>insuffisants, inexistants,
+inadaptés ou indisponibles</b> (règle des 4I), et sur une expression de besoin émise par le <b>seul préfet</b>
+(<a href="#ch14-regles">§ 14.1</a> à <a href="#ch14-chaine">§ 14.3</a>).</div>
+
+<h3 id="liens-themes">Une même idée, plusieurs cours</h3>
+<div class="tw"><table><thead><tr><th>Idée</th><th>Gestion de crise</th><th>Défense, IE, hybride</th><th>OSINT</th></tr></thead><tbody>
+<tr><td><b>Ne décider que sur des faits vérifiés</b></td><td>Faits, suppositions, interprétations ; biais de disponibilité, tunnel, confirmation (<a href="#ch4">§ 4</a>) ; règle 4 : trier l'information (<a href="#ch8">§ 8</a>)</td><td>Hygiène de l'information : trois sources (<a href="#ch12-pourquoi">§ 12.1</a>) ; la « vraie fausse information », vérifier avant de partager (<a href="#ch22-info">§ 22.2</a>)</td><td>Aligner l'information, double source (<a href="#ch24-def">§ 24.1</a>) ; collisions d'homonymes (<a href="#ch24-limites">§ 24.5</a>) ; un aperçu d'IA n'est pas une preuve (<a href="#ch24-l2i">§ 24.6</a>)</td></tr>
+<tr><td><b>Dépendre, c'est pouvoir être coupé</b></td><td>CrowdStrike, point unique de défaillance (<a href="#ch2-si">§ 2.1</a>) ; plateforme de communication unique (<a href="#ch5-ressources">§ 5.2</a>) ; le cloud n'est pas un plan de secours (<a href="#ch9-escalade">§ 9.3</a>) ; dépendances récursives (<a href="#ch11-dependances">§ 11.3</a>)</td><td>Vassalisation (<a href="#ch19-souv">§ 19.2</a>) ; messagerie coupée, Galileo, SBOM, SecNumCloud (<a href="#ch23-souv">§ 23.2</a>) ; Viasat, chaîne d'approvisionnement (<a href="#ch22-cyber">§ 22.3</a>)</td><td>—</td></tr>
+<tr><td><b>Tenir en mode dégradé</b></td><td>Une mairie au papier-crayon (<a href="#ch2-degrade">§ 2.4</a>) ; PCA, PRA, BIA, continuité ≠ disponibilité (<a href="#ch11">§ 11</a>)</td><td>PCA et PRA testés (<a href="#ch12-entreprise">§ 12.4</a>) ; garder les cartes papier (<a href="#ch16-scorpion">§ 16.2</a>) ; le carburant sans électricité (<a href="#ch13-operations">§ 13.4</a>) ; concevoir pour la dégradation (<a href="#ch23-souv">§ 23.2</a>)</td><td>—</td></tr>
+<tr><td><b>L'humain, première faille</b></td><td>Attaque d'identité multi-sources (<a href="#ch2-identite">§ 2.2</a>)</td><td>Usurpation d'identité (<a href="#ch20">§ 20</a>) ; approches hors du travail (<a href="#ch21">§ 21</a>) ; l'espionnage passe par l'humain (<a href="#ch15-mer">§ 15.2</a>) ; fausse entreprise qui capte des CV, préparer par les réseaux sociaux (<a href="#ch22-def">§ 22.1</a>) ; séparer vie privée et vie professionnelle (<a href="#ch23-souv">§ 23.2</a>)</td><td>Persona, VPN, ne rien publier de trop (<a href="#ch24-opsec">§ 24.4</a>) ; Strava, OPSEC négligée (<a href="#ch24-disciplines">§ 24.2</a>, <a href="#ch25-socmint">§ 25.3</a>)</td></tr>
+<tr><td><b>Communiquer, influencer</b></td><td>Redonner l'heure juste (<a href="#ch3-reseaux">§ 3.2</a>) ; communiquer tôt, par étapes (<a href="#ch10-com">§ 10.2</a>) ; communiquer en équipe (<a href="#ch8-communiquer">§ 8.1</a>)</td><td>L'influence, fonction de l'IE (<a href="#ch18-trois">§ 18.1</a>) ; la guerre informationnelle (<a href="#ch22-info">§ 22.2</a>)</td><td>La L2I et DISARM, Portal Kombat (<a href="#ch24-l2i">§ 24.6</a>)</td></tr>
+<tr><td><b>Le droit et les normes</b></td><td>CNIL sous 72 heures (<a href="#ch10-lecons">§ 10.3</a>) ; règlement, directive, loi, norme (<a href="#ch11-entreprise">§ 11.1</a>) ; ISO 22301 et 27001, DORA, NIS 2, DPO (<a href="#ch11-cadres">§ 11.6</a>)</td><td>IE légale ou espionnage (<a href="#ch17-legal">§ 17.3</a>) ; propriété intellectuelle (<a href="#ch18-pi">§ 18.4</a>) ; délit de compromission (<a href="#ch21-reco">§ 21.2</a>) ; NIS 2 et AI Act (<a href="#ch23-souv">§ 23.2</a>)</td><td>Articles 323-1, 226-17, 226-18 du Code pénal, RGPD (<a href="#ch24-droit">§ 24.3</a>)</td></tr>
+<tr><td><b>L'IA, des deux côtés</b></td><td>Elle défend et elle attaque (<a href="#ch2-si">§ 2.1</a>) ; elle aide à circonscrire (<a href="#ch5-temps">§ 5.4</a>)</td><td>Hypertrucage du dirigeant (<a href="#ch20-cas">§ 20.1</a>) ; accélérateur et cible (<a href="#ch23-ia">§ 23.1</a>)</td><td>Agents, Vision Transformers, blocages applicatifs (<a href="#ch24-l2i">§ 24.6</a>)</td></tr>
+<tr><td><b>Décider sous pression</b></td><td>Stress, émotions, Système 1 et 2 (<a href="#ch6">§ 6</a>, <a href="#ch7">§ 7</a>) ; le chef « demi de mêlée », la main courante (<a href="#ch14-co">§ 14.4</a>)</td><td>Comprendre, décider, agir plus vite (<a href="#ch16-scorpion">§ 16.2</a>) ; la guerre hybride vise la paralysie de la décision (<a href="#ch22-def">§ 22.1</a>)</td><td>—</td></tr>
+<tr><td><b>Les drones</b></td><td>—</td><td>De la pellicule aux essaims (<a href="#ch16-drones">§ 16.4</a>) ; survols, brouillage (<a href="#ch22-def">§ 22.1</a>) ; robots humanoïdes (<a href="#ch23-ia">§ 23.1</a>)</td><td>—</td></tr>
+</tbody></table></div>
+
+<h3 id="liens-confusions">Les distinctions à ne pas mélanger</h3>
+<div class="tw"><table><thead><tr><th>Ne pas confondre</th><th>La différence</th><th>Détail</th></tr></thead><tbody>
+<tr><td>Incident / crise</td><td>L'incident se traite avec les moyens habituels ; la crise exige arbitrages transversaux, ressources exceptionnelles, coordination renforcée.</td><td><a href="#ch1-incident">§ 1.1</a>, <a href="#ch9-crise">§ 9.1</a></td></tr>
+<tr><td>PCA / PRA</td><td>Le PCA maintient l'activité en mode dégradé ; le PRA reconstruit après la perte totale des activités critiques.</td><td><a href="#ch5-temps">§ 5.4</a>, <a href="#ch11-plans">§ 11.5</a></td></tr>
+<tr><td>Continuité / disponibilité</td><td>La disponibilité est un pourcentage de fonctionnement nominal ; la continuité, la capacité à maintenir l'essentiel face à un événement majeur.</td><td><a href="#ch11-resilience">§ 11.4</a></td></tr>
+<tr><td>Demande de concours / réquisition</td><td>La première peut être refusée par les armées ; la seconde est un ordre.</td><td><a href="#ch14-regles">§ 14.1</a></td></tr>
+<tr><td>Règlement / directive</td><td>Le règlement s'applique tel quel (RGPD, DORA) ; la directive doit être transposée (NIS 2).</td><td><a href="#ch11-entreprise">§ 11.1</a>, <a href="#ch11-cadres">§ 11.6</a></td></tr>
+<tr><td>IE / espionnage</td><td>L'IE n'emploie que des moyens légaux ; intrusion, vol, micro ou corruption, c'est de l'espionnage.</td><td><a href="#ch17-legal">§ 17.3</a></td></tr>
+<tr><td>Ingérence / contre-ingérence / INE</td><td>La contre-ingérence prévient les atteintes sans confrontation directe ; l'ingérence numérique étrangère réunit quatre critères (atteinte, contenu trompeur, diffusion artificielle, acteur étranger).</td><td><a href="#ch19-def">§ 19.1</a>, <a href="#ch22-info">§ 22.2</a></td></tr>
+<tr><td>Continuum stratégique / zone grise / stratégie hybride</td><td>Le continuum compétition, contestation, affrontement décrit l'état des relations ; la zone grise est l'espace sous le seuil de riposte ; la stratégie hybride, la combinaison ambiguë de moyens qu'on y emploie.</td><td><a href="#ch15-monde">§ 15.1</a>, <a href="#ch22-def">§ 22.1</a></td></tr>
+<tr><td>Souveraineté / intérêt souverain</td><td>La souveraineté, capacité de faire ses choix stratégiques ; l'intérêt souverain, les actifs technologiques concrets à protéger.</td><td><a href="#ch19-def">§ 19.1</a>, <a href="#ch23-souv">§ 23.2</a></td></tr>
+<tr><td>OSINT / SIGINT, MASINT, HUMINT</td><td>Seule l'OSINT n'utilise que des sources publiques ; les autres relèvent de services spécialisés.</td><td><a href="#ch24-disciplines">§ 24.2</a></td></tr>
+<tr><td>Recherche en sources ouvertes / collecte interdite</td><td>Chercher ce qui est public est permis ; automatiser sur une personne ciblée, collecter de façon déloyale ou entrer dans un système ne l'est pas.</td><td><a href="#ch24-droit">§ 24.3</a></td></tr>
+</tbody></table></div>

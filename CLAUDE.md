@@ -15,12 +15,23 @@ assets/               moteur commun : core.css, viz.css, app.js (onglets, recher
                       accueil.css / accueil.js, atelier.js, scenes.js
 tools/                sources.py (extraction des supports), couverture.py (+ couverture_ignore.txt), signaux.py,
                       nouveau_cours.py + modele/ (squelette),
-                      generer.py, qcmcheck.py, sitecheck.py, jsdata.py (lecture des .js sans node)
+                      generer.py, qcmcheck.py, sitecheck.py, jsdata.py (lecture des .js sans node),
+                      fusionner.py + fusion/ (fiches fusionnées, voir ci-dessous)
 <code>-<sujet>/       un dossier par cours, par exemple inf5049-controle-audit/
   fiche.html          la fiche ; d'autres pages possibles (points-examen, atelier, ebios-rm…)
   qcm.js              window.QCM_CHAPTERS + window.QCM_DATA
   *-data.js           données d'un atelier ou de scènes animées
+i2ed-partiel-20-11/   GÉNÉRÉ par tools/fusionner.py : fiche unique d'un partiel multi-cours (ne pas éditer)
 ```
+
+**Fiche fusionnée** (partiel qui réunit plusieurs cours) : `tools/fusionner.py` reprend tels quels les
+chapitres de plusieurs fiches (déclarés dans `FUSIONS` : ordre, renvois textuels à réécrire, doublons de QCM),
+les renumérote, réécrit liens et animations, et ajoute les parties rédigées de `tools/fusion/<dossier>.html`
+(en-tête, calendrier, chapitre « ponts entre les cours »). Il refuse d'écrire si une phrase, un point de
+L'essentiel ou un signal d'examen manque, si le QCM resserré (`qcm_garder`, au plus `qcm_max` questions) laisse
+un chapitre sans question, ou si un lien interne est cassé. On corrige toujours la
+fiche d'origine, puis on relance `python -I tools/fusionner.py`. Au catalogue, `sources` est alors une liste et
+`fusion` liste les cours dont les termes ignorés par couverture.py s'appliquent aussi.
 
 Dans un dossier de cours, les chemins sont relatifs : `../assets/…`, `../index.html`, `qcm.js`.
 La progression de lecture est rangée sous `majcyb.seen.<dossier>/<page>` (dérivé du chemin),

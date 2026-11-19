@@ -25,11 +25,41 @@
 window.CATALOGUE = [
 
 {
+  code: "I2ED",
+  titre: "Partiel du 20 novembre — fiche unique",
+  dossier: "i2ed-partiel-20-11",
+  sources: ["../Gestion de crise", "../Intelligence économique et esprit de défense", "../OSINT et C.T.I"],
+  fusion: ["inf5059-gestion-crise", "inf5061-intelligence-economique", "ent5002-osint-cti"],
+  exclure: ["LAB_IE_*", "rapport_TP*", "Script_Oral_*", "Certificat_*", "CoursCTI*", "tp_*", "tp2_*", "tp3_*",
+            "Séance 1 - Transcription - Cours_2026-11-16_12-32*", "Séance 2 - Transcription - Cours_2026-11-17_11-55*"],
+  etat: "en cours",
+  couleur: "purple",
+  resume: "Gestion de crise, esprit de défense, intelligence économique, menaces hybrides et OSINT réunis en une fiche, avec un chapitre qui relie les cours et un QCM commun.",
+  programme: [
+    "La crise en entreprise : seuil, information, cellule, facteur humain, stress, équipe",
+    "Crise informatique et continuité : RPO, RTO, DMIA, BIA, PCA, PRA, normes",
+    "L'État en crise : SGDSN, préfet, DMD, OTIAD, règle des 4I, armées",
+    "Contexte stratégique, programmes d'armement, drones",
+    "Intelligence économique, ingérence, usurpation d'identité, approches",
+    "Menaces hybrides, ingérence numérique, IA, souveraineté, IHEDN",
+    "OSINT : disciplines, cadre légal, persona, Dorks, GEOINT, SOCMINT",
+    "Qui fait quoi, distinctions à ne pas mélanger"
+  ],
+  ressources: [
+    { type: "fiche", page: "fiche.html", titre: "Fiche unique du partiel",
+      desc: "Les fiches Gestion de crise, IE et le module OSINT réordonnés, plus les ponts entre les cours",
+      qcm: { src: "qcm.js", cle: "i2ed2011" } },
+    { type: "examen", page: "points-examen.html", titre: "Ce que les profs ont signalé",
+      desc: "Les signaux d'examen de tous les intervenants du contrôle" }
+  ]
+},
+
+{
   code: "ENT5002",
   titre: "OSINT et Cyber Threat Intelligence",
   dossier: "ent5002-osint-cti",
   sources: "../OSINT et C.T.I",
-  exclure: ["rapport_TP*", "Script_Oral_*"],
+  exclure: ["rapport_TP*", "Script_Oral_*", "Certificat_*"],
   etat: "en cours",
   couleur: "green",
   resume: "Le renseignement sur la menace, de l'indicateur de compromission aux tactiques de l'attaquant : un IoC se change en secondes, un comportement coûte cher.",
@@ -49,7 +79,7 @@ window.CATALOGUE = [
   ],
   ressources: [
     { type: "fiche", page: "fiche.html", titre: "Fiche de révision",
-      desc: "Le support complet des trois cours, les deux premières séances, les deux TP et le module OSINT",
+      desc: "Le support complet des trois cours, les deux premières séances, les trois TP et le module OSINT",
       qcm: { src: "qcm.js", cle: "ent5002" } },
     { type: "examen", page: "points-examen.html", titre: "Ce que le prof a signalé",
       desc: "Évaluation, IA proscrite et notions annoncées comme questions de cours" }
@@ -114,11 +144,13 @@ window.CATALOGUE = [
     "Usurpation d'identité : hypertrucage, fraude au président, domaines",
     "Approches de salariés hors du cadre professionnel",
     "Contexte stratégique : compétition, contestation, affrontement ; LPM",
-    "Programmes d'armement, SCORPION, infovalorisation, drones"
+    "Programmes d'armement, SCORPION, infovalorisation, drones",
+    "Menaces hybrides, zone grise, ingérence numérique étrangère",
+    "IA accélérateur et cible, souveraineté numérique, IHEDN"
   ],
   ressources: [
     { type: "fiche", page: "fiche.html", titre: "Fiche de révision",
-      desc: "Séance d'ouverture, Flash ingérence DGSI n° 101 et 102, évolution des armées",
+      desc: "Séance d'ouverture, Flash ingérence DGSI n° 101 et 102, évolution des armées, menaces hybrides",
       qcm: { src: "qcm.js", cle: "inf5061" } }
   ]
 },

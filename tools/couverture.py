@@ -3,7 +3,9 @@
 Usage : python -I tools/couverture.py <dossier-du-cours> [--tout]
         python -I tools/couverture.py --tous
 
-Lit les sources déclarées dans catalogue.js (champ « sources », relatif à la racine du site),
+Lit les sources déclarées dans catalogue.js (champ « sources », relatif à la racine du site ;
+une liste de dossiers pour une fiche fusionnée, dont le champ « fusion » reprend les termes déjà
+déclarés comme bruit pour chacun des cours fusionnés),
 dans les sous-dossiers dont le nom contient support, transcri ou tp. Puis cherche dans toutes
 les pages .html du cours :
   1. les TITRES de diapositives (première ligne de chaque page de PDF / PPTX) : un titre est
@@ -94,7 +96,8 @@ def ignore(terme, ign):
 
 def analyser(cours, tout=False):
     dossier, src = cours["dossier"], cours.get("sources")
-    if not src or not os.path.isdir(src):
+    srcs = src if isinstance(src, list) else [src]
+    if not src or not all(s and os.path.isdir(s) for s in srcs):
         print(f"\n## {cours['code']} : sources introuvables ({src}) — champ « sources » du catalogue")
         return 0
     pages_html = [f for f in os.listdir(dossier) if f.endswith(".html")]
@@ -105,7 +108,7 @@ def analyser(cours, tout=False):
     vocab = set(texte.split())
 
     titres, supports, oral, gras = {}, [], [], {}
-    for racine, dirs, files in os.walk(src):
+    for src, racine, dirs, files in ((s, r, d, f) for s in srcs for r, d, f in os.walk(s)):
         rel = os.path.relpath(racine, src)
         haut = rel.split(os.sep)[0]
         if rel != "." and not DOSSIERS.search(haut):
@@ -159,6 +162,8 @@ def analyser(cours, tout=False):
     candidats = {s for s in set(sig_sup) | {s for s in set(sig_oral) if sig_oral.count(s) >= 2}
                  if credible(s)}
     ign = ignores(dossier)
+    for d in cours.get("fusion", []):
+        ign |= ignores(d)
 
     manques = {
         "Titres de diapositives": sorted(t for t in titres if not couvert(t, texte, vocab) and not ignore(t, ign)),
