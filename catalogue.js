@@ -25,6 +25,38 @@
 window.CATALOGUE = [
 
 {
+  code: "INF5060",
+  titre: "Propriété intellectuelle",
+  dossier: "inf5060-propriete-intellectuelle",
+  sources: ["../Propriété intellectuelle", "../Intelligence économique et esprit de défense/TPs/Vos diaporama-20261124"],
+  etat: "en cours",
+  couleur: "amber",
+  resume: "Devenir propriétaire de ses créations pour protéger un avantage concurrentiel : brevet, marque, dessins et modèles, droit d'auteur et secret des affaires — plus les restitutions du lab IE du 24 novembre, flashs DGSI et souveraineté numérique.",
+  programme: [
+    "Être propriétaire : prérogatives, monopole, rôle de l'INPI",
+    "La matrice : propriété littéraire et artistique, propriété industrielle, secret",
+    "Droit d'auteur : originalité, droits patrimoniaux et moraux, logiciel du salarié, IA, e-Soleau, APP",
+    "Brevet : 4 conditions, revendications, procédure 12/18/30 mois, opposition, coûts, PCT",
+    "Inventions de salariés, certificat d'utilité, publication défensive, possession antérieure",
+    "Marque : distinctive, disponible, licite, Nice, spécialité, renommée, déchéance, dégénérescence",
+    "Dessins et modèles : nouveauté, caractère propre, 25 ans, contrefaçon par ressemblances ; COV, TPS",
+    "Secret des affaires : arbitrage avec le brevet, mesures raisonnables",
+    "Contrefaçon, concurrence déloyale, dommages et intérêts, saisie-contrefaçon",
+    "PI et stratégie : barrières à l'entrée, contrats de recherche, offres de rachat, gestion de portefeuille",
+    "Flashs DGSI : usurpation, repérage, débauchage, audits, salons, vols de données",
+    "Biens à double usage, matières premières critiques, PPST et ZRR, déplacements",
+    "Semi-conducteurs, ASML, RISC-V, firmware, Chips Act",
+    "Câbles sous-marins, DNS et routage, GNSS, IRIS2, paiements européens",
+    "Cloud Act, arrêts Schrems, SecNumCloud, DMA, IA de défense"
+  ],
+  ressources: [
+    { type: "fiche", page: "fiche.html", titre: "Fiche de révision",
+      desc: "Les deux jours de cours INPI (24 et 25 novembre) et les restitutions du lab IE, réunis pour le contrôle du 27",
+      qcm: { src: "qcm.js", cle: "inf5060" } }
+  ]
+},
+
+{
   code: "I2ED",
   titre: "Partiel du 20 novembre — fiche unique",
   dossier: "i2ed-partiel-20-11",
@@ -32,7 +64,7 @@ window.CATALOGUE = [
   fusion: ["inf5059-gestion-crise", "inf5061-intelligence-economique", "ent5002-osint-cti"],
   exclure: ["LAB_IE_*", "rapport_TP*", "Script_Oral_*", "Certificat_*", "CoursCTI*", "tp_*", "tp2_*", "tp3_*",
             "Séance 1 - Transcription - Cours_2026-11-16_12-32*", "Séance 2 - Transcription - Cours_2026-11-17_11-55*"],
-  etat: "en cours",
+  etat: "terminé",
   couleur: "purple",
   resume: "Gestion de crise, esprit de défense, intelligence économique, menaces hybrides et OSINT réunis en une fiche, avec un chapitre qui relie les cours et un QCM commun.",
   programme: [
@@ -60,7 +92,7 @@ window.CATALOGUE = [
   dossier: "ent5002-osint-cti",
   sources: "../OSINT et C.T.I",
   exclure: ["rapport_TP*", "Script_Oral_*", "Certificat_*"],
-  etat: "en cours",
+  etat: "terminé",
   couleur: "green",
   resume: "Le renseignement sur la menace, de l'indicateur de compromission aux tactiques de l'attaquant : un IoC se change en secondes, un comportement coûte cher.",
   programme: [
@@ -91,7 +123,7 @@ window.CATALOGUE = [
   titre: "Gestion de crise",
   dossier: "inf5059-gestion-crise",
   sources: "../Gestion de crise",
-  etat: "en cours",
+  etat: "terminé",
   couleur: "red",
   resume: "Reconnaître le seuil de crise, piloter sur des faits avec une cellule verticale, et garder sa tête quand le stress ampute la réflexion.",
   programme: [
@@ -129,7 +161,7 @@ window.CATALOGUE = [
   dossier: "inf5061-intelligence-economique",
   sources: "../Intelligence économique et esprit de défense",
   exclure: ["LAB_IE_*"],
-  etat: "en cours",
+  etat: "terminé",
   couleur: "amber",
   resume: "La maîtrise légale de l'information stratégique pour les entreprises et l'État, et l'esprit de défense qui fait de chacun un acteur de la résilience nationale.",
   programme: [

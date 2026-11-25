@@ -1,5 +1,6 @@
 /* Généré par tools/generer.py : ne pas modifier à la main. */
 window.QCM_COMPTES = {
+ "inf5060-propriete-intellectuelle/qcm.js": 199,
  "i2ed-partiel-20-11/qcm.js": 127,
  "ent5002-osint-cti/qcm.js": 120,
  "inf5059-gestion-crise/qcm.js": 160,

@@ -2358,3 +2358,412 @@ i2ed-partiel-20-11 | TD
 i2ed-partiel-20-11 | Agents LLM & Automatisation
 i2ed-partiel-20-11 | Format d'évaluation
 i2ed-partiel-20-11 | Maintenant avec l'
+
+# INF5060 — titres de diapositives, intitulés des encadrés de transcription,
+# sigles de sources et bavardage hors cours (session de jeu en fin de séance).
+inf5060-propriete-intellectuelle | 1. Comprendre : qui est ASML ?
+inf5060-propriete-intellectuelle | Chercheurs lauréats ciblés
+inf5060-propriete-intellectuelle | Comment reprendre pied : miser sur les ruptures et préserver nos atouts
+inf5060-propriete-intellectuelle | EXERCIC E 1 — FLASH INGÉREN C E ÉCONOM IQUE N
+inf5060-propriete-intellectuelle | EXERCIC E 2 — SOUVER AI NET É NUM ÉRIQUE
+inf5060-propriete-intellectuelle | FI-86 – Biens immatériels
+inf5060-propriete-intellectuelle | FLASH DGSI #87
+inf5060-propriete-intellectuelle | OCTOBRE 2022
+inf5060-propriete-intellectuelle | Fausses bonnes idées et leçons de l'histoire
+inf5060-propriete-intellectuelle | Le naufrage éducatif et industriel français
+inf5060-propriete-intellectuelle | NOTES ET RÉFÉRENCES
+inf5060-propriete-intellectuelle | PODCAST NO LIMIT SECU
+inf5060-propriete-intellectuelle | Prénom NOM
+inf5060-propriete-intellectuelle | RÉFÉRENCES OFFICIELLES
+inf5060-propriete-intellectuelle | 8 DOCUMENTS EXPLOITÉS
+inf5060-propriete-intellectuelle | Références Sujet Souveraineté
+inf5060-propriete-intellectuelle | SOURCES ET RÉFÉRENCES
+inf5060-propriete-intellectuelle | BECHATA Safia et HANEEFA Isham (B6)
+inf5060-propriete-intellectuelle | AB
+inf5060-propriete-intellectuelle | AL
+inf5060-propriete-intellectuelle | AM
+inf5060-propriete-intellectuelle | AWS
+inf5060-propriete-intellectuelle | B10
+inf5060-propriete-intellectuelle | B6
+inf5060-propriete-intellectuelle | BEETS
+inf5060-propriete-intellectuelle | BIG
+inf5060-propriete-intellectuelle | BITD
+inf5060-propriete-intellectuelle | BRGM
+inf5060-propriete-intellectuelle | CC
+inf5060-propriete-intellectuelle | CIRA
+inf5060-propriete-intellectuelle | CL
+inf5060-propriete-intellectuelle | CND
+inf5060-propriete-intellectuelle | CNDP
+inf5060-propriete-intellectuelle | CNES
+inf5060-propriete-intellectuelle | COS
+inf5060-propriete-intellectuelle | CRMA
+inf5060-propriete-intellectuelle | CSET
+inf5060-propriete-intellectuelle | CSIS
+inf5060-propriete-intellectuelle | DAM
+inf5060-propriete-intellectuelle | DG
+inf5060-propriete-intellectuelle | DHL
+inf5060-propriete-intellectuelle | DI
+inf5060-propriete-intellectuelle | DPS
+inf5060-propriete-intellectuelle | DROM
+inf5060-propriete-intellectuelle | DUV
+inf5060-propriete-intellectuelle | EDK
+inf5060-propriete-intellectuelle | EFI
+inf5060-propriete-intellectuelle | GI
+inf5060-propriete-intellectuelle | GL
+inf5060-propriete-intellectuelle | GRUB2
+inf5060-propriete-intellectuelle | HI
+inf5060-propriete-intellectuelle | HP
+inf5060-propriete-intellectuelle | I2ED
+inf5060-propriete-intellectuelle | ICPC
+inf5060-propriete-intellectuelle | IP
+inf5060-propriete-intellectuelle | IQUE
+inf5060-propriete-intellectuelle | JOIN
+inf5060-propriete-intellectuelle | JT
+inf5060-propriete-intellectuelle | LI
+inf5060-propriete-intellectuelle | LOUARN
+inf5060-propriete-intellectuelle | MCO
+inf5060-propriete-intellectuelle | MEP
+inf5060-propriete-intellectuelle | MI
+inf5060-propriete-intellectuelle | MK
+inf5060-propriete-intellectuelle | MPPA
+inf5060-propriete-intellectuelle | NA
+inf5060-propriete-intellectuelle | NEXT
+inf5060-propriete-intellectuelle | NJ
+inf5060-propriete-intellectuelle | NL
+inf5060-propriete-intellectuelle | NO
+inf5060-propriete-intellectuelle | NOTES
+inf5060-propriete-intellectuelle | NOUS
+inf5060-propriete-intellectuelle | NUM
+inf5060-propriete-intellectuelle | OI
+inf5060-propriete-intellectuelle | OL
+inf5060-propriete-intellectuelle | PJ
+inf5060-propriete-intellectuelle | PQ
+inf5060-propriete-intellectuelle | PV
+inf5060-propriete-intellectuelle | RAM
+inf5060-propriete-intellectuelle | RI
+inf5060-propriete-intellectuelle | RMIS
+inf5060-propriete-intellectuelle | RORA
+inf5060-propriete-intellectuelle | ROTY
+inf5060-propriete-intellectuelle | SACT
+inf5060-propriete-intellectuelle | SECU
+inf5060-propriete-intellectuelle | SHD
+inf5060-propriete-intellectuelle | STM
+inf5060-propriete-intellectuelle | TI
+inf5060-propriete-intellectuelle | US
+inf5060-propriete-intellectuelle | VI
+inf5060-propriete-intellectuelle | Absol
+inf5060-propriete-intellectuelle | Abusus (Disposition)
+inf5060-propriete-intellectuelle | Accusations réglementaires ciblées
+inf5060-propriete-intellectuelle | Acteurs et coordination institutionnelle
+inf5060-propriete-intellectuelle | Agilité
+inf5060-propriete-intellectuelle | App Store
+inf5060-propriete-intellectuelle | Apple Car
+inf5060-propriete-intellectuelle | Articulation des protections
+inf5060-propriete-intellectuelle | Articulation globale
+inf5060-propriete-intellectuelle | Aéronautique et aérospatial
+inf5060-propriete-intellectuelle | BYOD et messagerie professionnelle
+inf5060-propriete-intellectuelle | Bandeau Choix
+inf5060-propriete-intellectuelle | Biais décisionnels et hallucinations
+inf5060-propriete-intellectuelle | Biomédical
+inf5060-propriete-intellectuelle | Bonnes pratiques DGSI
+inf5060-propriete-intellectuelle | Bonnes pratiques de gouvernance
+inf5060-propriete-intellectuelle | Branche juridique
+inf5060-propriete-intellectuelle | Branches principales
+inf5060-propriete-intellectuelle | Bureautique souveraine
+inf5060-propriete-intellectuelle | But
+inf5060-propriete-intellectuelle | CESIN
+inf5060-propriete-intellectuelle | CVE
+inf5060-propriete-intellectuelle | Camarade
+inf5060-propriete-intellectuelle | Champ d'application
+inf5060-propriete-intellectuelle | Chaîne de valeur globale
+inf5060-propriete-intellectuelle | Chrome
+inf5060-propriete-intellectuelle | Cible élargie
+inf5060-propriete-intellectuelle | Complexité de la chaîne de production
+inf5060-propriete-intellectuelle | Conforama
+inf5060-propriete-intellectuelle | Constat de siphonnage
+inf5060-propriete-intellectuelle | Contrepartie sociétale du brevet
+inf5060-propriete-intellectuelle | Coordination et rotation des groupes
+inf5060-propriete-intellectuelle | Cycle entrepreneurial
+inf5060-propriete-intellectuelle | DMCA
+inf5060-propriete-intellectuelle | DPS
+inf5060-propriete-intellectuelle | Dimension économique
+inf5060-propriete-intellectuelle | Diversité de l'innovation
+inf5060-propriete-intellectuelle | Droit d'auteur sur la structure
+inf5060-propriete-intellectuelle | Drones aériens
+inf5060-propriete-intellectuelle | Dé Pipé
+inf5060-propriete-intellectuelle | Définition générale
+inf5060-propriete-intellectuelle | Délimitation du périmètre
+inf5060-propriete-intellectuelle | Déploiement progressif
+inf5060-propriete-intellectuelle | Déséquilibre structurel
+inf5060-propriete-intellectuelle | EA Sports
+inf5060-propriete-intellectuelle | Enjeu sous-jacent
+inf5060-propriete-intellectuelle | Exigences clés
+inf5060-propriete-intellectuelle | Facebook
+inf5060-propriete-intellectuelle | Facteur humain prépondérant
+inf5060-propriete-intellectuelle | Foodtech et agriculture cellulaire
+inf5060-propriete-intellectuelle | Format pédagogique
+inf5060-propriete-intellectuelle | France Cyber Maritime
+inf5060-propriete-intellectuelle | Frontière de la concurrence déloyale
+inf5060-propriete-intellectuelle | Fructus (Revenus)
+inf5060-propriete-intellectuelle | Fuite d'informations confidentielles
+inf5060-propriete-intellectuelle | GDPR
+inf5060-propriete-intellectuelle | GUI
+inf5060-propriete-intellectuelle | Genre vidéoludique et clones
+inf5060-propriete-intellectuelle | Genèse académique (UC Berkeley)
+inf5060-propriete-intellectuelle | Google Maps
+inf5060-propriete-intellectuelle | Hewlett-Packard
+inf5060-propriete-intellectuelle | Hyper-croissance
+inf5060-propriete-intellectuelle | Hâte
+inf5060-propriete-intellectuelle | Identification des actifs immatériels
+inf5060-propriete-intellectuelle | Injonction de la Cour des comptes
+inf5060-propriete-intellectuelle | Inspiration vs Plagiat
+inf5060-propriete-intellectuelle | Kuiper
+inf5060-propriete-intellectuelle | L'enchaînement projet
+inf5060-propriete-intellectuelle | L'entreprise néerlandaise
+inf5060-propriete-intellectuelle | L'illusion de la gratuité
+inf5060-propriete-intellectuelle | LLM
+inf5060-propriete-intellectuelle | La deuxième étape, c'est
+inf5060-propriete-intellectuelle | Le dilemme stratégique de l'innovateur
+inf5060-propriete-intellectuelle | Les 3 phases de préconisation DGSI
+inf5060-propriete-intellectuelle | Les illusions du rattrapage technologique
+inf5060-propriete-intellectuelle | Les leviers d'action pérennes
+inf5060-propriete-intellectuelle | Les vulnérabilités physiques courantes
+inf5060-propriete-intellectuelle | Liberté d'inspiration
+inf5060-propriete-intellectuelle | MCS
+inf5060-propriete-intellectuelle | Mesures de protection institutionnelles
+inf5060-propriete-intellectuelle | Mesures de remédiation
+inf5060-propriete-intellectuelle | Mesures de remédiation et résilience
+inf5060-propriete-intellectuelle | Mesures défensives requises
+inf5060-propriete-intellectuelle | Mesures préventives et curatives
+inf5060-propriete-intellectuelle | Mewtwo
+inf5060-propriete-intellectuelle | Missions principales
+inf5060-propriete-intellectuelle | Modèle d'autofinancement de l'INPI
+inf5060-propriete-intellectuelle | Mouchoir Choix
+inf5060-propriete-intellectuelle | Mécaniques algorithmiques et comportementales
+inf5060-propriete-intellectuelle | Méga-évolution
+inf5060-propriete-intellectuelle | Méthodes de déstabilisation personnelle
+inf5060-propriete-intellectuelle | Métronome
+inf5060-propriete-intellectuelle | Nécessité contextuelle
+inf5060-propriete-intellectuelle | Objectif pragmatique
+inf5060-propriete-intellectuelle | Objectif pédagogique
+inf5060-propriete-intellectuelle | Obligations majeures
+inf5060-propriete-intellectuelle | Oligopole des GAFAM
+inf5060-propriete-intellectuelle | Opérateurs européens qualifiés
+inf5060-propriete-intellectuelle | Orbe de Vie
+inf5060-propriete-intellectuelle | Orbes de Vie
+inf5060-propriete-intellectuelle | Piliers de prévention (4 axes)
+inf5060-propriete-intellectuelle | Plateformes collaboratives de confiance
+inf5060-propriete-intellectuelle | Plateformes tierces et Blockchain
+inf5060-propriete-intellectuelle | Play Store
+inf5060-propriete-intellectuelle | Points d'étranglement et géopolitique
+inf5060-propriete-intellectuelle | Poké Ball
+inf5060-propriete-intellectuelle | Poké Survivor
+inf5060-propriete-intellectuelle | Pokémon
+inf5060-propriete-intellectuelle | Positionnement de l'Europe
+inf5060-propriete-intellectuelle | Prestations subventionnées
+inf5060-propriete-intellectuelle | Primauté du brevet
+inf5060-propriete-intellectuelle | Projet Quintauris (Hardware)
+inf5060-propriete-intellectuelle | Protection amont
+inf5060-propriete-intellectuelle | Protection des sprites et designs
+inf5060-propriete-intellectuelle | Prérogatives patrimoniales
+inf5060-propriete-intellectuelle | Pédagogie active
+inf5060-propriete-intellectuelle | Périmètre d'application
+inf5060-propriete-intellectuelle | Périmètre de l'INPI
+inf5060-propriete-intellectuelle | Périphériques amovibles piégés
+inf5060-propriete-intellectuelle | Responsabilité des plateformes et hébergeurs
+inf5060-propriete-intellectuelle | Responsabilités juridiques
+inf5060-propriete-intellectuelle | Rez
+inf5060-propriete-intellectuelle | Ring 0
+inf5060-propriete-intellectuelle | Roche Bobois
+inf5060-propriete-intellectuelle | Régulation et équité
+inf5060-propriete-intellectuelle | Réponse institutionnelle
+inf5060-propriete-intellectuelle | Résolution contractuelle
+inf5060-propriete-intellectuelle | Réz
+inf5060-propriete-intellectuelle | Snap Tap
+inf5060-propriete-intellectuelle | Sources d'inspiration
+inf5060-propriete-intellectuelle | Speed
+inf5060-propriete-intellectuelle | Statistique du risque industriel
+inf5060-propriete-intellectuelle | Statut des fangames
+inf5060-propriete-intellectuelle | Surveillance et actions contentieuses
+inf5060-propriete-intellectuelle | Surévaluation des actifs immatériels
+inf5060-propriete-intellectuelle | Sécurisation opérationnelle et durcissement
+inf5060-propriete-intellectuelle | TOTP / OTP
+inf5060-propriete-intellectuelle | Teams
+inf5060-propriete-intellectuelle | Technologies matérielles critiques
+inf5060-propriete-intellectuelle | Tentatives d'autonomie
+inf5060-propriete-intellectuelle | Titularité initiale
+inf5060-propriete-intellectuelle | Transition énergétique
+inf5060-propriete-intellectuelle | Traçabilité du code
+inf5060-propriete-intellectuelle | Triptyque fondamental
+inf5060-propriete-intellectuelle | Typologie des risques
+inf5060-propriete-intellectuelle | Typologie des signes protégeables
+inf5060-propriete-intellectuelle | Usage exclusif
+inf5060-propriete-intellectuelle | Vulnérabilités majeures
+inf5060-propriete-intellectuelle | Vulnérabilités physiques & spectrales
+inf5060-propriete-intellectuelle | YouTube
+inf5060-propriete-intellectuelle | Étudiant
+inf5060-propriete-intellectuelle | Étudiant (dans la salle)
+inf5060-propriete-intellectuelle | Étudiant (présentateur)
+inf5060-propriete-intellectuelle | Étudiant 1 (dans la salle)
+inf5060-propriete-intellectuelle | Étudiant 1 (présentateur)
+inf5060-propriete-intellectuelle | Étudiant 2 (dans la salle)
+inf5060-propriete-intellectuelle | Étudiant 2 (présentateur)
+inf5060-propriete-intellectuelle | Étudiants (présentateurs)
+inf5060-propriete-intellectuelle | Éviction et pillage des actifs
+inf5060-propriete-intellectuelle | Évolution 3.2
+inf5060-propriete-intellectuelle | EXERCIC E 1 — FLASH INGÉREN C E ÉCONOM IQUE N °97
+inf5060-propriete-intellectuelle | EXERCIC E 1 — FLASH INGÉREN C E ÉCONOM IQUE N °98
+inf5060-propriete-intellectuelle | FLASH DGSI #87 · OCTOBRE 2022
+inf5060-propriete-intellectuelle | RÉFÉRENCES OFFICIELLES · 8 DOCUMENTS EXPLOITÉS
+
+# INF5060 séance 2 (25/11) : intitulés des encadrés de transcription, marques citées en exemple, bavardage
+inf5060-propriete-intellectuelle | BPI
+inf5060-propriete-intellectuelle | CHF
+inf5060-propriete-intellectuelle | DAF
+inf5060-propriete-intellectuelle | MR2
+inf5060-propriete-intellectuelle | MRD
+inf5060-propriete-intellectuelle | NF
+inf5060-propriete-intellectuelle | RGB
+inf5060-propriete-intellectuelle | TGI
+inf5060-propriete-intellectuelle | TP
+inf5060-propriete-intellectuelle | UI
+inf5060-propriete-intellectuelle | VTS
+inf5060-propriete-intellectuelle | Accessibilité
+inf5060-propriete-intellectuelle | Actifs complémentaires de protection
+inf5060-propriete-intellectuelle | Adidas
+inf5060-propriete-intellectuelle | AirPods
+inf5060-propriete-intellectuelle | Alternative d'internalisation
+inf5060-propriete-intellectuelle | Altération du design
+inf5060-propriete-intellectuelle | Anecdote historique
+inf5060-propriete-intellectuelle | Annuités progressives
+inf5060-propriete-intellectuelle | Anthropic
+inf5060-propriete-intellectuelle | Apple Watch
+inf5060-propriete-intellectuelle | Applicant
+inf5060-propriete-intellectuelle | Appréciation du risque de confusion
+inf5060-propriete-intellectuelle | Aqua Power
+inf5060-propriete-intellectuelle | Arbitrage budgétaire
+inf5060-propriete-intellectuelle | Arnaques post-publication
+inf5060-propriete-intellectuelle | Aspect patrimonial pour les fondateurs
+inf5060-propriete-intellectuelle | Assimilation du logiciel
+inf5060-propriete-intellectuelle | Attributs majeurs
+inf5060-propriete-intellectuelle | BPI
+inf5060-propriete-intellectuelle | BTM
+inf5060-propriete-intellectuelle | Bases officielles
+inf5060-propriete-intellectuelle | Bioéthique
+inf5060-propriete-intellectuelle | Bitcoin
+inf5060-propriete-intellectuelle | Brevetabilité des inventions logicielles
+inf5060-propriete-intellectuelle | C entouré
+inf5060-propriete-intellectuelle | CNIPA
+inf5060-propriete-intellectuelle | Caractéristiques structurelles vs fonctionnelles
+inf5060-propriete-intellectuelle | Champ très large
+inf5060-propriete-intellectuelle | ChatGPT
+inf5060-propriete-intellectuelle | Claude
+inf5060-propriete-intellectuelle | Clauses contractuelles et délimitations
+inf5060-propriete-intellectuelle | Composantes d'un brevet
+inf5060-propriete-intellectuelle | Compétences requises
+inf5060-propriete-intellectuelle | Contraintes techniques et typographiques
+inf5060-propriete-intellectuelle | Coûts indicatifs
+inf5060-propriete-intellectuelle | Critères de validité
+inf5060-propriete-intellectuelle | Croissance externe & Partenariats
+inf5060-propriete-intellectuelle | DAF
+inf5060-propriete-intellectuelle | DGCCRF
+inf5060-propriete-intellectuelle | DRIETS
+inf5060-propriete-intellectuelle | Decathlon
+inf5060-propriete-intellectuelle | Designsview
+inf5060-propriete-intellectuelle | Dexerto
+inf5060-propriete-intellectuelle | Dispense de rapport de recherche
+inf5060-propriete-intellectuelle | Divulgation croisée entre concurrents
+inf5060-propriete-intellectuelle | Décathlon
+inf5060-propriete-intellectuelle | Définition moderne
+inf5060-propriete-intellectuelle | Déoxys
+inf5060-propriete-intellectuelle | Déposants éligibles
+inf5060-propriete-intellectuelle | Dépôt initial prioritaire
+inf5060-propriete-intellectuelle | Easybreath
+inf5060-propriete-intellectuelle | Effet rétroactif
+inf5060-propriete-intellectuelle | Environnement concurrentiel
+inf5060-propriete-intellectuelle | Exceptions notables
+inf5060-propriete-intellectuelle | Exigences phonétiques et linguistiques
+inf5060-propriete-intellectuelle | Exposition publique / Pitch
+inf5060-propriete-intellectuelle | Fermob
+inf5060-propriete-intellectuelle | Ferrari
+inf5060-propriete-intellectuelle | FileTransfer
+inf5060-propriete-intellectuelle | Fonctionnalités de la recherche avancée
+inf5060-propriete-intellectuelle | GGUF
+inf5060-propriete-intellectuelle | GTA
+inf5060-propriete-intellectuelle | GTA V
+inf5060-propriete-intellectuelle | GTA VI
+inf5060-propriete-intellectuelle | Git
+inf5060-propriete-intellectuelle | GitHub Copilot
+inf5060-propriete-intellectuelle | Google Pixel
+inf5060-propriete-intellectuelle | Google Store
+inf5060-propriete-intellectuelle | GrosTransfert
+inf5060-propriete-intellectuelle | Hermès
+inf5060-propriete-intellectuelle | HyperX
+inf5060-propriete-intellectuelle | HyperX Cloud II
+inf5060-propriete-intellectuelle | Impact sur le rapport de recherche
+inf5060-propriete-intellectuelle | Inaltérabilité du point de départ
+inf5060-propriete-intellectuelle | Indifférence du mérite et du genre
+inf5060-propriete-intellectuelle | Inserm
+inf5060-propriete-intellectuelle | Inserm Lab
+inf5060-propriete-intellectuelle | Inspiration vs Contrefaçon
+inf5060-propriete-intellectuelle | Irréversibilité
+inf5060-propriete-intellectuelle | Juridiction exclusive en France
+inf5060-propriete-intellectuelle | Jurisprudence SNCF vs Bombardier
+inf5060-propriete-intellectuelle | Justification par la proposition de valeur
+inf5060-propriete-intellectuelle | L'impact des outils génératifs (IA)
+inf5060-propriete-intellectuelle | LED
+inf5060-propriete-intellectuelle | Lamborghini
+inf5060-propriete-intellectuelle | Le Chat
+inf5060-propriete-intellectuelle | Le Chat Mistral
+inf5060-propriete-intellectuelle | Le dilemme Brevet / Secret
+inf5060-propriete-intellectuelle | Levothyrox
+inf5060-propriete-intellectuelle | MRD
+inf5060-propriete-intellectuelle | Mais vous savez, l'entrée sur
+inf5060-propriete-intellectuelle | Mesures impératives
+inf5060-propriete-intellectuelle | Mutualisation des données
+inf5060-propriete-intellectuelle | Méthode d'évaluation comparative
+inf5060-propriete-intellectuelle | Nomenclature CIB
+inf5060-propriete-intellectuelle | OMPI / WIPO
+inf5060-propriete-intellectuelle | Obligation formelle de déclaration
+inf5060-propriete-intellectuelle | OceanLab
+inf5060-propriete-intellectuelle | OpenAI
+inf5060-propriete-intellectuelle | Option 1 — IA internalisée (on-premise)
+inf5060-propriete-intellectuelle | PCB
+inf5060-propriete-intellectuelle | Pac-Man
+inf5060-propriete-intellectuelle | Paramètres opérationnels du projet
+inf5060-propriete-intellectuelle | Partenariats de recherche et valorisation
+inf5060-propriete-intellectuelle | Piriou
+inf5060-propriete-intellectuelle | Piriou Europe
+inf5060-propriete-intellectuelle | Piriou Marine
+inf5060-propriete-intellectuelle | Pluralité de brevets sur un produit
+inf5060-propriete-intellectuelle | Preuve et appréciation
+inf5060-propriete-intellectuelle | Propriétés juridiques
+inf5060-propriete-intellectuelle | Précision rédactionnelle
+inf5060-propriete-intellectuelle | Qualité d'inventeur et formalisation
+inf5060-propriete-intellectuelle | Quechua
+inf5060-propriete-intellectuelle | RGB
+inf5060-propriete-intellectuelle | Reproduction sur packaging ou dans un média
+inf5060-propriete-intellectuelle | Reverse engineering et réécriture
+inf5060-propriete-intellectuelle | Ripolin
+inf5060-propriete-intellectuelle | Risque de divulgation informelle
+inf5060-propriete-intellectuelle | Risque réputationnel pour les titulaires
+inf5060-propriete-intellectuelle | Répartition géographique
+inf5060-propriete-intellectuelle | Rôle d'assembleur technologique
+inf5060-propriete-intellectuelle | S'inspirer / Calquer intelligemment
+inf5060-propriete-intellectuelle | Sauf stipulation contraire, les
+inf5060-propriete-intellectuelle | Smart Fortwo
+inf5060-propriete-intellectuelle | Smash
+inf5060-propriete-intellectuelle | Structure hiérarchique
+inf5060-propriete-intellectuelle | TGI
+inf5060-propriete-intellectuelle | TGI de Paris
+inf5060-propriete-intellectuelle | Traçabilité des développements techniques
+inf5060-propriete-intellectuelle | Typologie
+inf5060-propriete-intellectuelle | Typologie des offres reçues
+inf5060-propriete-intellectuelle | Valeo
+inf5060-propriete-intellectuelle | Veille technologique pluriannuelle
+inf5060-propriete-intellectuelle | Vulnérabilité des start-ups
+inf5060-propriete-intellectuelle | WeTransfer
+inf5060-propriete-intellectuelle | Éléments fonctionnels
+inf5060-propriete-intellectuelle | Énumère limitativement ce qui n'est
+inf5060-propriete-intellectuelle | Étudiant 1
+inf5060-propriete-intellectuelle | Étudiant 2

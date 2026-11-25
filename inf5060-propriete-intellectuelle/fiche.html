@@ -1,0 +1,2330 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>INF5060 — Propriété intellectuelle</title>
+<link rel="stylesheet" href="../assets/core.css?v=28">
+<link rel="stylesheet" href="../assets/viz.css?v=12">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><span class="dot"></span> INF5060 <small>· propriété intellectuelle</small></div>
+  <div class="spacer"></div>
+  <input id="search" type="search" placeholder="Rechercher…  (Ctrl+K)">
+  <a class="home" href="../index.html">← Accueil</a>
+  <button class="btn ghost" onclick="toggleTheme()" title="Thème clair / sombre">◐</button>
+  <button class="btn ghost" onclick="window.print()" title="Imprimer / PDF">⎙</button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar"><h4>Parcours</h4><div id="toc"></div></nav>
+  <main class="content">
+<h1>Propriété intellectuelle</h1>
+<p class="lead">
+Devenir <b>propriétaire de ses créations intellectuelles</b> pour en tirer des revenus, en interdire la copie et
+rassurer un investisseur : voilà tout le sujet. La propriété intellectuelle n'est pas une formalité juridique
+subie, c'est un <b>outil économique et stratégique</b> qui protège un avantage concurrentiel. Cette fiche couvre
+les deux jours du cours de l'INPI, les 24 et 25 novembre (partie I), et les restitutions du lab IE du
+24 au matin — flashs d'ingérence économique de la DGSI et souveraineté numérique (partie II), qui tombent au
+même contrôle.
+</p>
+
+<div class="callout"><div class="t">Sources de cette fiche</div>
+<b>Partie I</b> : cours d'un <b>ingénieur brevet, chargé d'affaires à l'INPI</b> — séance 1 du 24 novembre
+(enregistrements <i>16-20</i>, 108 min, et <i>16-52-50</i>, 72 min), séance 2 du 25 novembre (enregistrements
+<i>10-28</i>, 96 min, <i>12-04</i>, 71 min, <i>14-45</i>, 99 min, et <i>16-18</i>, 75 min, avec les mises en
+situation), et le diaporama <b>« Innovation, PI et stratégie »</b> (23 pages). <b>Partie II</b> : restitutions
+du lab IE du 24 novembre (enregistrements <i>16-17</i>, 87 min, <i>16-52-05</i>, 65 min, et <i>16-53-05</i>,
+24 min) et les <b>diaporamas des binômes B1 à B19</b> distribués pour le lab. Le fond IE (définitions, ingérence,
+menaces hybrides, armées) reste dans la fiche <a href="../inf5061-intelligence-economique/fiche.html">Intelligence
+économique</a> : cette fiche-ci n'en reprend que ce qui a été ajouté le 24 novembre.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="essentiel">★ L'essentiel — à relire la veille</h2>
+
+<div class="exam"><div class="t">Le format de l'évaluation</div>
+<ul>
+<li><b>Vendredi 27/11, 10 h 30</b> : contrôle commun <b>IE + propriété intellectuelle</b>, sur Moodle avec
+<b>Safe Exam Browser</b> (à tester et mettre à jour avant), 1 h 30, sur la semaine écoulée.</li>
+<li>Rappel : la mineure ne donne <b>qu'une seule note</b>, moyenne des contrôles et des labs, recopiée sur les
+quatre modules (INF5061, INF5060, INF5059, ENT5002).</li>
+<li><b>Environ 5 questions porteront sur les présentations IE</b> (flashs DGSI et sujets de souveraineté
+numérique, partie II de cette fiche) — annoncé à l'oral, la fin d'enregistrement du 24 au matin étant coupée.
+Ne pas sacrifier les chapitres 10 à 14 au profit de la seule PI.</li>
+<li>Le reste porte sur la <b>propriété intellectuelle</b> : les notions ci-dessous, celles du quiz de
+connaissances théoriques passé à l'INPI.</li>
+</ul>
+</div>
+
+<div class="exam"><div class="t">Ce que l'intervenant INPI a dit de retenir, mot pour mot</div>
+<ul>
+<li>« Retenez un peu ce tableau » — la matrice des trois colonnes, et le réflexe de placer chaque création
+dans sa case (<a href="#ch2">chapitre 2</a>).</li>
+<li>« Retenez, la chose simple, c'est : pour pouvoir avoir un brevet, le souci c'est la <b>nouveauté</b>,
+comparé à tout ce qui a été rendu accessible au public » (<a href="#ch4">chapitre 4</a>).</li>
+<li>« Retenez ça : <b>12 mois</b> pour étendre son brevet à l'étranger, <b>18 mois</b> sa publication. »</li>
+<li>« Retenez bien la distinction : <b>TMview</b> est dédié aux marques, <b>Designview</b> aux dessins et
+modèles. »</li>
+<li>Les logiciels créés par un salarié : « c'est un point juridique très important » — les droits
+patrimoniaux appartiennent automatiquement à l'employeur (<a href="#ch3">chapitre 3</a>).</li>
+</ul>
+</div>
+
+<div class="key-points">
+<li><b>Une idée n'est jamais protégeable</b> : elle est « de libre parcours ». Seule sa <b>matérialisation</b>
+(code, dispositif, dessin, procédé) peut l'être. Les théorèmes et principes scientifiques non plus.</li>
+<li>Trois colonnes dans la matrice : <b>propriété littéraire et artistique</b> (droit d'auteur, sans dépôt),
+<b>propriété industrielle</b> (brevet, marque, dessins et modèles, COV, TPS — <b>uniquement par dépôt</b>),
+et le <b>secret</b> (ni dépôt ni publication, protection tant qu'il tient).</li>
+<li><b>Brevet</b> = <b>solution technique à un problème technique</b>. <b>Quatre conditions</b> : une
+<b>invention</b>, susceptible d'<b>application industrielle</b>, <b>nouvelle</b> (nouveauté absolue, mondiale,
+sans limite de temps) et impliquant une <b>activité inventive</b> (non évidente pour l'homme du métier).
+<b>20 ans maximum</b> à compter du dépôt, sous réserve des annuités, puis domaine public.</li>
+<li>Le calendrier du brevet : <b>12 mois</b> pour étendre à l'étranger, <b>18 mois</b> de secret puis
+publication, <b>30 mois</b> pour entrer en phase nationale via le <b>PCT</b>, <b>9 mois</b> d'opposition après
+la délivrance, <b>20 ans</b> au plus.</li>
+<li><b>Toute divulgation avant le dépôt tue la nouveauté</b> : post en ligne, article, soutenance publique,
+essai sur voie publique, salon, code collé dans une IA grand public. Le dépôt précède toujours la parole.</li>
+<li><b>Marque</b> = signe distinctif (verbal, figuratif, sonore) pour des <b>produits et services désignés</b>.
+<b>Trois conditions</b> : <b>distinctive</b>, <b>disponible</b>, <b>licite</b>. 190 € pour une classe à l'INPI,
+<b>10 ans renouvelables indéfiniment</b>, <b>6 mois</b> de priorité pour l'étendre.</li>
+<li><b>Dessins et modèles</b> = l'apparence, si elle est <b>nouvelle</b> et a un <b>caractère propre</b> (pas
+d'impression de déjà-vu). Dépôt obligatoire, <b>5 ans renouvelables jusqu'à 25 ans</b>, 6 mois de priorité.
+Si la forme est dictée par la fonction, c'est le <b>brevet</b>.</li>
+<li><b>Droit d'auteur</b> : acquis <b>dès la création</b>, sans dépôt, si l'œuvre est <b>originale</b>. Droits
+<b>patrimoniaux</b> (cessibles, vie + 70 ans) et droits <b>moraux</b> (paternité, respect de l'œuvre :
+<b>inaliénables et perpétuels</b>). Le <b>code source</b> relève du droit d'auteur ; développé par un
+<b>salarié</b>, ses droits patrimoniaux vont <b>automatiquement à l'employeur</b>.</li>
+<li><b>Inventions de salariés</b> : de mission (à l'employeur, <b>rémunération supplémentaire</b>), hors mission
+attribuable (l'employeur peut se l'attribuer contre un <b>juste prix</b>), hors mission non attribuable (au
+salarié). L'inventeur est <b>toujours nommé</b> dans le brevet.</li>
+<li><b>La contrefaçon s'apprécie d'après les ressemblances, pas d'après les différences.</b></li>
+<li>Pas de dépôt ne veut pas dire pas de preuve : prendre <b>date certaine</b> avec l'<b>e-Soleau</b> de l'INPI
+(15 €, conservation 5 ans prorogeable jusqu'à 20), un commissaire de justice, l'APP ou la blockchain.</li>
+<li><b>Territorialité</b> : un titre ne vaut que là où il est déposé et délivré. On se protège dans les pays qui
+font environ 80 % de son marché, pas partout. <b>12 mois</b> de délai de priorité pour étendre un brevet (PCT).</li>
+<li><b>Premier déposant</b> : le droit va au premier qui dépose, pas au premier qui invente.</li>
+<li><b>Brevet ou secret ?</b> Brevet = 20 ans de monopole contre publication. Secret = sans limite de durée,
+mais rien contre la rétro-ingénierie ni la découverte indépendante (Coca-Cola).</li>
+<li><b>Dommages et intérêts</b> : calculés sur la <b>valeur réelle du produit authentique × le volume
+contrefait</b>, jamais sur le prix de vente du contrefacteur. La <b>saisie-contrefaçon</b> par commissaire de
+justice fournit la preuve.</li>
+<li>Sans marque déposée, il ne reste que l'action en <b>concurrence déloyale</b> : il faut prouver <b>faute +
+préjudice + lien de causalité</b>, ce qui est beaucoup plus difficile qu'une action en contrefaçon.</li>
+<li><b>Spécialité</b> : une marque ne vaut que pour ses classes (<b>classification de Nice</b>, 45 classes).
+D'où des homonymes légaux (Lotus voitures, papier toilette, montres).</li>
+<li>Deux pièges du titulaire : la <b>déchéance pour non-usage</b> (5 ans sans exploitation) et la
+<b>dégénérescence</b> (la marque devient le nom commun du produit : Frigidaire, Caddie, Sopalin).</li>
+<li>Partie II — <b>Cloud Act</b> (2018) : une entreprise de droit américain doit livrer les données qu'elle
+opère, <b>où qu'elles soient stockées</b>, sous peine pénale. C'est lui qui a fait tomber le Privacy Shield
+(arrêt <b>Schrems II</b>, 2020).</li>
+<li>La réponse française n'est plus juridique mais technique : <b>SecNumCloud 3.2</b> (ANSSI) — seul le
+prestataire intervient sur les données, <b>immunité aux lois extraterritoriales</b>, <b>aucun kill switch</b>,
+hébergement et traitement dans l'UE.</li>
+<li><b>Aucun acteur ne maîtrise toute la chaîne des semi-conducteurs</b> : les États-Unis conçoivent (NVIDIA),
+l'Asie fabrique (TSMC), l'Europe fournit les machines (<b>ASML</b>, seule au monde en lithographie <b>EUV</b>).</li>
+<li>Le fil rouge des flashs DGSI : <b>l'humain est le vecteur le plus facile</b> — il est plus simple de
+corrompre ou d'abuser quelqu'un que de pirater un système. Et le réflexe est toujours le même :
+<b>vérifier par un autre canal, couper l'échange, signaler, porter plainte</b>.</li>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch1"><span class="num">1.</span> Être propriétaire de ses créations</h2>
+
+<p>La propriété intellectuelle tient tout entière dans son nom : <b>devenir propriétaire de ses créations
+intellectuelles</b>, et donc pouvoir en tirer des revenus. C'est un mécanisme juridique mondial, régi par des
+traités internationaux, qui existe dans presque tous les pays.</p>
+
+<h3 id="ch1-1">1.1 Les prérogatives du propriétaire</h3>
+
+<p>Être propriétaire d'un bien immatériel donne exactement les mêmes droits que sur un ordinateur :</p>
+
+<div class="grid c3">
+<div class="card"><h4>En user</h4>Utiliser librement sa création, dans le cadre légal. C'est le <b>monopole
+d'exploitation</b>.</div>
+<div class="card"><h4>En tirer des fruits</h4>La « louer » par une <b>licence d'exploitation</b> contre des
+redevances (<i>royalties</i>), au lieu de l'exploiter soi-même.</div>
+<div class="card"><h4>En disposer</h4><b>Céder</b> ou vendre l'actif pour récupérer du capital.</div>
+</div>
+
+<p>Et, symétriquement, deux conséquences souvent oubliées : la <b>responsabilité</b> de ce qui est fait de
+l'actif, et le <b>droit d'agir en justice</b> — si l'on vous vole votre création, vous avez des leviers pour
+attaquer, sous certaines conditions.</p>
+
+<div class="example"><div class="t">L'effet réputation</div>
+Un brevet déposé est <b>examiné, accordé et publié</b> : c'est une preuve d'excellence technique opposable.
+Les <b>chasseurs de têtes consultent les bases brevets</b> pour repérer les ingénieurs d'une PME ou d'un grand
+groupe, et les investisseurs y cherchent les compétences clés. Avoir son nom sur un brevet n'est pas qu'une
+fierté, c'est un actif de carrière.
+</div>
+
+<h3 id="ch1-2">1.2 Pourquoi la société accorde un monopole</h3>
+
+<p>Créer coûte du temps et de l'argent, et c'est prendre un risque. Le monopole temporaire est la
+<b>récompense qui rend le risque supportable</b> : il permet d'<b>amortir les investissements de R&amp;D</b>.
+Sans lui, l'incitation à innover disparaîtrait, puisque n'importe quel concurrent copierait aussitôt.</p>
+
+<div class="callout warn"><div class="t">L'ordre de grandeur du risque</div>
+Sur <b>100 brevets déposés, 30 environ procurent des revenus</b> : <b>70 % ne rapportent rien</b>.
+</div>
+
+<p>La contrepartie, c'est la <b>divulgation</b>. En échange du monopole, l'inventeur publie intégralement son
+invention : tout le monde peut la consulter dans les bases (INPI, Espacenet, <b>OMPI</b> : Organisation mondiale de la propriété intellectuelle), s'en inspirer, et
+construire dessus sans réinventer la roue. Le brevet est donc autant un <b>outil documentaire</b> qu'un titre.</p>
+
+<div class="callout def"><div class="t">Les ordres de grandeur à retenir</div>
+<ul>
+<li>Environ <b>15 000 demandes de brevets par an en France</b>.</li>
+<li>Environ <b>3,5 millions dans le monde</b> — un dépôt par pays compte pour un brevet : France + États-Unis +
+Chine, cela fait trois brevets.</li>
+<li><b>Renault</b> dépose à peu près <b>800 brevets par an</b>.</li>
+</ul>
+</div>
+
+<h3 id="ch1-3">1.3 L'INPI</h3>
+
+<p>L'<b>INPI</b> (Institut national de la propriété industrielle) est un <b>établissement public sous tutelle du
+ministère de l'Économie</b>. Il ne défend pas vos droits à votre place : il vous les donne.</p>
+
+<div class="grid c2">
+<div class="card"><h4>Délivrer les titres</h4>Recevoir, examiner et délivrer les <b>brevets</b>, <b>marques</b>,
+<b>dessins et modèles</b> en France ; tenir les registres nationaux.</div>
+<div class="card"><h4>Diffuser l'information</h4>Publier et mettre en ligne les bases de brevets et de marques
+« au service de l'humanité » ; publier chaque semaine les nouvelles demandes au <b>BOPI</b> (Bulletin officiel de la propriété industrielle).</div>
+<div class="card"><h4>Accompagner</h4>Intervenir à toutes les phases d'un projet : R&amp;D (état de l'art,
+<b>liberté d'exploitation</b>, confidentialité), lancement (extension à l'étranger), contrats (consortium,
+transfert de technologie), maintien des droits et veille.</div>
+<div class="card"><h4>Sensibiliser et lutter</h4>Former les entreprises et les écoles, et contribuer à la
+<b>lutte anti-contrefaçon</b> — mais c'est au <b>titulaire</b> d'attaquer les contrefacteurs.</div>
+<div class="card"><h4>Adapter le droit</h4>Faire évoluer le droit de la propriété industrielle et
+<b>renforcer l'influence de la France</b> dans les instances internationales.</div>
+<div class="card"><h4>Administrer la vie des entreprises</h4>Le guichet des formalités : <b>création,
+modification, cessation</b> d'entreprise, et le registre des sociétés.</div>
+</div>
+
+<p>Côté services, le support liste un accompagnement « dans la durée, sur mesure, avec un interlocuteur
+privilégié » : échanges avec un chargé d'affaires, <b>prédiagnostic PI</b>, programme start-up, alliance PI,
+<b>Pass PI</b> (aide financière), master-class et formations, <b>cartographie</b> technologique.</p>
+
+<div class="example"><div class="t">Un établissement public qui gagne de l'argent</div>
+L'INPI est <b>autofinancé</b> par les redevances de dépôt et de maintien, et gagne surtout sur les
+<b>déposants étrangers</b>, qui paient plus cher qu'un Français pour protéger leur marque en France. Il
+redistribue en subventionnant les porteurs de projets : rendez-vous et audits <b>gratuits</b>, et une
+<b>cartographie technologique</b> facturée 15 000 à 20 000 € par un bureau d'études privé est proposée autour
+de <b>1 500 €</b>.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch2"><span class="num">2.</span> La matrice : où ranger une création</h2>
+
+<p>Le réflexe enseigné : devant un projet, <b>placer chaque création dans une case</b> de la matrice, puis en
+déduire le mode de protection. Trois colonnes.</p>
+
+<div class="exam"><div class="t">Ce que l'enseignant a demandé de retenir</div>
+« Retenez un peu ce tableau. Et par rapport à tous vos projets futurs, posez-vous la question dans quelle case
+vous allez vous caler. » Savoir faire cet exercice sur un produit complexe (§ 2.3) est le cœur du cours.
+</div>
+
+<h3 id="ch2-1">2.1 Les trois colonnes</h3>
+
+<div class="tw"><table>
+<thead><tr><th></th><th>Propriété littéraire et artistique (PLA)</th><th>Propriété industrielle</th><th>Le secret</th></tr></thead>
+<tbody>
+<tr><td><b>Ce qu'on protège</b></td>
+<td>Œuvres de l'esprit : textes, musiques, tableaux, photos, vidéos, <b>codes sources</b>, créations numériques.
+Plus les <b>bases de données</b> et les <b>droits voisins</b>.</td>
+<td>Créations du commerce et de l'industrie : <b>brevets</b> (solutions techniques) et modèles d'utilité,
+<b>marques</b> (signes distinctifs), <b>dessins et modèles</b> (apparence), <b>COV</b>, <b>TPS</b>.</td>
+<td>Le <b>savoir-faire</b> : procédés, recettes, réglages, formulations, listes de fournisseurs.</td></tr>
+<tr><td><b>Comment on l'obtient</b></td>
+<td><b>Sans aucune formalité</b>, dès la création, si l'œuvre est <b>originale</b>.</td>
+<td><b>Uniquement par le dépôt</b> auprès d'un office (INPI, EUIPO, OEB, OMPI), avec publication.</td>
+<td>Par des <b>mesures raisonnables</b> de protection, jamais par un dépôt.</td></tr>
+<tr><td><b>Durée</b></td>
+<td>Vie de l'auteur + <b>70 ans</b>.</td>
+<td>Brevet <b>20 ans</b> non renouvelables ; marque <b>10 ans</b> renouvelables indéfiniment.</td>
+<td><b>Illimitée</b> tant que le secret tient.</td></tr>
+<tr><td><b>Le risque</b></td>
+<td>Devoir <b>prouver</b> la paternité et la date.</td>
+<td>Tout est <b>public</b> ; au bout de 20 ans, le brevet tombe dans le domaine public.</td>
+<td>Une <b>rétro-ingénierie licite</b> ou une fuite fait tout perdre, sans recours.</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout danger"><div class="t">La règle cardinale : les idées sont de libre parcours</div>
+Une idée brute, un concept, une vue de l'esprit ne sont <b>jamais protégeables</b>. Il faut une
+<b>matérialisation</b> réalisable. Conséquence directe : l'idée d'une plateforme de mise en relation d'un
+point A à un point B n'appartient à personne — Uber, BlaBlaCar et les autres peuvent coexister, chacun avec
+son code, sa marque et son exécution. Ce qui est protégé, c'est l'invention, jamais l'idée.
+</div>
+
+<h3 id="ch2-2">2.2 Ce qui ne rentre dans aucune case</h3>
+
+<div class="grid c2">
+<div class="card"><h4>Les théorèmes et principes scientifiques</h4>Ni brevetables ni couverts par le droit
+d'auteur. On n'y associe qu'un nom, moralement : <b>Fourier n'a jamais touché un centime</b> sur la
+transformée qui sert à compresser vos fichiers.</div>
+<div class="card"><h4>AOP et AOC</h4><b>Appellations d'origine</b> protégée ou contrôlée : des produits
+alimentaires liés à un terroir (camembert, vins). Ce ne sont ni des marques ni des brevets.</div>
+<div class="card"><h4>Les indications géographiques (IG)</h4>Protègent un <b>savoir-faire artisanal ou
+industriel</b> attaché à un lieu : porcelaine de Limoges, pierre de Bourgogne. Très peu nombreuses en France
+(de l'ordre de <b>25</b> homologuées). À ne pas confondre avec l'<b>IGP</b> (indication géographique protégée),
+qui relève comme l'AOP du régime alimentaire européen.</div>
+<div class="card"><h4>Les créations purement générées par IA</h4>Pas de droit d'auteur aujourd'hui, faute
+d'intervention humaine originale — « pour l'instant », a précisé l'enseignant.</div>
+</div>
+
+<h3 id="ch2-3">2.3 L'exercice de référence : cartographier une voiture</h3>
+
+<p>Le cas travaillé en cours. Un même produit mobilise <b>toutes</b> les colonnes à la fois : c'est l'exercice
+type à savoir refaire sur n'importe quel produit.</p>
+
+<div class="viz"><div class="t">Les droits de propriété intellectuelle sur un véhicule automobile</div>
+<div class="vz-grid g3">
+<button class="vz-c k-blue"><span class="n">Technique</span><h5>Brevets</h5><span class="q">Ce qui est fonctionnel</span><span class="more"><span class="t">Détail</span>Motorisation, électronique de puissance, capteurs et traitement du signal, <b>phares matriciels adaptatifs</b> qui éteignent sélectivement des diodes pour ne pas éblouir. Renault : environ 800 brevets par an.</span></button>
+<button class="vz-c k-amber"><span class="n">Signes</span><h5>Marques</h5><span class="q">Le nom et le logo</span><span class="more"><span class="t">Détail</span>Le nom du constructeur, le <b>nom du modèle</b>, l'emblème. Déposés par classes, dont la <b>classe 12</b> (véhicules).</span></button>
+<button class="vz-c k-purple"><span class="n">Apparence</span><h5>Dessins et modèles</h5><span class="q">Les formes</span><span class="more"><span class="t">Détail</span>Silhouette de la carrosserie, <b>design des jantes</b>, dessin des optiques, planche de bord. À condition que la forme ne soit pas dictée par la technique.</span></button>
+<button class="vz-c k-green"><span class="n">Logiciel</span><h5>Droit d'auteur</h5><span class="q">Tout le code</span><span class="more"><span class="t">Détail</span>Calculateurs, système multimédia, aides à la conduite, interfaces graphiques. Protégé <b>sans dépôt</b>, dès l'écriture.</span></button>
+<button class="vz-c k-red"><span class="n">Savoir-faire</span><h5>Secret de fabrique</h5><span class="q">Ce qu'on ne publie pas</span><span class="more"><span class="t">Détail</span>Procédés d'assemblage, <b>formulations de peinture</b> et traitements de surface, réglages de production et tolérances d'usinage.</span></button>
+<button class="vz-c k-blue"><span class="n">Limite</span><h5>La photo du produit</h5><span class="q">Pas automatique</span><span class="more"><span class="t">Détail</span>Une photo ne relève du droit d'auteur que si elle est <b>originale</b> : une voiture de trois quarts avant sur fond blanc ne l'est pas.</span></button>
+</div>
+<div class="vz-bar"><button class="btn" data-cards="open">Tout déplier</button><button class="btn ghost" data-cards="close">Tout replier</button><span class="cnt"></span></div>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch3"><span class="num">3.</span> Le droit d'auteur et la preuve d'antériorité</h2>
+
+<h3 id="ch3-1">3.1 Un droit acquis sans formalité</h3>
+
+<p>Le droit d'auteur naît <b>du seul fait de la création</b>, sur la tête de la <b>personne physique</b> qui a
+créé (art. L. 111-1 du code de la propriété intellectuelle). Ni dépôt, ni publication. Deux conditions
+seulement :</p>
+
+<div class="key-points">
+<li>Une <b>œuvre de l'esprit</b> matérialisée (pas une idée), <b>quels qu'en soient la forme d'expression, le
+genre, le mérite ou la destination</b> : livres, conférences, musique, œuvres dramatiques, logiciels, jeux,
+photographies, dessins, peintures, sculptures, films. Le juge ne note pas la beauté : une banane scotchée au
+mur est une œuvre si l'artiste l'a voulue.</li>
+<li>L'<b>originalité</b>, critère unique et décisif. Elle n'est <b>définie par aucun texte</b> : ce sont les
+juges qui l'ont posée. Trois formulations coexistent : l'<b>empreinte de la personnalité de l'auteur</b>, la
+marque de son <b>apport intellectuel</b>, l'expression de ses <b>choix libres et créatifs</b>.</li>
+</div>
+
+<p>L'auteur dispose alors du monopole d'exploitation : partager, concéder une <b>licence</b>, ou <b>céder</b>
+ses droits. Toute copie non autorisée est une <b>contrefaçon</b>, sanctionnée civilement et pénalement.
+S'inspirer d'une œuvre contemporaine en surfant sur sa notoriété — remplacer la banane scotchée par une
+mandarine scotchée — expose à la contrefaçon ou au parasitisme.</p>
+
+<h3 id="ch3-2">3.2 Droits patrimoniaux et droits moraux</h3>
+
+<div class="tw"><table>
+<thead><tr><th></th><th>Droits patrimoniaux</th><th>Droits moraux</th></tr></thead>
+<tbody>
+<tr><td><b>Ce qu'ils couvrent</b></td><td>L'exploitation économique : <b>reproduction</b>, <b>représentation</b>,
+adaptation, commercialisation, produits dérivés.</td><td>Le <b>droit de paternité</b> (être nommé sur toute
+reproduction) et le <b>droit au respect de l'œuvre</b> (s'opposer à sa modification ou à sa dénaturation).</td></tr>
+<tr><td><b>Régime</b></td><td><b>Cessibles</b> : on peut les vendre ou les concéder en licence.</td>
+<td><b>Inaliénables</b> (ni vente ni renonciation) et <b>perpétuels</b> ; ils se transmettent aux héritiers.</td></tr>
+<tr><td><b>Durée</b></td><td>Vie de l'auteur + <b>70 ans</b> ; pour une œuvre collective dont les apports ne sont
+pas individualisables (un jeu vidéo), 70 ans à compter de la publication.</td><td>Sans limite de durée.</td></tr>
+</tbody>
+</table></div>
+
+<div class="example"><div class="t">Upcycling : la revente n'autorise pas la transformation</div>
+Une fois un produit mis sur le marché européen avec l'accord du titulaire, ses droits sont <b>épuisés</b> : il
+ne peut pas en interdire la <b>revente</b>. Mais l'épuisement ne joue plus quand le produit est <b>modifié</b>.
+Découper des foulards d'une maison de luxe pour les coudre sur des blousons en jean et les revendre, c'est une
+<b>contrefaçon</b> et une atteinte au droit d'adaptation, comme l'a fait juger la maison concernée.
+</div>
+
+<div class="example"><div class="t">Ce que disent les CGU de TikTok</div>
+Vos photos et vidéos sont couvertes par le droit d'auteur, et les conditions générales d'utilisation opèrent
+une cession ou une licence très large à la plateforme, qui monétise vos créations. C'est une
+<b>transaction juridique</b> sur des droits d'auteur, acceptée d'un clic.
+</div>
+
+<h3 id="ch3-3">3.3 Hors de France : Berne et le copyright américain</h3>
+
+<div class="grid c2">
+<div class="card"><h4>La convention de Berne (1886)</h4>Elle pose l'<b>absence de formalité</b> et le traitement
+national : une œuvre protégée en France l'est automatiquement dans presque tous les pays du monde.</div>
+<div class="card"><h4>Le copyright américain et le symbole ©</h4>Aux États-Unis, pour agir en contrefaçon devant
+un tribunal fédéral et obtenir des dommages et intérêts majorés plus les frais d'avocat, il faut avoir
+<b>enregistré</b> l'œuvre auprès de l'<b>US Copyright Office</b>. Le symbole <b>©</b> signale cet
+enregistrement et prive le copieur de l'excuse de la bonne foi ; l'apposer <b>sans dépôt effectif</b> est
+sanctionné. Pour les œuvres détenues par une entreprise, la durée est de <b>95 ans</b> après publication (120
+après création au plus) — le régime qui a protégé Mickey.</div>
+</div>
+
+<div class="callout warn"><div class="t">Quand le droit d'auteur expire, la marque prend le relais</div>
+Le droit d'auteur a une fin ; la marque, renouvelable tous les 10 ans, n'en a pas. D'où la stratégie de
+<b>Disney</b> : déposer comme <b>marques</b> le nom, la silhouette et le logo de ses personnages. Quand une œuvre
+tombe dans le domaine public, son code ou son principe de jeu deviennent réutilisables, mais pas son nom ni ses
+signes distinctifs. Une mise à jour mineure de l'œuvre, elle, ne repousse pas l'échéance des éléments d'origine.
+</div>
+
+<h3 id="ch3-4">3.4 Le logiciel</h3>
+
+<div class="callout def"><div class="t">Le logiciel et le code source</div>
+En droit français et européen, le <b>logiciel est assimilé à une œuvre littéraire</b> : c'est le <b>droit
+d'auteur</b> qui le protège, pas le brevet. Un programme d'ordinateur « en tant que tel » n'est pas brevetable ;
+il ne peut l'être que s'il produit un <b>effet technique concret</b> contribuant à une invention — c'est le cas
+de la couche logicielle du <i>pinch-to-zoom</i> (§ 4.1). L'<b>open source</b> n'échappe pas à la règle : il
+repose <b>sur</b> le droit d'auteur, via des contrats de licence qui fixent ce qu'on a le droit de redistribuer
+et de modifier.
+<ul>
+<li><b>Ce qui est protégé</b> : le <b>code source</b>, le <b>code objet</b> et la documentation de conception.</li>
+<li><b>Ce qui ne l'est pas</b> : les idées, algorithmes, fonctionnalités, protocoles. Réécrire la même logique
+avec une autre syntaxe ou dans un autre langage n'est pas une contrefaçon littérale : c'est la grande
+faiblesse du droit d'auteur sur le code, facile à contourner.</li>
+<li>La <b>décompilation</b> n'est permise que pour l'<b>interopérabilité</b>, après avoir demandé en vain les
+spécifications à l'auteur.</li>
+<li>Les <b>interfaces graphiques</b>, écrans et icônes se protègent plutôt par <b>dessins et modèles</b>.</li>
+</ul>
+</div>
+
+<div class="exam"><div class="t">Le logiciel créé par un salarié — « un point juridique très important »</div>
+Principe général : le droit d'auteur appartient à la personne physique, même salariée. <b>Exception pour les
+logiciels</b> : quand un salarié développe du code <b>dans l'exercice de ses fonctions</b> ou d'après les
+instructions de son employeur, les <b>droits patrimoniaux sont dévolus automatiquement à l'employeur</b>
+(art. L. 113-9). Le développeur ne peut ni bloquer l'exploitation de son code ni réclamer de redevances — fin
+des contentieux de développeurs de jeux vidéo qui se prétendaient seuls propriétaires.
+</div>
+
+<div class="callout warn"><div class="t">Code et images générés par IA</div>
+Une production <b>entièrement générée</b> par un modèle ne porte la personnalité d'aucune personne physique :
+pas de droit d'auteur, elle relève par défaut du domaine public. Pour revendiquer un apport humain, conserver
+ses <b>invites</b>, ses itérations et l'architecture d'ensemble. Côté entrée, l'entraînement sur des œuvres
+protégées pose la question de la contrefaçon des droits patrimoniaux ; le droit d'auteur protège une forme
+d'expression, pas un style, mais la reproduction d'éléments distinctifs reste une contrefaçon.
+</div>
+
+
+<h3 id="ch3-5">3.5 Les voisins du droit d'auteur</h3>
+
+<div class="grid c2">
+<div class="card"><h4>Les droits voisins</h4><b>Droit à l'image</b>, droit de l'artiste-interprète sur sa voix
+et son visage. C'est sur ce fondement que des artistes attaquent les reproductions de leur voix par IA.</div>
+<div class="card"><h4>Le droit <i>sui generis</i> des bases de données</h4>Il ne protège pas l'originalité mais
+l'<b>investissement substantiel</b> (financier, matériel ou humain) consenti pour constituer, vérifier et
+mettre à jour le contenu. Il permet d'interdire l'<b>extraction ou la réutilisation</b> non autorisée : c'est
+l'outil contre le <i>scraping</i> de sa base. Il faut pouvoir <b>justifier de cet investissement</b>.</div>
+</div>
+
+<div class="example"><div class="t">Pourquoi « plus soixante-dix ans » ?</div>
+La durée post mortem doit beaucoup au lobbying industriel : aux États-Unis, <b>Disney</b> a poussé à
+l'allongement légal de la protection (<i>Copyright Term Extension Act</i>) à mesure que Mickey approchait du
+domaine public. Le droit d'auteur reste par ailleurs assez homogène d'un pays à l'autre, avec des variantes.
+</div>
+
+<h3 id="ch3-6">3.6 Prendre date : les moyens de preuve</h3>
+
+<p>Pas de dépôt obligatoire ne signifie pas pas de preuve à fournir. En cas d'usurpation, la <b>charge de la
+preuve pèse sur l'auteur</b> : il doit établir la <b>date certaine</b> de sa création et sa <b>paternité</b>.
+D'où le conseil : <b>prendre date avant de montrer quoi que ce soit</b> à un tiers, un investisseur ou un
+partenaire.</p>
+
+<div class="tw"><table>
+<thead><tr><th>Moyen</th><th>Ce que ça vaut</th></tr></thead>
+<tbody>
+<tr><td><b>e-Soleau (INPI)</b></td><td>Archivage sécurisé, certifié AFNOR : pour chaque fichier déposé (1 à
+100 fichiers, 2 Go au plus), une <b>empreinte</b> est calculée et conservée <b>5 ans</b>, prorogeable de 5 à
+20 ans de plus. Un récépissé liste les pièces et leurs empreintes : il prouve la <b>date certaine</b> et que
+les documents n'ont <b>pas été modifiés</b>. <b>15 € les 50 Mo</b>, puis 10 € par tranche de 50 Mo. Ce n'est
+<b>pas un titre de propriété</b>, mais une preuve — y compris de <b>possession antérieure</b> d'une invention
+(§ 4.8). Le moyen le plus utilisé.</td></tr>
+<tr><td><b>Officier ministériel</b></td><td>Dépôt chez un <b>notaire</b> ou un <b>commissaire de justice</b>
+(huissier) : la voie la plus classique et la plus solide, utilisée pour les gros projets industriels.</td></tr>
+<tr><td><b>APP, sociétés de gestion</b></td><td>L'<b>APP</b> (Agence pour la protection des programmes),
+association créée par les éditeurs de logiciels, horodate le code source, les API, algorithmes, jeux de données,
+polices et scripts de jeux : une preuve d'antériorité reconnue, y compris à l'étranger. SACD ou SCAM pour les
+autres œuvres.</td></tr>
+<tr><td><b>Plateforme tierce (dépôt de code, <i>commit</i>)</b></td><td>Recevable si la date n'est pas
+modifiable par le déposant : donc une <b>plateforme tierce</b>, en dépôt <b>privé</b>, avec un historique
+cohérent.</td></tr>
+<tr><td><b>Blockchain</b></td><td>Horodatage décentralisé utilisable. Réserve de l'enseignant : on passe
+souvent par une start-up ; si elle disparaît, l'accès à la preuve ou à l'empreinte devient problématique.</td></tr>
+<tr><td><b>Courriel, serveur personnel, pli postal</b></td><td><b>Valeur probatoire faible</b> : tout au plus un
+commencement de preuve, facilement contesté par la partie adverse faute de tiers de confiance certifié.</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout warn"><div class="t">Le point aveugle du droit d'auteur sur un logiciel industriel</div>
+Le flash DGSI n° 115 (§ 10.3) le montre : le code emporté par d'anciens salariés est bien protégé par le droit
+d'auteur, mais sans <b>dossier de preuves</b>, sans <b>enveloppe Soleau</b>, sans <b>identifiant intégré au
+logiciel</b> ni <b>clause de cession dans les contrats de travail</b>, l'entreprise se retrouve sans rien à
+produire devant le juge.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch4"><span class="num">4.</span> Le brevet d'invention</h2>
+
+<h3 id="ch4-1">4.1 Ce qu'un brevet protège</h3>
+
+<div class="callout def"><div class="t">Définition à connaître mot pour mot</div>
+Un brevet confère un <b>monopole sur une solution technique à un problème technique</b>. Pas une idée, pas
+un concept : des <b>caractéristiques techniques concrètes</b>. Monopole temporaire, sur le territoire où il est
+délivré, en échange de la <b>publication</b> intégrale de l'invention.
+</div>
+
+<p>L'idée est ancienne : la première loi sur les brevets est la <b>« Partie » de Venise de 1474</b>, qui
+accordait un privilège de dix ans à toute « machine nouvelle et ingénieuse ». Aujourd'hui, peuvent être
+brevetés des <b>produits</b>, des <b>procédés</b>, des <b>dispositifs</b> et des <b>logiciels à effet
+technique</b>. Un même produit en porte souvent plusieurs : un robot aspirateur peut combiner un brevet
+mécanique (brosses, réceptacle), un brevet de capteur (détection piézoélectrique de la poussière) et un brevet
+de commande (passer en trajectoire en cercles quand la poussière dépasse un seuil). Un iPhone en concentre
+des dizaines de milliers, dont beaucoup détenus par des tiers et exploités sous licence.</p>
+
+<div class="example"><div class="t">Le cas d'école : le <i>pinch-to-zoom</i></div>
+<ul>
+<li><b>Problème technique</b> : comment manipuler, zoomer et naviguer dans un contenu graphique sur un écran
+tactile <b>capacitif multipoint</b>, sans périphérique mécanique ?</li>
+<li><b>Solution brevetée</b> : la combinaison de la <b>détection matérielle des points de contact
+simultanés</b> et de l'<b>algorithme logiciel</b> qui interprète l'écartement ou le pincement des doigts.</li>
+<li><b>Exploitation</b> : brevets d'Apple, actions en contrefaçon (Samsung) et surtout <b>licences
+d'exploitation</b> signées par tous les constructeurs de smartphones et d'ordinateurs à trackpad.</li>
+</ul>
+Ce qu'il faut retenir : ce n'est pas « le geste » qui est breveté, c'est le <b>dispositif technique</b> qui le
+rend possible. Et le code seul n'aurait relevé que du droit d'auteur.
+</div>
+
+<div class="example"><div class="t">Pourquoi un brevet vaut de l'argent : le pommeau de douche connecté</div>
+Un particulier invente un pommeau qui réduit la consommation d'eau. Sans brevet, des fabricants capables de
+produire avec une marge minuscule le revendent 8 à 10 € et la concurrence devient intenable. Avec le brevet, il
+dispose d'une <b>barrière légale à l'entrée</b> et d'un <b>pouvoir de fixation des prix</b> : le client accepte
+de payer 60 ou 80 € au lieu de 20 € parce que la <b>proposition de valeur</b> est mesurable (la facture d'eau
+baisse). Le brevet sert aussi de levier de négociation en levée de fonds, et se monétise par licence. Il est
+ouvert à tous : particuliers, TPE, PME et grands groupes.
+</div>
+
+<h3 id="ch4-2">4.2 Les quatre conditions de brevetabilité</h3>
+
+<div class="exam"><div class="t">Les quatre conditions, cumulatives</div>
+<ol>
+<li>Une <b>invention</b> au sens de la loi ;</li>
+<li>susceptible d'<b>application industrielle</b> ;</li>
+<li><b>nouvelle</b> ;</li>
+<li>impliquant une <b>activité inventive</b>.</li>
+</ol>
+Ce sont les quatre piliers examinés par l'INPI. « Retenez, la chose simple, c'est : pour pouvoir avoir un
+brevet, le souci c'est la nouveauté. »
+</div>
+
+<div class="viz"><div class="t">Les quatre conditions une par une</div>
+<div class="vz-grid g2">
+<button class="vz-c k-blue"><span class="n">Condition 1</span><h5>Une invention</h5><span class="q">Définie en négatif</span><span class="more"><span class="t">Détail</span>La loi ne dit pas ce qu'est une invention, elle dit ce qui <b>n'en est pas</b> (art. L. 611-10) : les <b>découvertes</b>, <b>théories scientifiques</b> et <b>méthodes mathématiques</b> (E = mc², séries de Fourier) ; les <b>créations esthétiques</b> ; les plans, principes et méthodes dans les activités intellectuelles ou <b>économiques</b> (un algorithme d'achat-revente de bitcoins pour maximiser un profit) ; les <b>règles de jeu</b> ; les <b>programmes d'ordinateur en tant que tels</b> ; les <b>présentations d'informations</b>. Sont en outre exclues de la brevetabilité (art. L. 611-17 à 20) les inventions contraires à l'<b>ordre public</b> et aux bonnes mœurs (clonage humain, modification de l'identité génétique humaine), les <b>obtentions végétales</b> (qui relèvent du COV), les <b>races animales</b> et procédés essentiellement biologiques, et les <b>méthodes de traitement chirurgical ou thérapeutique</b>, pour ne pas entraver les soignants.</span></button>
+<button class="vz-c k-green"><span class="n">Condition 2</span><h5>Application industrielle</h5><span class="q">Fabricable ou utilisable</span><span class="more"><span class="t">Détail</span>L'objet de l'invention doit pouvoir être <b>fabriqué ou utilisé dans tout genre d'industrie</b>, agriculture comprise (art. L. 611-15). La description doit être assez claire et complète pour qu'un <b>homme du métier</b> puisse l'exécuter.</span></button>
+<button class="vz-c k-red"><span class="n">Condition 3</span><h5>Nouveauté</h5><span class="q">Absolue</span><span class="more"><span class="t">Détail</span>L'invention ne doit être comprise dans aucun élément de l'<b>état de la technique</b> : tout ce qui a été <b>rendu accessible au public avant la date du dépôt</b> (art. L. 611-11). <b>Sans limite de lieu, de temps ni de forme</b> : un brevet britannique de 1902, une thèse chinoise, une vidéo, un post, une présentation orale, quelques jours ou plusieurs siècles avant. Pas de délai de grâce en droit français.</span></button>
+<button class="vz-c k-amber"><span class="n">Condition 4</span><h5>Activité inventive</h5><span class="q">Non évidente</span><span class="more"><span class="t">Détail</span>L'invention ne doit pas découler <b>de manière évidente</b> de l'état de la technique pour l'<b>homme du métier</b>, apprécié <b>à la date du dépôt</b> (art. L. 611-14). L'examinateur combine volontiers plusieurs documents (80 % dans un premier, la caractéristique manquante dans un second). Indices d'inventivité : le temps mis par l'industrie à résoudre un problème pourtant simple, ou une solution allée chercher dans un domaine technique éloigné.</span></button>
+</div>
+<div class="vz-bar"><button class="btn" data-cards="open">Tout déplier</button><button class="btn ghost" data-cards="close">Tout replier</button><span class="cnt"></span></div>
+</div>
+
+<div class="callout def"><div class="t">Le logiciel : exclu « en tant que tel », brevetable s'il a un effet technique</div>
+Le code brut (Python, PHP, JavaScript) relève du <b>droit d'auteur</b>. Mais une <b>invention mise en œuvre par
+ordinateur</b> est brevetable si elle apporte une solution technique à un problème technique : traiter les
+données d'un LiDAR et de caméras pour <b>commander la direction et le freinage</b> d'un véhicule autonome, par
+exemple. Un algorithme pur ne l'est pas ; un procédé algorithmique qui pilote un dispositif physique, si.
+</div>
+
+<div class="callout danger"><div class="t">L'auto-divulgation, piège n° 1 de l'inventeur</div>
+Divulguer soi-même avant le dépôt détruit la nouveauté <b>irréversiblement</b>, et un brevet déposé ensuite
+encourt la nullité. Les cas vus en cours :
+<ul>
+<li>un <b>post</b> ou une campagne de levée de fonds en ligne qui décrit la solution ;</li>
+<li>un <b>article scientifique</b> publié avant le dépôt ;</li>
+<li>une <b>soutenance publique</b> de stage, de mémoire ou de thèse : exiger le <b>huis clos</b> et faire signer
+un NDA aux membres du jury ;</li>
+<li>parler de son invention hors cadre confidentiel — une discussion de salon, une fête — dès lors que des
+éléments techniques précis sont révélés ;</li>
+<li>des <b>essais en conditions réelles</b> sans précaution : l'essai d'un bogie de TGV sur une voie ouverte a
+valu l'<b>annulation</b> du brevet dans l'affaire SNCF contre Bombardier ;</li>
+<li>coller son code ou sa description technique dans une <b>IA grand public</b> dont les conditions réutilisent
+les invites pour l'entraînement : c'est une divulgation non couverte par le secret.</li>
+</ul>
+<b>Règle : on date (e-Soleau), on dépose, et seulement ensuite on parle.</b>
+</div>
+
+<h3 id="ch4-3">4.3 La rédaction : description et revendications</h3>
+
+<p>La demande comprend un <b>titre</b> (intitulé concis), une <b>description</b> et des <b>dessins</b>, les
+<b>revendications</b>, et un <b>abrégé</b> avec une figure (rôle documentaire). L'office y ajoute un
+<b>rapport de recherche</b> qui juge la pertinence du brevet.</p>
+
+<div class="grid c2">
+<div class="card"><h4>La description</h4>Six parties : domaine technique, état de la technique, <b>problème
+technique à résoudre</b>, exposé de l'invention, brève description des dessins, exposé détaillé d'un mode de
+réalisation. Elle doit être <b>suffisante</b> (un homme du métier doit pouvoir exécuter l'invention) et elle est
+<b>intangible</b> à partir du dépôt : on ne peut plus y introduire de matière nouvelle.</div>
+<div class="card"><h4>Les revendications</h4>Ce sont <b>elles seules</b> qui fixent le périmètre du monopole,
+la description servant à les interpréter. Comparables aux <b>clauses d'un contrat</b> : chaque mot, chaque
+virgule compte. Elles doivent être <b>claires et concises</b>, <b>unitaires</b> (un seul concept inventif),
+<b>supportées par la description</b>, et exposer des caractéristiques techniques, pas des avantages.</div>
+</div>
+
+<div class="callout def"><div class="t">La structure d'une revendication</div>
+<b>Revendication principale</b> (n° 1, indépendante, la plus large possible) = un <b>préambule</b> qui désigne
+l'objet et ce qui est déjà connu, puis la <b>partie caractérisante</b>, introduite par la formule consacrée
+<b>« caractérisé en ce que »</b>, qui expose l'apport inventif. <b>Revendications dépendantes</b> (2, 3…) :
+des caractéristiques additionnelles qui précisent des modes de réalisation — et servent de <b>lignes de
+repli</b> si la première tombe.
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>Code du rapport de recherche</th><th>Signification</th></tr></thead>
+<tbody>
+<tr><td><b>X</b></td><td>Document pertinent <b>à lui seul</b> : il détruit la nouveauté ou l'activité inventive.</td></tr>
+<tr><td><b>Y</b></td><td>Document pertinent <b>combiné</b> à d'autres : il détruit l'activité inventive.</td></tr>
+<tr><td><b>A</b></td><td>Document d'<b>arrière-plan</b> : il décrit l'état général de la technique sans rien détruire.</td></tr>
+</tbody>
+</table></div>
+
+<details class="case"><summary>Cas 1 — Le filet de tennis de table rétractable<span class="sit">Un fabricant
+d'articles de sport dépose un brevet sur un filet portable à enrouleur qui se fixe sur n'importe quelle table.
+Revendication 1 : le filet extensible avec enrouleur ; revendication 3 : une pince à mâchoires et gâchette.
+L'examinateur oppose un brevet britannique de 1902 décrivant déjà un filet à enrouleur. Que se passe-t-il ?</span></summary>
+<div>La revendication 1 tombe pour <b>défaut de nouveauté</b> : un document vieux de plus d'un siècle suffit.
+Le déposant <b>se replie</b> en intégrant à la revendication 1 la caractéristique de la revendication 3 (la
+pince à gâchette). Le brevet est délivré, valide, mais <b>plus étroit</b> : ce qui est réellement protégé, c'est
+le filet <b>avec cette pince</b>. Conséquence pour les concurrents : ils <b>contournent</b> en remplaçant un
+élément essentiel de la revendication — ventouses ou vis de serrage au lieu de la pince — et ne contrefont
+pas. Leçon : la portée d'un brevet se réduit entre le dépôt et la délivrance, et on ne protège pas une
+fonction (« être portable »), mais les <b>moyens techniques</b> qui la réalisent.</div></details>
+
+<h3 id="ch4-4">4.4 La procédure et son calendrier</h3>
+
+<div class="steps" id="anim-brevet">
+<div class="step"><b>Dépôt — t = 0</b> <span class="who">date de priorité</span><br>
+Le premier dépôt, en général national, fixe la date qui servira de référence pour la nouveauté.</div>
+<div class="step"><b>Rapport de recherche</b> <span class="who">la force du brevet</span><br>
+L'office liste les antériorités (codes X, Y, A). Si elles sont bloquantes, on modifie les revendications ou on
+<b>retire la demande avant publication</b> pour préserver le secret.</div>
+<div class="step"><b>12 mois</b> <span class="who">fin de la priorité</span><br>
+Dernier jour pour étendre à l'étranger en gardant la date du premier dépôt (convention de Paris). Un tiers qui
+déposerait la même invention ailleurs pendant ces 12 mois est battu par la date de priorité.</div>
+<div class="step"><b>18 mois</b> <span class="who">publication</span><br>
+Jusque-là, la demande est <b>secrète</b>. À 18 mois, demande et rapport de recherche deviennent publics. D'où
+l'<b>angle mort de 18 mois</b> de toute veille : un brevet concurrent bloquant peut exister sans être visible.</div>
+<div class="step"><b>Délivrance</b> <span class="who">après échanges avec l'examinateur</span><br>
+Le déposant et l'examinateur ajustent les revendications acceptables jusqu'à la décision.</div>
+<div class="step"><b>9 mois d'opposition</b> <span class="who">nouveau depuis le 1er avril 2020</span><br>
+Après délivrance, tout tiers peut contester le brevet devant l'INPI (défaut de nouveauté, d'activité
+inventive). Décision en 12 mois environ : brevet maintenu, <b>maintenu modifié</b> ou <b>révoqué</b>. Recours
+possible devant la <b>cour d'appel de Paris</b>.</div>
+<div class="step"><b>Chaque année</b> <span class="who">les annuités</span><br>
+Une taxe de maintien en vigueur, par office : 20 à 30 € les premières années, jusqu'à environ 800 € ensuite.
+Ne plus payer, c'est la <b>déchéance</b> immédiate sur ce territoire.</div>
+<div class="step"><b>20 ans</b> <span class="who">fin du brevet</span><br>
+Au plus, à compter du dépôt. L'invention tombe dans le domaine public. Beaucoup de titulaires abandonnent
+avant, dès que la solution est amortie ou dépassée.</div>
+</div>
+<button class="btn primary" onclick="playSteps('anim-brevet')">▶ Lancer l'animation</button>
+
+<div class="callout warn"><div class="t">Le métier d'examinateur</div>
+Un ingénieur de haut niveau, spécialiste de son secteur, qui doit souvent lire trois langues (anglais,
+français, allemand à l'Office européen des brevets). Albert Einstein a commencé sa carrière comme examinateur
+à l'office des brevets de Berne.
+</div>
+
+<h3 id="ch4-5">4.5 Territorialité, premier déposant, extension</h3>
+
+<div class="key-points">
+<li><b>Principe de territorialité</b> : un titre n'a d'effet que dans l'État ou la région où il a été déposé et
+délivré. Un brevet français ne protège <b>pas</b> aux États-Unis, en Chine ou en Belgique. Rien n'empêche un
+Belge, un Allemand ou un Japonais de déposer la même marque chez lui.</li>
+<li><b>Principe du premier déposant</b> (<i>first to file</i>) : le droit appartient au <b>premier qui
+dépose</b> régulièrement, pas au premier inventeur, à condition que l'invention soit nouvelle.</li>
+<li><b>Délai de priorité : 12 mois.</b> On commence toujours par un dépôt national ; à partir de ce jour, un
+« chronomètre tourne » pendant <b>un an</b> pour étendre la protection à l'étranger <b>en conservant la date
+du premier dépôt</b>.</li>
+<li><b>L'absence de dépôt est irréversible</b> : un pays non couvert à l'issue des délais est perdu pour
+toujours, l'invention y est dans le domaine public. Les concurrents locaux peuvent fabriquer et vendre sur leur
+marché sans contrefaçon. Ne pas avoir de brevet n'interdit pas d'y vendre soi-même, mais prive de tout
+monopole.</li>
+<li><b>Stratégie</b> : inutile de breveter mondialement. On cible les pays qui représentent environ
+<b>80 % du marché</b>, les pays de fabrication et ceux des concurrents. Un brevet au Pérou ne sert à rien. Et on
+garde de la trésorerie : quinze pays peuvent dépasser 180 000 €.</li>
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>Voie d'extension</th><th>Comment</th><th>Ce qu'on obtient</th></tr></thead>
+<tbody>
+<tr><td><b>Nationale</b></td><td>Une demande par pays, autant de procédures, de traductions et de taxes</td>
+<td>Des brevets nationaux</td></tr>
+<tr><td><b>Régionale</b></td><td>Une demande, une procédure auprès d'un office régional : <b>OEB</b> (Europe,
+plus de 40 pays à la carte), <b>ARIPO</b> et <b>OAPI</b> (Afrique)</td><td>Un faisceau qui éclate en brevets
+nationaux ; ou, nouveauté européenne, un <b>brevet à effet unitaire</b> (BU), protection uniforme dans les États de
+l'UE participants, sans validation pays par pays</td></tr>
+<tr><td><b>Internationale : PCT</b></td><td>Une demande auprès de l'<b>OMPI</b>, au plus tard à 12 mois, couvrant
+plus de <b>150 pays</b> à la carte ; procédure préliminaire commune</td><td><b>Pas de brevet international</b> :
+la demande permet de reporter jusqu'à <b>30 mois</b> après la priorité le choix des pays et l'entrée en
+<b>phase nationale</b>, où l'on paie vraiment</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout def"><div class="t">Ce que le monopole permet d'interdire, sur le territoire protégé</div>
+Toute la chaîne : <b>fabriquer</b>, <b>importer</b>, <b>détenir</b>, <b>offrir</b>, <b>distribuer</b>,
+<b>vendre</b>, <b>utiliser</b>. On peut donc attaquer l'importateur, le distributeur, le revendeur et la
+plateforme de vente en ligne, pas seulement le fabricant étranger. En France, tout contentieux de brevet
+relève exclusivement du <b>tribunal judiciaire de Paris</b>.
+</div>
+
+<details class="case"><summary>Cas 2 — Où peut-on attaquer ?<span class="sit">Votre produit est breveté en
+France et aux États-Unis. Un concurrent américain le fabrique et le vend. Que pouvez-vous faire ?</span></summary>
+<div>En <b>France</b> et aux <b>États-Unis</b> : vous pouvez l'attaquer, ainsi que ses importateurs et ses
+distributeurs. En <b>Espagne</b> : rien, vous n'y avez aucun titre, il est libre d'y vendre. Et s'il fabrique en
+Espagne pour importer en France, vous attaquez <b>l'importateur</b> sur le territoire français. La question
+n'est jamais « où est-il ? » mais « <b>où ai-je un titre ?</b> ».</div></details>
+
+<h3 id="ch4-6">4.6 Combien ça coûte</h3>
+
+<div class="tw"><table>
+<thead><tr><th>Étape</th><th>Ordre de grandeur</th></tr></thead>
+<tbody>
+<tr><td>Taxe de dépôt seule à l'INPI</td><td><b>36 €</b> pour enregistrer la demande</td></tr>
+<tr><td>Brevet français déposé soi-même, taxes comprises</td><td>environ <b>600 €</b> — mais rarement « rédigé
+dans les règles de l'art »</td></tr>
+<tr><td>Brevet français avec un CPI, maintenu 10 ans</td><td>environ <b>10 000 €</b></td></tr>
+<tr><td>Extension aux principaux pays européens</td><td>environ <b>40 000 €</b></td></tr>
+<tr><td>Europe + États-Unis + Chine + Japon</td><td>environ <b>150 000 €</b></td></tr>
+<tr><td>Annuités</td><td>20 à 30 € par an au début, jusqu'à environ <b>800 €</b></td></tr>
+</tbody>
+</table></div>
+
+<div class="callout warn"><div class="t">Le vrai coût n'est pas la taxe, c'est la rédaction</div>
+Un brevet est un <b>contrat technico-juridique</b> : mal rédigées, les revendications laissent passer les
+copies. D'où le recours au <b>CPI</b> (conseil en propriété industrielle), qui maîtrise à la fois la technique
+et la portée juridique de chaque terme. Une recherche de quelques heures sur une base gratuite ne remplace pas
+une étude d'antériorités par un spécialiste : sinon, c'est le rapport de recherche qui révélera les
+antériorités bloquantes, trop tard.
+</div>
+
+<h3 id="ch4-7">4.7 Les inventions de salariés</h3>
+
+<p>Le salarié inventeur <b>doit déclarer son invention par écrit</b> à son employeur et lui proposer un
+classement (art. L. 611-7). Trois régimes :</p>
+
+<div class="tw"><table>
+<thead><tr><th>Catégorie</th><th>Quand</th><th>À qui</th><th>Contrepartie pour le salarié</th></tr></thead>
+<tbody>
+<tr><td><b>Invention de mission</b></td><td>Le contrat de travail comporte une mission inventive, ou des études et
+recherches lui ont été confiées (ingénieur R&amp;D)</td><td>À l'<b>employeur</b>, dès l'origine</td>
+<td>Une <b>rémunération supplémentaire</b> obligatoire (forfaitaire ou échelonnée : dépôt, délivrance,
+exploitation)</td></tr>
+<tr><td><b>Hors mission attribuable</b></td><td>Hors mission, mais dans le <b>domaine d'activité</b> de
+l'entreprise ou grâce à ses <b>techniques, moyens ou données</b> (un directeur financier qui invente pendant un
+atelier de brainstorming)</td><td>L'employeur peut se faire <b>attribuer</b> la propriété ou la jouissance</td>
+<td>Un <b>juste prix</b>, négocié ou fixé par le juge, selon l'utilité de l'invention, l'effort personnel et
+les moyens fournis</td></tr>
+<tr><td><b>Hors mission non attribuable</b></td><td>Totalement étrangère à l'activité et aux moyens de
+l'entreprise</td><td>Au <b>salarié</b></td><td>Libre utilisation</td></tr>
+</tbody>
+</table></div>
+
+<div class="example"><div class="t">Les trois cas sur un même ingénieur</div>
+Ingénieur chez un équipementier automobile, chargé de développer un airbag. Il trouve une solution brevetable
+sur l'airbag : <b>invention de mission</b>, l'entreprise dépose, il est nommé inventeur et touche sa
+rémunération supplémentaire — il n'a surtout pas le droit de la breveter lui-même pour la revendre à son
+employeur. Le week-end, il invente des barres de toit pour voitures : hors de sa mission, mais dans le domaine
+de l'entreprise, donc <b>hors mission attribuable</b>, contre un juste prix. Il invente une canne à pêche :
+<b>hors mission non attribuable</b>, elle est à lui.
+</div>
+
+<div class="key-points">
+<li>Dans tous les cas, l'inventeur garde un <b>droit moral</b> : il est <b>nommé</b> dans le brevet, même si
+l'entreprise en est le titulaire (le « demandeur »).</li>
+<li>Les litiges vont devant la <b>commission de conciliation</b> siégeant auprès de l'INPI, puis le tribunal
+judiciaire. Ils éclatent souvent <b>au départ du salarié</b>, qui réclame juste prix ou rémunération
+supplémentaire : formaliser par écrit l'attribution et le prix évite le contentieux.</li>
+<li>Le <b>stagiaire n'est pas un salarié</b> : ses inventions ne sont pas automatiquement à l'organisme
+d'accueil. Il faut un avenant de confidentialité et de cession de droits.</li>
+<li>Dans un établissement public de recherche, sans clause contraire, les résultats des agents reviennent à
+l'organisme de tutelle (université, CNRS).</li>
+<li>À ne pas confondre avec le <b>logiciel</b> d'un salarié (§ 3.4), dont les droits patrimoniaux reviennent à
+l'employeur sans contrepartie spécifique.</li>
+</div>
+
+<h3 id="ch4-8">4.8 Certificat d'utilité, publication défensive, possession antérieure</h3>
+
+<div class="grid c3">
+<div class="card"><h4>Le certificat d'utilité</h4>Le « petit brevet » : même monopole, mais <b>10 ans</b> au
+lieu de 20 (porté de 6 à 10 ans par la loi PACTE de 2019) et <b>sans rapport de recherche</b> à la délivrance —
+donc plus rapide et moins cher. Le rapport devient obligatoire si l'on agit en contrefaçon. Adapté aux
+innovations à <b>cycle de vie court</b>.</div>
+<div class="card"><h4>La publication défensive</h4>Publier volontairement son invention (une page web
+suffit) la fait entrer dans l'<b>état de la technique</b> : plus personne ne peut la breveter. On renonce au
+monopole, mais on garde sa <b>liberté d'exploitation</b> sans payer de dépôt, pour un projet jugé peu
+stratégique ou quand un concurrent travaille sur le même sujet.</div>
+<div class="card"><h4>La possession personnelle antérieure</h4>Celui qui, en France, possédait déjà
+l'invention avant la date de dépôt d'un tiers peut <b>continuer à l'exploiter à titre personnel</b>
+(art. L. 613-7). Ce droit ne se cède qu'avec le fonds de commerce. D'où l'intérêt de <b>dater</b> son
+savoir-faire tenu secret (e-Soleau, cahier de laboratoire).</div>
+</div>
+
+<h3 id="ch4-9">4.9 L'échéance : le domaine public</h3>
+
+<p>Au bout de 20 ans — ou plus tôt si une annuité n'est pas payée —, tout concurrent peut légalement copier,
+fabriquer et commercialiser l'invention, sans redevance et sans risque de contrefaçon : c'est l'apparition
+des <b>génériques</b>. Une annuité oubliée sur un médicament peut coûter des dizaines de millions d'euros de
+manque à gagner. L'enseignant en fait une <b>opportunité</b> : surveiller les brevets qui tombent, sauter
+dessus, et innover un peu sur le prix, la qualité ou le rendement.</p>
+
+<div class="example"><div class="t">La saga Nespresso</div>
+Le monopole reposait sur un <b>faisceau de brevets</b> : forme conique de la capsule, opercule d'aluminium,
+mécanisme de perforation et montée en pression dans la machine. Les consommables rapportaient à Nestlé de
+l'ordre de <b>15 milliards d'euros par an</b>. À l'échéance, les distributeurs (Casino et les autres) ont lancé
+des <b>capsules compatibles</b> moins chères. Riposte : procès en série et modifications techniques sur les
+nouvelles machines — sans effet, puisque <b>personne ne jette sa machine</b> pour en racheter une, et que le
+domaine public est le domaine public.
+</div>
+
+<div class="example"><div class="t">Velcro et APLIX — l'après-brevet réussi</div>
+Le Velcro naît du <b>biomimétisme</b> : un Suisse observe les crochets des bardanes accrochés à son pantalon de
+velours et en tire une solution au problème « comment accrocher et décrocher facilement deux éléments ? ».
+Licence d'exploitation vendue à <b>Velcro France</b>, puis chute du brevet dans le domaine public et arrivée
+massive de produits chinois. L'entreprise ne se bat pas sur le prix : elle continue d'<b>innover sur la même
+spécialité</b>, les bandes auto-agrippantes, devient <b>APLIX</b> (société nantaise, n° 2 mondial) et se
+diversifie vers l'hygiène, l'automobile, l'aéronautique et le spatial. La réponse à la fin d'un brevet, c'est
+<b>l'innovation continue</b>, pas le procès.
+</div>
+
+<div class="example"><div class="t">Dépendance de brevets : le vélo et la roue</div>
+J'invente le vélo, vous avez le brevet sur la roue. <b>Je ne peux pas</b> commercialiser mon vélo sans votre
+accord, et <b>vous ne pouvez pas</b> sortir un vélo sans le mien. Il faut aller sur le marché ensemble :
+<b>licences croisées</b>, cession, accord de partenariat ou de consortium — et des <b>NDA</b> (accords de
+confidentialité) signés avant tout échange. Le support le formule comme une règle de <b>liberté
+d'exploitation</b> : si votre projet utilise des technologies brevetées par des tiers, l'exploitation n'est
+possible qu'après leur accord (licence, cession).
+</div>
+
+<h3 id="ch4-10">4.10 Chercher dans les brevets</h3>
+
+<div class="grid c2">
+<div class="card"><h4>Les bases</h4><b>Espacenet</b>, développé par l'Office européen des brevets, et
+<b>Google Patents</b> centralisent gratuitement les publications des offices du monde entier. Recherche par
+mots-clés (titre, abrégé, description, revendications), par numéro, par <b>demandeur</b> (l'entreprise
+titulaire), par <b>inventeur</b> (la personne physique), par classification. Aux États-Unis, l'apparence se
+protège par des <b>design patents</b>, visibles dans les mêmes bases, et les fabricants pratiquent le <b>virtual
+patent marking</b> : la liste en ligne des brevets couvrant un produit, pour les rendre opposables.</div>
+<div class="card"><h4>La classification internationale (CIB)</h4>Attribuée par l'office au dépôt, arborescente :
+section, classe, sous-classe, groupe, sous-groupe. Exemple : <b>B</b> techniques industrielles et transports
+→ <b>B62</b> véhicules terrestres → <b>B62J</b> accessoires de cycles → <b>B62J 1</b> selles →
+<b>B62J 1/02</b> selles sur ressorts. Pour une hydrolienne : <b>F03B</b> (machines à liquide, courants
+marins), et non F03D (éoliennes) ni H02K (génératrices électriques, trop générique). Elle permet de dépasser
+les limites des mots-clés. Espacenet propose aussi la classification coopérative (<b>CPC</b>), plus fine.</div>
+</div>
+
+<div class="key-points">
+<li>Les quatre usages des bases brevets : <b>état de l'art</b> (ne pas se contenter de Google), <b>s'inspirer</b>
+sans reproduire les éléments protégés, <b>veille</b> technologique sur un à trois ans, <b>analyse des
+risques</b> de contrefaçon.</li>
+<li>Elles servent aussi l'<b>intelligence économique</b> : mesurer la puissance technologique d'un pays ou d'un
+concurrent, repérer des technologies à prendre sous licence, des cibles de rachat, ou des brevets tombés dans
+le domaine public.</li>
+<li>Ordres de grandeur : environ <b>3,5 millions</b> de demandes par an dans le monde, dont environ
+<b>45 % en Chine</b>, 14 % en Europe, 11 % aux États-Unis. Le constructeur chinois <b>BYD</b> dépose à lui seul
+environ <b>15 000 brevets par an</b>, autant que toute la France.</li>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch5"><span class="num">5.</span> Le droit des marques</h2>
+
+<h3 id="ch5-1">5.1 Ce qu'on peut déposer</h3>
+
+<p>Une marque est un <b>signe distinctif</b> servant à identifier les produits ou services d'une entreprise.
+Elle garantit une origine, rassure le consommateur et déclenche l'achat.</p>
+
+<div class="grid c3">
+<div class="card"><h4>Signe verbal</h4>Mots, assemblages de lettres, chiffres, slogans : <i>Nike</i>,
+<i>Apple</i>.</div>
+<div class="card"><h4>Signe figuratif</h4>Logos, dessins, combinaisons de couleurs, formes : la <b>virgule</b>
+de Nike, déposée en plus du nom.</div>
+<div class="card"><h4>Signe sonore</h4>Jingles et sons caractéristiques : le son de démarrage de
+<b>Windows</b>, le « Toudoum » de <b>Netflix</b>, le cri de <b>Tarzan</b>.</div>
+</div>
+
+<div class="callout warn"><div class="t">Un logo peut cumuler deux protections</div>
+Comme <b>création graphique originale</b>, il relève du <b>droit d'auteur</b> dès sa création. Comme signe
+d'identification, il se dépose en <b>marque figurative ou semi-figurative</b>. Les deux ne s'excluent pas.
+</div>
+
+<h3 id="ch5-2">5.2 Les trois conditions : distinctif, disponible, licite</h3>
+
+<div class="tw"><table>
+<thead><tr><th>Condition</th><th>Ce qu'elle exige</th><th>Ce qui échoue</th></tr></thead>
+<tbody>
+<tr><td><b>Distinctivité</b></td><td>Le signe doit permettre de distinguer les produits de ceux des
+concurrents. Un nom <b>arbitraire</b> dans son secteur est parfaitement valable.</td>
+<td>Les termes <b>génériques ou descriptifs</b> du produit lui-même (« Pomme » pour des pommes) et les termes
+<b>laudatifs</b> (« Super crème » pour une crème). <b>Meta</b> seul est générique dans l'univers du métavers :
+il n'a pu être déposé qu'<b>associé à son logo</b>.</td></tr>
+<tr><td><b>Disponibilité</b></td><td>Le signe ne doit pas porter atteinte à des <b>droits antérieurs</b> ayant
+effet en France : marques, dénominations sociales, noms commerciaux, droits d'auteur.</td>
+<td>Un nom déjà déposé pour les <b>mêmes produits et services</b>, ou une ressemblance créant un risque de
+confusion.</td></tr>
+<tr><td><b>Licéité</b></td><td>Le signe ne doit pas être contraire à l'ordre public ou aux bonnes mœurs, ni
+interdit par la loi.</td><td>Un signe trompeur sur la nature ou la provenance du produit, ou dont l'usage est
+légalement prohibé.</td></tr>
+</tbody>
+</table></div>
+
+<p><b>Apple</b> pour des pommes : refusé. <b>Apple</b> pour des ordinateurs : parfaitement distinctif. Même
+logique pour <b>Raspberry Pi</b>, autre dénomination arbitraire dans l'informatique.</p>
+
+<h3 id="ch5-3">5.3 La recherche d'antériorités</h3>
+
+<div class="grid c2">
+<div class="card"><h4>Marques verbales</h4>Recherche de similarité <b>orthographique et phonétique</b> dans les
+bases de l'INPI, en cochant les classes visées.</div>
+<div class="card"><h4>Logos</h4>Recherche par <b>éléments figuratifs</b> : on interroge la base sur « renard »
+ou « crocodile » et on compare. Long et subjectif — un crocodile de dessin animé sur ses pattes n'est pas un
+crocodile allongé brodé en vert.</div>
+</div>
+
+<p>La démarche du support : une <b>première approche sur Internet</b> ; si le nom paraît libre, une
+<b>recherche approfondie</b> sur l'identique et l'approchant — similitudes <b>orthographiques,
+intellectuelles, phonétiques</b>, traductions ; si tout est vert, <b>enregistrer le nom partout</b> (marque,
+nom de domaine, registre des sociétés). Les outils : <b>data.inpi.fr</b> (marques et sociétés), les
+<b>registrars</b> et le <b>Whois</b> pour les noms de domaine, le Journal officiel pour les associations, et
+<b>TMview</b> pour les marques du monde entier. Le risque de confusion s'apprécie sur la similitude
+<b>visuelle, phonétique et conceptuelle</b>. Générer des noms avec une IA est pratique, mais elle hallucine et
+propose volontiers des noms déjà pris.</p>
+
+<div class="example"><div class="t">Penser international dès le choix du nom</div>
+Un nom doit se prononcer, se comprendre et se retenir sur les marchés visés : éviter un sens péjoratif dans
+une autre langue, les superstitions locales (le chiffre 4 en Asie), et anticiper les alphabets non latins, les
+accents et les translittérations. C'est déjà de l'intelligence économique.
+</div>
+
+<h3 id="ch5-4">5.4 Le principe de spécialité et la classification de Nice</h3>
+
+<div class="callout def"><div class="t">Spécialité</div>
+Une marque n'est protégée que pour les <b>produits et services désignés au dépôt</b>, répartis dans la
+<b>classification de Nice</b> : <b>45 classes</b> (1 à 34 pour les produits, 35 à 45 pour les services). La
+<b>classe 12</b> couvre les véhicules ; la 42 les services informatiques et le développement logiciel.
+</div>
+
+<p>Conséquences très concrètes :</p>
+
+<div class="key-points">
+<li>Des <b>homonymes légaux</b> coexistent sans contrefaçon dès que les secteurs diffèrent : <b>Lotus</b> est
+déposé pour des voitures, pour du papier toilette et pour des montres.</li>
+<li>Si vous oubliez une classe, elle reste libre : rien n'empêche un tiers de déposer <b>Apple pour des brosses
+à dents</b>. La renommée ne couvre pas tout automatiquement.</li>
+<li>Avant de lancer une marque de voiture, on tape le nom imaginé dans la base INPI en cochant la classe 12 :
+on voit tout ce qui a déjà été déposé dans le secteur.</li>
+</div>
+
+<details class="case"><summary>Cas 3 — Le nom de domaine suffit-il ?<span class="sit">Vous réservez
+<i>monprojet.com</i> chez un registrar. Un concurrent réserve <i>monprojet.net</i> pour la même activité et
+reprend vos codes couleur. Qu'avez-vous comme recours ?</span></summary>
+<div>Le nom de domaine se réserve au <b>premier arrivé, premier servi</b> et ne confère <b>aucun droit de
+propriété intellectuelle</b> : il empêche seulement qu'un autre réserve <b>exactement le même</b>, pas les
+autres extensions. Sans marque déposée, il ne reste que l'action en <b>concurrence déloyale</b> (art. 1240 du
+code civil), qui exige de prouver <b>trois</b> choses cumulativement : une <b>faute</b> (manœuvre
+parasitaire, risque de confusion délibéré), un <b>préjudice</b> (perte de chiffre d'affaires démontrée) et le
+<b>lien de causalité</b> entre les deux. Devant le juge, « le procès est loin d'être gagné d'avance ».
+Avec une <b>marque déposée</b>, c'est une action en <b>contrefaçon</b> : beaucoup plus redoutable, et
+<b>sans avoir à prouver la moindre perte de chiffre d'affaires</b>. C'est pour cela qu'on dépose le nom.</div></details>
+
+<h3 id="ch5-5">5.5 Déposer : coûts, priorité, international</h3>
+
+<div class="tw"><table>
+<thead><tr><th>Office</th><th>Taxe de dépôt (support INPI 2026)</th></tr></thead>
+<tbody>
+<tr><td><b>France — INPI</b></td><td><b>190 €</b> pour une classe, puis <b>40 €</b> par classe supplémentaire —
+« environ 200 € » à l'oral</td></tr>
+<tr><td><b>Union européenne — EUIPO</b></td><td><b>850 €</b> pour une classe, 50 € pour la deuxième, 150 € pour
+chacune des suivantes — « de l'ordre de 1 000 € »</td></tr>
+<tr><td><b>International — OMPI</b> (système de <b>Madrid</b>)</td><td>Émolument de base de <b>653 francs
+suisses</b>, plus des émoluments par pays désigné</td></tr>
+<tr><td><b>États-Unis — USPTO</b></td><td>Passage obligé par un <i>lawyer</i> local : <b>4 000 à 5 000 $</b></td></tr>
+</tbody>
+</table></div>
+
+<div class="key-points">
+<li><b>Premier déposant, premier ayant droit</b> : « celui qui arrive après n'a que la négociation ». Déposer
+dès que possible, avec les noms de domaine <b>.com, .net, .fr</b> et le nom commercial.</li>
+<li><b>Priorité de 6 mois</b> pour une marque (contre 12 mois pour un brevet) : étendre à l'étranger dans ce délai
+conserve la date du premier dépôt.</li>
+<li><b>Marques de renommée</b> : seule exception au principe de spécialité. On ne peut pas déposer <b>Apple</b>
+pour une école d'informatique, même hors des classes d'Apple, parce qu'on profiterait de sa notoriété. Le
+conflit historique entre Apple Corps, le label des Beatles, et Apple Computer illustre la frontière.</li>
+<li>Après la publication du dépôt, méfiance : des <b>officines</b> envoient de fausses factures ou proposent
+des inscriptions payantes à des registres privés <b>sans aucune valeur juridique</b>.</li>
+<li>Dans une cession d'entreprise ou un partenariat, un <b>accord de coexistence</b> de marques et des clauses de
+non-concurrence répartissent l'usage d'un même nom par territoire et par secteur.</li>
+</div>
+
+<div class="example"><div class="t">Les marques réelles dans les jeux vidéo</div>
+Les éditeurs de jeux de conduite urbaine n'obtiennent pas de licence des constructeurs de voitures de luxe, qui
+refusent d'associer leur marque à des braquages et à des destructions. Ils dessinent donc des modèles
+<b>hybrides</b>, inspirés des lignes réelles sans reproduire ni la marque ni le modèle exact, pour échapper à la
+contrefaçon.
+</div>
+
+<h3 id="ch5-6">5.6 Les devoirs du titulaire</h3>
+
+<div class="viz"><div class="t">Quatre façons de perdre sa marque, et comment l'éviter</div>
+<div class="vz-grid g2">
+<button class="vz-c k-red"><span class="n">Déchéance</span><h5>Ne pas l'exploiter</h5><span class="q">5 ans</span><span class="more"><span class="t">Détail</span>On peut déposer une marque pour la revendre, mais il existe une <b>obligation d'usage sérieux</b> : faute de pouvoir justifier d'une exploitation commerciale dans les <b>5 ans</b> suivant l'enregistrement, la marque encourt la <b>déchéance</b>, à la demande de tout tiers intéressé.</span></button>
+<button class="vz-c k-amber"><span class="n">Dégénérescence</span><h5>Laisser le nom devenir commun</h5><span class="q">Tolérance fatale</span><span class="more"><span class="t">Détail</span>Quand le public et les concurrents emploient la marque comme <b>nom commun du produit</b> et que le titulaire laisse faire, il est trop tard : <b>Klaxon, Kärcher, Frigidaire, Caddie, Pédalo, Bic, Aspirine, Fermeture Éclair, Jacuzzi</b>. La parade : réagir tôt, faire des <b>campagnes de communication</b> rappelant que c'est une marque déposée et imposer le terme générique dans les catalogues — <b>Sopalin</b> contre « essuie-tout ». En Californie, deux avocats ont demandé la dégénérescence de <b>Google</b> au motif que « googler » était entré dans le langage courant : <b>ils ont perdu</b>.</span></button>
+<button class="vz-c k-blue"><span class="n">Oubli</span><h5>Ne pas renouveler</h5><span class="q">Tous les 10 ans</span><span class="more"><span class="t">Détail</span>À l'échéance non renouvelée, le signe redevient libre et <b>n'importe qui peut le redéposer</b>. L'enseignant cite la mésaventure de Google, qui a dû racheter plusieurs millions de dollars un nom laissé expirer.</span></button>
+<button class="vz-c k-green"><span class="n">Passivité</span><h5>Ne pas surveiller</h5><span class="q">Le BOPI chaque semaine</span><span class="more"><span class="t">Détail</span>L'INPI <b>enregistre</b> mais ne contrôle ni la disponibilité ni l'usage : la police du marché appartient au titulaire. L'INPI publie chaque semaine les nouvelles demandes au <b>BOPI</b> ; on souscrit une <b>veille sectorielle</b> (« nouveaux arrivants ») et, en cas de dépôt gênant, on forme une <b>opposition</b> auprès de l'INPI, qui bloque l'enregistrement. On surveille aussi le <b>cybersquattage</b> de noms de domaine.</span></button>
+</div>
+<div class="vz-bar"><button class="btn" data-cards="open">Tout déplier</button><button class="btn ghost" data-cards="close">Tout replier</button><span class="cnt"></span></div>
+</div>
+
+<h3 id="ch5-7">5.7 La marque comme actif financier</h3>
+
+<div class="example"><div class="t">75 milliards de dollars</div>
+La seule marque <b>Coca-Cola</b> est évaluée autour de <b>75 milliards de dollars</b> : <b>plus que les usines,
+les camions et tout le matériel réunis</b>. L'actif incorporel dépasse de loin le corporel. D'où les rachats de
+marques industrielles historiques comme levier d'expansion — Volvo, MG passées sous contrôle chinois.
+</div>
+
+<div class="example"><div class="t">Deux cas où la marque a coûté cher, et un où elle a tout rapporté</div>
+<ul>
+<li><b>Apple / iPad en Chine</b> : la société <b>Shenzhen Proview Technology</b> avait déjà déposé la marque
+<i>iPad</i> pour des moniteurs. Vente bloquée, Apple doit renommer son produit ou négocier : transaction de
+<b>60 millions de dollars</b>. Le dépôt spéculatif est licite.</li>
+<li><b>Meta</b> : terme générique du métavers, déposé seulement avec son logo après contestations.</li>
+<li><b>Le Smiley</b> : le journaliste français <b>Franklin Loufrani</b> a déposé le visage souriant comme
+marque et en a bâti un empire mondial de licences et de redevances.</li>
+</ul>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch6"><span class="num">6.</span> Dessins et modèles, et les titres plus rares</h2>
+
+<h3 id="ch6-1">6.1 Dessins et modèles : la forme, et rien que la forme</h3>
+
+<p>Ils protègent l'<b>apparence</b> d'un produit industriel ou artisanal : lignes, contours, couleurs, formes,
+textures, ornementation. La forme d'une gourde, le design d'une souris ou d'une montre connectée, le boîtier
+d'écouteurs, le bandeau photo d'un smartphone, l'allure d'une <b>interface graphique</b>.</p>
+
+<div class="tw"><table>
+<thead><tr><th></th><th>Dessin ou modèle</th></tr></thead>
+<tbody>
+<tr><td><b>Obtention</b></td><td><b>Dépôt obligatoire</b> (INPI, EUIPO ou système de La Haye à l'OMPI), sur des
+représentations neutres, sans mise en scène</td></tr>
+<tr><td><b>Conditions</b></td><td>La <b>nouveauté</b> (aucun dessin identique divulgué avant le dépôt) et le
+<b>caractère propre</b> : l'impression visuelle d'ensemble sur l'<b>observateur averti</b> doit différer de
+celle des modèles antérieurs — « pas d'impression de déjà-vu »</td></tr>
+<tr><td><b>Durée</b></td><td><b>5 ans</b>, renouvelables par tranches de 5 ans jusqu'à <b>25 ans</b> au plus</td></tr>
+<tr><td><b>Titulaire, territoire</b></td><td>Le déposant ; protection limitée aux pays couverts</td></tr>
+<tr><td><b>Priorité</b></td><td><b>6 mois</b> pour étendre à l'étranger</td></tr>
+<tr><td><b>Examen</b></td><td><b>Superficiel</b> : pas de recherche de nouveauté poussée, l'enregistrement est
+rapide. Publication 3 à 4 mois après le dépôt, ajournable jusqu'à 3 ans</td></tr>
+<tr><td><b>Coût en France</b></td><td>Taxe de dépôt <b>39 €</b> + <b>23 €</b> par reproduction en noir et blanc
+(<b>47 €</b> en couleur) — « moins d'une centaine d'euros ». En Europe : 230 € d'enregistrement et 120 € de
+publication pour le premier modèle</td></tr>
+</tbody>
+</table></div>
+
+<div class="grid c2">
+<div class="card"><h4>Avantages</h4>Protection <b>rapide et peu coûteuse</b> ; <b>preuve légale
+irréfutable</b> de la date de dépôt ; efficace contre la contrefaçon ; valorisable au bilan ; <b>cumulable
+avec le droit d'auteur</b>.</div>
+<div class="card"><h4>Limites</h4><b>Aucune protection des fonctionnalités</b> ; portée limitée à l'esthétique ;
+renouvellement à surveiller tous les 5 ans.</div>
+</div>
+
+<div class="callout danger"><div class="t">Le critère d'exclusion technique</div>
+Une forme <b>exclusivement dictée par une fonction technique</b> ne peut <b>pas</b> être protégée par un dessin
+ou modèle : elle relève du <b>brevet</b>, qui prime. Exemple du cours : les <b>rainures triangulaires</b> d'une
+bouteille d'eau qui permettent de la compacter. Elles participent un peu à l'esthétique, mais leur raison
+d'être est technique, donc c'est le brevet qui s'applique.
+<br><b>Formule à retenir : dessins et modèles = la forme ; brevets = la technique.</b> Un même produit peut
+cumuler les deux : brevet sur la mécanique interne, dessin et modèle sur le design extérieur.
+</div>
+
+<div class="callout warn"><div class="t">Le cumul avec le droit d'auteur, une spécificité française</div>
+Une création esthétique peut relever à la fois du <b>dessin et modèle</b> (dépôt, 25 ans) et du <b>droit
+d'auteur</b> (sans dépôt, 70 ans après la mort de l'auteur) si elle porte une démarche artistique : c'est la
+théorie de l'<b>unité de l'art</b>. Avec le dépôt, on peut invoquer <b>deux législations</b> pour se défendre,
+et le droit d'auteur peut survivre à l'expiration du modèle. Beaucoup de pays étrangers <b>interdisent</b> ce
+cumul et imposent de choisir.
+</div>
+
+<h3 id="ch6-2">6.2 Apprécier la contrefaçon d'un modèle</h3>
+
+<div class="exam"><div class="t">La règle d'or</div>
+<b>La contrefaçon s'apprécie d'après les ressemblances, et non d'après les différences.</b> Des dizaines de
+petites différences de détail ne sauvent pas le copieur si l'impression d'ensemble et les caractéristiques
+majeures sont reprises. Le juge se place du point de vue du consommateur d'attention moyenne ; des sondages
+auprès du public peuvent prouver le risque de confusion.
+</div>
+
+<div class="example"><div class="t">La petite citadine copiée</div>
+Une petite voiture biplace européenne et sa copie chinoise : les feux, la poignée, la trappe à carburant
+diffèrent, mais le gabarit, le galbe et le motif caractéristique sont repris. Malgré les différences, la
+contrefaçon est caractérisée.
+</div>
+
+<div class="example"><div class="t">Le mobilier de jardin sur un pot de peinture</div>
+Un fabricant de peinture illustre ses pots avec une chaise de jardin design protégée par dessin et modèle, sans
+autorisation. Contrefaçon, avec <b>retrait de tous les points de vente</b> et destruction des stocks aux frais du
+contrefacteur. Et un préjudice d'image distinct : associer un mobilier vendu comme traité anti-corrosion
+« sans entretien » à de la peinture de rénovation dégrade son message commercial. Même logique pour un jeu
+vidéo qui reproduirait ce mobilier.
+</div>
+
+<div class="key-points">
+<li><b>Chercher avant de dessiner</b> : la base de l'INPI, <b>Designview</b> (base mondiale des dessins et
+modèles : INPI, EUIPO, OMPI, USPTO, office chinois…), eSearch de l'EUIPO, DesignBook. Gratuites, sans compte.</li>
+<li><b>Retenez la distinction</b> : <b>TMview</b> pour les marques, <b>Designview</b> pour les dessins et
+modèles.</li>
+<li>Aux États-Unis, l'apparence se protège par un <b>design patent</b>, un brevet spécifique.</li>
+</div>
+
+<h3 id="ch6-3">6.3 COV et TPS</h3>
+
+<div class="grid c2">
+<div class="card"><h4>COV — certificat d'obtention végétale</h4>Protège la création d'une <b>nouvelle variété
+végétale</b> : croiser deux variétés de fraises pour en obtenir une plus résistante, plus rouge, et
+<b>reproductible</b>. Même le vivant se protège — et c'est pourquoi les obtentions végétales sont exclues du
+brevet.</div>
+<div class="card"><h4>TPS — topographies de produits semi-conducteurs</h4>Protection spécifique des
+<b>schémas de configuration des circuits intégrés</b> : microprocesseurs, puces de supercalculateurs.</div>
+</div>
+
+<h3 id="ch6-4">6.4 Modèle d'utilité et certificat d'utilité</h3>
+
+<p>Les « petits brevets », dans la même colonne que le brevet : des titres plus courts et moins coûteux pour
+des solutions techniques. En France, c'est le <b>certificat d'utilité</b> — 10 ans, sans rapport de recherche
+(détails au § 4.8).</p>
+
+<h3 id="ch6-5">6.5 Comparer les titres</h3>
+
+<div class="tw"><table>
+<thead><tr><th></th><th>Brevet</th><th>Dessin et modèle</th><th>Marque</th><th>Droit d'auteur</th></tr></thead>
+<tbody>
+<tr><td><b>Protège</b></td><td>Une solution technique</td><td>L'apparence</td><td>Un signe distinctif</td>
+<td>Une œuvre originale</td></tr>
+<tr><td><b>Naît par</b></td><td>Dépôt</td><td>Dépôt</td><td>Dépôt</td><td>La création</td></tr>
+<tr><td><b>Conditions</b></td><td>Invention, application industrielle, nouveauté, activité inventive</td>
+<td>Nouveauté, caractère propre</td><td>Distinctif, disponible, licite</td><td>Originalité</td></tr>
+<tr><td><b>Durée</b></td><td>20 ans max</td><td>5 ans × 5 = 25 ans max</td><td>10 ans, indéfiniment</td>
+<td>Vie + 70 ans</td></tr>
+<tr><td><b>Priorité</b></td><td>12 mois</td><td>6 mois</td><td>6 mois</td><td>Sans objet (Berne)</td></tr>
+<tr><td><b>Examen</b></td><td>Approfondi, rapport de recherche</td><td>Superficiel</td><td>Formel, opposition des
+tiers</td><td>Aucun</td></tr>
+</tbody>
+</table></div>
+
+<!-- ===================================================================== -->
+<h2 id="ch7"><span class="num">7.</span> Le secret des affaires</h2>
+
+<p>Troisième colonne de la matrice : ni dépôt, ni publication, ni durée limitée. « Le secret, c'est pour
+toujours, tant que je peux le garder secret. » Mais c'est aussi le mode le plus fragile et le plus coûteux à
+tenir.</p>
+
+<div class="grid c3">
+<div class="card"><h4>Savoir-faire</h4>Un <b>ensemble substantiel et formalisé de connaissances</b>,
+transmissibles mais non directement accessibles, qui confère un avantage compétitif à celui qui les
+détient.</div>
+<div class="card"><h4>Secret de fabrique</h4>Tout <b>procédé de fabrication</b> offrant un intérêt pratique ou
+commercial, mis en œuvre par un industriel et <b>tenu caché</b> de ses concurrents, qui ne le connaissaient pas
+avant qu'on le leur communique.</div>
+<div class="card"><h4>Secret d'affaires</h4>Une information qui remplit <b>trois conditions cumulatives</b> :
+elle n'est <b>pas généralement connue</b> ni aisément accessible dans son secteur ; elle a une <b>valeur
+commerciale</b>, effective ou potentielle, <b>du fait de son caractère secret</b> ; elle fait l'objet de
+<b>mesures de protection raisonnables</b> de la part de son détenteur.</div>
+</div>
+
+<h3 id="ch7-1">7.1 Brevet ou secret : l'arbitrage</h3>
+
+<div class="exam"><div class="t">La question qui tranche, selon le support</div>
+<b>« Peut-on reconstituer l'invention dans le produit qui sera mis en circulation ? »</b>
+<ul>
+<li><b>Oui</b> — le produit se démonte, s'analyse, se rétro-conçoit : le secret ne tiendra pas. Il faut
+<b>breveter</b> (droit d'interdire, contre publication) — ou accepter la <b>divulgation</b>, auquel cas plus
+aucun brevet n'est possible pour personne, en gardant la preuve de cette divulgation.</li>
+<li><b>Non</b> — le procédé reste invisible dans le produit (une recette, un réglage de ligne) : le <b>secret de
+fabrique</b> est envisageable, à condition de poser des <b>consignes de secret</b> et de garder la <b>preuve de
+la date de création</b>.</li>
+</ul>
+Le secret devient aussi intenable quand les collaborations externes se multiplient (sous-traitants, labos) ou
+quand le turn-over est fort.
+</div>
+
+<div class="callout danger"><div class="t">Le risque propre au secret : le brevet d'un autre</div>
+Le secret ne donne <b>aucun droit exclusif</b>. Si un tiers retrouve la même solution — découverte indépendante
+ou rétro-ingénierie licite — et la <b>brevette</b>, l'entreprise qui gardait le secret ne peut pas s'y opposer.
+Seule issue : prouver sa <b>possession personnelle antérieure</b> (§ 4.8) pour continuer à exploiter à titre
+personnel. D'où l'obligation de <b>dater</b>.
+</div>
+
+<div class="split"><span class="a" style="flex-basis:50%">Brevet</span><span class="b" style="flex-basis:50%">Secret de fabrique</span></div>
+<div class="split-cap"><span>Monopole opposable de 20 ans, mais <b>publication intégrale</b> ; passé le délai,
+tout le monde copie.</span><span>Durée <b>illimitée</b>, aucune publication ; mais <b>aucun recours</b> contre
+la rétro-ingénierie licite ou une découverte indépendante.</span></div>
+
+<div class="example"><div class="t">Coca-Cola : le choix du secret, assumé jusqu'au bout</div>
+Breveter la formule, c'était la rendre publique et la voir copiée au bout de 20 ans : Coca-Cola a choisi le
+<b>secret de fabrication</b>. Lors d'un contentieux en <b>Inde</b>, la justice a exigé la composition exacte et
+le procédé industriel : l'entreprise a préféré <b>quitter le marché indien</b> plutôt que de livrer la recette.
+À noter : le secret n'interdit rien à personne. Si quelqu'un obtient le même goût par ses propres moyens, il a
+le droit de le vendre — il ne pourra simplement pas utiliser <b>la marque</b>.
+</div>
+
+<div class="callout warn"><div class="t">La parade des industriels face aux 20 ans</div>
+Déposer des <b>brevets d'amélioration</b> successifs sur les perfectionnements du produit, pour maintenir une
+protection à jour alors même que le brevet initial tombe.
+</div>
+
+<h3 id="ch7-2">7.2 Les mesures raisonnables de protection</h3>
+
+<p>Pour être défendable en justice, le secret doit faire l'objet de mesures <b>concrètes et démontrables</b> —
+c'est la condition posée par la directive sur le secret des affaires.</p>
+
+<div class="callout warn"><div class="t">L'IA générative, nouvelle fuite du secret</div>
+Coller du code, des plans ou des données techniques dans un outil d'IA grand public gratuit, c'est sortir
+l'information de tout cloisonnement : la qualification de secret d'affaires tombe, faute de mesures
+raisonnables, et la nouveauté d'un futur brevet aussi. Trois options d'entreprise : une <b>IA internalisée</b>
+sur ses serveurs (cloisonnement total, coût élevé), une <b>instance privée sous contrat</b> (non-réutilisation
+des données pour l'entraînement, chiffrement, RGPD), ou l'<b>outil grand public</b> (risque maximal). Les
+fournisseurs encadrent par leurs CGU leur responsabilité en cas de contrefaçon générée.
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>Famille</th><th>Mesures attendues</th></tr></thead>
+<tbody>
+<tr><td><b>Techniques et numériques</b></td><td><b>Cloisonnement</b>, serveurs <b>non reliés à Internet</b>
+(<i>air gap</i>), chiffrement, gestion stricte des privilèges et des accès, journalisation.</td></tr>
+<tr><td><b>Physiques</b></td><td>Contrôle d'accès aux locaux, badges, vidéosurveillance, accès restreint aux
+lignes de production.</td></tr>
+<tr><td><b>Humaines et organisationnelles</b></td><td>Sensibilisation du personnel aux enjeux économiques,
+vigilance face à l'<b>ingénierie sociale</b>, et surtout <b>partitionnement de l'information</b>.</td></tr>
+<tr><td><b>Juridiques et documentaires</b></td><td><b>Cartographier</b> tous les secrets de l'entreprise, les
+<b>écrire et les dater</b>, signer des <b>NDA</b>, rappeler les sanctions dans les contrats de travail.</td></tr>
+</tbody>
+</table></div>
+
+<div class="example"><div class="t">Le partitionnement, expliqué par l'exemple Michelin</div>
+Débaucher un technicien de ligne ne donne presque rien : toute sa journée, il suit un synoptique et tourne un
+bouton quand le voyant passe au vert. <b>Il ne connaît ni le polymère utilisé, ni les températures, ni les
+pressions.</b> Le savoir-faire est découpé de telle sorte qu'aucun poste ne détient l'ensemble du procédé.
+</div>
+
+<div class="exam"><div class="t">Le point que l'enseignant martèle</div>
+« Quelle serait la méthode la plus facile pour capter une technologie ? — L'humain. » Il est <b>plus facile de
+corrompre ou d'approcher quelqu'un que de pirater un système informatique</b>. C'est exactement le constat des
+flashs DGSI de la partie II, et c'est pour cela que la sensibilisation est une mesure de protection du secret
+au même titre que le chiffrement.
+</div>
+
+<div class="callout def"><div class="t">Pourquoi dater ses secrets</div>
+Le jour où vous êtes victime d'espionnage industriel, vous devez apporter au juge la <b>preuve irréfutable que
+vous étiez en possession de ces éléments</b> avant le vol — exactement comme pour un bien matériel. D'où la
+règle : <b>identifier, cartographier, dater</b>, puis protéger.
+</div>
+
+<div class="example"><div class="t">Le savoir-faire qui part avec un salarié débauché</div>
+Un concurrent qui recrute un collaborateur clé économise des mois ou des années de R&amp;D. Si ce savoir-faire
+n'existe que dans la tête du salarié, sans registre, cahier de laboratoire versionné ni e-Soleau, la preuve
+de l'antériorité et du vol est quasi impossible. Les parades contractuelles : <b>clause de confidentialité</b>
+et <b>clause de non-concurrence</b> — cette dernière n'est valable en droit du travail français qu'avec une
+<b>contrepartie financière</b>.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch8"><span class="num">8.</span> Contrefaçon, concurrence déloyale et contentieux</h2>
+
+<h3 id="ch8-1">8.1 Les deux fondements, à ne pas confondre</h3>
+
+<div class="tw"><table>
+<thead><tr><th></th><th>Action en contrefaçon</th><th>Action en concurrence déloyale</th></tr></thead>
+<tbody>
+<tr><td><b>Condition</b></td><td>Détenir un <b>titre</b> (brevet, marque, dessin et modèle) ou un droit
+d'auteur</td><td>Aucun titre requis : responsabilité civile délictuelle (<b>art. 1240 du code civil</b>)</td></tr>
+<tr><td><b>Ce qu'il faut prouver</b></td><td>L'<b>atteinte au titre</b></td><td><b>Faute</b> +
+<b>préjudice</b> + <b>lien de causalité</b>, cumulativement</td></tr>
+<tr><td><b>Difficulté</b></td><td>Redoutable et rapide</td><td>« Loin d'être gagné d'avance » : il faut
+démontrer une <b>perte de chiffre d'affaires</b> imputable</td></tr>
+</tbody>
+</table></div>
+
+<p>Le <b>parasitisme</b> est la variante la plus courante de la concurrence déloyale : reprendre les marqueurs
+distinctifs d'une marque — nom quasi identique, même typographie, mêmes codes couleur, packaging et étiquette
+sosies — pour profiter de sa notoriété. L'enseignant insiste sur la nécessité de <b>réagir très vite</b> : la
+tolérance affaiblit les droits.</p>
+
+<h3 id="ch8-2">8.2 Le calcul des dommages et intérêts</h3>
+
+<div class="callout danger"><div class="t">La règle française à connaître</div>
+Les dommages et intérêts se calculent sur la <b>valeur réelle marchande du produit authentique</b> multipliée
+par le <b>volume contrefait commercialisé</b>. Jamais sur le prix bradé pratiqué par le contrefacteur, ni sur
+son chiffre d'affaires réel. On indemnise le <b>préjudice subi et le manque à gagner</b> du titulaire.
+</div>
+
+<details class="case"><summary>Cas 4 — Le calcul<span class="sit">Un contrefacteur a vendu 100 montres
+d'une grande marque à 100 € pièce. La montre authentique vaut 15 000 €. Quel montant réclamer ?</span></summary>
+<div><b>100 × 15 000 = 1 500 000 €.</b> Le « j'ai vendu ma montre 100 € » n'a aucune portée : c'est la valeur du
+produit authentique qui sert de base. En pratique, l'enseignant précise qu'en demandant un million on obtient
+souvent 500 000 à 600 000 € — et que hors d'Europe, l'indemnisation s'effondre.</div></details>
+
+<p>Reste à prouver le volume. C'est le rôle de la <b>saisie-contrefaçon</b> : une procédure probatoire menée
+par un <b>commissaire de justice</b> (huissier) qui constate matériellement l'infraction et quantifie les
+stocks. « C'est très visuel, ça permet d'apporter une preuve. »</p>
+
+<h3 id="ch8-3">8.3 La gradation des actions</h3>
+
+<div class="phase-band">
+<div class="p1"><b>1. Mise en demeure</b> Le premier réflexe : la moins chère, la moins engageante, et on peut
+la rédiger soi-même. On peut y demander la cessation des actes, une publication rectificative, des excuses dans
+la presse.</div>
+<div class="p2"><b>2. Opposition devant l'INPI</b> Quand c'est un dépôt de marque qui gêne : on écrit à l'INPI,
+qui bloque l'enregistrement. Voie administrative, sans procès.</div>
+<div class="p3"><b>3. Action judiciaire</b> Contrefaçon (avec saisie-contrefaçon), concurrence déloyale,
+retenue en douane à l'importation, et dommages et intérêts, devant le tribunal judiciaire — celui de Paris,
+exclusivement, pour les brevets.</div>
+</div>
+
+<div class="callout warn"><div class="t">À l'international</div>
+Des <b>conventions internationales</b> permettent de faire valoir ses droits à l'étranger <b>à condition d'y
+avoir déposé</b> : si la marque est enregistrée en Chine et qu'un fabricant chinois produit des contrefaçons,
+le titulaire français peut agir. Mais c'est avant tout un <b>bras de fer économique</b>, qui suppose de payer
+des enquêteurs sur place et de surveiller les plateformes de commerce en ligne.
+</div>
+
+<div class="example"><div class="t">Quand la contrefaçon n'est plus une fin en soi</div>
+Dans certains trafics, notamment les <b>faux médicaments</b>, la marge sur la vente compte moins que l'usage de
+ces flux pour du <b>blanchiment d'argent</b>. La contrefaçon y devient un véhicule financier.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch9"><span class="num">9.</span> PI, innovation et stratégie d'entreprise</h2>
+
+<p>Le fil rouge de la journée : la PI « ne doit pas être subie comme une contrainte administrative, mais
+pilotée comme un levier ». Elle n'intervient qu'à un moment précis du parcours d'un projet.</p>
+
+<h3 id="ch9-1">9.1 De l'idée au marché</h3>
+
+<div class="steps" id="anim-projet">
+<div class="step"><b>1. Détecter un problème</b> <span class="who">le point de départ</span><br>
+Une innovation ne naît pas d'une idée mais d'un <b>problème identifié</b>. Source possible : le
+<b>biomimétisme</b> — la nature donne des idées (la bardane pour le Velcro).</div>
+<div class="step"><b>2. Formuler une proposition de valeur</b> <span class="who">pourquoi on achèterait</span><br>
+L'avantage clair qu'apporte le produit par rapport aux alternatives : gain de temps, transparence tarifaire,
+réduction des frictions, valeur environnementale.</div>
+<div class="step"><b>3. Étude de marché</b> <span class="who">la validation</span><br>
+Vérifier que la proposition de valeur rencontre un marché, c'est-à-dire des clients prêts à payer.</div>
+<div class="step"><b>4. Business model</b> <span class="who">les chiffres</span><br>
+Combien d'argent il faut pour mener le projet, et quelle valorisation espérer. « J'investis 5 € cette année,
+dans 3 ans l'entreprise en vaut 15. »</div>
+<div class="step"><b>5. Dresser les barrières à l'entrée</b> <span class="who">là où la PI intervient</span><br>
+Tout ce qui empêche un autre de copier : <b>titres de PI</b>, secret, capital humain, effets de réseau,
+barrières économiques.</div>
+<div class="step"><b>6. Lever des fonds</b> <span class="who">la récompense</span><br>
+Banquier, business angels, investisseurs : les barrières sont les <b>garanties</b> qu'on leur apporte.</div>
+<div class="step"><b>7. Produire et commercialiser</b> <span class="who">la suite</span><br>
+Production, contrats fournisseurs et sous-traitants, usines, communication adossée à une marque forte.</div>
+</div>
+<button class="btn primary" onclick="playSteps('anim-projet')">▶ Lancer l'animation</button>
+
+<div class="example"><div class="t">La naissance d'Uber</div>
+Un problème vécu : 20 minutes d'attente à la sortie d'un aéroport, une course au tarif inconnu, la sensation de
+s'être fait avoir. D'où la proposition de valeur : <b>commander un chauffeur quand on veut, en connaissant le
+prix à l'avance</b>. Point important pour le cours : Uber, Doctolib, BlaBlaCar <b>ne sont pas des brevets</b> —
+les pures méthodes commerciales ne sont pas brevetables. Leur protection, c'est l'effet de réseau, la marque,
+le logiciel et la <b>vitesse d'exécution</b>.
+</div>
+
+<h3 id="ch9-2">9.2 Les barrières à l'entrée</h3>
+
+<div class="grid c2">
+<div class="card"><h4>Juridiques</h4>Brevets, marques, dessins et modèles, droit d'auteur : le seul type de
+barrière <b>opposable</b> devant un juge, et celui que les investisseurs savent lire.</div>
+<div class="card"><h4>Technologiques</h4>Algorithmes propriétaires, savoir-faire non divulgué, secret
+d'affaires.</div>
+<div class="card"><h4>Capital humain et capital savoir</h4>« Qu'est-ce qui fait la valeur d'une entreprise ?
+Les gens ! » C'est l'avantage le plus difficile à rattraper.</div>
+<div class="card"><h4>Économiques et effets de réseau</h4>Investissement initial dissuasif, position au
+carrefour de plusieurs marchés, valeur croissante avec le nombre d'utilisateurs.</div>
+</div>
+
+<div class="exam"><div class="t">Les questions d'un investisseur en levée de fonds</div>
+« Quelle est votre propriété intellectuelle ? Est-ce que votre technologie est brevetée ou brevetable ? Quels
+sont vos secrets de fabrication ? Et comment empêchez-vous un acteur établi de reproduire exactement ce que
+vous faites en six mois ? » — La PI, c'est ce qui transforme une idée technique en <b>actif valorisable au
+bilan</b>.
+</div>
+
+<h3 id="ch9-3">9.3 Brevet contre vitesse : le débat Tesla</h3>
+
+<p>Elon Musk, annonçant l'ouverture des brevets Tesla, a soutenu que ce qui compte est la <b>vitesse
+d'innovation</b> et les talents, pas les titres. L'enseignant corrige : ce n'est pas un argument contre le
+brevet.</p>
+
+<div class="key-points">
+<li>Tesla <b>continue de déposer massivement</b> des brevets sur ses technologies de rupture.</li>
+<li>Un <b>brevet sans exécution</b> ne vaut rien : si vous mettez dix ans à sortir le produit, un concurrent
+trouvera un contournement ou optimisera un autre procédé.</li>
+<li>Une <b>exécution sans protection</b> ne vaut rien non plus : dès que vous montrez l'innovation sur un salon
+ou sur Internet, un acteur dix fois mieux capitalisé la fabrique à grande échelle et vous balaie.</li>
+<li>La bonne réponse est la combinaison : <b>titre juridique + secret + vélocité d'équipe</b>.</li>
+</div>
+
+<h3 id="ch9-4">9.4 Innover sans technologie</h3>
+
+<div class="example"><div class="t">Le modèle organisationnel d'IKEA</div>
+Chez un vendeur de meubles traditionnel, la table est <b>livrée montée</b> : le montage et la livraison sont
+les postes les plus coûteux. IKEA renverse l'organisation — <b>showroom</b>, repérage dans le stock, meuble en
+kit — et <b>transfère stockage, manutention et montage au client</b>. Résultat : des prix défiant la
+concurrence. L'innovation est ici purement <b>organisationnelle</b>, et elle crée un avantage concurrentiel
+qu'il faut ensuite protéger et rendre durable.
+</div>
+
+<h3 id="ch9-5">9.5 Quand le réflexe PI s'impose</h3>
+
+<p>La question se pose honnêtement : si vous ne créez rien, la propriété industrielle ne s'impose pas à vous.
+Elle devient nécessaire dès que vous <b>gérez des sous-traitants</b>, <b>intégrez ou développez du logiciel</b>,
+ou <b>créez de nouvelles technologies</b> (réalité augmentée, solutions de protection contre les cyberattaques).
+Finalité unique : <b>protéger un avantage concurrentiel</b>, défendre ses investissements, valoriser son image
+et obtenir un retour financier.</p>
+
+<div class="callout warn"><div class="t">Le piège du livre blanc</div>
+Publier un <b>livre blanc</b>, c'est <b>divulguer</b> : la nouveauté est détruite et le brevet n'est plus
+possible. Si l'on veut breveter une implémentation logicielle ou un système, le <b>dépôt doit précéder toute
+publication</b> ou mise en application publique. Même logique pour une démonstration sur un salon.
+</div>
+
+<h3 id="ch9-6">9.6 Panorama des innovations citées</h3>
+
+<div class="grid c3">
+<div class="card"><h4>Santé</h4><b>ARN messager</b>, ciseaux moléculaires <b>CRISPR</b> pour couper et coller
+des brins d'ADN, <b>nanorobots</b> injectables ciblant les organes malades, médecine nucléaire.</div>
+<div class="card"><h4>Technologies de rupture</h4><b>IA</b>, <b>blockchain</b>, ordinateurs quantiques,
+impression <b>3D, 4D, 5D</b>.</div>
+<div class="card"><h4>Mobilité</h4>Véhicules électriques et autonomes, retour des <b>supersoniques</b> plus
+sobres, avions hybrides et électriques, drones autonomes.</div>
+<div class="card"><h4>Espace</h4><b>Fusées réutilisables</b> (SpaceX), tourisme spatial : un billet autour de
+<b>125 000 $</b>.</div>
+<div class="card"><h4>Énergie</h4><b>Hydrogène vert</b>, photovoltaïque, <b>fusion nucléaire</b>,
+photosynthèse artificielle — des investissements colossaux.</div>
+<div class="card"><h4>Alimentation</h4><b>Viande cultivée</b> à partir de cellules souches, sans élevage ni
+abattage : de nouveaux défis réglementaires, éthiques et de brevetabilité.</div>
+</div>
+
+<h3 id="ch9-7">9.7 Contractualiser : laboratoires, partenaires, investisseurs</h3>
+
+<p>La seconde journée a déroulé une <b>mise en situation</b> : une jeune entreprise de dix personnes (huit
+ingénieurs), 100 000 € de budget, a inventé une <b>hydrolienne</b> — une bouée portant sous sa face inférieure
+un bras articulé rétractable qui protège la turbine pendant le transport et par fort courant. À chaque étape,
+un choix de PI. Ce qu'il faut en retenir :</p>
+
+<div class="viz"><div class="t">Les décisions de la mise en situation</div>
+<div class="vz-grid g2">
+<button class="vz-c k-blue"><span class="n">Avant de parler</span><h5>Tracer et dater</h5><span class="q">Puis seulement chercher des partenaires</span><span class="more"><span class="t">Détail</span>Tenir un cahier de laboratoire, horodater les étapes (e-Soleau, tiers de confiance). Publier tout de suite un article scientifique, c'est détruire la brevetabilité ; en parler à une fête ou sur un salon avec des détails techniques aussi. On <b>date d'abord</b>, on dépose, puis on discute.</span></button>
+<button class="vz-c k-red"><span class="n">Laboratoire public</span><h5>Le NDA ne suffit pas</h5><span class="q">Il faut un contrat de collaboration</span><span class="more"><span class="t">Détail</span>Trois options : la confiance et l'accord verbal (extrêmement risqué : le laboratoire peut s'approprier ou breveter les résultats) ; un simple <b>NDA</b> (insuffisant : il empêche la fuite mais <b>ne dit rien de la propriété des résultats</b> futurs) ; un <b>contrat de collaboration de recherche complet</b> (indispensable) qui inventorie les <b>connaissances antérieures</b> de chacun (<i>background</i>), fixe la propriété des <b>résultats propres et conjoints</b> (<i>foreground</i>), encadre les <b>publications</b> (droit de regard et délai pour déposer d'abord) et répartit les coûts de brevet.</span></button>
+<button class="vz-c k-amber"><span class="n">Licence</span><h5>Avances et exclusivité</h5><span class="q">Vérifier qui est en face</span><span class="more"><span class="t">Détail</span>Un partenaire qui propose une licence avec <b>avance sur redevances</b> (par exemple 90 000 € versés d'avance, puis des royalties sur le chiffre d'affaires) finance le prototype. Mais une <b>exclusivité</b> bloque toute autre alliance : en limiter le périmètre technologique et territorial, et vérifier si l'interlocuteur est un valorisateur, un client ou un futur concurrent.</span></button>
+<button class="vz-c k-purple"><span class="n">Extension</span><h5>Choisir ses pays</h5><span class="q">Sans vider la caisse</span><span class="more"><span class="t">Détail</span>Couvrir quinze pays peut dépasser 180 000 € ; une petite structure doit garder un seuil de trésorerie vital. Le PCT donne jusqu'à 30 mois pour choisir. Un pays non choisi est perdu pour toujours. Et le brevet n'est pas la seule barrière : savoir-faire secret, complexité industrielle, avance technologique et réseau commercial comptent aussi.</span></button>
+</div>
+<div class="vz-bar"><button class="btn" data-cards="open">Tout déplier</button><button class="btn ghost" data-cards="close">Tout replier</button><span class="cnt"></span></div>
+</div>
+
+<details class="case"><summary>Cas 5 — Trois offres après un salon<span class="sit">Après une présentation
+publique remarquée, trois acteurs se manifestent : un groupe national historique, un leader industriel
+étranger et un fonds de capital-risque. Que vaut chaque offre ?</span></summary>
+<div>D'abord, <b>ne jamais réunir des concurrents autour d'une même table</b> : discussions bilatérales.
+<ul>
+<li><b>Le groupe national</b> exige une <b>négociation exclusive</b> sous <b>NDA</b>, sans aucune valorisation
+annoncée. Piège : pendant des mois, la start-up ne peut parler à personne d'autre, et le groupe audite
+gratuitement tout le savoir-faire sans s'engager. S'il rompt, la start-up est isolée et sa fenêtre de marché
+refermée.</li>
+<li><b>Le leader étranger</b> finance la R&amp;D (de l'ordre de 3 M€ sur 3 ans) mais veut la <b>copropriété des
+brevets futurs</b> et interdit de vendre en Amérique du Nord et en Asie. Piège : en copropriété, toute licence ou
+cession exige l'accord de l'autre ; la restriction territoriale ampute la valeur de l'entreprise. Contre-proposition
+: un <b>contrat de prestation de R&amp;D</b> rémunéré avec une <b>licence exclusive limitée</b> (à un secteur ou
+dans le temps), en gardant la pleine propriété des titres.</li>
+<li><b>Le fonds</b> entre au capital sur une valorisation négociée, mais demande des sièges au conseil et un
+<b>droit de veto sur les décisions de PI</b>. À peser : c'est la gouvernance de la technologie qui est en
+jeu.</li>
+</ul></div></details>
+
+<details class="case"><summary>Cas 6 — L'entrée au capital qui vaut prédation<span class="sit">Un grand
+groupe étranger propose un apport en capital important contre 70 à 80 % des parts et la propriété exclusive de
+la PI sur des marchés clés ; il exige, au titre de la due diligence, l'accès intégral au code source, aux
+secrets de fabrication et aux contrats. Puis il propose de racheter les actifs technologiques pour 2,5 M€.
+Que se joue-t-il ?</span></summary>
+<div>C'est le scénario de la <b>prédation</b> — le lien direct avec la partie II. Sous couvert d'audit, l'acheteur
+se fait livrer tout le savoir-faire. Racheter les actifs permet de <b>rapatrier la technologie</b> dans ses
+usines : fermeture du site, licenciements. Les fondateurs repartent avec du cash (diminué de la fiscalité), mais
+l'entreprise disparaît. Contre-proposer une simple <b>licence non exclusive</b> payée en redevances fait
+souvent échouer la négociation : la preuve que le but était d'absorber ou d'éliminer un concurrent. Appuis
+possibles en cas de difficulté : <b>Bpifrance</b>, les services régionaux de l'État — et la DGSI (§ 10.3).
+Sans stratégie de PI solide, la levée de fonds échoue ; avec une matrice d'actifs maîtrisée, elle se valorise.</div></details>
+
+<div class="callout warn"><div class="t">Le rapport de force start-up contre grand groupe</div>
+Un brevet ne vaut que si l'on peut le défendre. Face à un groupe qui conteste agressivement un titre, une jeune
+entreprise sans trésorerie pour soutenir un procès long risque de transiger ou d'abandonner ses droits. La PI
+se budgète, défense comprise.
+</div>
+
+<h3 id="ch9-8">9.8 Gérer la PI : la conclusion du cours</h3>
+
+<div class="callout ok"><div class="t">La PI est un outil économique et stratégique</div>
+Elle sert à <b>défendre ses investissements et conquérir des marchés</b>, à <b>développer son image</b>
+d'entreprise innovante, et à <b>obtenir un retour financier</b> (cessions, concessions de licences, apport en
+capital). Elle ne doit pas être vue seulement comme une dépense, mais comme une source de <b>recettes
+futures</b>.
+</div>
+
+<div class="phase-band">
+<div class="p1"><b>Collecter</b> Veille technologique et concurrentielle, détection des signaux faibles.</div>
+<div class="p2"><b>Comprendre</b> Positionner ses technologies, détecter menaces et opportunités : nouveaux
+arrivants, technologies de rupture, partenaires, copies.</div>
+<div class="p3"><b>Décider</b> Protéger, s'allier, contourner, anticiper, agir en justice ou passer par la
+médiation.</div>
+</div>
+<p>Le support conclut : <b>« PI et IE : une même discipline en quatre temps »</b>, et en détaille trois
+ci-dessus ; le quatrième est l'action qui suit la décision. C'est le pont entre les deux moitiés de cette
+fiche.</p>
+
+<div class="grid c2">
+<div class="card"><h4>Intégrer la PI au projet</h4>Mettre en place une <b>veille</b> ; <b>prendre date</b> ;
+<b>identifier ce qui peut être protégé</b> ; vérifier l'inventivité et la <b>liberté d'exploitation</b> ;
+<b>contractualiser</b> ses échanges ; protéger ; <b>surveiller et défendre</b> ; gérer et valoriser son
+portefeuille (extension, cession, licence, abandon).</div>
+<div class="card"><h4>Gérer un portefeuille</h4>Faire des <b>revues de portefeuille</b>, étendre la protection
+sur ses marchés à l'étranger, <b>négocier des licences</b>, <b>céder des titres</b> contre de la trésorerie, se
+défendre, et exploiter.</div>
+</div>
+
+<div class="exam"><div class="t">Les situations à risque listées par le support</div>
+Pas d'<b>état de l'art</b> · pas d'étude de <b>liberté d'exploitation</b> · <b>titularité</b> de la PI incertaine
+· pas de <b>cession des droits</b> (salariés, prestataires, stagiaires) · <b>divulgation trop hâtive</b> ·
+<b>projet collaboratif sans contrat</b> · <b>mauvais choix</b> de protection · pas de titre de PI · pas de
+<b>datation</b> des créations et du savoir-faire · la question de l'<b>export</b> jamais abordée. Chacune
+correspond à une notion de cette fiche : c'est une bonne grille de révision.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch10"><span class="num">10.</span> Les flashs DGSI : le catalogue des modes opératoires</h2>
+
+<p>Partie II — restitutions du lab IE du 24 novembre. Chaque binôme a présenté deux <i>Flash ingérence
+économique</i> de la DGSI (n° 83 à 118) et un sujet de souveraineté numérique. Les flashs se ressemblent
+volontairement : <b>3 cas réels, puis des préconisations en trois temps</b>. Ce qui compte à l'examen, ce n'est
+pas le numéro du flash, c'est de <b>reconnaître le mode opératoire</b> et de <b>sortir le bon réflexe</b>.</p>
+
+<div class="exam"><div class="t">La grille de lecture commune à tous les flashs</div>
+<ul>
+<li><b>Qui ?</b> Concurrents, cabinets d'intelligence économique étrangers, États, individus malveillants,
+parfois un salarié de l'intérieur.</li>
+<li><b>Quoi ?</b> Capter de l'information, nuire à la réputation, déstabiliser, préparer une cyberattaque.</li>
+<li><b>Les préconisations se rangent toujours en trois temps : avant, pendant, après</b> (avant la transaction
+ou le départ, pendant la relation ou le séjour, au retour ou en cas d'incident).</li>
+<li><b>La fin est invariable</b> : couper l'échange, alerter la hiérarchie ou le RSSI, <b>signaler à la
+DGSI</b> (securite-economique@interieur.gouv.fr), <b>porter plainte</b> — démarche « simple, rapide et
+gratuite », avec <b>6 ans pour un délit, 20 ans pour un crime</b>.</li>
+</ul>
+</div>
+
+<h3 id="ch10-1">10.1 Capter l'information par l'humain</h3>
+
+<div class="viz"><div class="t">Approcher, usurper, recruter</div>
+<div class="vz-grid g3">
+<button class="vz-c k-red"><span class="n">#83, #116</span><h5>Faux profils sur les réseaux professionnels</h5><span class="q">Le faux recruteur, le faux salarié</span><span class="more"><span class="t">Détail</span>Faux partenaire posant des questions insistantes sur la R&amp;D d'un labo pharmaceutique ; faux salariés et logo usurpé contre une société de cybersécurité ; <b>faux recruteur</b> envoyant une offre piégée à une trentaine de salariés d'un groupe industriel. Faux mécène promettant des millions à un chercheur après paiement d'une « taxe locale ». <b>Signaux</b> : profil récent ou incomplet, peu de relations, parcours incohérent, photo douteuse. <b>Réflexes</b> : limiter les informations de son profil, <b>recherche d'image inversée</b>, vérifier l'identité avant d'ouvrir un fichier, et surtout <b>ignorer l'invitation plutôt que la refuser</b> (refuser informe l'attaquant), puis signaler le profil au réseau et à la DGSI.</span></button>
+<button class="vz-c k-red"><span class="n">#101</span><h5>Usurpation d'identité et deepfakes</h5><span class="q">Autorité, urgence, secret</span><span class="more"><span class="t">Détail</span>Trois leviers constants : <b>autorité</b> (le dirigeant, un client), <b>urgence</b> (« tout de suite »), <b>secret</b> (« n'en parlez à personne »). Cas : <b>visioconférence truquée par IA</b> reproduisant visage et voix du PDG pour obtenir un virement lié à une acquisition ; faux dirigeant écrivant au service comptable ; faux comptable d'un fournisseur réclamant que toutes les factures soient renvoyées ailleurs. <b>Adresses piégées</b> : caractère cyrillique ressemblant, extension modifiée (.co au lieu de .fr), <b>nom de domaine de l'ancienne raison sociale</b>. Parade : <b>réserver les domaines proches du sien</b>, procédures sans dérogation même en urgence, tests d'intrusion (faux mails, clés USB). <b>Les trois tentatives ont échoué parce qu'un salarié a jugé la demande inhabituelle et l'a vérifiée.</b></span></button>
+<button class="vz-c k-amber"><span class="n">#102</span><h5>Approches hors du cadre professionnel</h5><span class="q">Le cadre informel désarme la méfiance</span><span class="more"><span class="t">Détail</span>Club de sport infiltré par un afflux d'adhérents d'une même nationalité, multipliant les mises en relation ; « chercheur » trop bien informé lors d'une soirée privée, proche des services de renseignement de son pays ; gérants d'un restaurant voisin de laboratoires sensibles qui questionnent, photographient et filment la clientèle. Même sans accès sensible, un salarié livre des <b>éléments d'ambiance</b> : mouvements de personnel, projets, déménagements. <b>Un signalement isolé paraît anecdotique ; recoupé, il révèle une opération.</b></span></button>
+<button class="vz-c k-amber"><span class="n">#98</span><h5>Débauchage</h5><span class="q">Licite, jusqu'à un certain point</span><span class="more"><span class="t">Détail</span>Le débauchage relève de la liberté du travail — il devient illicite quand il vise à <b>désorganiser</b> un concurrent, capter des secrets d'affaires ou faire pression dans une négociation de rachat. Méthodes : surenchère salariale, cabinets de chasseurs de têtes, <b>OSINT</b> pour repérer les profils rares. <b>Le nouvel employeur comme le salarié peuvent être pénalement responsables.</b> Parade : cartographier ses concurrents, prévenir le vol d'informations, vérifier la restitution des documents au départ. Les <b>PME</b> sont les plus exposées.</span></button>
+<button class="vz-c k-blue"><span class="n">#107, #92, #117</span><h5>Faux investisseurs</h5><span class="q">Le besoin de financement affaiblit les vérifications</span><span class="more"><span class="t">Détail</span>Fonds étranger <b>sans existence légale</b>, investisseur refusant de révéler son identité, intermédiaire bancaire réclamant une commission en cryptomonnaies, frais préalables qui mènent une start-up au redressement judiciaire. La <b>due diligence</b> — vérification préalable de l'existence, de la situation légale et de l'honorabilité d'un investisseur avant tout engagement — n'est pas une formalité : contrôler par des <b>canaux indépendants</b>, rencontrer les interlocuteurs, appliquer les procédures <b>sans dérogation</b>, solliciter un cabinet spécialisé ou les services de l'État.</span></button>
+<button class="vz-c k-purple"><span class="n">#94, #106</span><h5>Vols de données par des collaborateurs</h5><span class="q">La fin de contrat, moment critique</span><span class="more"><span class="t">Détail</span>Motivations : argent, concurrence, carrière, vengeance, dénonciation, ou simple opportunisme. Cas : salarié non renouvelé qui, <b>la nuit avant son dernier jour</b>, accède depuis chez lui à des dizaines de fichiers via l'outil de télétravail ; cadre débauché transférant des données sur un support externe puis les effaçant, dossiers papier chargés dans sa voiture ; <b>freelance de la DSI dont les accès n'ont jamais été révoqués</b> et qui télécharge la nuit suivante. Prestataire emportant 5 000 fichiers sur clé USB, dont la politique de sécurité du SI. Parade : classer les données, changer les <b>mots de passe partagés à chaque départ</b>, journaliser, et surtout <b>restitution du matériel et coupure des accès le jour même</b>.</span></button>
+</div>
+<div class="vz-bar"><button class="btn" data-cards="open">Tout déplier</button><button class="btn ghost" data-cards="close">Tout replier</button><span class="cnt"></span></div>
+</div>
+
+<h3 id="ch10-2">10.2 Capter par le terrain : repérage, intrusion, sabotage</h3>
+
+<div class="grid c2">
+<div class="card"><h4>#93 — Opérations de repérage</h4>Actions menées pour <b>identifier les failles de sécurité
+d'un site</b> avant une attaque. Un <b>drone</b> survole un site industriel trois fois en une semaine (les
+abords un soir, un hangar pendant les vacances, puis tout le site) ; un individu entre au siège <b>à la pause
+déjeuner</b> sans passer par l'accueil et suit des salariés dans l'ascenseur à badge jusqu'au service le plus
+sensible ; un véhicule filme l'entrée, les caméras étant <b>trop peu précises</b> pour identifier la plaque.
+Constat : des attaques <b>multi-vecteurs et en plusieurs étapes</b>, lancées quand la vigilance baisse —
+congés, nuits, pauses. Réflexe : tout consigner, <b>intercepter et relever l'identité</b>, signaler, envisager
+systématiquement la plainte.</div>
+<div class="card"><h4>#113 — Sûreté des bâtiments</h4>Vulnérabilités typiques : porte de service <b>calée</b>
+pendant une pause, alarme limitée aux couloirs et contournée par un bris de vitre donnant dans les bureaux,
+étage considéré à tort comme inaccessible. Démarche en trois temps : <b>auditer et tester</b> (cartographier,
+classifier les zones, exercices réguliers), <b>protéger et détecter</b> (capteurs de choc, d'ouverture et de
+présence, badges visiteurs de couleur, accompagnement systématique), <b>alerter et agir</b>. Les quatre piliers
+à retenir : <b>dissuader, bloquer, ralentir, détecter</b> — et faire évoluer ses défenses en permanence.</div>
+<div class="card"><h4>#103 — Vols de matériels sensibles</h4>Intrusion dans les locaux, prototype volé la nuit,
+PC dérobé en télétravail. « La plupart des vols exploitent une <b>imprudence évitable</b>. » Prévenir :
+sensibiliser, sécuriser badges et locaux, <b>chiffrer les postes</b>, anticiper les transports. Réagir :
+prévenir le RSSI, porter plainte, signaler.</div>
+<div class="card"><h4>#108 — Sabotage économique</h4><b>Destruction intentionnelle</b> de matériel,
+d'installations ou de l'image d'une entreprise, par idéologie, concurrence ou malveillance, de l'intérieur
+comme de l'extérieur. Cas : incendie criminel d'équipements vitaux malgré le gardiennage, coupure électrique
+touchant des milliers d'entités après l'incendie de câbles, recherches détruites dans un laboratoire avec
+<b>complicité interne suspectée</b>. Quatre axes : évaluer les vulnérabilités, sécurité périmétrique,
+<b>continuité d'activité</b> (réseaux de secours, stock de pièces, cellule de crise), sensibilisation. En cas
+d'attaque : relever les <b>repérages des jours précédents</b>, recueillir les témoignages, alerter
+<b>même pour une tentative avortée</b>.</div>
+</div>
+
+<h3 id="ch10-3">10.3 Capter la technologie : partenaires, audits, logiciels</h3>
+
+<div class="grid c2">
+<div class="card"><h4>#88 — Les audits externes intrusifs</h4>Levée de fonds, rachat, export, conformité : un
+audit donne un <b>accès direct au savoir-faire</b>. Le <b>faux investisseur</b> accède aux recherches non
+brevetées puis disparaît (vol de PI) ; un <b>État étranger</b> impose des audits jusqu'en France pour autoriser
+l'export (contrefaçon) ; <b>trois auditeurs sur quatre</b> se révèlent liés à un concurrent et obtiennent un
+accès au réseau (cartographie du SI). Avant : vérifier le cabinet, classer les données sensibles, exiger par
+contrat des <b>données hébergées en France</b>, un <b>auditeur remplaçable</b> et <b>pas de sous-traitance</b>.
+Pendant : limiter les accès, <b>tracer les consultations</b>. Après : vérifier le respect des clauses.</div>
+<div class="card"><h4>L'audit dévoyé en <i>voluntary disclosure</i></h4>Variante racontée en cours : un cabinet
+étranger relève des vulnérabilités, <b>interrompt brusquement l'audit</b> et conseille une « divulgation
+volontaire » — poussant l'entreprise à fournir elle-même les preuves qui l'exposent à de lourdes sanctions
+financières et à un transfert de données. Parade : <b>conseil juridique spécialisé</b>, <b>anonymisation</b>
+des données avant transmission, exiger des <b>auditeurs français</b> et des <b>plateformes de partage
+souveraines</b>, signaler au <b>SISSE</b> (service de l'information stratégique et de la sécurité économiques)
+et à la DGSI.</div>
+<div class="card"><h4>#90 — Le client qui capte le savoir-faire d'un sous-traitant</h4>Il se présente comme
+distributeur, <b>dépose un brevet</b> sur la technologie en son nom ; il passe une commande unique en promettant
+de gros volumes, le temps d'obtenir la <b>composition des machines et le nom des sous-traitants</b> ; puis il
+annonce choisir un fournisseur local, qui dispose soudain d'équipements similaires. Parade : se renseigner sur
+le client <b>et sur le groupe pour lequel il commande</b>, protéger par contrat (clauses, brevets, marques), ne
+jamais communiquer la composition des produits.</div>
+<div class="card"><h4>#96 — La start-up prise en tenaille</h4>Une jeune entreprise industrielle subit
+simultanément : un revendeur mandaté qui <b>dérobe un prototype pour déposer un brevet</b> à son nom (puis
+menaces, dénigrement client et annulations de commandes avant le gain de cause judiciaire) ; des appels
+d'offres exigeant une <b>production locale</b> avec un revendeur autorisé à démonter les produits
+(rétro-ingénierie), doublés d'offres de fonds étrangers réclamant des <b>droits sur la PI</b> ; enfin une offre
+de rachat surévaluée, puis une seconde encore plus élevée <b>conditionnée à la remise d'un échantillon</b>.
+Parade : <b>due diligence</b>, formaliser toute promesse par écrit, verrouiller les clauses de transfert de
+technologie, délimiter les pouvoirs des mandataires, déposer plainte systématiquement.</div>
+<div class="card"><h4>#115 — Logiciels industriels non protégés</h4>Trois cas : un client installe, avec l'aide
+d'un concurrent étranger, le programme d'une machine <b>non brevetée</b> sur une machine tierce ; un client
+sauvegarde <b>tout le logiciel</b> d'une machine-outil sous prétexte de mise à jour, hors procédure ; deux
+anciens salariés fondent une société concurrente <b>avec le code source</b>. Préconisations : dès la
+conception, <b>dossier de preuves</b>, <b>enveloppe Soleau (INPI)</b>, engagement de confidentialité signé par
+tout tiers, <b>identifiant intégré au logiciel</b> ; brevet déposé tôt et sur plusieurs zones (INPI, OEB,
+OMPI) avec paiement des annuités ; droit d'auteur prouvé par un dépôt (commissaire de justice, APP, INPI).
+En cas de vol : <b>mise en demeure, saisie-contrefaçon</b>, signalement. <b>C'est le pont direct avec la
+partie I.</b></div>
+<div class="card"><h4>#97 — Les salons professionnels</h4>Un stand suffit à être ciblé. <b>Sur le stand</b> :
+de faux journalistes filment la technologie en caméra cachée. <b>Pendant le transport</b> : une caisse revient
+dégradée après le contrôle des douanes étrangères. <b>En fin de salon</b> : du matériel laissé sans
+surveillance est volé, rétro-ingénierie probable. Avant : retirer les composants sensibles, appareils
+numériques dédiés, <b>éléments de langage préparés</b>. Pendant : stand jamais laissé seul, <b>vigilance accrue
+le dernier jour</b>, Wi-Fi et Bluetooth coupés. Après : analyser les appareils, changer les mots de passe.</div>
+</div>
+
+<h3 id="ch10-4">10.4 Les flashs transverses</h3>
+
+<div class="grid c2">
+<div class="card"><h4>#84 — La sécurité informatique comme impératif économique</h4>Trois erreurs d'entreprise
+et leurs conséquences : <b>pièce jointe infectée</b> ouverte par imprudence (infection, chiffrement et
+exfiltration, et surtout <b>le temps perdu à désinfecter et restaurer, qui est déjà une perte économique même
+quand les données sont récupérées</b>) ; <b>failles identifiées mais non corrigées</b> (dommages financiers et
+atteinte à la réputation, le manque d'anticipation étant dénoncé dans la presse) ; <b>minage de
+cryptomonnaies</b> sur le réseau par un collaborateur (ralentissement, atteinte à la <b>disponibilité</b>,
+usure de l'infrastructure). Parades : hygiène informatique, correctifs rapides surtout après une tentative
+d'intrusion, journalisation imputant le trafic aux postes, alertes sur ralentissement, pare-feu plus strict.</div>
+<div class="card"><h4>#112 — Le facteur humain</h4><b>95 % des violations de données ont une origine
+humaine.</b> Deux volets : <b>protection des SI</b> (audits, réévaluation des accès des prestataires, mises à
+jour, classification des données, encadrement des <b>ports et supports amovibles</b>) et <b>culture de
+sécurité</b> (politique et charte informatique, formation de tous, <b>moindre privilège</b>, centre
+opérationnel de sécurité, recommandations ANSSI et Cybermalveillance). Vecteurs cités en cours : le
+<b>BYOD</b> qui contourne la politique de sécurité et expose à des failles <b>zero-day</b>, et la <b>clé USB
+piégée avec keylogger</b> prêtée lors d'une réunion inter-entreprises. En cas d'incident : couper les accès,
+conserver les preuves, plainte, DGSI et, si requis, <b>CNIL</b>.</div>
+<div class="card"><h4>#111 — Outils numériques personnels (BYOD)</h4>Limiter les activités hors site aux
+données peu sensibles, éviter Wi-Fi et ports USB inconnus, <b>séparer usages privés et professionnels</b>,
+définir le BYOD <b>dans une charte</b>, prévoir les règles en cas de vol ou de <b>contrôle étranger</b>,
+réviser les accès à chaque changement de poste ou départ.</div>
+<div class="card"><h4>#117 — L'IA en entreprise</h4>Deux risques majeurs. <b>Shadow AI et fuites</b> :
+traduire ou résumer des documents confidentiels sur une IA grand public étrangère, c'est risquer
+l'<b>entraînement du modèle</b> sur ces données et les <b>lois extraterritoriales</b> — avec reconstitution du
+patrimoine informationnel par recoupement. <b>Dépendance aveugle</b> : due diligence déléguée à un modèle
+(biais, boîte noire, <b>hallucinations</b>), inapte à juger une rupture sans historique ; et <b>deepfakes</b>
+en visioconférence. Préconisations : <b>charte IA</b>, solutions françaises conformes au RGPD ou exécutées
+<b>en local</b>, anonymisation, formation et <b>validation humaine systématique</b>.</div>
+<div class="card"><h4>#109 / #110 — Réputation et visites de sites</h4><b>Atteinte à la réputation</b> :
+diffuser de fausses informations (faux audit annonçant la faillite d'une PME, rumeurs, accusations de violation
+d'embargo) pour faire perdre marchés, clients et financements ; les relais multiples rendent l'origine
+difficile à prouver et restaurer son image prend des mois. Parade : surveiller sa <b>e-réputation</b>, préparer
+sa communication de crise, <b>démentir preuves à l'appui</b>, porter plainte. <b>Visites de sites</b> : le
+tourisme industriel (20 millions de visiteurs en 2022 dans 3 500 entreprises françaises, +25 % en trois ans)
+offre un prétexte légitime — portes ouvertes peu contrôlées, puis repérage (photos, questions insistantes),
+puis intrusion avec <b>badges volés ou falsifiés</b>. Trois réflexes : préparer le parcours, encadrer les
+visiteurs, signaler.</div>
+<div class="card"><h4>#87 — Le dépôt de plainte comme outil de protection</h4>Vol de données, intrusion,
+cyberattaque, dénigrement : des infractions <b>rarement signalées</b>. Exemples aboutis : données de R&amp;D
+copiées sur un disque dur externe (prison avec sursis et amende), tiers non autorisé introduit en <b>ZRR</b>
+par un post-doctorant (garde à vue, accès retiré), fausses accusations d'actionnaires sous influence étrangère
+(condamnation pour <b>dénonciation calomnieuse</b>). La démarche : <b>preuves</b> (date, heure, personnes,
+faits), <b>plainte</b> (police, gendarmerie ou procureur), enquête, sanction avec réparation en se constituant
+<b>partie civile</b>. Appuis : PPST, juriste, <b>THESEE</b>, DGSI.</div>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch11"><span class="num">11.</span> Protéger le patrimoine : export, recherche, déplacements</h2>
+
+<h3 id="ch11-1">11.1 Les biens à double usage</h3>
+
+<div class="callout def"><div class="t">BDU</div>
+<b>Biens à double usage</b> : matériels, technologies ou logiciels susceptibles d'un usage <b>à la fois civil
+et militaire</b> — typiquement, en cybersécurité, les outils de test d'intrusion et la cryptographie. Pour
+toute exportation <b>hors UE</b>, il faut une <b>licence d'exportation</b> ou une <b>demande hors licence</b>
+auprès du <b>SBDU</b> (service des biens à double usage). Base : le <b>règlement UE 2021/821</b>, dont
+l'<b>annexe 1</b> liste les biens contrôlés ; les licences se demandent sur le portail <b>EGIDE</b>.
+</div>
+
+<div class="callout danger"><div class="t">L'immatériel est soumis au même régime que le matériel</div>
+C'est le risque sous-estimé du flash n° 86. Plans, schémas, formules, <b>logiciels</b>, savoir-faire,
+formations et méthodologies liés à des BDU sont <b>contrôlés comme des marchandises</b>. Trois voies de
+captation : le courriel non sécurisé, le partage trop précoce (qui ouvre la rétro-ingénierie), et les
+<b>voyages d'affaires</b>. Contourner un refus de licence en envoyant les plans expose jusqu'à
+<b>5 ans de prison et une amende de 3 fois la valeur du bien</b>.
+</div>
+
+<div class="example"><div class="t">Trois cas types de captation d'immatériel (flash n° 86)</div>
+<ul>
+<li><b>Le stagiaire étranger</b> en ingénierie : PC personnel utilisé en plus du poste fourni, droits
+informatiques trop étendus, présence hors des heures de travail. Plainte et renvoi — mais <b>schémas et
+formules étaient déjà partis</b>.</li>
+<li><b>L'approche progressive</b> : un directeur de laboratoire rencontre un chercheur dans un forum
+scientifique ; courriels cordiaux réguliers, coopération envisagée, puis demande de <b>codes de calcul à
+finalité duale</b>. Sensibilisé par la DGSI, il refuse et met fin à la relation.</li>
+<li><b>Le contournement de licence</b> : licence demandée au SBDU pour un laboratoire dans une université
+étrangère, <b>avis défavorable</b> (risque de détournement), puis l'idée de transmettre quand même les plans.
+Projet abandonné à temps.</li>
+</ul>
+</div>
+
+<div class="phase-band">
+<div class="p1"><b>Avant toute transaction</b> Sensibiliser les équipes commerciales, fixer le savoir-faire
+à partager, évaluer le potentiel dual, sécuriser les transmissions.</div>
+<div class="p2"><b>Pendant la relation</b> Ne rien transmettre avant la signature du contrat, vérifier
+l'adresse du client et les intermédiaires, attendre la licence avant tout envoi.</div>
+<div class="p3"><b>Lien avec l'administration</b> Consulter l'annexe 1 du règlement, demander la licence sur
+EGIDE, en cas de doute faire une demande hors licence au SBDU, signaler toute demande anormale à la DGSI ou à la
+<b>DRSD</b> (direction du renseignement et de la sécurité de la défense).</div>
+</div>
+
+<h3 id="ch11-2">11.2 Matières premières critiques</h3>
+
+<p>Encadrées au niveau européen par le <b>CRM Act</b> (<i>Critical Raw Materials Act</i>), avec une liste
+européenne <b>révisée tous les 3 ans</b>. Les objectifs à l'horizon <b>2030</b> :</p>
+
+<div class="tw"><table>
+<thead><tr><th>Objectif</th><th>Cible 2030</th></tr></thead>
+<tbody>
+<tr><td>Dépendance à un seul pays tiers hors UE</td><td><b>65 % maximum</b> de l'approvisionnement</td></tr>
+<tr><td>Extraction dans l'UE</td><td><b>≥ 10 %</b> de la consommation</td></tr>
+<tr><td>Transformation dans l'UE</td><td><b>≥ 40 %</b></td></tr>
+<tr><td>Recyclage dans l'UE</td><td><b>≥ 25 %</b></td></tr>
+</tbody>
+</table></div>
+
+<p>Illustration donnée en cours : le <b>nickel calédonien</b> — concurrence agressive de l'Indonésie et
+restrictions à l'export, coûts de production élevés pour relancer la filière, contexte politique local tendu.
+Une liste de matières « critiques » ne suffit pas à rendre une filière viable.</p>
+
+<h3 id="ch11-3">11.3 La recherche : PPST et ZRR</h3>
+
+<div class="callout warn"><div class="t">La recherche fondamentale n'est pas à l'abri</div>
+On la croit à tort sans enjeu parce qu'elle n'a pas d'application immédiate. Or ses résultats en physique,
+chimie ou mathématiques alimentent directement des programmes <b>duaux ou militaires</b> : « l'absence
+d'application immédiate ne protège pas ».
+</div>
+
+<p>Les modes opératoires du flash n° 95 : un <b>scientifique détaché</b> d'une université étrangère demande les
+plans d'équipements de pointe, puis une offre financière est faite à un <b>chercheur retraité</b>, puis vient
+un projet de <b>duplication</b> du laboratoire ; un <b>doctorant</b> installe un logiciel espion sur le poste
+qui centralise les données et s'y connecte hors horaires ; un partenariat <b>limité au fondamental</b> avec une
+université militaire étrangère sert de cheval de Troie (doctorant dual, échanges informels). Le flash n° 104
+ajoute les <b>chercheurs primés</b>, dont la notoriété fait une cible : symposium à l'étranger avec cadeaux,
+débauchage en chaîne, coopérations à double usage. Le flash n° 114 traite le cas symétrique, l'<b>accueil de
+chercheurs étrangers</b> : repérage des locaux, échanges hors du cadre convenu, collecte d'informations —
+d'où une démarche en trois temps, <b>encadrer l'accueil</b> avant, <b>protéger la recherche</b> pendant, et
+<b>réagir</b> en cas d'incident.</p>
+
+<div class="key-points">
+<li><b>PPST</b> : protection du potentiel scientifique et technique de la Nation. Sensibiliser et former
+l'ensemble du personnel, et <b>demander une évaluation PPST</b>.</li>
+<li><b>ZRR</b> : zone à régime restrictif — contrôle physique des accès et autorisations nominatives pour les
+locaux abritant des travaux sensibles.</li>
+<li><b>Avis de la tutelle</b> : saisir le <b>ministère de tutelle</b> avant tout partenariat. En cours,
+l'exemple est net : le ministère de l'Enseignement supérieur rend un <b>avis défavorable</b> et le projet ne se
+fait pas. « C'est très important de demander un avis extérieur pour éviter de faire des erreurs. »</li>
+<li><b>Cadrer contractuellement</b> la coopération et interdire les <b>canaux officieux</b> ; vérifier les
+recherches appliquées réellement menées par le partenaire étranger.</li>
+<li><b>Signaler</b> au <b>FSD</b> (fonctionnaire de sécurité et de défense) de sa tutelle, au ministère et à la
+DGSI.</li>
+</div>
+
+<h3 id="ch11-4">11.4 Les déplacements à l'étranger</h3>
+
+<p>Flashs n° 89 et n° 118 : un <b>schéma récurrent</b> en quatre temps — <b>repérage</b> (réseaux sociaux,
+profil visible), <b>prétexte légitime</b> (invitation, contrôle douanier, concours), <b>pression et
+isolement</b> (réunions surprises, espèces offertes), <b>accès aux données</b> (téléphone, fouilles, vol).</p>
+
+<div class="example"><div class="t">Les cas rapportés</div>
+Un chercheur invité à une conférence se voit retirer téléphone et tablette par un agent en civil, interrogé
+plusieurs heures, puis les appareils lui sont rendus avec un document autorisant la saisie. Un cadre en voyage
+privé voit son <b>ordinateur professionnel</b> passé au scanner, se fait questionner sur ses clients et ses
+produits, et l'appareil n'est rendu que le lendemain. Un troisième est abordé avant l'enregistrement par une
+personne demandant à analyser l'ordinateur <b>hors de sa présence</b> : il refuse de s'en séparer, et
+l'ordinateur n'est pas allumé. Ailleurs : corruption en liquide refusée puis ordinateur disparu, téléphone
+déverrouillé confisqué puis saboté, chambre fouillée et cible filmée sans consentement.
+</div>
+
+<div class="phase-band">
+<div class="p1"><b>Avant le départ</b> Partir avec un PC de mission vierge de données sensibles, sauvegarder,
+n'emporter que le nécessaire, chiffrer, authentification forte et mots de passe uniques, connaître les règles
+de son établissement (RSSI).</div>
+<div class="p2"><b>Pendant le séjour</b> Garder ses appareils sur soi ou à vue, éviter bornes USB et Wi-Fi
+publics, assister à tout contrôle, refuser les cadeaux disproportionnés, couper court aux approches
+insistantes ; face à un contrôle : sincère mais minimal, sans s'y opposer.</div>
+<div class="p3"><b>Au retour</b> Changer tous les mots de passe, faire analyser et décontaminer le matériel
+avant de le reconnecter au réseau interne, signaler l'incident au service informatique, à la hiérarchie et à
+la DGSI.</div>
+</div>
+
+<h3 id="ch11-5">11.5 Visioconférences, embargos, applications étrangères</h3>
+
+<div class="grid c3">
+<div class="card"><h4>#91 — Visioconférences</h4>Le télétravail banalise les échanges sur la recherche et la
+stratégie. Trois situations : <b>enregistrements suspects</b> de réunions sensibles, <b>partenariat
+intrusif</b> accompagnant un transfert accéléré de technologie, <b>intrusion</b> de tiers qui prennent les
+droits d'animation et diffusent du contenu malveillant. Réflexes : vérifier les participants et <b>limiter
+leurs droits</b>, chiffrer et encadrer l'enregistrement, <b>privilégier le présentiel</b> pour les sujets
+stratégiques. À retenir : <b>le chiffrement ne protège pas d'un participant autorisé qui divulgue</b>.</div>
+<div class="card"><h4>#105 — Contournement d'embargos</h4>Acquérir en France des biens sensibles ou duaux
+malgré les sanctions : <b>intermédiaires « de confiance »</b>, <b>sociétés écrans</b>, <b>pays rebonds</b>,
+usage final militaire masqué. Cas : machine revendue par un tiers européen puis réexportée ; client « civil »
+sous sanctions lié au complexe militaro-industriel ; université sanctionnée payant par carte avec livraison
+dans un pays tiers. Signaux d'alerte : <b>paiement en espèces</b> ou circuits opaques, <b>changement soudain de
+destination ou de transport</b>. Règle : connaître la sensibilité de ses produits et <b>vérifier le
+destinataire final</b>.</div>
+<div class="card"><h4>Applications étrangères</h4>Ce qui détermine le risque n'est pas la fonction de l'appli
+mais <b>qui la produit, où sont stockées les données et quel droit s'applique</b> : DINUM (France, droit
+français et RGPD), Tencent (Chine, <b>loi sur le renseignement de 2017</b>), GAFAM (États-Unis, <b>Cloud Act</b>
+et <b>FISA 702</b>). Trois risques : fuite de secrets d'affaires via les outils d'IA et de résumé automatique,
+<b>logiciels imposés</b> par un contrat d'export contenant des fonctions cachées, applications imposées
+localement <b>pendant un déplacement</b>. Réponses : évaluer avant de déployer, <b>moindre privilège</b>,
+privilégier les solutions qualifiées (<b>SecNumCloud</b>, visa de sécurité ANSSI) ou des briques open source
+vérifiables.</div>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch12"><span class="num">12.</span> Souveraineté du matériel : semi-conducteurs et architectures</h2>
+
+<h3 id="ch12-1">12.1 La chaîne de valeur et ses goulots</h3>
+
+<div class="callout danger"><div class="t">Le constat de base</div>
+<b>Aucun acteur ne maîtrise toute la chaîne.</b> Les <b>États-Unis conçoivent</b> (NVIDIA, AMD, Apple),
+l'<b>Asie fabrique</b> (TSMC, Samsung), l'<b>Europe fournit les machines</b> (ASML). AMD et NVIDIA dépendent de
+TSMC pour graver leurs composants phares ; TSMC dépend d'ASML pour ses machines. C'est une
+<b>interdépendance triangulaire</b>, pas une hiérarchie.
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>Étape</th><th>Qui domine</th><th>Effet de RISC-V</th></tr></thead>
+<tbody>
+<tr><td><b>Jeu d'instructions (ISA)</b></td><td>Intel, AMD (x86), ARM</td><td><b>Accès libre</b></td></tr>
+<tr><td><b>Cœurs</b></td><td>ARM, SiFive, Alibaba</td><td>En partie</td></tr>
+<tr><td><b>Logiciels de conception</b> (<b>EDA</b> : <i>electronic design automation</i>)</td><td>Synopsys, Cadence, Siemens EDA (américains)</td>
+<td><b>Aucun effet</b></td></tr>
+<tr><td><b>Plaquettes</b></td><td>Shin-Etsu, SUMCO, <b>Soitec</b> (France)</td><td>Aucun effet</td></tr>
+<tr><td><b>Gravure (fonderie)</b></td><td>TSMC, Samsung, Intel, STMicroelectronics</td><td><b>Aucun effet</b></td></tr>
+<tr><td><b>Machines de lithographie</b></td><td><b>ASML</b> (Pays-Bas), Tokyo Electron, KLA</td>
+<td>Aucun effet</td></tr>
+<tr><td><b>Mémoire, encapsulation</b></td><td>SK hynix, Samsung, Micron ; ASE, Amkor</td><td>Aucun effet</td></tr>
+</tbody>
+</table></div>
+
+<p>D'où la conclusion du cours : <b>RISC-V ne concerne que le début de la chaîne</b>. Il réduit la dépendance
+aux <b>licences</b>, pas à la <b>fabrication</b>.</p>
+
+<h3 id="ch12-2">12.2 ASML, le verrou européen</h3>
+
+<div class="grid c2">
+<div class="card"><h4>Le monopole</h4><b>100 %</b> des machines de lithographie à <b>ultraviolets extrêmes</b> (<b>EUV</b>), les seules capables de graver les puces les plus fines (sous 7 nm). Environ <b>200 millions de
+dollars</b> la machine, le double pour la nouvelle génération ; <b>30 ans de recherche</b> et une dizaine
+d'années d'avance. C'est le <i>choke point</i> européen, un levier géopolitique absolu.</div>
+<div class="card"><h4>Les limites de ce levier</h4><b>Produire ?</b> Un seul maillon : l'Europe ne fabrique
+qu'environ <b>10 % des puces mondiales</b>, et aucune des plus avancées. <b>Décider ?</b> Sous pression de
+Washington, les Pays-Bas <b>limitent les ventes à la Chine</b>, qui pèse pourtant environ <b>27 % du chiffre
+d'affaires</b> d'ASML — l'extraterritorialité s'applique via les composants et brevets américains.
+<b>Protéger ?</b> Une société chinoise a été fondée sur des <b>documents volés à ASML</b>, et son premier
+client, TSMC, est à Taïwan, sous la menace de Pékin. <b>Un levier, pas une garantie d'indépendance.</b></div>
+</div>
+
+<div class="callout warn"><div class="t">La vulnérabilité taïwanaise</div>
+Même avec le verrou ASML, la production physique mondiale des puces avancées reste <b>ultra-concentrée à
+Taïwan</b>. Un blocus ou une invasion paralyserait instantanément l'approvisionnement mondial. C'est la
+« guerre froide des semi-conducteurs » : industrie instable, restrictions d'import-export croisées entre les
+États-Unis et la Chine, et une rupture qui ferait monter les prix et toucherait toutes les autres industries.
+</div>
+
+<h3 id="ch12-3">12.3 RISC-V : une ISA libre</h3>
+
+<div class="callout def"><div class="t">ISA</div>
+Le <b>jeu d'instructions</b> (<b>ISA</b> : <i>instruction set architecture</i>) est le <b>contrat entre le logiciel et le matériel</b> : c'est ce que vise le
+compilateur. Un programme compilé pour x86 ne tourne pas sur ARM sans être recompilé.
+</div>
+
+<div class="tw"><table>
+<thead><tr><th>ISA</th><th>Contrôlée par</th><th>Accès</th></tr></thead>
+<tbody>
+<tr><td><b>x86</b></td><td>Intel et AMD</td><td><b>Fermé</b> : aucune licence à des tiers</td></tr>
+<tr><td><b>ARM</b></td><td>SoftBank (droit britannique)</td><td>Licence et <b>redevances</b> par puce</td></tr>
+<tr><td><b>RISC-V</b></td><td><b>Fondation suisse</b> depuis 2020</td><td><b>Libre et gratuit</b></td></tr>
+</tbody>
+</table></div>
+
+<div class="key-points">
+<li>Créé à l'université de <b>Berkeley</b> en 2010, rallié par IBM, Google, NVIDIA.</li>
+<li>Le déménagement de la fondation <b>aux États-Unis vers la Suisse en 2020</b> est un geste de neutralité
+géopolitique : les autorités américaines ne peuvent plus restreindre la publication du standard (ITAR, EAR).</li>
+<li>La <b>Chine</b> s'en empare après l'embargo sur Huawei, pour réduire sa dépendance aux technologies
+soumises aux sanctions américaines : sur les <b>24 membres « Premier »</b> de la fondation en 2025,
+<b>12 sont chinois</b>, 9 américains et <b>un seul européen</b>.</li>
+<li>Depuis le profil <b>RVA23</b> (2024), Android, Ubuntu et CUDA fonctionnent sur RISC-V ; environ
+<b>6,9 milliards de puces</b> l'utilisaient en 2025.</li>
+<li><b>Distinguer le standard et la puce</b> : un cœur RISC-V peut rester <b>propriétaire</b>, et il est le plus
+souvent gravé hors d'Europe.</li>
+<li>Maturité actuelle : <b>automobile, IoT, microcontrôleurs embarqués</b>. Encore en retard pour le calcul
+intensif et l'IA.</li>
+</div>
+
+<div class="grid c2">
+<div class="card"><h4>Les initiatives européennes</h4><b>Quintauris</b> : coentreprise
+(STMicroelectronics, Qualcomm, Bosch, Infineon, NXP) pour industrialiser et standardiser des puces RISC-V,
+d'abord pour l'<b>automobile</b>, puis le mobile et l'IoT. <b>RISE</b> (<i>RISC-V Software Ecosystem</i>),
+hébergé par la <b>Linux Foundation</b>, construit l'écosystème logiciel indispensable (compilateurs, noyaux,
+bibliothèques). <b>DARE</b> (2025-2030) : <b>240 M€</b> pour trois puces RISC-V — <b>aucune encore
+produite</b>. En France : CEA, Keysom, Kalray, <b>sans stratégie nationale dédiée</b>.</div>
+<div class="card"><h4>Le contre-exemple Codasip</h4>Plus de <b>119 M€ de financements publics</b> reçus,
+l'entreprise devait fournir le processeur généraliste de DARE — et en 2026 elle a <b>vendu son activité de
+cœurs d'entrée de gamme à l'américain Onsemi</b>. La leçon tirée en cours : financer ne suffit pas, il faut
+<b>acheter les puces conçues en Europe</b>, <b>garder la main sur les entreprises qu'on finance</b> et éviter
+que le standard ne se divise entre Américains et Chinois.</div>
+</div>
+
+<h3 id="ch12-4">12.4 Le firmware : BIOS, UEFI, coreboot</h3>
+
+<p>Le <b>firmware</b> est le <b>premier code exécuté à l'allumage</b> : il prépare le matériel, puis lance le
+système d'exploitation.</p>
+
+<div class="tw"><table>
+<thead><tr><th></th><th>Ce que c'est</th><th>Statut</th></tr></thead>
+<tbody>
+<tr><td><b>BIOS</b> (1981)</td><td><i>Basic Input/Output System</i>, le firmware historique des PC</td>
+<td>Ancien et limité, <b>abandonné par Intel en 2020</b></td></tr>
+<tr><td><b>UEFI</b> (2005)</td><td><i>Unified Extensible Firmware Interface</i> : <b>une norme, pas un
+logiciel</b> — chaque fabricant écrit sa version (Secure Boot, disques GPT)</td><td>Versions
+<b>fermées</b> (AMI, Insyde, Phoenix)</td></tr>
+<tr><td><b>coreboot</b> (1999)</td><td>Firmware <b>libre</b> (GPLv2) qui <b>remplace</b> celui du
+constructeur : coreboot fait l'initialisation matérielle, puis un <b><i>payload</i></b> fournit au système
+l'interface attendue (BIOS ou UEFI)</td><td>Libre ; firmware des <b>Chromebooks</b></td></tr>
+</tbody>
+</table></div>
+
+<div class="callout warn"><div class="t">Un « BIOS/UEFI libre » ? Oui pour le rôle, pas à 100 %</div>
+<b>Avantages</b> : code ouvert donc <b>auditable</b> (des failles graves comme <b>LogoFAIL</b> ont été
+trouvées dans des firmwares fermés), indépendance vis-à-vis d'AMI, Insyde et Phoenix, machine
+<b>maintenable après l'abandon du constructeur</b>. <b>Inconvénients</b> : il subsiste des <b>blobs fermés
+Intel et AMD</b> (FSP, ME, PSP), peu de cartes compatibles (verrou <b>Boot Guard</b>), installation risquée.
+<b>Pour la souveraineté</b> : coreboot libère des <b>éditeurs de firmware</b>, qui ne sont pas européens, mais
+<b>pas des fondeurs</b> (Intel, AMD). Une étape nécessaire, pas suffisante.
+</div>
+
+<h3 id="ch12-5">12.5 Les réponses européennes et leurs limites</h3>
+
+<div class="grid c2">
+<div class="card"><h4>Le Chips Act européen</h4>Déclenché par les <b>pénuries du Covid</b> qui ont paralysé
+l'automobile. <b>43 milliards d'euros</b> pour faire passer la part européenne de la production mondiale de
+<b>10 % à 20 % d'ici 2030</b>. Trois piliers : <b>Chips for Europe</b> (3 Md€ de recherche et de transfert via
+Horizon Europe, lignes pilotes), <b>sécurité de l'approvisionnement</b> (permis accélérés et incitations pour
+implanter des <i>fabs</i>), <b>surveillance et réaction aux crises</b> (monitoring des chaînes, coordination
+d'urgence via le Conseil européen des semi-conducteurs).</div>
+<div class="card"><h4>Les acteurs européens existants</h4><b>SiPearl</b> (CPU européens pour
+supercalculateurs — mais gravés chez TSMC), <b>Soitec</b> (matériaux et substrats SOI), <b>STMicroelectronics</b>
+(franco-italien, semi-conducteurs pour l'automobile et l'industrie), <b>Kalray</b> (processeurs massivement
+parallèles), <b>Bleu Jour</b> (mini-PC). <b>Dépendances restantes</b> : ARM sous contrôle japonais, la
+fabrication chez TSMC, la <b>mémoire dominée par Samsung</b>, l'assemblage.</div>
+</div>
+
+<div class="exam"><div class="t">Les fausses bonnes idées, énoncées en conclusion du lab</div>
+<ul>
+<li>Recréer un « <b>OS souverain</b> », un « Google français » ou un « Word français » : impossible et
+inopérant aujourd'hui ; le retard face à des monopoles ne se comble pas par des subventions.</li>
+<li><b>Rattraper TSMC et Samsung en partant de zéro</b> : hors de portée.</li>
+<li>Les <b>politiques industrielles de rentes</b>, qui financent sans exiger de débouché.</li>
+</ul>
+<b>Les leviers réalistes</b> : s'appuyer sur l'<b>open source</b> et des architectures modulaires auditables ;
+se positionner sur des <b>maillons critiques et hautement spécialisés</b> (le modèle ASML) ; miser sur les
+<b>ruptures</b> (RISC-V, <i>chiplets</i>, quantique appliqué) ; et acculturer techniquement les décideurs.
+« Rater une révolution industrielle, c'est disparaître. »
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch13"><span class="num">13.</span> Souveraineté des réseaux et des infrastructures</h2>
+
+<h3 id="ch13-1">13.1 Les câbles sous-marins</h3>
+
+<div class="key-points">
+<li>Plus de <b>600 câbles</b> dans le monde acheminent <b>99 % des données intercontinentales</b> et portent de
+l'ordre de <b>10 000 milliards de dollars de transactions par jour</b>. Un câble fait environ <b>2 cm</b> de
+diamètre.</li>
+<li><b>Financement</b> : les <b>GAFAM</b> utilisent environ <b>70 % de la bande passante internationale</b> ;
+Meta a développé plus de 20 câbles et lance <b>Waterworth</b> (50 000 km) en 2025.</li>
+<li><b>Fabrication et pose</b> : trois leaders — <b>SubCom</b> (États-Unis), <b>NEC</b> (Japon) et <b>ASN</b>
+(<i>Alcatel Submarine Networks</i>, France), auquel s'ajoute le chinois <b>HMN Tech</b>. L'État français a
+racheté <b>80 % d'ASN en 2024</b> : un acte de reconquête de souveraineté industrielle.</li>
+<li><b>Repères historiques</b> : 1858 premier câble transatlantique (télégraphe), 1988 <b>TAT-8</b> première
+fibre optique transatlantique, 2017 <b>MAREA</b> (Microsoft et Meta), 2024 câbles endommagés en Baltique.</li>
+</div>
+
+<div class="callout danger"><div class="t">Une cible idéale de la guerre hybride</div>
+<b>Sabotage à bas coût</b> : une ancre qui racle le fond suffit, le mode opératoire est simple et
+<b>difficile à attribuer</b> — d'autant que la plupart des <b>150 à 200 avaries annuelles sont
+accidentelles</b> (pêche, ancres). Cas emblématique : l'<b>Eagle S</b> en Baltique, décembre 2024.
+<b>Drones sous-marins</b> : intervention discrète en profondeur, utilisée aussi pour protéger (l'alliance
+AUKUS développe des drones dédiés). <b>Points chauds</b> : la <b>Baltique</b> (avaries 2024-2025, soupçons
+russes), la <b>mer Rouge</b> (17 à 20 % du trafic Internet mondial), la <b>Méditerranée</b> avec
+<b>Marseille</b>, hub majeur, ainsi que les projets concurrents comme le câble chinois <b>PEACE</b>
+(<i>Pakistan &amp; East Africa Connecting Europe</i>). <b>Riposte</b> : France — ASN public et drones grands fonds ; UE — plan d'action
+<b>EU Action Plan on Cable Security</b> (2025) et navires de réparation, articulé avec l'OTAN.
+</div>
+
+<p>L'enjeu rejoint directement le chapitre 14 : une coupure transatlantique <b>dégraderait le cloud
+américain</b>, ce qui fait de la localisation des données en Europe un enjeu de continuité, pas seulement de
+droit.</p>
+
+<h3 id="ch13-2">13.2 DNS et routage</h3>
+
+<div class="grid c2">
+<div class="card"><h4>Le DNS</h4>Service essentiel, mais infrastructure <b>mondiale</b> : les serveurs
+faisant autorité et les <b>résolveurs</b> sont physiquement implantés dans des juridictions précises et
+<b>soumis aux lois de leur pays d'attache</b> (Cloud Act pour un acteur américain). Le choix de l'extension (<b>TLD</b> : domaine de premier niveau, comme .com, .fr ou .tv) emporte soumission au pays gestionnaire. S'y ajoute l'assemblage de
+microservices de <b>sources non maîtrisées</b>. Réponses : sensibiliser, <b>peser le choix du nom de
+domaine</b>, <b>contrôler ses résolveurs</b>, sécuriser les services au titre de <b>NIS 2</b>.</div>
+<div class="card"><h4>Le routage</h4>Enjeu méconnu : les paquets transitent sur des <b>routeurs physiques qui
+ont des propriétaires</b>, dans des pays de transit dont la loi s'applique. Le <b>facteur de centralité</b>
+mesure ce déséquilibre : <b>80 % des communications de la Colombie passent par les États-Unis</b>. Réponses :
+maintenir un <b>routage « Schengen »</b> intra-européen, ou imposer légalement des <b>points d'échange locaux</b> (<b>IXP</b>) aux opérateurs — ce qu'a fait la <b>Bolivie</b>.</div>
+</div>
+
+<h3 id="ch13-3">13.3 Espace : constellations et GNSS</h3>
+
+<div class="grid c2">
+<div class="card"><h4>Les constellations</h4>Fréquences et orbites sont attribuées par l'<b>UIT</b> (Union
+internationale des télécommunications) ; l'<b>EU Space Act</b>, proposé en juin 2025, est toujours en
+négociation. État des lieux : <b>Starlink ≈ 11 000 satellites</b>, <b>OneWeb</b> (Eutelsat, Europe) ≈ 650,
+Chine (Guowang et Qianfan) ≈ 470, Amazon Leo ≈ 390. Atouts européens : Eutelsat OneWeb, Airbus, Thales Alenia
+Space.</div>
+<div class="card"><h4>IRIS²</h4><i>Infrastructure for Resilience, Interconnectivity and Security by
+Satellite</i> : <b>300 satellites</b> (portés à 348 en août 2026) en <b>orbite basse</b> (<b>LEO</b>) et <b>orbite moyenne</b> (<b>MEO</b>), pour une
+connectivité sécurisée des États, de la défense et des secours. Consortium <b>SpaceRISE</b> (SES, Eutelsat,
+Hispasat) avec Airbus, Thales Alenia Space, OHB et Aerospacelab. Budget <b>10,6 Md€</b>, concession signée en
+décembre 2024, <b>premiers services en 2029</b>. Pilotage : Commission européenne ; mise en œuvre technique :
+<b>ESA</b>.</div>
+</div>
+
+<div class="callout warn"><div class="t">GNSS : l'enjeu caché, c'est le temps</div>
+Quatre systèmes mondiaux de navigation par satellite (<b>GNSS</b>) : <b>GPS</b> (États-Unis, militaire), <b>Galileo</b> (UE, <b>seul 100 % civil</b>),
+<b>GLONASS</b> (Russie), <b>BeiDou</b> (Chine). Leurs <b>horloges atomiques</b> synchronisent les réseaux
+<b>4G/5G</b>, les transactions bancaires, <b>Kerberos</b> et les codes <b>OTP</b> : perdre le signal, ce n'est
+pas perdre la navigation, c'est perdre le <b>temps de référence</b>. Le signal en <b>bande L</b>, émis depuis
+l'orbite moyenne, arrive très faible au sol : il est vulnérable au <b>brouillage</b> (<i>jamming</i> — un
+brouilleur a bloqué accidentellement l'aéroport de Nantes) et au <b>leurrage</b> (<i>spoofing</i> — un navire
+dérouté en mer Noire). Les puces ne sont pas européennes. Résilience : <b>cartographier ses dépendances</b> au
+temps dans ses PCA/PRA, s'entraîner en mode dégradé, récepteurs <b>multi-constellations</b>, antennes à diagramme de rayonnement contrôlé (<b>CRPA</b>).
+</div>
+
+<h3 id="ch13-4">13.4 Les paiements</h3>
+
+<div class="key-points">
+<li>Plus de <b>66 % des transactions électroniques européennes</b> passent par <b>Visa</b> et
+<b>Mastercard</b>. Risque illustré par les sanctions contre la Russie : la <b>déconnexion financière
+unilatérale</b> est une arme.</li>
+<li><b>EPI</b> (<i>European Payments Initiative</i>), consortium de banques et de prestataires européens, porte
+<b>Wero</b> : une même application pour payer entre particuliers, en ligne et en magasin, avec des paiements
+<b>transfrontaliers</b>. Elle remplace les solutions nationales — <b>Payconiq</b> (Luxembourg) et <b>iDEAL</b>
+(Pays-Bas, environ 15 millions d'utilisateurs d'ici 2027). Poids en 2026 : <b>60 millions d'utilisateurs</b> et
+plus de 48 000 commerçants.</li>
+<li><b>Euro numérique</b> : monnaie numérique émise par la <b>BCE</b> (Banque centrale européenne), en ligne et hors ligne, qui
+<b>complète les espèces</b> (elle ne les remplace pas), avec un <b>plafond de détention par personne</b>.
+Objectif : réduire la dépendance aux prestataires non européens et contrer l'essor des <b>stablecoins en
+dollars</b>, qui menace la souveraineté monétaire. Mandat de négociation confirmé le <b>9 juillet 2026</b> ;
+si la loi est adoptée en 2026, pilote de 12 mois au second semestre 2027 et <b>première émission possible en
+2029</b>.</li>
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="ch14"><span class="num">14.</span> Données, cloud et extraterritorialité</h2>
+
+<h3 id="ch14-1">14.1 La saga des transferts UE–USA</h3>
+
+<p>Le morceau de bravoure de la matinée : vingt-cinq ans d'accords conclus, cassés, reconclus. <b>Le
+mécanisme se répète trois fois</b> : un accord européen, une loi américaine qui le vide de son sens, une
+invalidation par la <b>CJUE</b> (Cour de justice de l'Union européenne), un nouvel accord.</p>
+
+<div class="steps" id="anim-schrems">
+<div class="step"><b>2000 — Safe Harbor</b> <span class="who">accord n° 1</span><br>
+Accord bilatéral UE–USA : les données personnelles peuvent être transférées aux entreprises américaines
+offrant un <b>niveau de protection équivalent</b>. Le RGPD n'existe pas encore ; l'UE a des accords du même
+type avec l'Australie, la Suisse et d'autres.</div>
+<div class="step"><b>2001 — Patriot Act</b> <span class="who">la loi qui casse tout</span><br>
+Après le 11-Septembre : dès que des données sont <b>opérées par une entreprise américaine</b>, où qu'elles
+soient sur la planète, un juge peut les exiger. <b>Sans consentement</b> de la personne ni du pays
+d'hébergement. L'accord perd tout son sens, puisqu'ils accèdent à tout.</div>
+<div class="step"><b>2015 — Schrems I</b> <span class="who">invalidation n° 1</span><br>
+L'Europe adopte le <b>RGPD</b> (règlement général sur la protection des données), armature juridique contraignante. S'appuyant dessus, la <b>CJUE</b>
+<b>invalide le Safe Harbor</b> : plus de base légale pour les transferts.</div>
+<div class="step"><b>2016 — Privacy Shield</b> <span class="who">accord n° 2</span><br>
+Accord de substitution négocié dans l'urgence : transfert autorisé vers des entreprises américaines
+<b>certifiées</b> par des organismes de certification comme <b>équivalentes au RGPD</b> — et non plus
+« équivalentes à ce qui se fait ».</div>
+<div class="step"><b>2016 — Microsoft Irlande</b> <span class="who">la résistance industrielle</span><br>
+Microsoft <b>refuse</b> de livrer à un juge américain des courriels stockés dans son centre de données
+irlandais. Motif économique : l'UE, c'est <b>480 millions d'habitants</b>, le plus gros marché client de la
+planète — perdre l'Europe serait mortel. Microsoft gagne.</div>
+<div class="step"><b>2018 — Cloud Act</b> <span class="who">la riposte</span><br>
+<i>Clarifying Lawful Overseas Use of Data Act</i> : c'est le <b>Patriot Act mis dans le code pénal</b>. Le
+Patriot Act donnait le droit d'exiger, sans sanction ; le Cloud Act ajoute les <b>sanctions pénales</b> —
+prison et amendes colossales pour l'entreprise américaine qui refuse.</div>
+<div class="step"><b>2020 — Schrems II</b> <span class="who">invalidation n° 2</span><br>
+Même raisonnement qu'en 2015 : puisque les États-Unis <b>exigent de leurs entreprises</b> la remise des
+données d'Européens, l'accord tombe. La CJUE constate aussi l'<b>absence de voie de recours effective</b> pour
+les ressortissants européens. <b>Plus d'accord du tout.</b></div>
+<div class="step"><b>2023 — Data Privacy Framework (DPF)</b> <span class="who">accord n° 3</span><br>
+Troisième cadre : transfert aux entreprises certifiées, plus une <b>commission et un tribunal indépendant</b>
+chargés de vérifier que la demande d'un juge est bien <b>proportionnée</b> et liée à une enquête réelle
+(terrorisme, pédocriminalité), et non arbitraire. Accord réciproque.</div>
+</div>
+<button class="btn primary" onclick="playSteps('anim-schrems')">▶ Lancer l'animation</button>
+
+<div class="exam"><div class="t">Le message que l'enseignant voulait faire passer</div>
+« Tout le bordel que je viens de vous montrer, c'est un monsieur, chez lui, qui a dit : "mais c'est pas
+normal, je porte plainte". Tout seul. Il avait le même pouvoir que vous. » <b>Max Schrems</b>, juriste
+autrichien, a déclenché seul, comme citoyen européen, l'invalidation du Safe Harbor puis du Privacy Shield.
+Devenu connu, il a fondé l'ONG <b>NOYB</b> (<i>None of Your Business</i>), qui assure la veille et prépare un
+éventuel <b>Schrems III</b>. <b>La justice se réveille si quelqu'un la réveille.</b>
+</div>
+
+<h3 id="ch14-2">14.2 Pourquoi le scepticisme est fondé</h3>
+
+<div class="grid c3">
+<div class="card"><h4>L'affaire de la CPI</h4>Après une décision du procureur de la <b>Cour pénale
+internationale</b>, son compte a été fermé et <b>tout son historique siphonné</b>, sur décision exécutive
+américaine : <b>pas de juge, pas d'enquête, aucun fondement en droit international</b>. L'entreprise
+américaine propriétaire du compte a transmis des données personnelles européennes.</div>
+<div class="card"><h4>Le choix assumé des GAFAM</h4>Auditionné au Sénat en juin 2025, Microsoft ne laisse
+aucune ambiguïté : si on lui demande des données, il les donnera ; si on lui demande de fermer un compte, il
+le fermera. <b>L'amende américaine est plus dissuasive que la perte du client européen.</b> L'argument du
+marché, qui tenait en 2016, ne tient plus.</div>
+<div class="card"><h4>La conséquence politique</h4>La <b>Commission européenne</b> a décidé de basculer les
+systèmes d'information des institutions <b>hors des entreprises américaines</b>. Le constat : on ne peut pas
+sortir d'un cycle où l'on signe des accords que l'autre partie vide de leur sens.</div>
+</div>
+
+<h3 id="ch14-3">14.3 La réponse française : SecNumCloud</h3>
+
+<div class="callout ok"><div class="t">Le changement de doctrine</div>
+« Arrêtons avec le droit : on a mis quinze ans pour voir qu'un accord était invalidé. On va faire comme les
+Américains : <b>dire ce qu'on va faire, et faire ce qu'on a dit.</b> » On passe d'une approche <b>juridique</b>
+à une approche <b>technique et contractuelle</b>, opposable par construction.
+</div>
+
+<p>D'où la qualification <b>SecNumCloud</b> de l'<b>ANSSI</b>. Jusqu'à la version 3.1, elle s'appuyait sur le
+droit européen, supposé suffisant. La <b>version 3.2</b> verrouille :</p>
+
+<div class="key-points">
+<li><b>Seul le prestataire</b> qualifié peut intervenir sur les données et l'infrastructure.</li>
+<li><b>Immunité aux lois extraterritoriales</b> : les lois étrangères non reconnues ne s'appliquent pas.</li>
+<li><b>Aucun <i>kill switch</i></b> : interdiction de tout mécanisme de coupure ou de suspension à distance
+unilatérale.</li>
+<li>Données <b>hébergées et traitées dans l'UE</b>.</li>
+<li>Obligation progressive pour les <b>OIV</b> (organismes d'importance vitale) et les ministères. L'UE soutient
+l'expérience française pour décider, ensuite, de l'étendre à l'Europe entière.</li>
+<li><b>Méthode Clusif</b>, complémentaire : <b>classer ses données</b> et n'exiger la souveraineté que pour les
+plus sensibles. « La souveraineté n'est pas un absolu : c'est une gestion des risques. »</li>
+</div>
+
+<div class="callout warn"><div class="t">Héberger en France ne suffit pas : deux dépendances distinctes</div>
+<b>Dépendance juridique</b> — qui peut accéder aux données ? Un hébergeur sécurisé peut rester soumis à une loi
+étrangère (Cloud Act). <b>Dépendance technologique</b> — qui contrôle les logiciels ? Après le rachat de
+<b>VMware par Broadcom</b>, les licences imposées ont entraîné des hausses de <b>800 à 1 500 %</b> : le budget
+de l'université de Lille a été <b>multiplié par 12</b>. Loi étrangère et position dominante sont deux leviers
+de pression économique différents. Alternative citée : le français <b>Vates</b> (XCP-ng + Xen Orchestra), open
+source, face à VMware — avec ses limites (surface de faille, migration longue et coûteuse).
+</div>
+
+<h3 id="ch14-4">14.4 Les migrations en cours</h3>
+
+<div class="tw"><table>
+<thead><tr><th>Qui</th><th>Bascule</th></tr></thead>
+<tbody>
+<tr><td><b>France Travail</b></td><td>12 000 postes d'Amazon vers <b>OVHcloud</b> (2026)</td></tr>
+<tr><td><b>Health Data Hub</b></td><td>Les données de santé des Français quittent Microsoft pour
+<b>Scaleway</b> (2026)</td></tr>
+<tr><td><b>Commission européenne</b></td><td>Bascule de son système d'information vers plusieurs
+fournisseurs, dont Scaleway</td></tr>
+<tr><td><b>Airbus</b></td><td>Applications critiques et calculs de modélisation vers Scaleway</td></tr>
+<tr><td><b>CPI</b></td><td>Après la fermeture de compte : bascule sur <b>OpenDesk</b>, suite bureautique open
+source</td></tr>
+<tr><td><b>État français</b></td><td>La <b>Cour des comptes</b> lui donne <b>3 ans pour quitter définitivement
+les systèmes américains</b> : cloud SecNumCloud 3.2 et <b>suite bureautique de l'État</b>, open source,
+réservée d'abord aux agents publics (ministères, collectivités, départements, régions, mairies —
+<b>plus de 15 millions de personnes</b>), avant toute ouverture au grand public</td></tr>
+</tbody>
+</table></div>
+
+<p>Le réalisme de l'enseignant : « ça coûte une blinde » et « ça se fait à la vitesse de la tortue, mais ça se
+fait ». Et le point aveugle rappelé en fin de séance : même avec des logiciels libres ou souverains en frontal,
+la dépendance peut persister au niveau des <b>infrastructures d'hébergement sous-jacentes</b>.</p>
+
+<h3 id="ch14-5">14.5 La régulation comme instrument de souveraineté</h3>
+
+<div class="grid c2">
+<div class="card"><h4>Le DMA</h4><b>DMA</b> : <i>Digital Markets Act</i>, le règlement européen sur les marchés numériques, règlement (UE) 2022/1925, applicable depuis le
+<b>2 mai 2023</b>, première échéance de conformité le <b>7 mars 2024</b>. Il vise les <b>contrôleurs d'accès</b>
+(<i>gatekeepers</i>) désignés par la Commission. Obligations : <b>liberté de choix</b> du navigateur et du
+moteur de recherche et distributions alternatives d'applications ; <b>interdiction de l'auto-préférence</b>
+dans les classements ; encadrement du <b>croisement des données</b> et <b>portabilité</b> ;
+<b>interopérabilité ciblée</b>. Sanctions : jusqu'à <b>10 % du chiffre d'affaires mondial annuel</b>,
+<b>20 % en cas de récidive</b>. Mise en œuvre : Microsoft permet de désinstaller Edge et la recherche Bing dans
+l'EEE ; Google ajoute des <b>écrans de choix</b> ; Apple ouvre iOS aux <b>magasins alternatifs</b> et à la
+distribution web, sous notarisation et conditions commerciales. Contrôle effectif : <b>890 M€ d'amendes à
+Google le 23 juillet 2026</b> (460 M€ pour l'auto-préférence dans Search, 430 M€ pour les restrictions
+d'orientation depuis Play). <b>Limite</b> : une ouverture réglementaire ne crée pas d'alternative européenne —
+elle réduit les obstacles d'accès au marché, rien de plus.</div>
+<div class="card"><h4>Le lobbying, revers de la médaille</h4>La tech est le <b>premier secteur d'influence de
+l'UE</b> : plus de <b>600 entreprises et organisations</b> actives à Bruxelles. Les dépenses déclarées sont
+passées de <b>113 M€ en 2023 à plus de 151 M€</b> (+33 %), devant la finance, la pharmacie et les énergies
+fossiles ; <b>GAFAM et ByteDance concentrent près d'un tiers</b> des montants (5 à 8 M€ chacun par an).
+Asymétrie humaine : environ <b>890 lobbyistes pour 720 députés européens</b>. Relais indirects : fédérations
+(<b>DigitalEurope</b>, <b>CCIA</b>), cabinets d'avocats, <b>think tanks</b> (Bruegel, CEPS). Cibles : le
+<b>DSA</b>, le <b>DMA</b>, l'<b>AI Act</b>, et le <b>Digital Omnibus</b> de simplification présenté en novembre
+2025. Et le <b>pantouflage</b> (<i>revolving doors</i>) : recrutement d'anciens fonctionnaires européens.
+Pistes des observatoires citoyens (Corporate Europe Observatory, LobbyControl) : <b>quotas de rencontres</b>,
+registre de transparence <b>juridiquement contraignant</b>, <b>périodes de carence</b> allongées contrôlées par
+une autorité indépendante, consultation <b>paritaire</b> incluant ONG, syndicats et chercheurs.</div>
+</div>
+
+<h3 id="ch14-6">14.6 Souveraineté informationnelle et IA de défense</h3>
+
+<div class="grid c2">
+<div class="card"><h4>VIGINUM et les IENA</h4>Une <b>ingérence numérique étrangère</b> (<b>INE</b>, ou <b>IENA</b> : ingérence numérique étrangère) se caractérise par
+<b>quatre critères cumulatifs</b> : <b>contenu</b> manifestement inexact ou trompeur ; <b>diffusion</b>
+artificielle ou automatisée, massive et délibérée ; <b>finalité</b> d'atteinte aux intérêts fondamentaux de la
+Nation ; <b>auteur</b> impliquant directement ou indirectement un acteur étranger. Sans les quatre, il y a
+influence étrangère, <b>pas ingérence caractérisée</b>. Le <b>RCPE</b> (réseau de coordination et de protection
+des élections), coordonné par le <b>SGDSN</b> depuis 2026, réunit VIGINUM, l'<b>Arcom</b>, la <b>CNCCFP</b>, le
+Secrétariat général du Gouvernement, le ministère de l'Intérieur et un comité éthique et scientifique. Quatre
+leviers : informer les candidats et médias ciblés, partager avec les plateformes et <b>PHAROS</b>,
+<b>exposer publiquement</b> les opérations, saisir l'autorité judiciaire. RETEX Nouvelle-Calédonie 2026 : une
+menace documentée en 2024 (réseau de 423 comptes coordonnés), deux publicités signalées et retirées, et
+finalement <b>zéro IENA caractérisée</b> pour le scrutin — la vigilance n'implique pas la caractérisation.</div>
+<div class="card"><h4>L'IA de défense et l'AMIAD</h4>Pour le ministère des Armées, l'IA est une rupture
+« aussi profonde que l'atome ». <b>L'AI Act exclut explicitement les usages militaires</b> (règl. UE 2024/1689,
+art. 2 § 3) : la souveraineté de l'IA de défense reste une <b>affaire nationale</b>, l'Europe n'agissant que
+par le financement. Dépendances, par étage : <b>puces et GPU</b> (critique — conception américaine, fabrication
+taïwanaise, export contrôlé par Washington), <b>calcul et cloud</b> (hyperscalers soumis au Cloud Act ; parade
+: le calculateur classifié <b>ASGARD</b>), <b>plateformes de fusion et de C2</b> (Palantir, sans concurrent
+selon l'OTAN), <b>modèles</b> (domination américaine, mais <b>Mistral AI</b> partenaire du ministère),
+<b>effecteurs</b> (IA d'acquisition de cible sur CAESAR, Safran.ai, Helsing), <b>doctrine</b> (maîtrisée : la
+France refuse les <b>SALA</b> (systèmes d'armes létaux autonomes), pleinement autonomes — <b>l'humain garde le commandement</b>).
+L'<b>AMIAD</b> (agence ministérielle pour l'intelligence artificielle de défense), créée en 2024, repose sur quatre leviers : <b>2 Md€</b> sanctuarisés dans la LPM 2024-2030,
+<b>300 agents</b> visés en 2026 pour contrer la fuite vers les GAFAM, le <b>calcul classifié</b> ASGARD, et une
+méthode de terrain en duo soldat-ingénieur. Cas d'usage, tous <b>hors ligne ou sur données classifiées</b> :
+identification de pièces par photo sans réseau, traduction embarquée, acoustique sous-marine (40 jours-homme
+ramenés à moins de 8 h), prédiction des difficultés des élèves pilotes, <b>détection de deepfakes</b> (L2I),
+détection automatique de blindés. Limites : le socle GPU reste américain, et le vrai frein est
+<b>organisationnel, pas technologique</b>.</div>
+</div>
+
+<h3 id="ch14-7">14.7 La feuille de route cyber de l'État 2026-2027</h3>
+
+<p>Publiée par l'<b>ANSSI le 9 avril 2026</b>, la <i>feuille de route des efforts prioritaires en matière de
+sécurité numérique de l'État</i> fixe aux ministères des objectifs datés. Contexte : menace élevée et
+situation géopolitique dégradée, intrusions et fuites de données en 2025 révélant des infrastructures encore
+fragiles, mise en conformité de l'État à la directive européenne <b>NIS 2</b> (sécurité des réseaux et des systèmes d'information), et contraintes budgétaires qui
+font reprendre les actions 2025-2026 avec des échéances affermies.</p>
+
+<div class="tw"><table>
+<thead><tr><th>Objectif</th><th>Ce qu'il impose</th></tr></thead>
+<tbody>
+<tr><td><b>1. Gouvernance</b></td><td>Un conseiller chargé de la sécurité du numérique dans chaque cabinet
+ministériel ; chaque ministère décline la feuille de route.</td></tr>
+<tr><td><b>2. Homologation</b></td><td>Chaque SI validé officiellement <b>avant mise en service</b>, y compris
+migré dans le cloud — en commençant par les recenser.</td></tr>
+<tr><td><b>3. Écosystème</b></td><td>Exiger des prestataires et du cloud <b>au moins le même niveau de
+sécurité</b> qu'en interne.</td></tr>
+<tr><td><b>4. Maintien en condition de sécurité</b></td><td>Appliquer les correctifs et <b>remplacer les
+équipements de sécurité obsolètes</b> d'ici fin 2026.</td></tr>
+<tr><td><b>5. Services exposés</b></td><td>Renforcer le <b>DNS</b> et la <b>messagerie</b>, portes d'entrée
+favorites des attaquants, d'ici fin 2026.</td></tr>
+<tr><td><b>6. Authentification et accès</b></td><td>Comptes gérés automatiquement, droits revus chaque année,
+<b>MFA</b>, connexion unique <b>ProConnect</b>.</td></tr>
+<tr><td><b>7. Administration</b></td><td>Protéger les comptes à privilèges : MFA pour tous les administrateurs,
+<b>postes dédiés à l'administration</b>.</td></tr>
+<tr><td><b>8. Supervision et réponse</b></td><td>Détecter avec des <b>EDR/XDR</b>, réagir via des <b>CSIRT</b> (équipes de réponse à incident) ministériels reliés au <b>CERT-FR</b>.</td></tr>
+<tr><td><b>9. Continuité</b></td><td>Intégrer la cybersécurité dans les <b>PRA</b> : tester la reprise au moins
+une fois par an et vérifier régulièrement les sauvegardes.</td></tr>
+<tr><td><b>10. Post-quantique</b></td><td>La nouveauté du texte : <b>2026</b> inventaire des données
+durablement sensibles, <b>2027</b> identification des briques techniques (chiffrement, signature),
+<b>2030</b> déploiement sur les SI <b>Diffusion Restreinte</b>.</td></tr>
+</tbody>
+</table></div>
+
+<p>Priorité affichée : les <b>SI à enjeux</b>, c'est-à-dire ceux qui soutiennent les missions essentielles d'un
+ministère ou traitent des données sensibles, passent en premier. Base réglementaire de l'homologation : le
+décret n° 2019-1088 relatif au système d'information et de communication de l'État.</p>
+
+<div class="callout warn"><div class="t">Le point faible qui n'est pas technologique</div>
+La conclusion la plus sévère du lab : avant les puces, c'est le <b>vivier humain</b> qui manque — retard
+scolaire et pénurie d'enseignants, mépris technique des élites et gâchis des talents, dépendance extérieure
+entretenue faute de valoriser les compétences existantes. Même constat du côté de la défense : le vrai frein
+au passage à l'échelle de l'IA est <b>organisationnel et culturel</b>, pas technologique.
+</div>
+
+<div class="example"><div class="t">Gemplus : le cas d'école français de prédation technologique</div>
+Fondée en <b>1988</b> par <b>Marc Lassus</b>, <b>Gemplus</b> devient leader mondial de la <b>carte à puce</b>
+(carte bancaire, télécarte <b>France Télécom</b>, carte SIM <b>GSM</b>, passeport biométrique), à partir des
+travaux de <b>Roland Moreno</b>, avec jusqu'à 40 à 70 % du marché mondial. Le partenaire d'entrée sur le
+marché américain est <b>DataCard</b>, contrôlé par la famille industrielle allemande <b>Quandt</b>.
+Pour conquérir le marché américain, l'entreprise doit composer avec des acteurs refusant de dépendre d'une
+technologie non américaine. En <b>2000</b>, le fonds américain <b>TPG</b> (<i>Texas Pacific Group</i>) entre au capital pour
+<b>550 M$</b> : 26 % du capital, mais des <b>droits de veto exorbitants</b> et le contrôle du conseil
+d'administration — le directeur général avait refusé trois fois ; l'accord passe par les actionnaires.
+Suivent l'éviction progressive des dirigeants — <b>Antonio Perez</b> nommé directeur général, puis en 2002
+<b>Alex Mandl</b>, administrateur d'In-Q-Tel —, l'abandon de lignes de produits, la revente d'actifs, la chute
+de l'action — et des méthodes de pression personnelle : <b>poubelles fouillées, filatures, trois
+cambriolages</b>. <b>In-Q-Tel</b> est le fonds de capital-risque de la <b>CIA</b>. Brevets et centre de décision partent aux États-Unis ; l'entreprise devient Gemalto, et les
+révélations Snowden montreront plus tard le vol de clés SIM par la NSA. La <b>DGSE</b> avait explicitement mis
+en garde contre les méthodes de prédation de TPG. <b>Ce que le cas enseigne</b> : une prise de participation
+minoritaire peut valoir prise de contrôle si les <b>droits de gouvernance</b> suivent — d'où la
+<b>due diligence</b>, le <b>contrôle des investissements étrangers</b> et l'attention portée aux clauses, pas
+seulement au pourcentage. La liste donnée en cours continue : Alstom, Alcatel, Technip, Arcelor, Péchiney,
+Latécoère.
+</div>
+
+<!-- ===================================================================== -->
+<h2 id="qcm-sec"><span class="num">15.</span> QCM — <span id="count-badge" class="badge acc"></span></h2>
+<p><b>Une seule bonne réponse par question</b>, ordre tiré au hasard, correction expliquée.</p>
+<div id="qcm"></div>
+
+  </main>
+</div>
+
+<button id="top" title="Haut de page">↑</button>
+<script src="qcm.js?v=3"></script>
+<script src="../assets/app.js?v=35"></script>
+<script>initQCM(window.QCM_DATA, window.QCM_CHAPTERS, 'inf5060');</script>
+</body>
+</html>
