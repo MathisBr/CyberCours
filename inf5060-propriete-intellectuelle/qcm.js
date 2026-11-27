@@ -2,6 +2,7 @@
    Format et règles : CLAUDE.md (« Format des données de QCM », règles 1 à 3).
    Contrôle : python -I tools/qcmcheck.py inf5060-propriete-intellectuelle/qcm.js */
 window.QCM_CHAPTERS = {
+  0: "Enregistrer et / ou re-transcrire les conversations",
   1: "Être propriétaire de ses créations",
   2: "La matrice : où ranger une création",
   3: "Le droit d'auteur et la preuve d'antériorité",
@@ -19,6 +20,15 @@ window.QCM_CHAPTERS = {
 };
 
 window.QCM_DATA = [
+/* ---------- 0. Enregistrer et / ou re-transcrire les conversations ---------- */
+{ id:"A00", ch:0, d:1,
+  q:"Laquelle de ces situations est légale ?",
+  o:["Enregistrer les conversations orales des personnes sans les informer ni demander leur consentement",
+     "Retranscrire automatiquement les conversation via un appareil électronique",
+     "La mise à disposition des enregistrements au grand public sans obtenir le consentement des personnes enregistrées",
+     "Retranscrire manuellement l'ensemble des conversations sur un ordinateur"],
+  a:[3],
+  e:"Tout est dans la loi : enregistrer des paroles privées/confidentielles sans consentement est un délit pénal (art. 226-1 du Code pénal : 1 an de prison et 45 000 € d'amende), et les divulguer au public l'est tout autant (art. 226-2). La retranscription manuelle de ses propres conversations est en revanche parfaitement légale. Une transcription automatique est possible si l'enregistrement est licite et s'appuie sur une base légale du RGPD (art. 6), par exemple: le consentement" },
 
 /* ---------- 1. Être propriétaire de ses créations ---------- */
 { id:"A01", ch:1, d:1,
